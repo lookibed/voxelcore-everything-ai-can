@@ -1,0 +1,18 @@
+# machine.toml — корни ЭТОЙ машины. Скопируйте в machine.toml (он в .gitignore) и поправьте пути; проверка — `lab doctor`.
+# Строки в одинарных кавычках — литералы TOML (обратные слэши Windows без экранирования).
+# Ключи и смысл — vclab/machine.py (KEYS); что делать, если чего-то нет, — install/doctor.md.
+
+engines_root = 'C:\VoxelCore\engines'        # распакованные релизы: <engines_root>\voxelcore-0.32.7_win64\VoxelCore.exe ...
+builds_root  = 'C:\VoxelCore\f2f-builds'     # тестовые сборки F2F: <builds_root>\0327\VoxelCoreF2F-0327.exe ...
+work_root    = 'C:\VoxelCore\work'           # данные демона (<work_root>\lab), прогоны, изолированные демоны
+python_win   = 'C:\Python313\python.exe'     # Windows-Python 3.11+: pywin32 psutil fastapi uvicorn numpy Pillow jinja2 pytest
+python_wsl   = '/usr/bin/python3'            # WSL-Python (MCP voxelcore, тонкие клиенты)
+msys2        = 'C:\msys64'                   # только для сборки F2F (f2f/build); можно не ставить
+# vc_root    = 'C:\VoxelCore\engines\voxelcore-0.31_ci-454aa205'   # рабочий рантайм паков; по умолчанию root движка по умолчанию
+wsl_mount    = '/mnt'                        # мост WSL <-> Windows: диски Windows в WSL
+powershell   = 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+
+# Перекрытия раскладки по версиям (engines/registry.toml): root, res, stock, vctest, f2f
+# [engines.v031]
+# root = 'D:\old\voxelcore-0.31'
+# f2f  = 'D:\builds\VoxelCoreF2F.exe'

@@ -1,0 +1,71 @@
+# Реестр версий движка VoxelCore для лаборатории (vclab/engines.py). Путей машины здесь нет: файлы ищутся под корнями
+# machine.toml — стоковый релиз в {machine.engines_root}\<install_dir>, тестовая сборка F2F в
+# {machine.builds_root}\<f2f_exe>; любую позицию можно перекрыть в machine.toml: [engines.<id>] root/res/stock/vctest/f2f.
+# Происхождение и рецепт сборки — engines/<id>/ORIGIN.md; патч F2F — f2f/patches/; протокол — f2f/PROTOCOL.md.
+#
+# Поля версии: version (столбец истории/ворот), description, commit (то, что показывает lab engines), source_commit,
+# release_url / zip_sha256 (стоковый zip), ci_run (если не релиз), install_dir, stock_exe, vctest_exe, stock_sha256,
+# f2f_exe, f2f_sha256, f2f_patch, f2f_branch, f2f_commit, f2f_version (hello.version тестовой сборки: другая —
+# engine-mismatch), f2f_repo (приватный репозиторий веток F2F).
+[engines]
+default = "v031"
+
+[engines.v031]
+version = "0.31"
+description = "VoxelCore 0.31 (CI build of main @ 454aa205, 2026-02-26) + F2F test build f2f-454aa205 @ 527e3084"
+commit = "454aa205"
+source_commit = "454aa205"
+release_url = ""
+zip_sha256 = ""
+ci_run = "CI build of main, PE link time 2026-02-26 15:23:22Z (runtime of the original workbench)"
+install_dir = "voxelcore-0.31_ci-454aa205"
+stock_exe = "VoxelCore.exe"
+vctest_exe = ""          # как в lab.toml рабочего каталога: у v031 vctest в builds не объявлялся
+stock_sha256 = "6591dfc32aba8899f4440565fda15136735c7615c6aef8ab5797178d81effe96"
+f2f_exe = "031\\VoxelCoreF2F-031.exe"
+f2f_sha256 = "1c03a0c39b3957424681fa18b386ecd3a861c4de9dcdf5ac9d9062e348214586"
+f2f_patch = "f2f/patches/f2f-454aa205.patch"
+f2f_branch = "f2f-454aa205"
+f2f_commit = "527e3084"
+f2f_version = "0.31-f2f"
+f2f_repo = "https://github.com/lookibed/voxelcore-f2f"
+
+[engines.v032]
+version = "0.32"
+description = "VoxelCore 0.32 release-0.32 @ dc62ccfb (CI artifact, stock) + F2F test build 032 (branch f2f-032 @ 11909814)"
+commit = "dc62ccfb"
+source_commit = "dc62ccfb"
+release_url = ""
+zip_sha256 = ""
+ci_run = "Windows Build (CLang) 36266877824, artifact Windows-Build (https://github.com/MihailRis/voxelcore, branch release-0.32)"
+install_dir = "voxelcore-0.32.0_dc62ccfb"
+stock_exe = "VoxelCore.exe"
+vctest_exe = "vctest.exe"
+stock_sha256 = "f5aa0ea3f875f5170be8758466103712fa45580bf3d21aff45fc986a93bca09f"
+f2f_exe = "032\\VoxelCoreF2F-032.exe"
+f2f_sha256 = "e110f91b07403dca852a46baceaa65d9a68385e452705482181c297a445fb63b"
+f2f_patch = "f2f/patches/f2f-032.patch"
+f2f_branch = "f2f-032"
+f2f_commit = "11909814"
+f2f_version = "0.32-f2f"
+f2f_repo = "https://github.com/lookibed/voxelcore-f2f"
+
+[engines.v0327]
+version = "0.32.7"
+description = "VoxelCore 0.32.7 release (stock) + F2F test build 0327 (branch f2f-0327 @ 0220606e)"
+commit = "aa2d13f0"          # объект тега v0.32.7 (как в lab.toml рабочего каталога); коммит — source_commit
+source_commit = "8eff080f"
+release_url = "https://github.com/MihailRis/VoxelCore/releases/download/v0.32.7/voxelcore-0.32.7_win64.zip"
+zip_sha256 = "23ec6612b6cc1b23376b9c05439c5d24384bf5d936020a1abb4da33077bf3cba"
+ci_run = "Release 39632239452 (workflow_dispatch on release-0.32)"
+install_dir = "voxelcore-0.32.7_win64"
+stock_exe = "VoxelCore.exe"
+vctest_exe = "vctest.exe"
+stock_sha256 = "51851a0b2e434e8db9059e1101b810b1250c44352da382c9700e22ae9537bea4"
+f2f_exe = "0327\\VoxelCoreF2F-0327.exe"
+f2f_sha256 = "e3b6592f5f8c055c15b75f9424009f3a71736bb122e7d2e12d55d543ffa3e776"
+f2f_patch = "f2f/patches/f2f-0327.patch"
+f2f_branch = "f2f-0327"
+f2f_commit = "0220606e"
+f2f_version = "0.32.7-f2f"
+f2f_repo = "https://github.com/lookibed/voxelcore-f2f"

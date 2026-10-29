@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<!-- Ночные ворота лаборатории (docs/ONBOARDING.md, «Ночные ворота»). Ставит ПОЛЬЗОВАТЕЛЬ: bin/lab schedule install
+     (подставляет {USER} {PYTHONW} {LAB_PY} {WORKDIR} {START} {PROJECTS}, пишет UTF-16 в <data>\schedule\ и вызывает
+     schtasks /Create /XML). Агент задачу не ставит.
+     - InteractiveToken + «только при входе пользователя»: окно движка/LWJGL нужно в сессии пользователя (не session 0);
+     - RunOnlyIfIdle: старт только после 15 мин простоя (Windows: нет ввода + низкая загрузка CPU/диска), ждать до 3 ч;
+     - StopOnIdleEnd: пользователь вернулся — Планировщик гасит CLI, а демон сам не начинает следующий сценарий
+       (stop_on_user: GetLastInputInfo < 60 с); `lab nightly` ещё и сам проверяет sysload перед стартом;
+     - не на батарее, не будить ПК, один экземпляр, предел 4 ч. -->
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Description>VoxelCore lab: nightly ratchet gate (lab nightly) when the PC is idle; writes history.sqlite, gates\, index.html, SUMMARY.md</Description>
+    <URI>\VoxelCoreLab\NightlyGate</URI>
+  </RegistrationInfo>
+  <Triggers>
+    <CalendarTrigger>
+      <StartBoundary>{START}</StartBoundary>
+      <Enabled>true</Enabled>
+      <ScheduleByDay>
+        <DaysInterval>1</DaysInterval>
+      </ScheduleByDay>
+    </CalendarTrigger>
+  </Triggers>
+  <Principals>
+    <Principal id="Author">
+      <UserId>{USER}</UserId>
+      <LogonType>InteractiveToken</LogonType>
+      <RunLevel>LeastPrivilege</RunLevel>
+    </Principal>
+  </Principals>
+  <Settings>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
+    <AllowHardTerminate>true</AllowHardTerminate>
+    <StartWhenAvailable>false</StartWhenAvailable>
+    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+    <IdleSettings>
+      <Duration>PT15M</Duration>
+      <WaitTimeout>PT3H</WaitTimeout>
+      <StopOnIdleEnd>true</StopOnIdleEnd>
+      <RestartOnIdle>false</RestartOnIdle>
+    </IdleSettings>
+    <AllowStartOnDemand>true</AllowStartOnDemand>
+    <Enabled>true</Enabled>
+    <Hidden>false</Hidden>
+    <RunOnlyIfIdle>true</RunOnlyIfIdle>
+    <WakeToRun>false</WakeToRun>
+    <ExecutionTimeLimit>PT4H</ExecutionTimeLimit>
+    <Priority>7</Priority>
+  </Settings>
+  <Actions Context="Author">
+    <Exec>
+      <Command>{PYTHONW}</Command>
+      <Arguments>-X utf8 -B "{LAB_PY}" nightly {PROJECTS} --suite all --mode run</Arguments>
+      <WorkingDirectory>{WORKDIR}</WorkingDirectory>
+    </Exec>
+  </Actions>
+</Task>

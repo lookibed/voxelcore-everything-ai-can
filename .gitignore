@@ -1,0 +1,9 @@
+machine.toml
+WAVE1_PROGRESS.md
+work/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/

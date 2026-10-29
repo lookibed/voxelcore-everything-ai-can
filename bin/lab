@@ -1,0 +1,19 @@
+#!/bin/sh
+# lab из WSL: тот же CLI на Windows-Python (демон и F2F живут на стороне Windows, WSL в NAT их 127.0.0.1 не видит).
+# Python — python_win из machine.toml (или LAB_PYTHON_WIN). LAB_TTY: настоящий терминал у вызывающего (Windows-Python
+# через interop терминала не видит) — `lab play --user` принимается только из интерактивного терминала пользователя;
+# значение вычисляется здесь, а не берётся из окружения.
+if [ -t 0 ] && [ -t 1 ]; then LAB_TTY=1; else LAB_TTY=0; fi
+export LAB_TTY
+export WSLENV="${WSLENV:+$WSLENV:}LAB_OWNER:LAB_PORT:LAB_ROLE:LAB_TTY:LAB_MACHINE/p"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(dirname "$HERE")"
+MACHINE="${LAB_MACHINE:-$ROOT/machine.toml}"
+PY="${LAB_PYTHON_WIN:-$(sed -n "s/^python_win *= *['\"]\([^'\"]*\)['\"].*/\1/p" "$MACHINE" 2>/dev/null | head -1)}"
+if [ -z "$PY" ]; then
+  echo "lab: python_win is not set: copy machine.toml.example to machine.toml (see install/doctor.md)" >&2
+  exit 2
+fi
+case "$PY" in [A-Za-z]:*) PY="$(wslpath -u "$PY")";; esac
+cd /mnt/c 2>/dev/null || true
+exec "$PY" -X utf8 -B "$(wslpath -w "$HERE/lab.py")" "$@"

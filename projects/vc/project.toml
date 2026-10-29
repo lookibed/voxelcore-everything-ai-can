@@ -1,0 +1,116 @@
+# vc — запуски движка для разработки паков (MCP vc_start в vclab/mcp/voxelcore_mcp.py: любые паки рабочего рантайма
+# {vc_root}) и тесты движка (vctests). Этап 3а: вместо стокового VoxelCore.exe — тестовая сборка F2F с
+# `--f2f <порт> --f2f-clock realtime` (время идёт само, step не нужен; ввод ОС изолирован, окно без фокуса).
+# Семантика --res/--dir как у прежнего vc_start: по умолчанию --res {vc_root}\res, --dir {vc_root} (latest.log,
+# autorun_app_script.txt, export\ — там же, где раньше); --dir/--res из args vc_start перекрывают.
+# Стоковый рантайм (вид runtime) — только `lab play vc --user` (пользователь) или vc_start(play=true, reason) =
+# `--final-check` главной сессии (claude), запись runtime_session в истории.
+[project]
+name = "vc"
+description = "pack development launches (MCP vc_start): VoxelCoreF2F.exe, clock realtime, input isolated"
+runs_dir = "{lab_data}\\runs"
+# этап 4: lab run vc <имя|файл.lua> — тесты движка 0.32 под --test (vctests\: копия upstream world.lua и пробы лаборатории)
+scenarios_dir = "{project_dir}\\vctests"
+
+[scenario]
+vctest = { headless = "vctest", window = "vctest_window" }
+
+[kinds.dev]
+description = "VoxelCoreF2F.exe --f2f <port> --f2f-clock realtime, --res/--dir as the old vc_start (default VC_ROOT)"
+exe = "{param.engine_exe}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+clock = "realtime"
+window = "normal"          # видимое окно без фокуса: vc_screenshot (PrintWindow) работает, ввод ОС — нет
+cwd = "{param.dir}"
+args = ["--f2f", "{port.f2f}", "--res", "{param.res}", "--dir", "{param.dir}", "{param.extra}"]
+params = { engine_exe = "{engine.builds.f2f}", dir = "{vc_root}", res = "{vc_root}\\res", extra = [] }   # было: путь F2F 0.31 этой машины
+logs = { latest = "{param.dir}\\latest.log" }
+default_log = "latest"
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+# этап 4a: `--param engine=v032` — тестовая сборка 0.32 (VoxelCoreF2F-032.exe), res 0.32, --dir = каталог аренды (не VC_ROOT:
+# 0.32 перепишет settings.toml/latest.log пользовательского каталога 0.31), кадр 854x480, окно hidden; часы — `--param clock=`
+[kinds.dev.by_engine.v032]
+window = "hidden"
+size = "854x480"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{param.res}", "--dir", "{param.dir}", "{param.extra}"]
+params = { engine_exe = "{engine.builds.f2f}", dir = "{dir}", res = "{engine.res}" }
+
+# ---------------------------------------------------------------- этап 4a: голая тестовая сборка (меню, пробы, F2F-протокол)
+[kinds.engine]
+description = "F2F test build of the lease's engine (default v031; --param engine=v032): menu, --dir = lease dir, 854x480, hidden, clock virtual (--param clock=realtime)"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "virtual"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}", "{param.extra}"]
+params = { extra = [] }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "latest"
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# ---------------------------------------------------------------- стоковый рантайм: только lab play / final-check
+[kinds.runtime]
+description = "stock VC_ROOT\\VoxelCore.exe, normal mode (the user's settings and input): play/final-check only"
+role = "runtime"
+exe = "{vc_root}\\VoxelCore.exe"
+copy_exe = false
+kill_on_close = false
+cwd = "{vc_root}"
+args = ["--dir", "{param.dir}", "{param.extra}"]
+params = { dir = "{vc_root}", extra = [] }
+logs = { latest = "{param.dir}\\latest.log" }
+default_log = "latest"
+ready = []
+stop = []
+
+[play]
+description = "stock runtime VoxelCore.exe (start script via autorun_app_script.txt in --dir)"
+order = ["runtime"]
+engine = "runtime"
+names = { runtime = "vc-main" }
+exclusive_exe = "{vc_root}\\VoxelCore.exe"
+ttl = 3600
+[play.report]
+log_stream = "latest"
+
+# ---------------------------------------------------------------- этап 4: тесты движка 0.32 (`--test`, вид сценария vctest)
+[kinds.vctest]
+description = "native 0.32 test: stock VoxelCore --headless --test <file.lua> --log (exit code = verdict)"
+role = "headless"
+engine = "v032"
+exe = "{engine.stock}"
+copy_exe = false
+cwd = "{dir}"
+args = ["--headless", "--test", "{param.test}", "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--dir", "{dir}", "--log", "{dir}\\test.log"]
+params = { test = "" }
+logs = { log = "{dir}\\test.log" }
+default_log = "stdout"
+prepare = [ { action = "mkdir", path = "shots" } ]
+ready = []
+stop = []
+
+[kinds.vctest_window]
+description = "native 0.32 test in a window: VoxelCoreF2F-032 --f2f (input isolated, hidden) --test <file.lua>; clock virtual (runner steps) or realtime"
+engine = "v032"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "virtual"           # этап 4a: раннер vctest задаёт параметр clock сам (умолчание virtual + шаги; --clock realtime)
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--test", "{param.test}", "--res", "{engine.res}", "--project", "{project_dir}\\vcproject",
+        "--dir", "{dir}", "--log", "{dir}\\test.log"]
+params = { test = "" }
+logs = { log = "{dir}\\test.log" }
+default_log = "stdout"
+prepare = [ { action = "mkdir", path = "shots" } ]
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = []

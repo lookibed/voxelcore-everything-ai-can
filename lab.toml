@@ -1,0 +1,46 @@
+# labd — настройки демона (vclab, README «Лаборатория»). Путей машины здесь нет: они в machine.toml
+# ({work_root}, {vc_root}, {machine.<ключ>}); версии движка — engines/registry.toml.
+[daemon]
+host = "127.0.0.1"          # только loopback: без окон брандмауэра, без доступа из LAN (assert в коде)
+port = 25700                # 25600–25699 — пул портов аренд; 25800–25849 — изолированные демоны
+data = "{work_root}\\lab"   # state\, inst\, builds\, journal\, logs\, runs\ (по умолчанию для проектов)
+
+[ports]
+first = 25600
+last = 25699
+
+[leases]
+default_ttl = 900           # с; любое действие владельца продлевает
+max_ttl = 86400
+reap_every = 5
+
+[watch]
+# логи, которые перезаписываются при каждом старте чужим процессом: демон зеркалит их в data\logs\<имя>\<время>.log
+vc_root = "{vc_root}\\latest.log"
+
+[isolation]
+# этап 3а (vclab/policy.py): экземпляр с exe движка без hello.flags.input == "isolated" убивается.
+# enforce = false — только запись в журнал; менять только по решению пользователя.
+enforce = true
+window = "hidden"           # --f2f-window по умолчанию для аренд (vc_start — normal)
+
+[watchdog]
+# процессы VoxelCore*.exe / java(w).exe вне аренд и сеансов -> «foreign» в lab ps + lab.foreign_process в журнале
+enabled = true
+every = 5
+
+[perf]
+# lab perf (vclab/quality/perf.py): «простой» ПК; пороги — поверх sysload.THRESHOLDS
+idle_window_s = 30
+wait_idle_s = 600
+user_idle_s = 120
+others_cpu_pct = 15.0
+gpu_busy_pct = 15.0
+sample_every_s = 2.0
+
+[defaults]
+# проект для команд без --project (lab golden/gate/runs без проекта, MCP lab_scenario/lab_golden); пусто — обязателен --project
+project = ""
+
+[engines]
+# версии движка — engines/registry.toml (+ корни machine.toml); здесь можно перекрыть default и поля версии
