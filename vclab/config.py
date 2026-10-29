@@ -99,6 +99,8 @@ def machine_ctx():
     return _machine.public(MACHINE)
 
 
+# TODO(волна 5): поведение изменено при выносе имён: раньше без --project брался зашитый проект; теперь [defaults]
+# project lab.toml, пусто — ошибка «--project is required».
 def default_project(cfg=None):
     """Проект по умолчанию для команд без --project (lab.toml [defaults] project; раньше было зашито имя проекта)."""
     try:

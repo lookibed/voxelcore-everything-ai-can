@@ -220,9 +220,10 @@ def main(argv):
     if not argv or argv[0] in ("-h", "--help", "help"):
         print(__doc__)
         return 0
-    if argv[0] == "doctor":                             # без демона: проверка машины (vclab/cli/doctor.py)
-        from vclab.cli import doctor
-        return doctor.main(argv[1:])
+    if "doctor" in argv[:3]:                            # без демона: проверка машины (vclab/cli/doctor.py)
+        from vclab.cli import doctor                    # `lab doctor ...` и `lab --daemon P doctor ...`
+        i = argv.index("doctor")
+        return doctor.main(argv[:i] + argv[i + 1:])
     table = opt(argv, "--table", flag=True)
     owner = opt(argv, "--owner")
     daemon = opt(argv, "--daemon")                      # этап 5: какой демон (изолированный — 25800–25849)

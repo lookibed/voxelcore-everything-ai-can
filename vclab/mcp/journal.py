@@ -37,6 +37,8 @@ STALL_TOOLS = set()
 SELF_SHOT_PREFIXES = ()
 
 
+# TODO(волна 6): инструменты игр (eag_*, am_*) раньше были в наборах выше; их mcp_tools.py должны вызвать extend(...)
+# с прежними именами (NO_SHOT, ACTIONS, CHANGERS, SLOW_S, START/STATE/WAIT/STALL_TOOLS, префикс am_) и поставить vc.STATE.
 def extend(no_shot=(), actions=(), changers=(), slow=None, start=(), state=(), wait=(), stall=(), self_shot_prefixes=()):
     """Точка расширения для projects/<проект>/mcp_tools.py: имена инструментов проекта в наборах журнала."""
     global SELF_SHOT_PREFIXES
