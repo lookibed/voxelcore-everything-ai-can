@@ -97,6 +97,7 @@ def recipe(eid, src=None, vcpkg=None):
     f2f_exe = e.get("f2f_exe") or ""
     sub = os.path.dirname(f2f_exe.replace("\\", "/"))
     stem = os.path.splitext(os.path.basename(f2f_exe.replace("\\", "/")))[0] or "VoxelCoreF2F-" + eid
+    stem = re.sub(r"-[0-9a-f]{8}$", "", stem)   # зарегистрированный exe уже может нести суффикс -<sha8> сборки
     out_dir = "\\".join(x for x in (builds_root.rstrip("\\"), sub.replace("/", "\\")) if x)
     r = {
         "engine": eid, "version": e.get("version"), "f2f_version": e.get("f2f_version"),
