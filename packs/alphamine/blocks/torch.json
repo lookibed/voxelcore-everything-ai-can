@@ -1,0 +1,98 @@
+{
+    "caption": "torch",
+    "model": "custom",
+    "model-name": "amblk_torch_m5",
+    "texture": "am_torch",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m1",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m2",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m3",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m4",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_m5",
+                "texture": "am_torch"
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.4375,
+        0.0,
+        0.4375,
+        0.125,
+        0.625,
+        0.125
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 50
+}

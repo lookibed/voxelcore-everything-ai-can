@@ -1,0 +1,28 @@
+{
+ "description": "UX A4: store. 2 windowed F2F 0.32 clients (A = alice, B = bob) + real olife-sandboxd + dev gateway serving the world's CAS (GET /assets/<sha>). KV of a mob through the world (write/read/delete, refusals 49 key, 42 quota, 44 tariff) and through A3's memory.* (demo_memory_counter); demo_paint (canvas 32x32 every 10 ticks) -> PNG in the owner's CAS -> slot tex:* -> EntityAssets -> B downloads over HTTP, RGBA of the world == decoded on B == the engine texture (assets.to_canvas), skeleton $0..$5 = olife_assets/<sha>, CAS dedup over the 8-frame cycle; A uploads a PNG onto its bench, B gets it; refusals 41/46/43, share to bob; snapshot -> restore -> snapshot equal; world restart keeps KV, slots, CAS files, library, the memory counter continues.",
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": ["olife-alice", "olife-bob"],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0,
+   "assets_http": true
+  }
+ },
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_bench", "args": {"account": "alice", "key": "alice"}},
+  {"cmd": "olife_bench", "args": {"account": "carol", "key": "carol"}},
+  {"cmd": "olife_bench", "args": {"account": "carol", "key": "carol2"}},
+  {"cmd": "olife_store_kv", "args": {"bench": "alice", "script_bench": "carol2"}},
+  {"cmd": "olife_store_canvas", "args": {"bench": "carol", "viewer": "client2", "seconds": 7}},
+  {"cmd": "olife_store_upload", "args": {"bench": "alice", "foreign": "carol"}},
+  {"cmd": "olife_store_snapshot", "args": {"bench": "alice"}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 80}},
+  {"cmd": "olife_store_restart", "args": {"benches": ["alice", "carol", "restored"], "animated": ["carol"], "script_bench": "carol2"}},
+  {"cmd": "olife_metrics"}
+ ]
+}

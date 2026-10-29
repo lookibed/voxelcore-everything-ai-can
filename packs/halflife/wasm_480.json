@@ -1,0 +1,29 @@
+{
+    "module": "halflife:modules/halflife.lua",
+    "extension": "halflife:hl_host",
+    "graphics": "canvas",
+    "width": 480,
+    "height": 270,
+    "args": [
+        "xash",
+        "-ref",
+        "soft",
+        "-width",
+        "480",
+        "-height",
+        "270",
+        "+exec",
+        "default.cfg",
+        "+mlook",
+        "+map",
+        "hldemo1"
+    ],
+    "files": "halflife:data",
+    "slice_ms": 50,
+    "cache_files": true,
+    "log_fps": true,
+    "jit_opt": [
+        "maxtrace=40000",
+        "maxmcode=262144"
+    ]
+}

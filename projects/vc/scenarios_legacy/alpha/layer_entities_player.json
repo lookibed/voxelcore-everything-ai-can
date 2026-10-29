@@ -1,0 +1,343 @@
+{
+ "name": "layer_entities_player",
+ "description": "Фаза 3: другой игрок в кадре. Сервер — копия golden/world_b на своём порту; до основного клиента подключается второй Java-клиент B (F2F, имя AlphaMineB, оператор этого сервера): та же подготовка, что alpha_spawn (два /tp), затем /tp 104.5 67 108.5 (в 4 блоках перед точкой клиента A по +Z), слот 3 (пустой — в руке ничего), взгляд yaw 180 (лицом к A); дальше B простаивает (F2F keepalive держит соединение). Клиент A (Java — golden, VoxelCore — прогон) проходит подготовку alpha_spawn, look, mode (сиды, ticksExisted=0 у сущностей — покачивание рук ModelBiped), render только entities (+lighting, без тумана), 100 тиков, 4 снимка по сторонам: игрок B (модель ModelBiped, char.png, табличка с именем) только в yaw0. Запуск: python3 tools/alphamine/run_vc_scenario.py layer_entities_player --impl java --golden ... (см. agents/ALPHAMINE.md, фаза 3).",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "setup": {
+  "server": {
+   "world": "world_b",
+   "port": 25567,
+   "f2f": false
+  },
+  "client": {
+   "size": "854x480"
+  }
+ },
+ "client_b": {
+  "user": "AlphaMineB",
+  "f2f_port": 25580,
+  "steps": [
+   {
+    "cmd": "connect"
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "world": true,
+     "max_frames": 1200
+    },
+    "expect": {
+     "screen": "ingame"
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "chunks": 441,
+     "net_idle": 40,
+     "max_frames": 3000
+    },
+    "expect": {
+     "health": 20
+    }
+   },
+   {
+    "cmd": "chat",
+    "args": {
+     "text": "/tp 24.5 65 104.5"
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "near": [
+      24.5,
+      66.62,
+      104.5,
+      3
+     ],
+     "max_frames": 600
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "new_chunks": 100,
+     "net_idle": 40,
+     "max_frames": 6000
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "on_ground": true,
+     "still": 20,
+     "max_frames": 1200
+    },
+    "expect": {
+     "near": [
+      24.5,
+      66.62,
+      104.5,
+      0.01
+     ],
+     "health": 20
+    }
+   },
+   {
+    "cmd": "chat",
+    "args": {
+     "text": "/tp 104.5 67 104.5"
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "near": [
+      104.5,
+      68.62,
+      104.5,
+      3
+     ],
+     "max_frames": 600
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "new_chunks": 1,
+     "net_idle": 60,
+     "max_frames": 6000
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "on_ground": true,
+     "still": 40,
+     "max_frames": 1200
+    },
+    "expect": {
+     "near": [
+      104.5,
+      68.62,
+      104.5,
+      0.01
+     ],
+     "on_ground": true,
+     "screen": "ingame",
+     "health": 20
+    }
+   },
+   {
+    "cmd": "chat",
+    "args": {
+     "text": "/tp 104.5 67 108.5"
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "near": [
+      104.5,
+      68.62,
+      108.5,
+      3
+     ],
+     "max_frames": 600
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "on_ground": true,
+     "still": 40,
+     "max_frames": 1200
+    }
+   },
+   {
+    "cmd": "input",
+    "args": {
+     "keys": {
+      "5": true
+     }
+    },
+    "comment": "код 5 = KEY_4 -> слот 3 (пустой): в руке ничего"
+   },
+   {
+    "cmd": "step",
+    "args": {
+     "ticks": 1,
+     "frames": 1
+    }
+   },
+   {
+    "cmd": "input",
+    "args": {
+     "keys": {
+      "5": false
+     }
+    }
+   },
+   {
+    "cmd": "look",
+    "args": {
+     "yaw": 180,
+     "pitch": 0
+    }
+   },
+   {
+    "cmd": "step",
+    "args": {
+     "ticks": 1,
+     "frames": 1
+    },
+    "comment": "поворот мыши применяется в кадре (после тиков шага)"
+   },
+   {
+    "cmd": "step",
+    "args": {
+     "ticks": 5,
+     "frames": 1
+    },
+    "comment": "тики после поворота: Packet12 с yaw 180 уходит на сервер"
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "still": 40,
+     "max_frames": 1200
+    }
+   }
+  ]
+ },
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "entities": true,
+     "lighting": true,
+     "fog": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 100,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0,
+    "entities": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_yaw0"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 0
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 90,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_yaw90"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_yaw180"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 270,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_yaw270"
+  }
+ ]
+}

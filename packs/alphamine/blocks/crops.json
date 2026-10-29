@@ -1,0 +1,98 @@
+{
+    "caption": "crops",
+    "model": "custom",
+    "model-name": "amblk_crops_m0",
+    "texture": "am_crops",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0x",
+                "texture": "am_crops_m1"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xx",
+                "texture": "am_crops_m2"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxx",
+                "texture": "am_crops_m3"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxx",
+                "texture": "am_crops_m4"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxx",
+                "texture": "am_crops_m5"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxx",
+                "texture": "am_crops_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxx",
+                "texture": "am_crops_m7"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxxx",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxxxx",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxxxxx",
+                "texture": "am_door_steel"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxxxxxx",
+                "texture": "am_torch_redstone_active"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxxxxxxx",
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxxxxxxxx",
+                "texture": "am_crops_m13"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_crops_m0xxxxxxxxxxxxxx",
+                "texture": "am_crops_m14"
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.25,
+        1.0
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 59
+}

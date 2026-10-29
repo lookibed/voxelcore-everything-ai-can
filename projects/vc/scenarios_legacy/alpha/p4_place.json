@@ -1,0 +1,180 @@
+{
+ "name": "p4_place",
+ "description": "Фаза 4 (агент P): установка блока. Подготовка alpha_spawn (после p4_dig в той же сессии мир с ямой — она в стороне); слот 2 (земля, код 4 = KEY_3), взгляд yaw 90 pitch 60 на траву (103,66,104) верхней гранью; слои terrain + selection + hud. ПКМ: clickMouse(1) -> Packet15Place(3, 103, 66, 104, 1) и ItemBlock.onItemUse: земля в (103,67,104) локально сразу (откат через 80 тактов без подтверждения сервера), звук step.gravel, взмах, стак 64 -> 63. Снимки: до, сразу после (1 такт), через 100 тактов (сервер подтвердил — откат не случился).",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 90,
+    "pitch": 60
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "terrain": true,
+     "selection": true,
+     "hud": true,
+     "fog": false,
+     "lighting": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "4": true
+    }
+   },
+   "comment": "код 4 = KEY_3 -> слот 2 (земля)"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "4": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 90,
+    "pitch": 60
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_before"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      false,
+      true,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_placed"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 100,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 3
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_after100"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": true
+    }
+   },
+   "comment": "код 2 = KEY_1 -> слот 0, как в других слоях"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  }
+ ]
+}

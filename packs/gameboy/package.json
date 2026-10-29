@@ -1,0 +1,7 @@
+{
+    "id": "gameboy",
+    "title": "Gameboy",
+    "creator": "Andryha",
+    "version": "0.1.0",
+    "description": "Эмулятор Game Boy / Game Boy Color (binji/binjgb, C -> wasm -> Lua через Spider)"
+}

@@ -1,0 +1,97 @@
+{
+    "caption": "stairCompactWood",
+    "model": "custom",
+    "model-name": "amblk_stair_compact_wood_m0",
+    "texture": "am_planks",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m1",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m2",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m3",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m0",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m1",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m2",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m3",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m0",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m1",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m2",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m3",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m0",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m1",
+                "texture": "am_planks"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_wood_m2",
+                "texture": "am_planks"
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 53
+}

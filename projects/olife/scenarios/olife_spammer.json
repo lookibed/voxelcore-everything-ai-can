@@ -1,0 +1,27 @@
+{
+ "description": "UX B2 (olife_b2): the Spammer tool on 3 windowed F2F 0.32 clients (alice, bob, carol) + the real olife-sandboxd. alice's bench runs demo_memory_counter (code + memory.* KV); alice selects the Spammer (key 3), LMB = capture -> SpamReply op 1, snapshot in her library (status RUN, code_fnv = world); RMB twice = two balls (kind 5 entities seen by bob) -> two instances mc#1, mc#2 with the same code hash, look, rights and KV, their memory counters go on independently (runs+1, count grows); bob without `clone` -> code 3 (refuse sound + toast), clone=friends + friendship -> capture 0; tariffs: snapshot quota -> 51, spawn rate -> 52, mob limit -> 53; protocol refusals 50/15/14; library page (Shift+RMB): rename through the UI (op 4), ] and Shift+wheel move the slot (hotbar stays on the Spammer), bob deletes his snapshot (op 5); consistency 0.",
+ "setup": {
+  "session": {
+   "clients": 3,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": ["olife-alice", "olife-bob", "olife-carol"],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_b2_setup", "args": {"account": "alice", "name": "mc", "code": "demo_memory_counter"}},
+  {"cmd": "olife_spammer_capture", "args": {"bench": "mc", "client": "client1"}},
+  {"cmd": "olife_spammer_throw", "args": {"bench": "mc", "client": "client1", "viewer": "client2", "times": 2}},
+  {"cmd": "olife_spammer_perms", "args": {"bench": "mc", "client": "client2"}},
+  {"cmd": "olife_spammer_limits", "args": {"bench": "mc", "client": "client1"}},
+  {"cmd": "olife_spammer_gui", "args": {"client": "client1", "client_b": "client2"}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 80}},
+  {"cmd": "olife_stdin", "args": {"cmd": "spam_status", "pattern": "spammer\\("}},
+  {"cmd": "olife_stdin", "args": {"cmd": "store_status", "pattern": "store\\("}},
+  {"cmd": "olife_metrics"}
+ ]
+}

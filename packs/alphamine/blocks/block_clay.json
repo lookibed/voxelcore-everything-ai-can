@@ -1,0 +1,15 @@
+{
+    "caption": "blockClay",
+    "texture-faces": [
+        "am_block_clay",
+        "am_block_clay",
+        "am_block_clay_bottom",
+        "am_block_clay",
+        "am_block_clay",
+        "am_block_clay"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 82
+}

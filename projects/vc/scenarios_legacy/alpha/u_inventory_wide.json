@@ -1,0 +1,186 @@
+{
+ "name": "u_inventory_wide",
+ "description": "Агент U (фаза 3): GuiInventory при кадре 1390x855 (масштаб GUI 3): открыт, наведение на слот хотбара 1, стак у курсора; стак кладётся обратно.",
+ "size": "1390x855",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "gui": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 0,
+     "y": 0
+    }
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "I": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "I": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "screen": "GuiInventory"
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_open"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 531,
+     "y": 627
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_hover"
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "click": [
+     531,
+     627
+    ],
+    "button": 0
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 484,
+     "y": 457
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_drag"
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "click": [
+     531,
+     627
+    ],
+    "button": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 0
+   }
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "key": "I"
+   },
+   "expect": {
+    "screen": "ingame"
+   },
+   "comment": "закрыть (keyTyped: клавиша инвентаря) — следующие сценарии сессии начинают в мире"
+  }
+ ]
+}

@@ -1,0 +1,283 @@
+{
+ "name": "u_inventory",
+ "description": "Агент U (фаза 3): GuiInventory по I (keyBindInventory альфы = 23, KEY_I) (слой gui): 0 открыт (курсор 0,0), 1 наведение на слот хотбара 1 (64 бревна), 2 ЛКМ — стак в руке у курсора над пустым слотом 9, 3 ПКМ в слот 9 — один предмет, 4 ЛКМ в крафт 2x2 — 63 бревна, результат 4 доски, 5 ЛКМ по результату — доски в руке, крафт 62, 6 ЛКМ в слот 10 — доски положены. В конце I закрывает экран.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "gui": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 0,
+     "y": 0
+    }
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "I": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "I": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "screen": "GuiInventory"
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_open"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 318,
+     "y": 374
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_hover"
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "click": [
+     318,
+     374
+    ],
+    "button": 0
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 287,
+     "y": 261
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_drag"
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "click": [
+     287,
+     261
+    ],
+    "button": 1
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_split"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 442,
+     "y": 142
+    }
+   }
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "click": [
+     442,
+     142
+    ],
+    "button": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "4_craft"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 554,
+     "y": 162
+    }
+   }
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "click": [
+     554,
+     162
+    ],
+    "button": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "5_result"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 300,
+     "y": 258
+    }
+   }
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "click": [
+     300,
+     258
+    ],
+    "button": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "6_placed"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 0
+   }
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "key": "I"
+   },
+   "expect": {
+    "screen": "ingame"
+   },
+   "comment": "закрыть (keyTyped: клавиша инвентаря) — следующие сценарии сессии начинают в мире"
+  }
+ ]
+}

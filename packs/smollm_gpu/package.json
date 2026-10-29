@@ -1,0 +1,8 @@
+{
+    "id": "smollm_gpu",
+    "title": "SmolLM GPU",
+    "creator": "Andryha",
+    "version": "0.3.0",
+    "dependencies": ["gpu_compute"],
+    "description": "Ru-Small-Instruct (Llama 94M, Q8_0) целиком на GPU стокового VoxelCore: фреймы GUI в текстуру + программа в общем ui.glslf пака gpu_compute, логиты бит в бит с C; чат (BPE и семплирование на Lua) — «Сценарии» -> smollm_gpu, демо — кнопка «Демо»"
+}

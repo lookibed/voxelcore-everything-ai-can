@@ -1,0 +1,78 @@
+{
+ "name": "p3_drop_probe",
+ "description": "Фаза 3 (служебный): выброс бревна как в layer_entities и state — позиция EntityItem на Java и VoxelCore (motion пакета 21, физика предмета).",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": true
+    }
+   },
+   "comment": "код 3 = KEY_2 -> слот 1 (брёвна); числовая строка — код LWJGL"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": false,
+     "Q": true
+    }
+   },
+   "comment": "Q — выбросить один предмет вперёд (Packet21 -> сервер создаёт EntityItem)"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "net_idle": 60,
+    "max_frames": 600
+   },
+   "comment": "≥3 с настенного времени: предмет долетел, сервер прислал позицию"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 0
+   }
+  }
+ ]
+}

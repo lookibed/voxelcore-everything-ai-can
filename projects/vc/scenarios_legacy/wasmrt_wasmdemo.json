@@ -1,0 +1,12 @@
+{
+ "name": "wasmrt_wasmdemo",
+ "description": "wasmrt: программа wasmdemo (плазма 160x100) на странице меню F2F-движка; 40 кадров, снимок, ещё 20 кадров, снимок (кадры разные: плазма анимирована по кадрам). Смоук интерпретатора лаборатории: lab run wasmrt wasmrt_wasmdemo --impl vc.",
+ "params": {"engine": {"manifest": "wasmdemo:wasm.json", "packs": ["wasmrt", "wasmdemo"]}},
+ "steps": [
+  {"cmd": "step", "args": {"ticks": 40, "frames": 40}},
+  {"cmd": "shot", "name": "plasma_a"},
+  {"cmd": "step", "args": {"ticks": 20, "frames": 20}},
+  {"cmd": "shot", "name": "plasma_b"},
+  {"cmd": "compare", "args": {"shot": "plasma_b", "against": "golden"}, "optional": true}
+ ]
+}

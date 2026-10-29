@@ -1,0 +1,10 @@
+{
+    "root": {
+        "nodes": [
+            {
+                "name": "core",
+                "model": "bh_sphere"
+            }
+        ]
+    }
+}

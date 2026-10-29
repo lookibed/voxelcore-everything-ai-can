@@ -1,0 +1,69 @@
+{
+    "caption": "redstoneWire",
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.015625,
+        1.0
+    ],
+    "model": "aabb",
+    "texture": "am_redstone_wire",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            },
+            {
+                "texture": "am_redstone_wire_m1"
+            }
+        ]
+    },
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 55
+}

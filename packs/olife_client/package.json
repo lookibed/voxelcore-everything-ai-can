@@ -1,0 +1,10 @@
+{
+    "id": "olife_client",
+    "title": "Olife client",
+    "version": "0.3.0",
+    "creator": "olife",
+    "description": "Minimal Olife client: gateway handshake/auth, chunks/blocks/entities replication with interpolation, player input, chat; runs as a headless bot (random walk, place/break) or as the F2F client. UX round 1: the user's original editor layout (scripts panel, profiler, entity settings), models/icons/sounds from the 0.30.6 prototype (Andryha), one action per tool press, Shift+RMB/LMB on the last opened entity.",
+    "dependencies": [
+        "olife_proto"
+    ]
+}

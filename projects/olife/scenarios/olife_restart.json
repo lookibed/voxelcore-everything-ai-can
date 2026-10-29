@@ -1,0 +1,26 @@
+{
+ "description": "Stage 6 supervisor: olife session under lab.sup (world -> sandbox -> gateway, 2 bots with --reconnect, accounts/bans from the supervisor DB). Kill the world process -> incident (log tail, journal of the last 256 incoming frames from export/sup_state, last sandbox TickResult) -> restart with backoff from the last save -> gateway reconnects, bots rejoin with a fresh replica (self_div 0). Kill the sandbox -> restart -> world told sandbox_reconnect -> connected. Ban bot2 in the DB -> gateway disconnects it (code 5), no reconnect.",
+ "setup": {"session": {"supervise": true, "clients": 2, "client_kind": "bot", "sandbox": true, "sandbox_kind": "sandbox_stub", "reconnect": 2,
+                       "poll_s": 2, "autosave_s": 0,
+                       "policy": {"backoff_s": 1.0, "factor": 2.0, "backoff_max_s": 30, "health_every_s": 2,
+                                  "health_grace_s": 5, "max_restarts": 5, "window_s": 600}}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 6}},
+  {"cmd": "olife_stdin", "args": {"cmd": "save", "pattern": "save requested"}},
+  {"cmd": "olife_run", "args": {"seconds": 2}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_kill", "args": {"role": "world", "how": "proc"}},
+  {"cmd": "olife_wait_restart", "args": {"role": "world", "timeout": 60}},
+  {"cmd": "olife_wait_bots", "args": {"timeout": 60, "min_reconnects": 1}},
+  {"cmd": "olife_run", "args": {"seconds": 5}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_incident", "args": {"role": "world", "min_frames": 10}},
+  {"cmd": "olife_kill", "args": {"role": "sandbox", "how": "proc"}},
+  {"cmd": "olife_wait_restart", "args": {"role": "sandbox", "timeout": 60}},
+  {"cmd": "olife_world_sandbox", "args": {"timeout": 20}},
+  {"cmd": "olife_incident", "args": {"role": "sandbox"}},
+  {"cmd": "olife_ban", "args": {"account": "bot2", "role": "client2", "minutes": 1, "reason": "olife_restart scenario", "hold_s": 4}},
+  {"cmd": "olife_ban", "args": {"account": "bot2", "unban": true}},
+  {"cmd": "olife_metrics"}
+ ]
+}

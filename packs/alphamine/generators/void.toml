@@ -1,0 +1,9 @@
+# Пустой мир: весь чанк — воздух. Блоки приходят с сервера через world.set_chunk_data
+# (modules/chunks.lua). Скрипта нет — карта высот по умолчанию нулевая, и единственный
+# слой core:air заполняет столб от y=0 (generate_pole пишет хотя бы один блок слоя).
+caption = "AlphaMine: пустота"
+biome-parameters = 0
+sea-level = 0
+player-spawn-radius = 0
+player-min-spawn-height = 100
+player-max-spawn-height = 100

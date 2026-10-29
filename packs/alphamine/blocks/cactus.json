@@ -1,0 +1,25 @@
+{
+    "caption": "cactus",
+    "model": "custom",
+    "model-name": "amblk_cactus_m0",
+    "texture-faces": [
+        "am_cactus_side",
+        "am_cactus_side",
+        "am_cactus_bottom",
+        "am_cactus_top",
+        "am_cactus_side",
+        "am_cactus_side"
+    ],
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 81
+}

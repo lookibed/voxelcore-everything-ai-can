@@ -1,0 +1,13 @@
+{
+    "module": "quake:modules/quake.lua",
+    "extension": "quake:qg_host",
+    "graphics": "canvas",
+    "palette": "cpu",
+    "width": 320,
+    "height": 240,
+    "args": ["quake", "-basedir", ".", "+timedemo", "demo1"],
+    "files": "quake:data",
+    "frame_pacing": "slice",
+    "slice_ms": 14,
+    "log_fps": true
+}

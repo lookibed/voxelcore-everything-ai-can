@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HUD-оверлей wasmrt в мире: хост программы (см. modules/app.lua, show_overlay). -->
+<container
+    pos="0, 0"
+    size-func="function() local size = gui.get_viewport() return size[1], size[2] end"
+    color="#00000000">
+</container>

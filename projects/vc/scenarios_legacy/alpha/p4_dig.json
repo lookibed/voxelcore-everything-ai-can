@@ -1,0 +1,237 @@
+{
+ "name": "p4_dig",
+ "description": "Фаза 4 (агент P): ломание блока рукой. Подготовка alpha_spawn; взгляд yaw 0 pitch 39.9 (= 266·0.15) на траву (104,66,106) верхней гранью (через блок от игрока: выпавший предмет вне радиуса подбора сервера expand(1,0,1), иначе подбор зависит от случайного броска сервера); слои terrain (без света и тумана) + selection (рамка и трещины) + entities. ЛКМ держится: такт 1 — clickMouse (Packet14 status 0, взмах), дальше каждый такт sendBlockRemoving (status 1, урон 1/0.6/30 = 0.0556 за такт со 2-го), трещины RenderGlobal.drawBlockBreaking = (int)(prevDamage·10) при partial 0: снимки на тактах 3/8/13/18 = стадии 0/3/6/8 (стадия 9 при partial 0 для травы рукой не видна ни в Java, ни у нас: 17-й удар 0.944 рисуется только в такте 19, когда блок уже сломан). Такт 19: 18-й удар ≥ 1 -> status 3, блок убран локально (откат через 80 тактов, если сервер не подтвердит), снимок 4_broken; отпустить ЛКМ (status 2). Дождаться предмета от сервера (его позиция случайна: World.rand сервера), mode (age/hover предмета = 0), снимок 5_drop; затем со светом (terrain_lit: пересвет ямы клиентом) — 6_lit.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 39.9
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "terrain": true,
+     "selection": true,
+     "entities": true,
+     "fog": false,
+     "lighting": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 39.9
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_before"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      true,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 3,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_stage0"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_stage3"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_stage6"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "4_stage8"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "5_broken"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "net_idle": 60,
+    "max_frames": 600
+   },
+   "comment": "предмет от сервера упал в яму"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 3
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "6_drop"
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "layers": {
+     "lighting": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "7_lit"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 3
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "layers": {
+     "lighting": false
+    }
+   }
+  }
+ ]
+}

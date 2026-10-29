@@ -1,0 +1,846 @@
+# Olife protocol, contract "client": client (VoxelCore pack olife_client) <-> gateway (sockets_auth / gateway_dev.py).
+# The gateway terminates the handshake, auth and keepalive; every other message is validated against this schema
+# and forwarded to the world inside internal.Data{session, type, payload} (payload = the message body below).
+# Framing (all contracts): magic u16 | version u8 | type u16 | length u32 | body[length], big-endian, length <= max_frame.
+# Ids: 1..63 client->server (c2s), 64..127 server->client (s2c). Never reuse an id; bump `version` on any change.
+contract: client
+version: 1
+magic: 0x4F43          # "OC"
+max_frame: 1048576     # 1 MiB body (a compressed chunk is ~0.05..40 KB)
+
+types:
+  Vec3f:
+    fields: {x: f32, y: f32, z: f32}
+  BlockPos:
+    fields: {x: i32, y: i16, z: i32}
+  BlockChange:
+    fields: {pos: BlockPos, id: u16, states: u16}
+  EntitySpawn:
+    fields:
+      eid: u32            # server entity id (the only id space)
+      kind: u8            # 1 player, 2 mob (server-driven), 3 scripted (sandbox)
+      def: str<64>        # engine entity definition the replica spawns
+      name: str<32>
+      owner: u32
+      pos: Vec3f
+      rot: Vec3f
+  EntityUpdate:
+    fields:
+      eid: u32
+      pos: opt<Vec3f>     # dirty fields only
+      rot: opt<Vec3f>
+
+  # ---- wave 4a (Olife editor / console / tools)
+  ConsoleLine:
+    fields:
+      seq: u32            # per-entity console sequence (monotonic, survives restart)
+      tick: u32
+      kind: u8            # 0 print/oprint/say, 1 error, 2 system (run/stop/save/load)
+      text: str<1024>
+  ScriptMeters:
+    fields:
+      sb_status: str<16>  # last sandbox status of the entity (ok, throttled, error, killed, ...), "" = not running
+      credits_tick: f64   # sandbox credits of the entity in its last result
+      credits_min: f64    # ... over the last 60 s (1200 ticks)
+      fuel_min: f64       # fuel over the last 60 s
+      actions_min: u32    # actions applied by the world over the last 60 s
+      rejected_min: u32   # actions rejected by the world over the last 60 s
+      owner_credits_min: f64   # all entities of the same owner (account), last 60 s
+
+  # ---- wave 4c (netcode: prediction, snapshot deltas, inventory)
+  Vec3b:
+    fields: {x: i8, y: i8, z: i8}       # small quantised delta (|d| < 0.5 block per tick), 1/256 block
+  Vec3s:
+    fields: {x: i16, y: i16, z: i16}    # quantised delta, 1/256 block
+  Vec3i:
+    fields: {x: i32, y: i32, z: i32}    # quantised absolute position, 1/256 block
+  RotQ:
+    fields: {x: u16, y: u16, z: u16}    # angles mod 360 in 1/65536 of a turn
+  EntSpawnQ:
+    fields:
+      slot: u16           # per-session handle of the entity (moves/despawns address it)
+      eid: u32
+      kind: u8            # 1 player, 2 mob, 3 scripted, 4 dropped item
+      def: str<64>
+      name: str<32>
+      owner: u32
+      pos: Vec3i
+      rot: RotQ
+  EntMoveQ:
+      # at most one of d8/d16/pa: delta from the session baseline (what this session was last sent) in i8 or i16,
+      # or absolute (keyframe, or a delta that does not fit i16); rotation components only when they changed
+    fields:
+      slot: u16
+      d8: opt<Vec3b>
+      d16: opt<Vec3s>
+      pa: opt<Vec3i>
+      rx: opt<u16>
+      ry: opt<u16>
+      rz: opt<u16>
+  ItemSlot:
+    fields: {slot: u16, item: u16, count: u16}
+
+  # ---- UX A1 (03.10, olife_a1): permissions ("repository" model) and friends
+  PermRule:
+    fields:
+      action: u8          # 1 move (gravity gun), 2 read_code, 3 edit_code, 4 run (run/stop), 5 appearance (name/model/
+                          # texture/skeleton), 6 clone (fork / spammer), 7 destroy, 8 storage_read, 9 storage_write
+      audience: u8        # 0 owner only, 1 owner + friends, 2 owner + list, 3 everyone (admins always pass)
+      list: array<str<64>, 32>    # audience 2: accounts
+  FriendEntry:
+    fields: {account: str<64>, online: bool}
+
+  # ---- UX A2 (03.10, olife_a2): chat, operator commands, feedback
+  ChatEntry:
+    fields:
+      id: u32             # world chat line id (monotonic, survives a restart with the persisted history)
+      tick: u32
+      ms: f64             # unix time of the line, ms
+      kind: u8            # 0 player, 1 system (join/leave/world), 2 op (an operator action, visible to all),
+                          # 3 reply (command output, only to the sender), 4 notice (addressed to this player)
+      role: u8            # 0 player, 1 admin, 2 world, 3 operator (lab CLI / supervisor panel)
+      from_eid: u32       # player eid (0 = world / operator)
+      from: str<32>
+      text: str<256>
+
+  # UX A3 (03.10, olife_a3): mob appearance set by the entity's own script (content/olife_world/modules/mobapi.lua)
+  MobBone:
+    fields:
+      name: str<32>       # bone of the entity's skeleton (olife_client:bench: body, rody, body1, rody1, body2, rody2)
+      flags: u8           # bit 1 transform set (pos/rot/scale), bit 2 model set
+      pos: Vec3f          # offset, blocks
+      rot: Vec3f          # Euler degrees about X, Y, Z (applied Y, X, Z)
+      scale: Vec3f
+      model: str<96>      # model name or "asset:<id>"; "" = the skeleton's own
+  MobTexture:
+    fields: {slot: str<8>, texture: str<96>}     # slot "$0".."$5" (or "*" = all six); texture name or "asset:<id>"
+  # ---- UX A4 (03.10, olife_a4): store — assets (sha256 CAS) per owner, KV per mob
+  AssetRef:
+    fields:
+      slot: str<32>       # "tex:*" (all six $0..$5), "tex:$<i>", "model:<bone>", "sound:<name>", "anim:<name>", "lib:<name>"
+      sha: str<64>        # sha256 hex of the file (= "asset:<sha>" references of A3's EntityAppearance / EntitySound)
+      kind: u8            # 1 png, 2 vcm, 3 ogg, 4 wav, 5 lua, 6 vca
+      size: u32
+  AssetInfo:
+    fields:
+      sha: str<64>
+      kind: u8
+      size: u32
+      name: str<32>
+      refs: u16           # entity slots of this owner that use it
+
+  # ---- UX B1 (03.10, olife_b1): Injector in hand = "my mobs" mode — the panel of the player's mobs with metrics and
+  # location, emergency actions (rescue / destroy / restore the last state) with a two-step confirmation token, the
+  # mob profile and the code history ("commits") of an entity (content/olife_world/modules/mobs.lua)
+  MobInfo:
+    fields:
+      eid: u32
+      name: str<32>
+      status: u8          # EntityMeta.status: 0 STOP, 1 RUN, 2 ERROR, 3 THROTTLED, 4 FROZEN
+      pos: Vec3f
+      loaded: bool        # the chunk under the mob is loaded on the world (false = out of the loaded area)
+      credits_min: f64    # sandbox credits over the last 60 s (ScriptMeters)
+      fuel_min: f64
+      kv_bytes: u32       # KV memory of the mob (A4 store)
+      vm_heap: f64        # Lua heap of the owner's VM, bytes (-1 = not reported)
+      run_ticks: u32      # sandbox results of the entity since the world start
+      errors: u32         # results with status error/killed
+      code_fnv: u32       # FNV-1a of the stored code (= `bench <eid>` code_fnv)
+      code_size: u32
+      versions: u16       # code commits kept by the world
+      error: str<128>     # last error text ("" = none)
+  DeadMob:
+    fields:
+      eid: u32            # eid the mob had (its snapshot is the "last state" slot of the owner)
+      name: str<32>
+      tick: u32
+      ms: f64
+      code_fnv: u32
+      size: u32           # snapshot bytes
+      by: str<32>         # who removed it (owner name / operator)
+  CodeVersion:
+    fields:
+      n: u32              # commit number per entity (monotonic)
+      fnv: u32
+      size: u32
+      ms: f64
+      tick: u32
+      author: str<32>
+      note: str<32>       # "save" | "restore of #n" | "run"
+
+  # ---- UX B2 (03.10, olife_b2): Spammer — snapshots of mobs in the owner's library, thrown as "pokeballs"
+  SpamSnap:
+    fields:
+      id: u32             # per-account snapshot id (grows, never reused)
+      name: str<32>
+      size: u32           # snapshot blob bytes (JSON: code, KV, look, appearance, asset refs, rights, status)
+      tick: u32           # world tick of the capture
+      ms: f64             # unix time of the capture, ms
+      ver: u16            # bumped by rename
+      spawned: u32        # instances thrown from it so far (name suffix #n)
+      status: u8          # 0 stopped, 1 running — as captured (a thrown instance starts in the same state)
+      model: str<32>      # EntityLook of the source ("" = default bench)
+      texture: str<64>
+      code_fnv: u32       # FNV-1a of the captured code (olife_world:editor.fnv_str)
+      src_eid: u32
+      src_name: str<32>
+      src_owner: str<64>  # account of the captured mob (the library owner may differ: `clone` right)
+
+messages:
+  # ---------------------------------------------------------------- client -> server
+  - id: 1
+    name: Hello           # first frame of a connection, else the gateway drops it
+    dir: c2s
+    fields:
+      proto: u16          # == contract version
+      name: str<32>
+      token: str<128>     # auth token (static list in dev, accounts DB later)
+      engine: str<16>     # e.g. "0.32.0"
+  - id: 2
+    name: KeepAliveReply
+    dir: c2s
+    fields: {challenge: u32}
+  - id: 3
+    name: PlayerInput     # every client tick: authoritative check on the world
+    dir: c2s
+    fields:
+      seq: u32
+      pos: Vec3f
+      rot: Vec3f
+  - id: 4
+    name: BlockAction
+    dir: c2s
+    fields:
+      seq: u32
+      action: u8          # 0 break, 1 place
+      pos: BlockPos
+      block: u16          # block index for place (world's content indices are shared by the pack set)
+      states: u16
+  - id: 5
+    name: ChatSend
+    dir: c2s
+    fields: {text: str<256>}
+  - id: 6
+    name: Bye
+    dir: c2s
+    fields: {reason: str<128>}
+  - id: 7
+    name: InfoRequest     # public play (16.10, olife_friends): sent INSTEAD of Hello as the first frame — "what is this
+    dir: c2s              # server?" The gateway answers ServerInfo and closes (Disconnect 19 "server info sent"). Gateways
+    fields:               # without it answer Disconnect 3 (unknown first message) -> the client falls back to its own data
+      proto: u16          # == contract version
+      engine: str<16>
+
+  # ---- wave 4a: editor / console / tools (c2s), ids 16..31 reserved for wave 4a. Additive within v1 (new ids only). Every request carries seq; the world answers RequestReply{seq}.
+  - id: 16
+    name: ScriptOpen      # open the editor of a scripted entity: ScriptState back + console subscription;
+    dir: c2s              # edit=1 also asks for the lock (one editor per entity; owner/admin only). Re-sent as heartbeat.
+    fields: {seq: u32, eid: u32, edit: bool}
+  - id: 17
+    name: ScriptSave      # store code (lock holder only); does not (re)start it
+    dir: c2s
+    fields: {seq: u32, eid: u32, code: str<16384>}
+  - id: 18
+    name: ScriptRun       # (re)load the stored code into the sandbox and run it (lock holder)
+    dir: c2s
+    fields: {seq: u32, eid: u32}
+  - id: 19
+    name: ScriptStop      # stop (unload) the entity's code (lock holder)
+    dir: c2s
+    fields: {seq: u32, eid: u32}
+  - id: 20
+    name: ScriptLockRelease   # give the lock back; close=1 also drops the console subscription (editor closed / Esc)
+    dir: c2s
+    fields: {seq: u32, eid: u32, close: bool}
+  - id: 21
+    name: ToolUse         # Injector / GravityGun: the world raycasts from its own player position along dir
+    dir: c2s
+    fields:
+      seq: u32
+      tool: u8            # 1 injector, 2 gravity gun
+      action: u8          # 1 use (injector RMB -> ScriptState), 2 grab, 3 release, 4 aim (while holding, <= 20/s)
+      target: u32         # entity the client believes it points at (0 = whatever the world's ray hits)
+      origin: Vec3f       # client eye (checked against the world's player position)
+      dir: Vec3f          # look direction (normalized by the world)
+
+  # ---------------------------------------------------------------- server -> client
+  - id: 64
+    name: Welcome         # sent by the world after the gateway attached the session
+    dir: s2c
+    fields:
+      proto: u16
+      session: u32
+      player_eid: u32
+      tick: u32
+      tps: u8
+      spawn: Vec3f
+      view_radius: u8     # chunks
+      world: str<64>
+      blocks: u16         # block.defs_count() of the world: block ids in chunks/updates are raw indices,
+                          # so the client's pack set must give the same count (no blocks in olife_* packs)
+  - id: 65
+    name: KeepAlive       # gateway -> client; reply KeepAliveReply with the same challenge
+    dir: s2c
+    fields: {challenge: u32, server_ms: f64}
+  - id: 66
+    name: Disconnect      # codes: tools/olife/README.md (1..17); antifraud 16.10: 18 nick_in_use (the account plays
+    dir: s2c              # from another address); 5 banned also for IP/CIDR bans ("banned by IP <net> until ..."); 19 info
+                          # (olife_friends 16.10: "server info sent" after ServerInfo, not an error)
+    fields: {code: u16, reason: str<256>}
+  - id: 67
+    name: ChunkData       # world.get_chunk_data bytes; client applies with world.set_chunk_data
+    dir: s2c
+    fields:
+      cx: i32
+      cz: i32
+      data: bytes<1000000>
+      hash: u32           # FNV-1a 32 of data
+  - id: 68
+    name: ChunkUnload
+    dir: s2c
+    fields: {cx: i32, cz: i32}
+  - id: 69
+    name: BlockUpdate     # applied (validated) block changes of this tick in chunks the session holds
+    dir: s2c
+    fields:
+      tick: u32
+      changes: array<BlockChange, 8192>
+  - id: 70
+    name: BlockReject     # a BlockAction was refused: client rolls back to `actual`
+    dir: s2c
+    fields:
+      seq: u32
+      reason: u8          # 1 reach, 2 rate, 3 not loaded, 4 occupied/air (or a player box, 4c), 5 bad block, 6 not in view, 7 no item in the selected slot (4c)
+      actual: BlockChange
+  - id: 71
+    name: EntitySnapshot  # per-tick dirty snapshot for this session's interest
+    dir: s2c
+    fields:
+      tick: u32
+      spawns: array<EntitySpawn, 4096>
+      updates: array<EntityUpdate, 4096>
+      despawns: array<u32, 4096>
+  - id: 72
+    name: TickSync        # end-of-tick marker: replica must now equal the world's view of this session
+    dir: s2c
+    fields:
+      tick: u32
+      server_ms: f64      # time.precise_utc_time()*1000 at send
+      view_hash: u32      # hash of this session's view (entities + applied block changes), see README
+      entities: u16
+      chunks: u16
+  - id: 73
+    name: PlayerCorrect   # movement refused or clamped: client snaps to pos
+    dir: s2c
+    fields: {seq: u32, pos: Vec3f, reason: u8}
+  - id: 74
+    name: ChatMessage
+    dir: s2c
+    fields: {from: u32, name: str<32>, text: str<256>}
+  - id: 75
+    name: PacksChanged    # wave 4b: gateway -> client, right after Welcome and whenever the supervisor pack manifest
+    dir: s2c              # changes; the client compares `version` with its own and fetches changed files over HTTP
+    fields:               # (additive within v1: only gateways with --packs-manifest send it)
+      version: str<64>    # manifest version (sha256 hex of "pack/path:sha" lines)
+      url: str<256>       # pack server base: <url>/manifest.json, <url>/files/<pack>/<path>
+      files: u16          # files in the manifest (hint; the client diffs by sha256 itself)
+  - id: 76
+    name: ServerInfo      # public play (16.10, olife_friends): answer to InfoRequest (before any auth). The client builds
+    dir: s2c              # the ticket service url and the pack url from the host IT dialed + these ports (the server
+    fields:               # never needs to know its external address); auth_pub is pinned by the client (TOFU / invite)
+      proto: u16
+      name: str<64>       # server label (host's choice)
+      gw_id: str<64>      # gateway id = audience of tickets
+      auth_port: u16      # ticket service port on the same host (0 = none)
+      auth_scheme: str<8> # "https" | "http"
+      auth_pub: str<64>   # x25519 key of the ticket service (b64url, 43 chars) the ticket request is sealed to
+      packs_port: u16     # pack distribution HTTP port on the same host (0 = none)
+      public: bool        # the server listens on all interfaces (play.bat public)
+      whitelist: bool     # login by nick needs the host's whitelist
+      motd: str<256>
+
+  # ---- wave 4a: editor / console / tools (s2c), ids 88..103 reserved for wave 4a
+  - id: 88
+    name: ScriptState     # full editor state of one entity: on ScriptOpen and to subscribers on every change
+    dir: s2c
+    fields:
+      eid: u32
+      seq: u32            # request seq this answers (0 = pushed change)
+      name: str<32>
+      code: str<16384>
+      status: u8          # 0 stopped, 1 running, 2 error (sandbox error/kill/load failure)
+      error: str<256>
+      owner: str<64>      # owner account ("" = world/admin-only)
+      owner_name: str<32>
+      lock_holder: str<32>    # player name holding the editor lock ("" = free)
+      lock_eid: u32
+      can_edit: bool      # this session may edit (owner or admin)
+      editing: bool       # this session holds the lock
+      console: array<ConsoleLine, 64>   # tail (bounded)
+      meters: ScriptMeters
+  - id: 89
+    name: ConsoleDelta    # new console lines; only to subscribed sessions, at most every 5 ticks, <= 16 lines/4 KiB
+    dir: s2c
+    fields:
+      eid: u32
+      lines: array<ConsoleLine, 16>
+      dropped: u32        # lines this session missed since the last delta (flood / rate limit)
+      meters: ScriptMeters
+  - id: 90
+    name: RequestReply    # result of a wave-4a request (ScriptOpen/Save/Run/Stop/LockRelease/ToolUse)
+    dir: s2c
+    fields:
+      seq: u32
+      op: u8              # 1 open, 2 save, 3 run, 4 stop, 5 lock release, 6 tool, 7 entity edit (UX round 1)
+      eid: u32
+      code: u16           # 0 ok, 1 no entity, 2 not scriptable, 3 forbidden (not owner/admin), 4 locked by another,
+                          # 5 not the lock holder, 6 out of reach, 7 ray missed, 8 held by another, 9 rate, 10 bad code,
+                          # 11 not holding, 12 sandbox unavailable, 13 bad tool/action, 14 bad origin/dir,
+                          # 15 bad name/model/texture/op (UX round 1)
+      reason: str<128>
+  - id: 91
+    name: EntityOwnership # gravity gun hold state (server-decided): holder 0 = released; to sessions that see the entity
+    dir: s2c
+    fields: {eid: u32, holder_eid: u32, holder_name: str<32>, tool: u8, tick: u32}
+  - id: 92
+    name: EntityMeta      # name tag of a scripted entity (owner, run status); on spawn and on change
+    dir: s2c              # status: 0 stop, 1 run, 2 error, 3 throttled (UX A2), 4 frozen (UX A2)
+    fields: {eid: u32, owner_name: str<32>, status: u8, label: str<64>}
+
+  # ---------------------------------------------------------------- wave 4c (netcode), additive within v1
+  - id: 32
+    name: MoveInput       # predicted movement: one per client tick (50 ms); the world simulates it with
+    dir: c2s              # olife_proto:movement (the same function the client predicts with)
+    fields:
+      seq: u32            # strictly increasing
+      keys: u16           # movement.K bits: 1 fwd, 2 back, 4 left, 8 right, 16 jump, 32 sprint, 64 crouch
+      yaw: f32            # degrees, player rot x (front = (-sin yaw, -cos yaw))
+      pitch: f32
+      hash: u32           # olife_proto:movement.hash of the client's predicted state after this input
+  - id: 33
+    name: InvAction       # inventory request; the world validates and answers with InventoryState / InvReject
+    dir: c2s
+    fields:
+      seq: u32
+      op: u8              # 1 select hotbar slot, 2 move slot -> slot2 (count 0 = all), 3 drop count from slot
+      slot: u16
+      slot2: u16
+      count: u16
+  - id: 104
+    name: PlayerState     # authoritative movement state after the input `ack` (sent each tick an input was handled)
+    dir: s2c
+    fields:
+      ack: u32            # last MoveInput seq handled (simulated or dropped)
+      tick: u32
+      pos: Vec3f
+      vel: Vec3f
+      flags: u8           # 1 grounded, 2 flight, 4 reset (teleport: no smoothing)
+  - id: 108
+    name: PlayerAck       # the world's state after `ack` hashed like the client's prediction: nothing to correct;
+    dir: s2c              # sent instead of PlayerState (at most every 4 ticks), PlayerState goes on a mismatch
+    fields: {ack: u32, tick: u32}
+  - id: 105
+    name: EntityDelta     # quantised per-session delta snapshot (baseline = what this session was sent)
+    dir: s2c
+    fields:
+      tick: u32
+      key: bool           # keyframe: moves carry `pa` for every entity in view
+      spawns: array<EntSpawnQ, 4096>
+      moves: array<EntMoveQ, 4096>
+      despawns: array<u16, 4096>
+  - id: 106
+    name: InventoryState  # server-authoritative inventory of the session's player (changed slots, or all when full)
+    dir: s2c
+    fields:
+      rev: u32
+      ack: u32            # last InvAction seq handled
+      selected: u8
+      full: bool
+      items: u16          # item.defs_count() of the world (item ids are raw indices, as block ids)
+      items_hash: u32     # olife_proto:items.table_hash(items): the client's first `items` defs must match
+      slots: array<ItemSlot, 256>
+      hash: u32           # hash of the whole inventory after this message (olife_proto:util.inv_hash)
+  - id: 107
+    name: InvReject       # an InvAction or a place without the item was refused
+    dir: s2c
+    fields: {seq: u32, op: u8, reason: u8}   # reason: 1 rate, 2 bad slot, 3 empty, 4 bad count, 5 no item to place
+
+  # ---------------------------------------------------------------- UX round 1 (02.10, olife_ux1), additive within v1
+  - id: 22
+    name: EntityEdit      # entity settings page / Shift+LMB: the world checks owner/admin and answers RequestReply op 7
+    dir: c2s
+    fields:
+      seq: u32
+      eid: u32
+      op: u8              # 1 delete (despawn + forget: code, console, registry), 2 rename (name), 3 look (model, texture)
+      name: str<32>       # op 2: [A-Za-z0-9_ -], 1..32 bytes
+      model: str<32>      # op 3: one of the models the client pack offers ("" = keep)
+      texture: str<64>    # op 3: texture of the model ("" = keep)
+  - id: 93
+    name: EntityLook      # model / texture of a scripted entity chosen by its owner; to sessions that see it, on change
+    dir: s2c
+    fields: {eid: u32, model: str<32>, texture: str<64>}
+  - id: 94
+    name: ScriptProfile   # profiler page: once a second to the sessions that opened the entity (with ConsoleDelta)
+    dir: s2c
+    fields:
+      eid: u32
+      tick: u32
+      ticks: u32          # sandbox results of the entity since the world start
+      errors: u32         # results with status error/killed
+      text_dropped: u32   # console lines refused by the per-entity rate (throttle)
+      rejected_total: u32 # actions the world refused (throttle / rules)
+      vm_heap: f64        # Lua heap of the owner's VM, bytes (-1 = the sandbox did not report it)
+      vm_peak: f64        # wasm memory peak of the owner's VM, bytes (-1 = not reported)
+      vm_state: str<16>   # owner's VM state from the sandbox ("" = not reported)
+
+  # ---------------------------------------------------------------- UX A1 (03.10, olife_a1), additive within v1
+  # ids reserved for A1: c2s 40..45, s2c 110..119. RequestReply ops: 8 perms set, 9 fork, 10 friend, 11 perms check;
+  # codes: 3 forbidden (reason names the action), 15 bad value, 16 unknown account / yourself, 17 no such request /
+  # not friends, 18 limit (friends, pending requests, forks per minute)
+  - id: 40
+    name: EntityPermsSet  # owner / admin: who may do `action` with the entity -> RequestReply op 8; EntityPerms to subscribers
+    dir: c2s
+    fields:
+      seq: u32
+      eid: u32
+      action: u8          # PermRule.action
+      audience: u8        # PermRule.audience
+      list: array<str<64>, 32>    # audience 2: accounts ([A-Za-z0-9_.-], 1..64 bytes); other audiences keep it stored
+  - id: 41
+    name: EntityFork      # copy code + settings + appearance of the entity as a new bench of the requester at the
+    dir: c2s              # requester's position (needs `clone`) -> RequestReply op 9 + EntityForked
+    fields: {seq: u32, eid: u32, name: str<32>}    # name "" = <source name>_fork
+  - id: 42
+    name: FriendRequest   # friends of the account -> RequestReply op 10 + FriendList to both sides
+    dir: c2s
+    fields:
+      seq: u32
+      op: u8              # 1 request (accepts at once when the other side already asked), 2 accept, 3 deny (or cancel
+                          # your own request), 4 remove a friend, 5 list (FriendList only)
+      account: str<64>
+  - id: 43
+    name: PermsCheck      # may this session do `action` with eid? -> RequestReply op 11 code 0 / 3 (UI, spammer, storage)
+    dir: c2s
+    fields: {seq: u32, eid: u32, action: u8}
+  - id: 110
+    name: EntityPerms     # the rights of an entity: with ScriptOpen, to subscribers on change, after friend changes
+    dir: s2c
+    fields:
+      eid: u32
+      seq: u32            # request this answers (0 = pushed)
+      owner: str<64>
+      rules: array<PermRule, 16>    # one per action (all 9)
+      mine: u16           # bit (action-1): this session may do it now
+      can_admin: bool     # this session may change the rights (owner or admin)
+  - id: 111
+    name: FriendList      # friends, incoming and outgoing requests of the session's account (on request and on change)
+    dir: s2c
+    fields:
+      seq: u32
+      friends: array<FriendEntry, 256>
+      incoming: array<str<64>, 64>
+      outgoing: array<str<64>, 64>
+  - id: 112
+    name: EntityForked    # the fork was made: new bench `eid` owned by the requester (copy of `src`)
+    dir: s2c
+    fields: {seq: u32, src: u32, eid: u32, name: str<32>}
+
+  # ---------------------------------------------------------------- UX A2 (03.10, olife_a2), additive within v1
+  # ids reserved for A2: c2s 46..49, s2c 120..129. Commands go up as ChatSend text "/<cmd> ..." (no new c2s id: the
+  # gateways pass ChatSend already); the world answers OpResult to the sender. EntityMeta.status gains 3 throttled,
+  # 4 frozen (values only). Codes (OpResult / Notice): 0 ok, 9 rate, 16 forbidden (not an admin), 17 unknown command,
+  # 18 bad arguments, 19 no such target, 20 chat throttled, 21 sandbox control unavailable (limits kept, sent later).
+  - id: 120
+    name: ChatLine        # one chat line: player text to everybody (rate-limited), system/op lines, replies, notices
+    dir: s2c
+    fields: {line: ChatEntry}
+  - id: 121
+    name: ChatHistory     # right after Welcome: the last persisted lines (late joiners see the conversation)
+    dir: s2c
+    fields:
+      total: u32          # lines the world has written since the history began
+      lines: array<ChatEntry, 100>
+  - id: 122
+    name: OpResult        # answer to a "/" command of this session (ChatSend), also usage / refusals
+    dir: s2c
+    fields:
+      n: u32              # per-session command counter (1, 2, ...): the n-th "/" line this session sent
+      code: u16
+      cmd: str<16>
+      text: str<2048>     # human-readable result (multi-line for /mobs, /help)
+  - id: 123
+    name: Notice          # something happened TO this player (toast + sound on the client)
+    dir: s2c
+    fields:
+      event: u8           # 1 you are frozen, 2 unfrozen, 3 your mob killed, 4 limits changed, 5 kicked, 6 banned,
+                          # 7 world restarting, 8 chat throttled, 9 your mob frozen, 10 your mob unfrozen,
+                          # 11 teleported, 12 your mobs killed (killall),
+                          # antifraud 16.10 (world fraud.lua, code 22): 13 warning, 14 throttled
+      code: u16
+      eid: u32            # entity concerned (0 = you / none)
+      by: str<32>         # who did it (operator / admin name)
+      text: str<256>
+
+  # ---------------------------------------------------------------- UX A3 (03.10, olife_a3), additive within v1
+  # ids reserved for A3: c2s 50..54 (unused), s2c 130..139. The mob script API (sandbox prelude: self:set_scale /
+  # set_texture / set_model / skeleton / play_anim / play_sound / text3d / set_visible) changes the entity on the
+  # world; the world replicates the CURRENT state to the sessions that see it (on change and when the entity enters
+  # their view). Appearance is persisted in the registry, the animation state is not (current state only), a sound is
+  # an event (only to the sessions that see the entity in that tick).
+  - id: 130
+    name: EntityAppearance   # full appearance state of a scripted entity (ver grows on every change)
+    dir: s2c
+    fields:
+      eid: u32
+      ver: u32
+      scale: Vec3f
+      visible: bool
+      model: str<96>      # "" = the default (or the owner's EntityLook)
+      textures: array<MobTexture, 8>
+      bones: array<MobBone, 16>
+      text: str<128>      # text3d line above the entity ("" = none)
+      color: u32          # RGBA of the text line, 0xRRGGBBAA
+  - id: 131
+    name: EntityAnim         # animation state: a VCA track (olife_client:animation/*.vca or "asset:<id>") on the skeleton
+    dir: s2c
+    fields:
+      eid: u32
+      ver: u32
+      name: str<96>       # "" = stopped
+      speed: f32          # 0.05..8
+      loop: bool
+      t: f32              # seconds of animation time already played when this was sent (late joiners catch up)
+  - id: 132
+    name: EntitySound        # a sound of the entity (event, not persisted); the client plays it at pos
+    dir: s2c
+    fields:
+      eid: u32
+      sound: str<96>      # pack sound name (olife/ok, ...) or "asset:<id>"
+      volume: f32         # 0..1
+      pitch: f32          # 0.25..4
+      pos: Vec3f          # where (the entity's position unless the script gave one)
+      tick: u32
+
+  # ---------------------------------------------------------------- UX A4 (03.10, olife_a4), additive within v1
+  # ids reserved for A4: c2s 55..59, s2c 140..149. The store lives on the world (content/olife_world/modules/store.lua):
+  # per-owner (account) asset library in a sha256 CAS (quota bytes + count), per-mob KV (quota bytes + keys), store
+  # credits per owner (bucket; prices in tariffs `store.*`). Asset files are served by the gateway's HTTP port:
+  # GET <PacksChanged.url>/assets/<sha256 hex> (the gateway re-hashes the file). Store codes (AssetReply, sandbox
+  # feedback `rejected`): 0 ok, 40 no entity / not a scripted bench, 41 forbidden, 42 KV quota, 43 asset quota (bytes
+  # or count), 44 tariff (store credits exhausted), 45 too large, 46 bad kind / format, 47 no such asset, 48 rate,
+  # 49 bad key / value / argument.
+  - id: 55
+    name: AssetUpload     # a file into the sender's library (optionally attached to an own entity slot) -> AssetReply op 1
+    dir: c2s
+    fields:
+      seq: u32
+      kind: u8            # AssetRef.kind
+      name: str<32>
+      eid: u32            # 0 = library only
+      slot: str<32>       # with eid: AssetRef.slot
+      data: bytes<60000>  # one c2s frame: both gateways cap client frames at 64 KiB and 64 KiB/s (burst 256 KiB);
+                          # bigger files come from the world itself (scripts, canvas) — chunked upload is a follow-up
+  - id: 56
+    name: AssetOp         # -> AssetReply{op}; op 5 also AssetList
+    dir: c2s
+    fields:
+      seq: u32
+      op: u8              # 1 attach sha to eid/slot, 2 detach eid/slot, 3 share sha to account, 4 release sha from my
+                          # library, 5 list my library (AssetList), 6 manifest of eid (EntityAssets now)
+      sha: str<64>
+      eid: u32
+      slot: str<32>
+      account: str<64>
+  - id: 140
+    name: EntityAssets    # the asset manifest of an entity (what its look/sounds use); to sessions that see it, on change
+    dir: s2c
+    fields:
+      eid: u32
+      rev: u32
+      assets: array<AssetRef, 32>
+  - id: 141
+    name: AssetList       # the sender's library and quota (AssetOp op 5, and after own uploads)
+    dir: s2c
+    fields:
+      seq: u32
+      account: str<64>
+      used: f64           # bytes (library + slots of own entities, distinct files)
+      quota: f64
+      count: u16
+      max_count: u16
+      credits: f64        # store credits left in the bucket
+      assets: array<AssetInfo, 256>
+  - id: 142
+    name: AssetReply      # result of AssetUpload / AssetOp
+    dir: s2c
+    fields:
+      seq: u32
+      op: u8              # 1 upload, 2.. = AssetOp.op + 1 (2 attach, 3 detach, 4 share, 5 release, 6 list, 7 manifest)
+      code: u16           # store code (see above)
+      sha: str<64>
+      reason: str<128>
+
+  # ---------------------------------------------------------------- UX B1 (03.10, olife_b1), additive within v1
+  # ids reserved for B1: c2s 44..49, s2c 113..119; RequestReply ops 12 mobs, 13 rescue, 14 destroy, 15 restore,
+  # 16 profile, 17 history, 18 version op; codes: 22 confirmation required (MobConfirm carries the token), 23 bad or
+  # expired confirmation token, 24 no safe position known, 25 chunk not loaded (come closer), 26 nothing to restore,
+  # 27 limit (restores per minute / history quota), 28 no such version, 29 store refused (reason has the store code).
+  - id: 44
+    name: MobsRequest     # the list of MY mobs -> MobsList; watch=1 also subscribes to a refresh every second while
+    dir: c2s              # the panel is open (watch=0 unsubscribes). RequestReply op 12 only on refusal (rate).
+    fields: {seq: u32, watch: bool}
+  - id: 45
+    name: MobAction       # emergency action; token 0 = ask (world answers MobConfirm + RequestReply 22), token from
+    dir: c2s              # MobConfirm = do it (RequestReply op 13/14/15 code 0, + MobRescued / MobRestored)
+    fields:
+      seq: u32
+      eid: u32            # op 3 restore: the eid the dead mob had (DeadMob.eid)
+      op: u8              # 1 rescue (back to the last safe position; `move`), 2 destroy (`destroy`), 3 restore the
+                          # last state of a removed mob (owner of the snapshot or admin)
+      token: u32
+  - id: 46
+    name: MobProfileRequest   # -> MobProfile (needs `read_code`)
+    dir: c2s
+    fields: {seq: u32, eid: u32}
+  - id: 47
+    name: CodeHistoryRequest  # -> CodeHistory (needs `read_code`)
+    dir: c2s
+    fields: {seq: u32, eid: u32}
+  - id: 48
+    name: CodeVersionOp   # op 1 open: -> CodeVersionText (`read_code`); op 2 restore: the version becomes the code
+    dir: c2s              # as a NEW commit (lock holder with `edit_code`, like ScriptSave) -> RequestReply op 18 +
+    fields: {seq: u32, eid: u32, n: u32, op: u8}   # ScriptState / CodeHistory to subscribers
+  - id: 113
+    name: MobsList        # my mobs with metrics and location + the "last state" slots of my removed mobs
+    dir: s2c
+    fields:
+      seq: u32            # request this answers (0 = watch refresh)
+      tick: u32
+      mobs: array<MobInfo, 64>
+      dead: array<DeadMob, 8>
+  - id: 114
+    name: MobConfirm      # step one of an emergency action: confirm with this token before expires_tick
+    dir: s2c
+    fields:
+      seq: u32
+      eid: u32
+      op: u8
+      token: u32
+      expires_tick: u32
+      text: str<128>      # what will happen (e.g. the position the mob goes back to)
+  - id: 115
+    name: MobRescued      # the mob was put back (to the owner's sessions; the client shows where)
+    dir: s2c
+    fields:
+      eid: u32
+      pos: Vec3f          # where it is now
+      from: Vec3f         # where it was
+      by: str<32>
+  - id: 116
+    name: MobRestored     # the last state of a removed mob became a new entity
+    dir: s2c
+    fields: {seq: u32, src_eid: u32, eid: u32, name: str<32>, code_fnv: u32}
+  - id: 117
+    name: MobProfile      # profile page of the editor
+    dir: s2c
+    fields:
+      seq: u32
+      eid: u32
+      owner: str<64>
+      perms: str<160>     # short rights line "move=owner read_code=everyone ..."
+      code_fnv: u32
+      code_size: u32
+      versions: u16
+      run_ticks: u32
+      errors: u32
+      kv_bytes: u32
+      kv_keys: u16
+      vm_heap: f64
+      credits_min: f64
+      fuel_min: f64
+      forked_from: u32    # 0 = not a fork
+      last_errors: array<str<160>, 4>   # last error lines of the console (newest last)
+  - id: 118
+    name: CodeHistory     # commits of the entity (oldest first, at most 16 kept)
+    dir: s2c
+    fields:
+      seq: u32
+      eid: u32
+      items: array<CodeVersion, 16>
+  - id: 119
+    name: CodeVersionText # the code of one commit (CodeVersionOp op 1)
+    dir: s2c
+    fields: {seq: u32, eid: u32, n: u32, fnv: u32, code: str<16384>}
+
+  # ---------------------------------------------------------------- UX B2 (03.10, olife_b2), additive within v1
+  # ids reserved for B2: c2s 50..54, s2c 143..149. The Spammer (item olife_client:spammer): LMB on a mob = capture a
+  # full snapshot (store.snapshot: code, KV memory, look, script appearance, asset refs, rights, run status) into the
+  # sender's library on the world (quota: count + bytes, tariff price_snapshot); RMB = throw a ball (kind 5 entity
+  # olife_client:spam_ball, replicated like any entity) that spawns a new instance from the selected snapshot where it
+  # lands (store.restore: owner = the library owner, name "<snap>#n", same rights, same run state; tariff price_restore).
+  # SpamReply codes: 0 ok, 1 no entity, 2 not a bench, 3 forbidden (`clone` right), 6 out of reach, 7 ray missed,
+  # 9 rate, 14 bad origin/dir, 15 bad name/op, 40..49 store codes (restore: 43 asset quota, 44 credits, 47 asset gone),
+  # 50 no such snapshot, 51 snapshot quota (count or bytes), 52 spawn rate (per minute), 53 mob limit (benches of the
+  # owner), 54 bad throw (the ball starts inside a block / leaves the play area / the world could not place it).
+  - id: 50
+    name: SpamCapture     # LMB with the Spammer: the world raycasts (as ToolUse) and snapshots the mob -> SpamReply op 1
+    dir: c2s              # (+ SpamList with the new entry)
+    fields:
+      seq: u32
+      target: u32         # entity the client believes it points at (0 = whatever the ray hits)
+      origin: Vec3f
+      dir: Vec3f
+  - id: 51
+    name: SpamThrow       # RMB with the Spammer: throw a ball from origin along dir -> SpamReply op 2 code 0 at once
+    dir: c2s              # (eid = the ball, reason "thrown"), then a second SpamReply op 2 with the same seq when it
+    fields:               # lands (eid = the new mob, reason "spawned #n") or a refusal code
+      seq: u32
+      id: u32             # snapshot id of the sender's library
+      origin: Vec3f
+      dir: Vec3f
+      name: str<32>       # name of the new instance ("" = "<snapshot name>#<n>")
+  - id: 52
+    name: SpamSlotOp      # the library: 1 list (SpamList), 2 rename (name), 3 delete -> SpamReply op 3/4/5 (+ SpamList)
+    dir: c2s
+    fields:
+      seq: u32
+      op: u8
+      id: u32
+      name: str<32>
+  - id: 143
+    name: SpamList        # the sender's snapshot library and limits (on request, after capture/rename/delete/throw)
+    dir: s2c
+    fields:
+      seq: u32
+      account: str<64>
+      snaps: array<SpamSnap, 64>
+      count: u16
+      max_count: u16
+      used: f64           # snapshot bytes of the account
+      quota: f64
+      spawns_min: u16     # throws in the last minute
+      spawn_limit: u16    # tariff spawn_per_min
+      mobs: u16           # benches owned by the account now
+      mobs_max: u16       # tariff mobs_max
+  - id: 144
+    name: SpamReply       # result of SpamCapture / SpamThrow / SpamSlotOp
+    dir: s2c
+    fields:
+      seq: u32
+      op: u8              # 1 capture, 2 throw, 3 list, 4 rename, 5 delete
+      id: u32             # snapshot id concerned (0 = none)
+      eid: u32            # capture: the captured mob; throw: the ball, then the spawned mob
+      code: u16
+      reason: str<128>
+  - id: 145
+    name: SpamBall        # ball events to the sessions that see the ball's chunk: 1 thrown, 2 landed (spawned_eid), 3 lost
+    dir: s2c
+    fields:
+      eid: u32            # the ball entity (kind 5)
+      state: u8
+      thrower: str<32>
+      snap: str<32>       # snapshot name
+      pos: Vec3f
+      spawned_eid: u32
+      tick: u32

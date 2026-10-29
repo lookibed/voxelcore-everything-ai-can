@@ -1,0 +1,8 @@
+{
+    "id": "quake",
+    "title": "Quake (wasmrt)",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Quake (quakegeneric, shareware-эпизод) как обычная C-программа на wasmrt; кадр с палитрой рисуется на GPU",
+    "dependencies": ["wasmrt"]
+}

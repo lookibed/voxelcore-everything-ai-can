@@ -1,0 +1,8 @@
+{
+    "id": "olife_world",
+    "title": "Olife world (authoritative server)",
+    "version": "0.2.0",
+    "creator": "olife",
+    "description": "Authoritative Olife world for a headless VoxelCore 0.32 server: gateway link (internal protocol), 20 Hz tick, players, entities with server ids, validated blocks, chunk interest, replication snapshots, sandbox bridge, admin commands.",
+    "dependencies": ["olife_proto"]
+}

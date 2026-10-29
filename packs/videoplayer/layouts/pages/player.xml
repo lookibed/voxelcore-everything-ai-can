@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Страница меню видеоплеера. Логика: player.xml.lua (общая с HUD-оверлеем). -->
+<container
+    pos="0, 0"
+    size-func="function() local size = gui.get_viewport() return size[1], size[2] end"
+    interactive="true"
+    color="#00000088">
+    <button id="back_btn" pos="8, 8" onclick="leave()">@Back to Main Menu</button>
+</container>

@@ -1,0 +1,6 @@
+{
+    "post-effects": [
+        "wasmrt_cmds",
+        "wasmrt_indexed"
+    ]
+}

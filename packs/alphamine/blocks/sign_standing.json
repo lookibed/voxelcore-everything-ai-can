@@ -1,0 +1,18 @@
+{
+    "caption": "signStanding",
+    "hitbox": [
+        0.25,
+        0.0,
+        0.4375,
+        0.5,
+        1.0,
+        0.125
+    ],
+    "model": "aabb",
+    "texture": "am_planks",
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 63
+}

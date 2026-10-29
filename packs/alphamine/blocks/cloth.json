@@ -1,0 +1,15 @@
+{
+    "caption": "cloth",
+    "texture-faces": [
+        "am_cloth",
+        "am_cloth",
+        "am_cloth_bottom",
+        "am_cloth",
+        "am_cloth",
+        "am_cloth"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 35
+}

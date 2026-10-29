@@ -1,0 +1,123 @@
+{
+ "name": "det_particles_engine_sub",
+ "description": "layer_particles с mode {fx_probe: \"engine_sub\"} — окно текстуры частиц выбирает движок (как до этапа 3б); для сравнения процентов с golden layer_particles.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 60
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true,
+    "fx_probe": "engine_sub"
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "particles": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 60
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      true,
+      false,
+      false
+     ]
+    }
+   },
+   "comment": "копать траву под ногами: частицы удара каждый тик; 12 тиков < 18 до разрушения, мир не меняется"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 4,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_dig4"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 4,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_dig8"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 3,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_dig11"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_release5"
+  }
+ ]
+}

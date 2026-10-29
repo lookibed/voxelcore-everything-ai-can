@@ -1,0 +1,11 @@
+{
+    "module": "quake:modules/quake.lua",
+    "extension": "quake:qg_host",
+    "graphics": "canvas",
+    "palette": "gpu",
+    "width": 320,
+    "height": 240,
+    "args": ["quake", "-basedir", "."],
+    "files": "quake:data",
+    "log_fps": true
+}

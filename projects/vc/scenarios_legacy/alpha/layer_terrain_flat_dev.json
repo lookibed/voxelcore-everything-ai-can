@@ -1,0 +1,613 @@
+{
+ "name": "layer_terrain_flat_dev",
+ "base": "dev_base",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "description": "Мир разработчика (dev_base): terrain без света и тумана; 8 видовых точек (башни над группами G1 кубы, G2 формы, G3 жидкости, G4 растения; с севера yaw 0 и с юга yaw 180, pitch 45), по снимку на точку. Разбор остатка по экспонатам — tools/alphamine/am_rows.py.",
+ "steps": [
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 27.5 71 11.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     27.5,
+     72.62,
+     11.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     27.5,
+     72.62,
+     11.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "terrain": true,
+     "lighting": false,
+     "fog": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g1_n"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 27.5 71 33.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     27.5,
+     72.62,
+     33.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     27.5,
+     72.62,
+     33.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g1_s"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 27.5 71 33.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     27.5,
+     72.62,
+     33.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     27.5,
+     72.62,
+     33.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g2_n"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 27.5 71 59.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     27.5,
+     72.62,
+     59.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     27.5,
+     72.62,
+     59.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g2_s"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 55.5 71 11.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     55.5,
+     72.62,
+     11.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     55.5,
+     72.62,
+     11.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g3_n"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 55.5 71 33.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     55.5,
+     72.62,
+     33.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     55.5,
+     72.62,
+     33.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g3_s"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 55.5 71 33.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     55.5,
+     72.62,
+     33.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     55.5,
+     72.62,
+     33.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g4_n"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 55.5 71 59.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     55.5,
+     72.62,
+     59.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     55.5,
+     72.62,
+     59.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180,
+    "pitch": 45
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "g4_s"
+  }
+ ]
+}

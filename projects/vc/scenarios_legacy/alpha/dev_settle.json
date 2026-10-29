@@ -1,0 +1,109 @@
+{
+ "name": "dev_settle",
+ "description": "Служебный (не golden): оседание жидкостей мира разработчика сервером. Игрок стоит на башне G3 (55.5 71 11.5) 150 с (случайные такты запускают течение источников), затем ждёт 30 с без пакетов блоков и выполняет /stop (оператор: сервер сохраняет всё). Потом gen_devworld.py finalize.",
+ "setup": {
+  "server": {
+   "world": "devworld"
+  },
+  "client": {
+   "size": "854x480"
+  }
+ },
+ "steps": [
+  {
+   "cmd": "connect"
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "world": true,
+    "max_frames": 1200
+   },
+   "expect": {
+    "screen": "ingame"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chunks": 441,
+    "net_idle": 40,
+    "max_frames": 3000
+   },
+   "expect": {
+    "health": 20
+   }
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 55.5 71 11.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     55.5,
+     72.62,
+     11.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     55.5,
+     72.62,
+     11.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "^never$",
+    "max_frames": 3000
+   },
+   "optional": true
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "net_idle": 600,
+    "max_frames": 6000
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/stop"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "^never$",
+    "max_frames": 100
+   },
+   "optional": true
+  }
+ ]
+}

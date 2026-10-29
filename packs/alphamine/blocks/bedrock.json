@@ -1,0 +1,15 @@
+{
+    "caption": "bedrock",
+    "texture-faces": [
+        "am_bedrock",
+        "am_bedrock",
+        "am_bedrock_bottom",
+        "am_bedrock",
+        "am_bedrock",
+        "am_bedrock"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 7
+}

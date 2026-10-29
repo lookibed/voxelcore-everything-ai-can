@@ -1,0 +1,8 @@
+# Пресет-витрина gpu_worldgen «islands»: стоковый генератор пустоты, как gpu.toml. Блоки считает GPU по пресету
+# (modules/presets.lua -> shaders/ui.glslf), пресет мира определяется по имени генератора (gpu_worldgen:gpu_islands).
+caption = "GPU showcase: sky islands (gpu_worldgen)"
+biome-parameters = 0
+sea-level = 0
+player-spawn-radius = 0
+player-min-spawn-height = 200
+player-max-spawn-height = 200

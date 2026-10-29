@@ -1,0 +1,15 @@
+{
+    "caption": "blockDiamond",
+    "texture-faces": [
+        "am_block_diamond_side",
+        "am_block_diamond_side",
+        "am_block_diamond_bottom_bottom",
+        "am_block_diamond_top",
+        "am_block_diamond_side",
+        "am_block_diamond_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 57
+}

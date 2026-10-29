@@ -1,0 +1,8 @@
+{
+    "id": "alphamine",
+    "title": "Minecraft Alpha 1.0.16",
+    "version": "0.0.1",
+    "creator": "Andryha",
+    "description": "Клиент Minecraft Alpha 1.0.16 (протокол SMP 14) нативным паком VoxelCore — каркас фазы 0 (agents/ALPHAMINE.md)",
+    "dependencies": ["base"]
+}

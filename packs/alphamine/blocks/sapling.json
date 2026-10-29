@@ -1,0 +1,11 @@
+{
+    "caption": "sapling",
+    "model-name": "amblk_cross",
+    "model": "custom",
+    "texture": "am_sapling",
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 6
+}

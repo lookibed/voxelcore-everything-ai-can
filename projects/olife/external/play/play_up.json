@@ -1,0 +1,82 @@
+{
+ "group": "olife-play-s140105383",
+ "session": "s140105383",
+ "mode": "play",
+ "base": "D:\\Prog\\Olife\\play",
+ "leases": {
+  "sandbox": "olife-sandbox-1",
+  "world": "olife-world_play-1",
+  "auth": "olife-auth-1",
+  "gateway": "olife-gateway_rs-1"
+ },
+ "timing": {
+  "world": 2.46,
+  "sandbox": 0.58,
+  "auth": 0.52,
+  "gateway": 0.55
+ },
+ "public": false,
+ "gw_id": "gw-olife-play",
+ "packs": {
+  "content": "D:\\Prog\\VoxelCore\\voxelcore-0.32.0_dc62ccfb\\content",
+  "packs": {
+   "olife_client": "ok",
+   "olife_proto": "ok"
+  },
+  "target": "D:\\Prog\\VoxelCore\\voxelcore-0.31.0_pre_gemini\\content"
+ },
+ "token_file": "D:\\Prog\\Olife\\play\\user_token.txt",
+ "worlds": "D:\\Prog\\Olife\\play\\worlds",
+ "worlds_source": "persistent",
+ "benches": [
+  {
+   "eid": 40,
+   "name": "demo_orbit#13",
+   "owner": "user",
+   "status": "run"
+  },
+  {
+   "eid": 41,
+   "name": "demo_orbit",
+   "owner": "user",
+   "status": "run"
+  },
+  {
+   "eid": 42,
+   "name": "demo_follow",
+   "owner": "user",
+   "status": "run"
+  },
+  {
+   "eid": 43,
+   "name": "demo_blink",
+   "owner": "user",
+   "status": "run"
+  },
+  {
+   "eid": 48,
+   "name": "demo_orbit#14",
+   "owner": "user",
+   "status": "run"
+  }
+ ],
+ "samples_spawned": [],
+ "samples_available": [
+  "demo_spin_scale",
+  "demo_texture_swap",
+  "demo_sound_collision",
+  "demo_block_painter",
+  "demo_memory_counter"
+ ],
+ "gateway_port": 25605,
+ "packs_http": 25608,
+ "admin_port": 25607,
+ "auth_port": 25603,
+ "auth_pub": "gwX0vADMVqv8env93Q1aRhhhIJ5hnXhcstftYglrbgI",
+ "game_port": 25602,
+ "config": "D:\\Prog\\Olife\\play\\olife_server.txt",
+ "client_config": "D:\\Prog\\VoxelCore\\voxelcore-0.32.0_dc62ccfb\\export\\olife_server.txt",
+ "panel": "D:\\Prog\\VoxelCore\\voxelcore-0.31.0_pre_gemini\\artifacts\\lab\\dashboard\\olife.html",
+ "panel_url": "http://127.0.0.1:25700/sup/panel?prefix=olife-&title=Olife",
+ "up_s": 4.39
+}

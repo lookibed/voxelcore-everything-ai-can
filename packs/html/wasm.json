@@ -1,0 +1,11 @@
+{
+    "module": "html:modules/html.lua",
+    "extension": "html:html_host",
+    "graphics": "canvas",
+    "width": 854,
+    "height": 480,
+    "args": ["html", "index.html", "854", "480"],
+    "files": "html:site",
+    "slice_ms": 12,
+    "frame_pacing": "present"
+}

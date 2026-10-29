@@ -1,0 +1,10 @@
+{
+    "components": [
+        "olife_client:bench"
+    ],
+    "skeleton-name": "olife_client:bench",
+    "hitbox": [1.0, 1.0, 1.0],
+    "body-type": "static",
+    "blocking": false,
+    "save": false
+}

@@ -1,0 +1,2 @@
+@configure duration 1
+@rotate bone body by z func (sin(t * 2 * pi) * 25)

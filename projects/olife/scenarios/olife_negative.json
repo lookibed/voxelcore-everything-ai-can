@@ -1,0 +1,41 @@
+{
+ "description": "Negative tests on the REAL olife-sandboxd (wave 3a; the stub harness of wave 2 is gone): per owner one offending entity (+ a well-behaved orbit neighbour of the same owner where it makes sense) — while true, pcall-wrapped loop, string.rep 2^30, memory bomb (table of 1 MB strings), string.find C backtracking, os/io/debug/loadstring/stdlib escape attempts, 100 actions/tick flood, oprint flood (100 x 4000 B). Controls: owners 1 (orbit x2) and 2 (typical x2) must be updated in EVERY TickResult (ok + moved); offenders throttled/killed/errored as expected; world tick p95 <= 5 ms; world, gateway, sandbox, bot alive.",
+ "setup": {"session": {"clients": 1, "client_kind": "bot", "sandbox": true, "scripted": 2}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 2}},
+  {"cmd": "olife_spawn", "args": {"spawns": [
+    ["typical", 2, 2, 1],
+    ["neg_loop", 10, 1, 1], ["orbit", 10, 1, 1],
+    ["neg_pcall", 11, 1, 1], ["orbit", 11, 1, 1],
+    ["neg_rep", 12, 1, 1], ["orbit", 12, 1, 1],
+    ["neg_membomb", 13, 1, 1], ["orbit", 13, 1, 1],
+    ["neg_find", 14, 1, 1], ["orbit", 14, 1, 1],
+    ["neg_escape", 15, 1, 1],
+    ["neg_flood", 16, 1, 1],
+    ["neg_oprint", 17, 1, 1], ["orbit", 17, 1, 1]], "wait_entities": 22}},
+  {"cmd": "olife_run", "args": {"seconds": 20}},
+  {"cmd": "olife_sandbox_check", "args": {
+    "controls": [1, 2], "warmup_ticks": 20, "max_bad_control_rows": 0, "world_ms_p95_max": 5.0, "min_rows": 250,
+    "min_entities": 18, "min_owners": 10,
+    "expect": [
+     {"case": "control orbit", "owner": 1, "script": "orbit", "status_any": ["ok"], "status_none": ["error", "killed", "throttled", "frozen"], "min_applied": 500},
+     {"case": "control typical", "owner": 2, "script": "typical", "status_any": ["ok"], "status_none": ["error", "killed", "throttled", "frozen"], "min_applied": 500},
+     {"case": "while true do end", "owner": 10, "script": "neg_loop", "status_any": ["throttled"], "status_none": ["ok"]},
+     {"case": "  same-owner neighbour", "owner": 10, "script": "orbit", "status_any": ["ok"], "status_none": ["killed", "error"], "min_applied": 300},
+     {"case": "pcall-wrapped loop", "owner": 11, "script": "neg_pcall", "status_any": ["killed"], "status_none": ["ok"], "err_contains": "cpu budget"},
+     {"case": "  same-owner neighbour", "owner": 11, "script": "orbit", "status_any": ["ok"], "status_none": ["killed", "error"], "min_applied": 300},
+     {"case": "string.rep 2^30", "owner": 12, "script": "neg_rep", "status_any": ["error"], "status_none": ["ok"], "err_contains": "not enough memory"},
+     {"case": "  same-owner neighbour", "owner": 12, "script": "orbit", "status_any": ["ok"], "status_none": ["killed", "error"], "min_applied": 300},
+     {"case": "memory bomb (1 MB strings)", "owner": 13, "script": "neg_membomb", "status_any": ["killed", "error"], "status_none": ["ok"]},
+     {"case": "  same-owner neighbour", "owner": 13, "script": "orbit", "status_any": ["ok"], "min_applied": 100},
+     {"case": "string.find C backtracking", "owner": 14, "script": "neg_find", "status_any": ["killed"], "status_none": ["ok"], "min_kills": 1},
+     {"case": "  same-owner neighbour (frozen, restored)", "owner": 14, "script": "orbit", "status_any": ["ok"], "min_applied": 100},
+     {"case": "escape os/io/debug/loadstring/stdlib", "owner": 15, "script": "neg_escape", "status_any": ["ok"], "status_none": ["error", "killed"], "text_prefix": "ESCAPE_BLOCKED"},
+     {"case": "100 actions/tick flood", "owner": 16, "script": "neg_flood", "status_any": ["ok"], "min_dropped": 1000, "min_rejected": 1000},
+     {"case": "oprint flood 100 x 4000 B", "owner": 17, "script": "neg_oprint", "status_any": ["throttled"], "text_len_max": 1024, "min_dropped": 100, "min_rejected": 1},
+     {"case": "  same-owner neighbour", "owner": 17, "script": "orbit", "status_any": ["ok"], "status_none": ["killed", "error"], "min_applied": 300}
+    ]}},
+  {"cmd": "olife_stdin", "args": {"cmd": "status", "pattern": "status tick=", "wait": 3}},
+  {"cmd": "olife_metrics"}
+ ]
+}

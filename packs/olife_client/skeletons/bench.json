@@ -1,0 +1,27 @@
+{
+    "root": {
+        "nodes": [
+            {
+                "name": "body",
+                "offset": [0, 0, 0],
+                "nodes": [
+                    {"name": "rody", "model": "olife_bench", "offset": [0, 0, 0], "nodes": []}
+                ]
+            },
+            {
+                "name": "body1",
+                "offset": [0, 0, 0],
+                "nodes": [
+                    {"name": "rody1", "offset": [0, 0, 0], "nodes": []}
+                ]
+            },
+            {
+                "name": "body2",
+                "offset": [0, 0, 0],
+                "nodes": [
+                    {"name": "rody2", "offset": [0, 0, 0], "nodes": []}
+                ]
+            }
+        ]
+    }
+}

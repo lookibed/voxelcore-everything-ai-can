@@ -1,0 +1,24 @@
+{
+    "fonts": [
+        {
+            "name": "caret_unfixed",
+            "path": "fonts/caret_unfixed.ttf",
+            "size": 16
+        },
+        {
+            "name": "caret_narrow",
+            "path": "fonts/caret_narrow.ttf",
+            "size": 16
+        },
+        {
+            "name": "caret_narrow2",
+            "path": "fonts/caret_narrow2.ttf",
+            "size": 16
+        },
+        {
+            "name": "caret_orig",
+            "path": "fonts/caret_orig.ttf",
+            "size": 16
+        }
+    ]
+}

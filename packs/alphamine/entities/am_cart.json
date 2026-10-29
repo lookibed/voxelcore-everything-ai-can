@@ -1,0 +1,11 @@
+{
+  "body-type": "kinematic",
+  "blocking": false,
+  "save": false,
+  "hitbox": [
+    0.98,
+    0.7,
+    0.98
+  ],
+  "skeleton-name": "alphamine:am_cart"
+}

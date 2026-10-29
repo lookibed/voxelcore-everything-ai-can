@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:am_minecart_empty",
+    "stack-size": 1,
+    "caption": "minecartEmpty"
+}

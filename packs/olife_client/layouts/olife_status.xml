@@ -1,0 +1,32 @@
+<!-- Olife status in the game (UX B, 16.10, olife_menu): the same ids as layouts/pages/olife_status.xml (menu page), shown as a
+     permanent HUD element (hud.open_permanent) only while there is something to show: packs on the fly, world reopen for
+     packs, "the world is restarting, hold on", reconnect phases, a lost connection. Draws olife_client:status. -->
+<container id="root" color="#00000000" size-func="unpack(gui.get_viewport())" visible="false" interactive="false">
+    <container id="st_panel" position-func="math.floor(gui.get_viewport()[1]/2-310),math.max(4,math.floor(gui.get_viewport()[2]/2-228))" size="620,456" color="#141830D8" visible="false">
+        <label id="st_title" pos="14,10" size="592,24" color="#FFD080">Olife</label>
+        <label id="st_target" pos="14,36" size="592,18" color="#90A0B0"></label>
+        <label id="st_ph1" pos="24,62" size="580,20" color="#7882A0"></label>
+        <label id="st_ph2" pos="24,84" size="580,20" color="#7882A0"></label>
+        <label id="st_ph3" pos="24,106" size="580,20" color="#7882A0"></label>
+        <label id="st_ph4" pos="24,128" size="580,20" color="#7882A0"></label>
+        <label id="st_ph5" pos="24,150" size="580,20" color="#7882A0"></label>
+        <label id="st_ph6" pos="24,172" size="580,20" color="#7882A0"></label>
+        <label id="st_ph7" pos="24,194" size="580,20" color="#7882A0"></label>
+        <label id="st_ph8" pos="24,216" size="580,20" color="#7882A0"></label>
+        <label id="st_ph9" pos="24,238" size="580,20" color="#7882A0"></label>
+        <label id="st_ph10" pos="24,260" size="580,20" color="#7882A0"></label>
+        <container id="st_bar_bg" pos="50,286" size="520,12" color="#FFFFFF20">
+            <container id="st_bar" pos="0,0" size="1,12" color="#60C070"></container>
+        </container>
+        <label id="st_prog" pos="50,302" size="540,18" color="#C8D0E0"></label>
+        <label id="st_file" pos="50,322" size="540,18" color="#90A0B0"></label>
+        <container id="st_errbox" pos="10,344" size="600,62" color="#50201880" visible="false">
+            <label id="st_err1" pos="6,4" size="588,18" color="#FF9080"></label>
+            <label id="st_err2" pos="6,22" size="588,18" color="#FF9080"></label>
+            <label id="st_err3" pos="6,40" size="588,18" color="#FF9080"></label>
+        </container>
+        <label id="st_banner" pos="14,418" size="350,18" color="#FFD27A"></label>
+        <button id="st_retry" pos="372,412" size="116,30" color="#30A05090" hover-color="#40C060" visible="false" onclick="ui_st_retry()" tooltip="Повторить вход с теми же данными">Повторить</button>
+        <button id="st_back" pos="494,412" size="116,30" color="#5050ff80" hover-color="#5050ffc6" onclick="ui_st_back()" tooltip="Назад в меню Olife">Назад</button>
+    </container>
+</container>

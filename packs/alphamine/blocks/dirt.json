@@ -1,0 +1,15 @@
+{
+    "caption": "dirt",
+    "texture-faces": [
+        "am_dirt",
+        "am_dirt",
+        "am_dirt_bottom",
+        "am_dirt",
+        "am_dirt",
+        "am_dirt"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 3
+}

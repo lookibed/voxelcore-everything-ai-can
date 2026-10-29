@@ -1,0 +1,15 @@
+{
+    "caption": "oreCoal",
+    "texture-faces": [
+        "am_ore_coal",
+        "am_ore_coal",
+        "am_ore_coal_bottom",
+        "am_ore_coal",
+        "am_ore_coal",
+        "am_ore_coal"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 16
+}

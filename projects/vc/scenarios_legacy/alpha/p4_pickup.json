@@ -1,0 +1,184 @@
+{
+ "name": "p4_pickup",
+ "description": "Фаза 4 (агент P): подбор предмета. Подготовка alpha_spawn; взгляд вниз (yaw 0, pitch 90), слот 1 (брёвна), Q — бревно падает к ногам; сервер (EntityItem.onCollideWithPlayer, delayBeforeCanPickup 10) шлёт AddToInventory + Collect: клиент играет random.pop и 3 такта рисует EntityPickupFX — предмет летит к глазам −0.5 по ((age+partial)/3)^2. wait {pickup_fx} останавливает на такте пакета Collect (age 1): снимки 0_fly1 (1/9 пути), 1_fly2 (4/9), 2_done (эффект кончился), инвентарь снова 64 бревна. Слои terrain + entities + hud. Такт прихода пакета и возраст предмета зависят от сети — сравнение пикселей предмета в полёте ориентировочное.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 90
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "terrain": true,
+     "entities": true,
+     "hud": true,
+     "fog": false,
+     "lighting": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": true
+    }
+   },
+   "comment": "код 3 = KEY_2 -> слот 1 (брёвна)"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": false,
+     "Q": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 90
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_dropped"
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "pickup_fx": true,
+    "max_frames": 400
+   },
+   "comment": "сервер подобрал: Collect пришёл в этом такте"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_fly1"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_fly2"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_done"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": true
+    }
+   },
+   "comment": "слот 0 обратно"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  }
+ ]
+}

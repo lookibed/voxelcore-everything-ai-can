@@ -1,0 +1,12 @@
+{
+ "description": "Antifraud p.1 (olife_antifraud, 16.10): IP bans everywhere. One source — the supervisor table bans (kind ip, address or CIDR, until, reason). Admin chat `/ban ip`, CLI `lab olife ban --ip` (= olife.ban), panel (POST olife.fraud via=panel); the session from the address is kicked at once (Disconnect 5 with the reason); the auth service answers ip_banned «бан по IP … до …» (nick and token logins); the gateway refuses the address before Hello; CIDR; a ban covering 127.0.0.1 is refused; /bans, /unban ip, /players (admin: IP, player: masked); audit chat/cli/panel. Then the engine menu client (F2F 0.32) through a TCP relay with source 127.0.0.77: status screen [banned ip_banned] -> unban -> Повторить -> play -> IP ban in game -> Disconnect 5 on the screen. Test addresses 127.0.0.2..254 only; everything is lifted by olife_fraud_cleanup.",
+ "setup": {"session": {"clients": 0, "sandbox": false, "auth_ticket": true, "auth_mode": "both"}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 1}},
+  {"cmd": "olife_menu_start", "args": {"account": "dev", "token": "olife-dev", "form_check": false}, "optional": true},
+  {"cmd": "olife_fraud_ipban", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_menu_ipban", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_cleanup", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_report", "args": {}}
+ ]
+}

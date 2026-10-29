@@ -1,0 +1,8 @@
+<!-- GuiChat альфы: строку ввода (drawRect 0x80000000 + "> " + сообщение + "_") строит modules/chat_gui.lua.
+     am_input — невидимое поле ввода движка: только источник символов (кодовые точки клавиатуры и F2F input.chars),
+     Backspace и Enter; модель сообщения (ChatAllowedCharacters, 100 символов) — в chat_gui.lua. -->
+<container id="root" pos="0,0" size="854,480" color="#00000000" interactive="false">
+    <container id="am_screen" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+    <textbox id="am_input" pos="0,0" size="200,20" visible="false" multiline="false" editable="true"
+             consumer="on_submit"></textbox>
+</container>

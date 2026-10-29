@@ -1,0 +1,15 @@
+{
+    "caption": "tnt",
+    "texture-faces": [
+        "am_tnt_side",
+        "am_tnt_side",
+        "am_tnt_bottom_bottom",
+        "am_tnt_top",
+        "am_tnt_side",
+        "am_tnt_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 46
+}

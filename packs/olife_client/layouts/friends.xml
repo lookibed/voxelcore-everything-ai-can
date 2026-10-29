@@ -1,0 +1,21 @@
+<!-- Olife friends page, UX A1 (03.10, olife_a1): native 0.32 XML overlay. Opened from the editor settings page
+     ("Друзья") or Shift+`. Rows (built by olife_client:olife friends_refresh into fr_rows): incoming requests (accept /
+     deny), outgoing (cancel), friends with online state (remove); add by account name. The world decides everything:
+     buttons send FriendRequest, the list shown is the last FriendList of the world. -->
+<container id="fr_root" color="#060A16E0" size-func="unpack(gui.get_viewport())">
+    <panel id="fr_panel" position-func="gui.get_viewport()[1]/2-260,math.max(8,gui.get_viewport()[2]/2-220)" size="520,440"
+           color="#141830F0" padding="10" interval="6" orientation="vertical">
+        <label size="500,24" color="#FFD080">Друзья</label>
+        <container size="500,32" color="0">
+            <textbox id="fr_name" pos="0,0" size="300,30" padding="8,6,8,2" hint="аккаунт"
+                     validator="function(t) return t == '' or t:match('^[%w_%.%-]+$') ~= nil end"></textbox>
+            <button id="fr_add" pos="306,0" size="120,30" color="#30A05090" onclick="ui_fr_add()">Добавить</button>
+        </container>
+        <label id="fr_count" size="500,20" color="#90A0B0"></label>
+        <panel id="fr_rows" size="500,290" color="#00000060" padding="4" interval="2" scrollable="true"></panel>
+        <container size="500,32" color="0">
+            <button id="fr_close" pos="0,0" size="120,30" color="#5050ff" onclick="ui_fr_close()">ЗАКРЫТЬ</button>
+            <button id="fr_back" pos="126,0" size="200,30" color="#5050ff80" onclick="ui_fr_back()">К сущности</button>
+        </container>
+    </panel>
+</container>

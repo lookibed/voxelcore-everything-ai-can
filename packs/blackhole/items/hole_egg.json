@@ -1,0 +1,7 @@
+{
+    "caption": "Black hole (instant)",
+    "icon-type": "sprite",
+    "icon": "items:bh_egg",
+    "script-name": "hole_egg",
+    "stack-size": 16
+}

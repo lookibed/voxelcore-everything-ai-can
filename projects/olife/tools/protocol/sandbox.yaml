@@ -1,0 +1,112 @@
+# Olife protocol, contract "sandbox": world <-> sandbox service (OLIFE_SANDBOX.md §7, /root/olife/sandboxd).
+# Shapes mirror sandboxd src/protocol.rs (TickInput/TickResult, Load/LoadResult). The prototype service speaks
+# JSON lines today ({"type":"tick",...}); the world bridge (olife_world:sandbox) has both transports — "jsonl"
+# (sandboxd as is) and "bin" (this contract). Free-form JSON values (fields, events, view, answers, queries) are
+# carried as JSON text (str) so the binary contract stays schema-checked.
+contract: sandbox
+version: 1
+magic: 0x4F53          # "OS"
+max_frame: 4194304
+
+types:
+  Vec3d:
+    fields: {x: f64, y: f64, z: f64}
+  EntityInput:
+    fields:
+      eid: u32
+      owner: u32
+      pos: Vec3d
+      rot: Vec3d
+      vel: Vec3d
+      fields_json: opt<str<16384>>
+      events_json: array<str<4096>, 64>
+      view_json: opt<str<65536>>
+      budget: opt<f64>
+  Action:
+    union:
+      SetPos: {tag: 1, fields: {pos: Vec3d}}
+      SetRot: {tag: 2, fields: {rot: Vec3d}}
+      SetVel: {tag: 3, fields: {vel: Vec3d}}
+      BlockSet: {tag: 4, fields: {x: i32, y: i32, z: i32, id: str<64>}}
+      Spawn: {tag: 5, fields: {def: str<64>}}
+      Say: {tag: 6, fields: {text: str<1024>}}
+      Print: {tag: 7, fields: {text: str<1024>}}
+      OPrint: {tag: 8, fields: {text: str<1024>}}
+      # UX A3 (03.10, additive in v1): every script API action beyond the eight above (entity appearance, skeleton,
+      # animation, sound, text3d, block.fill, memory.set ...) — op name + the whole action as JSON text; the world
+      # validates op by op (content/olife_world/modules/mobapi.lua)
+      Ext: {tag: 9, fields: {op: str<32>, json: str<8192>}}
+      # UX A4 (03.10, additive in v1): canvas.commit of a script canvas — raw RGBA (w*h*4, row 0 = top), the world
+      # encodes the PNG into the owner's store and puts it on the entity slot (content/olife_world/modules/store.lua)
+      CanvasCommit: {tag: 10, fields: {slot: str<32>, w: u16, h: u16, rgba: bytes<262144>}}
+  Answer:                 # UX A3: the world's answer to one query (qid) of an entity, JSON value as text
+    fields: {eid: u32, qid: u32, json: str<65536>}
+  EntityMeter:
+    fields:
+      fuel: f64
+      api_calls: u32
+      api_credits: f64
+      credits: f64
+      alloc_bytes: f64
+      actions_dropped: u32
+  EntityResult:
+    fields:
+      eid: u32
+      owner: u32
+      status: str<16>
+      error: opt<str<1024>>
+      actions: array<Action, 256>
+      queries_json: array<str<4096>, 64>
+      meter: EntityMeter
+
+messages:
+  - id: 1
+    name: Hello
+    dir: both
+    fields: {proto: u16, runtime: str<32>}
+  - id: 2
+    name: Load
+    dir: w2s
+    fields: {owner: u32, eid: u32, src: str<65536>}
+  - id: 3
+    name: LoadResult
+    dir: s2w
+    fields: {owner: u32, eid: u32, ok: bool, error: opt<str<1024>>}
+  - id: 4
+    name: Unload
+    dir: w2s
+    fields: {owner: u32, eid: u32}
+  - id: 5
+    name: TickInput
+    dir: w2s
+    fields:
+      tick: u32
+      seed: u32
+      dt: f64
+      entities: array<EntityInput, 65535>
+  - id: 6
+    name: TickResult
+    dir: s2w
+    fields:
+      tick: u32
+      entities: array<EntityResult, 65535>
+      wall_us: f64
+  - id: 7
+    name: Backpressure
+    dir: s2w
+    fields: {owner: u32, behind_ticks: u32}
+  - id: 8
+    name: Error
+    dir: both
+    fields: {message: str<1024>}
+  # UX A3 (03.10, additive in v1; sent only to a service whose Hello reply has proto >= 2):
+  - id: 9
+    name: Answers           # answers to queries (block.get/get_area/raycast/find, entity nearby, memory.load ...);
+    dir: w2s                # sent right before the TickInput they belong to, merged into EntityInput.answers there
+    fields:
+      tick: u32
+      items: array<Answer, 65535>
+  - id: 10
+    name: LoadKeep          # Load, but an entity that the service already runs with the same source keeps its state
+    dir: w2s                # (Lua variables): the world reconnecting after its own restart; reply LoadResult
+    fields: {owner: u32, eid: u32, src: str<65536>}

@@ -1,0 +1,52 @@
+{
+ "name": "dev_base",
+ "description": "Общая подготовка слоёв мира разработчика (agents/ALPHAMINE.md §10): сервер с копией golden/devworld (плоский мир, все блоки альфы рядами, генерирует tools/alphamine/gen_devworld.py), connect, 441 чанк спавна (0,0), mode. Тела сценариев *_dev ставят игрока на башни (/tp) и снимают по видовым точкам: g1_n: /tp 27.5 71 11.5, yaw 0 pitch 45 (G1); g1_s: /tp 27.5 71 33.5, yaw 180 pitch 45 (G1); g2_n: /tp 27.5 71 33.5, yaw 0 pitch 45 (G2); g2_s: /tp 27.5 71 59.5, yaw 180 pitch 45 (G2); g3_n: /tp 55.5 71 11.5, yaw 0 pitch 45 (G3); g3_s: /tp 55.5 71 33.5, yaw 180 pitch 45 (G3); g4_n: /tp 55.5 71 33.5, yaw 0 pitch 45 (G4); g4_s: /tp 55.5 71 59.5, yaw 180 pitch 45 (G4)",
+ "setup": {
+  "server": {
+   "world": "devworld"
+  },
+  "client": {
+   "size": "854x480"
+  }
+ },
+ "steps": [
+  {
+   "cmd": "connect"
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "world": true,
+    "max_frames": 1200
+   },
+   "expect": {
+    "screen": "ingame"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chunks": 441,
+    "net_idle": 40,
+    "max_frames": 3000
+   },
+   "expect": {
+    "health": 20
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 2
+   }
+  }
+ ]
+}

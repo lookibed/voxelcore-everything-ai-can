@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Постоянный HUD-элемент пака (hud.open_permanent в scripts/hud.lua): стикер «ПКМ — сесть за компьютер»
+     под прицелом, пока игрок не за ПК и смотрит на компьютер (player.get_selected_entity). -->
+<container id="root" pos="0,0" size="854,480" color="#00000000" interactive="false" z-index="-2"
+    size-func="function() local s = gui.get_viewport() return s[1], s[2] end">
+    <container id="hint" pos="300,280" size="260,30" color="#00000000" interactive="false" visible="false">
+        <container id="hint_sh" pos="3,3" size="260,30" color="#00000070" interactive="false"/>
+        <container id="hint_bg" pos="0,0" size="260,30" color="#1C2733E6" interactive="false"/>
+        <container id="hint_edge" pos="0,0" size="4,30" color="#8FE39AFF" interactive="false"/>
+        <label id="hint_lbl" pos="12,7" size="248,18" text-align="center" color="#E8EEF5FF" interactive="false">ПКМ - сесть за компьютер</label>
+    </container>
+</container>

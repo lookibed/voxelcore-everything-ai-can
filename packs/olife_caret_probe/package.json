@@ -1,0 +1,7 @@
+{
+    "id": "olife_caret_probe",
+    "title": "Olife caret probe",
+    "version": "0.1.0",
+    "creator": "olife",
+    "description": "Test-only pack of olife_caret (16.10) for tools/scenarios/olife_caret_probe.lua: font variants (caret_unfixed = DejaVu Sans Mono with post.isFixedPitch=0, caret_narrow = condensed to 0.5 em, caret_narrow2 = condensed + zero-area anchor at x=0, same as olife_client/fonts/olife_mono.ttf since 16.10) and the page caret_editor (iframe of olife_client:editor). Not needed by the game."
+}

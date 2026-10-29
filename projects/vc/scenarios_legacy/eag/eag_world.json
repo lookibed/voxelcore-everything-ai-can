@@ -1,0 +1,26 @@
+{
+ "name": "eag_world",
+ "description": "Eaglercraft: старт -> новый мир с сидом 1234567890 -> конец пересчёта света (fps >= 1)",
+ "steps": [
+  {"tool": "eag_start", "args": {}, "expect": {"screen": "GuiScreenEditProfile|GuiMainMenu"},
+   "checkpoint": "profile", "limit": 300, "slow_s": 60},
+  {"tool": "eag_click", "args": {"target": "Done"}, "skip_if": {"screen": "GuiMainMenu"},
+   "expect": {"screen": "GuiMainMenu"}, "checkpoint": "menu", "limit": 20},
+  {"tool": "eag_click", "args": {"target": "Singleplayer"},
+   "expect": {"screen": "GuiSelectWorld"}, "checkpoint": "worlds", "limit": 90, "slow_s": 30},
+  {"tool": "eag_click", "args": {"target": "Create New World"},
+   "expect": {"screen": "GuiScreenCreateWorldSelection"}, "checkpoint": "create_select", "limit": 20},
+  {"tool": "eag_click", "args": {"target": "Create New World"},
+   "expect": {"screen": "GuiCreateWorld"}, "checkpoint": "create", "limit": 20},
+  {"tool": "eag_click", "args": {"target": "More World Options..."},
+   "expect": {"screen": "GuiCreateWorld", "text": "Seed for the World Generator"}, "checkpoint": "options", "limit": 20},
+  {"tool": "eag_mouse", "args": {"x": 426, "y": 140},
+   "expect": {"screen": "GuiCreateWorld"}, "limit": 10},
+  {"tool": "vc_input", "args": {"sequence": "text:1234567890"},
+   "expect": {"screen": "GuiCreateWorld", "text": "^1234567890_?$"}, "checkpoint": "seed", "limit": 20},
+  {"tool": "eag_click", "args": {"target": "Create New World"},
+   "expect": {"screen": "ingame", "world": true}, "checkpoint": "entered", "limit": 300, "slow_s": 60},
+  {"tool": "eag_wait", "args": {"screen": "ingame", "fps": 1, "fps_drop": true, "fps_lines": 2, "drop_grace": 40},
+   "expect": {"screen": "ingame", "world": true}, "checkpoint": "world", "limit": 400, "slow_s": 240}
+ ]
+}

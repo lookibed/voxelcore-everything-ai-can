@@ -1,0 +1,25 @@
+{
+    "caption": "pressurePlateWood",
+    "hitbox": [
+        0.0625,
+        0.0,
+        0.0625,
+        0.875,
+        0.03125,
+        0.875
+    ],
+    "model": "aabb",
+    "texture-faces": [
+        "am_planks",
+        "am_planks",
+        "am_planks_bottom",
+        "am_planks",
+        "am_planks",
+        "am_planks"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 72
+}

@@ -1,0 +1,15 @@
+{
+    "caption": "stone",
+    "texture-faces": [
+        "am_stone",
+        "am_stone",
+        "am_stone_bottom",
+        "am_stone",
+        "am_stone",
+        "am_stone"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 1
+}

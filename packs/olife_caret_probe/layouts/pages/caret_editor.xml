@@ -1,0 +1,4 @@
+<!-- olife_caret probe: the real editor document of the client (olife_client:editor, layouts/editor.xml) in a menu page -->
+<container id="root" size-func="unpack(gui.get_viewport())" color="#000000FF">
+    <iframe id="ed" src="olife_client:editor" size-func="unpack(gui.get_viewport())"></iframe>
+</container>

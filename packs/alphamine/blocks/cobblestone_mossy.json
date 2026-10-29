@@ -1,0 +1,15 @@
+{
+    "caption": "cobblestoneMossy",
+    "texture-faces": [
+        "am_cobblestone_mossy",
+        "am_cobblestone_mossy",
+        "am_cobblestone_mossy_bottom",
+        "am_cobblestone_mossy",
+        "am_cobblestone_mossy",
+        "am_cobblestone_mossy"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 48
+}

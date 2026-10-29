@@ -1,0 +1,15 @@
+{
+    "caption": "blockSnow",
+    "texture-faces": [
+        "am_snow",
+        "am_snow",
+        "am_snow_bottom",
+        "am_snow",
+        "am_snow",
+        "am_snow"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 80
+}

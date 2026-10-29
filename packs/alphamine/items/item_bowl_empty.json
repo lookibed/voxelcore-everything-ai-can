@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:am_bowl_empty",
+    "stack-size": 64,
+    "caption": "bowlEmpty"
+}

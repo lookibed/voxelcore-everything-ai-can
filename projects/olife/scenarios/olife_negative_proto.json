@@ -1,0 +1,79 @@
+{
+ "description": "Negative protocol tests (tools/olife/negative.py): bad magic, wrong version, oversized frames, unknown type, truncated/invalid bodies, garbage, no Hello, server message from a client, bad token/name/proto, banned account, handshake timeout, second Hello, wrong keepalive challenge, flood -> Disconnect with the right code; direct junk to the world port -> connection dropped; a legit client still gets Welcome; world, gateway and bots alive after. Then admin commands over --stdin-cmd: players, journal, save, kick <eid> (the bot gets Disconnect), status shows 0 sessions.",
+ "setup": {
+  "session": {
+   "clients": 1,
+   "client_kind": "bot",
+   "sandbox": false
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_negative_proto",
+   "args": {}
+  },
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 2
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {}
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 40
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "players",
+    "pattern": "player eid=",
+    "wait": 3
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "journal 5",
+    "pattern": "journal total=",
+    "wait": 3
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "save",
+    "pattern": "save requested",
+    "wait": 3
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "kick 6",
+    "pattern": "kicked eid=6",
+    "wait": 3
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "status",
+    "pattern": "sessions=0",
+    "wait": 3
+   }
+  }
+ ]
+}

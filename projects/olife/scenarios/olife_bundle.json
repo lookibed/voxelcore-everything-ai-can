@@ -1,0 +1,10 @@
+{
+ "description": "olife_friends (16.10): `lab olife bundle` — the friend's zip (stock VoxelCore 0.32 exe + res, COPIES of olife_client/olife_proto, settings.toml, OLIFE.bat, ПРОЧТИ.txt) built into artifacts, unpacked into artifacts: no junctions/symlinks, no .bak/__pycache__/probes, the editor font olife_mono.ttf present, the exe = stock 0.32, the sha256 pack manifest of the unpacked copy == the server's distribution. Then the F2F 0.32 test build (never the stock exe of the zip) runs with --dir = the unpacked folder and the --script of OLIFE.bat against the public play stack (dry) -> the client menu opens -> login by the host's LAN address + #fingerprint and a whitelisted nick -> play -> back to the menu.",
+ "setup": {"session": {"public_play": true}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 1}},
+  {"cmd": "olife_pub_bundle", "args": {}},
+  {"cmd": "olife_pub_bundle_client", "args": {"nick": "kentb"}},
+  {"cmd": "olife_pub_report", "args": {}}
+ ]
+}

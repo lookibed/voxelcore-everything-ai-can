@@ -1,0 +1,42 @@
+{
+ "description": "World <-> sandbox over the BINARY contract (olife_proto:sandbox, tools/olife/protocol/sandbox.yaml) instead of sandboxd JSON lines: the stub answers TickResult frames; scripted entities move, replication stays consistent with 2 bots. The stub (kind sandbox_stub) is used: the real olife-sandboxd does not speak the binary contract yet.",
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "bot",
+   "sandbox": true,
+   "sandbox_proto": "bin",
+   "sandbox_kind": "sandbox_stub"
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 8
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "status",
+    "pattern": "sandbox=connected/bin",
+    "wait": 3
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {}
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 100
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

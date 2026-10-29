@@ -1,0 +1,10 @@
+{
+ "description": "State consistency with 2 windowed F2F 0.32 clients (VoxelCoreF2F-032.exe: --f2f, input isolated, hidden window, clock realtime) running content/olife_client/client_start.lua through the dev gateway; world headless stock 0.32 + sandbox stub.",
+ "setup": {"session": {"clients": 2, "client_kind": "client", "sandbox": true}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 8}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 80}},
+  {"cmd": "olife_metrics"}
+ ]
+}

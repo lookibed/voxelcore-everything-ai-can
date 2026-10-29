@@ -1,0 +1,293 @@
+{
+ "name": "e2e_dev1",
+ "description": "E2E (F2F.md 8) на мире разработчика golden/devworld (агент D, gen_devworld.py): подготовка dev_base (connect, 441 чанк), /tp на башню G1 (27.5 71 11.5), взгляд yaw 0 pitch 45. 400 тактов: стоит 20, панорама вправо/влево по 15° каждые 10 тактов, pitch 22.5, прыжок, слоты 1 и 2 (предмет в руке), разворот 180 с pitch 45, прыжок, два поворота по 90°, слот 0. Только обзор и прыжки на месте: игрок не сходит с башни (раскладка мира вокруг — у агента D). Записать golden, когда golden/devworld финализирован (есть level.dat, dev_settle пройден).",
+ "size": "854x480",
+ "setup": {
+  "world": "devworld",
+  "base": "dev_base",
+  "steps": [
+   {
+    "cmd": "chat",
+    "args": {
+     "text": "/tp 27.5 71 11.5"
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "near": [
+      27.5,
+      72.62,
+      11.5,
+      1.5
+     ],
+     "max_frames": 600
+    }
+   },
+   {
+    "cmd": "wait",
+    "args": {
+     "on_ground": true,
+     "still": 20,
+     "net_idle": 40,
+     "max_frames": 2400
+    },
+    "expect": {
+     "on_ground": true,
+     "health": 20
+    }
+   }
+  ],
+  "look": {
+   "yaw": 0,
+   "pitch": 45
+  },
+  "mode": {
+   "seed": 20260930,
+   "clear_chat": true
+  }
+ },
+ "ticks": 400,
+ "pace_ms": 50,
+ "state_every": 5,
+ "state_radius": 8,
+ "keyframes_every": 20,
+ "keyframes": [
+  21,
+  31,
+  41,
+  81,
+  141,
+  151,
+  155,
+  181,
+  201,
+  221,
+  241,
+  245,
+  261,
+  301,
+  341
+ ],
+ "timeline": [
+  {
+   "tick": 20,
+   "input": {
+    "mouse": {
+     "dx": 100
+    }
+   },
+   "comment": "pan right 15 deg"
+  },
+  {
+   "tick": 30,
+   "input": {
+    "mouse": {
+     "dx": 100
+    }
+   }
+  },
+  {
+   "tick": 40,
+   "input": {
+    "mouse": {
+     "dx": 100
+    }
+   }
+  },
+  {
+   "tick": 50,
+   "input": {
+    "mouse": {
+     "dx": 100
+    }
+   }
+  },
+  {
+   "tick": 60,
+   "input": {
+    "mouse": {
+     "dx": 100
+    }
+   }
+  },
+  {
+   "tick": 70,
+   "input": {
+    "mouse": {
+     "dx": 100
+    }
+   }
+  },
+  {
+   "tick": 80,
+   "input": {
+    "mouse": {
+     "dx": -100
+    }
+   }
+  },
+  {
+   "tick": 90,
+   "input": {
+    "mouse": {
+     "dx": -100
+    }
+   }
+  },
+  {
+   "tick": 100,
+   "input": {
+    "mouse": {
+     "dx": -100
+    }
+   }
+  },
+  {
+   "tick": 110,
+   "input": {
+    "mouse": {
+     "dx": -100
+    }
+   }
+  },
+  {
+   "tick": 120,
+   "input": {
+    "mouse": {
+     "dx": -100
+    }
+   }
+  },
+  {
+   "tick": 130,
+   "input": {
+    "mouse": {
+     "dx": -100
+    }
+   }
+  },
+  {
+   "tick": 140,
+   "input": {
+    "mouse": {
+     "dy": 150
+    }
+   },
+   "comment": "pitch 45 -> 22.5"
+  },
+  {
+   "tick": 150,
+   "input": {
+    "keys": {
+     "SPACE": true
+    }
+   },
+   "comment": "jump in place"
+  },
+  {
+   "tick": 152,
+   "input": {
+    "keys": {
+     "SPACE": false
+    }
+   }
+  },
+  {
+   "tick": 180,
+   "input": {
+    "keys": {
+     "3": true
+    }
+   },
+   "comment": "LWJGL code 3 = KEY_2 -> slot 1 (logs in hand)"
+  },
+  {
+   "tick": 181,
+   "input": {
+    "keys": {
+     "3": false
+    }
+   }
+  },
+  {
+   "tick": 200,
+   "input": {
+    "keys": {
+     "4": true
+    }
+   },
+   "comment": "slot 2 (dirt)"
+  },
+  {
+   "tick": 201,
+   "input": {
+    "keys": {
+     "4": false
+    }
+   }
+  },
+  {
+   "tick": 220,
+   "input": {
+    "mouse": {
+     "dx": 1200,
+     "dy": -150
+    }
+   },
+   "comment": "turn 180, pitch back to 45"
+  },
+  {
+   "tick": 240,
+   "input": {
+    "keys": {
+     "SPACE": true
+    }
+   },
+   "comment": "jump in place"
+  },
+  {
+   "tick": 242,
+   "input": {
+    "keys": {
+     "SPACE": false
+    }
+   }
+  },
+  {
+   "tick": 260,
+   "input": {
+    "mouse": {
+     "dx": 600
+    }
+   },
+   "comment": "+90"
+  },
+  {
+   "tick": 300,
+   "input": {
+    "mouse": {
+     "dx": 600
+    }
+   },
+   "comment": "+90 (back to yaw 0 + 360)"
+  },
+  {
+   "tick": 340,
+   "input": {
+    "keys": {
+     "2": true
+    }
+   },
+   "comment": "slot 0"
+  },
+  {
+   "tick": 341,
+   "input": {
+    "keys": {
+     "2": false
+    }
+   }
+  }
+ ]
+}

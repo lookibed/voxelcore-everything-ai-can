@@ -1,0 +1,15 @@
+{
+    "caption": "brick",
+    "texture-faces": [
+        "am_brick",
+        "am_brick",
+        "am_brick_bottom",
+        "am_brick",
+        "am_brick",
+        "am_brick"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 45
+}

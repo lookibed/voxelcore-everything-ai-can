@@ -1,0 +1,245 @@
+# AlphaMine: порт Minecraft Alpha 1.0.16 на VoxelCore (пак content/alphamine), паритет с Java-эталоном по F2F.
+# Виды экземпляров: engine (F2F-сборка движка с паком), server (Java-сервер Alpha SMP с копией мира),
+# ref_app (Java-клиент Alpha 1.0.16 в F2F-режиме). Порты выдаёт демон из пула; сценарий портов не знает.
+[project]
+name = "alphamine"
+description = "Minecraft Alpha 1.0.16 port: VoxelCore F2F engine vs Java reference client/server"
+scenarios_dir = "{vc_root}\\tools\\scenarios\\alpha"
+golden_dir = "D:\\Prog\\AlphaMine\\golden"
+runs_dir = "D:\\Prog\\AlphaMine\\lab\\runs"
+golden_store = "D:\\Prog\\AlphaMine\\lab\\store"     # CAS снимков golden (labcore/golden.py)
+plugin = "plugin.py"
+
+# интерпретатор сценариев (labcore/scenario.py): impl -> вид клиента; хуки — plugin.py (start, look, wait, gui...)
+[scenario]
+impls = { java = "ref_app", vc = "engine" }
+default_size = "854x480"
+timeline_mode = { fixed = true, seed = 20260930, clear_chat = true }   # mode такта 0 таймлайна (как e2e_run.py)
+# этап 3б: все сценарии с сервером идут на пошаговом сервере (F2F.md §9), если сами не объявили server.f2f
+# (layer_entities_player — f2f:false: второй клиент client_b в lockstep не поддержан). Дымовой прогон в реальном
+# времени (DETERMINISM §5) — `lab run ... --realtime` (opts.realtime): сервер по часам, темп 50 мс, ключ golden server=realtime.
+server_f2f = true
+
+# входы golden (ключ свежести, labcore/golden.py): {info.world} — мир сценария из хука info
+[golden]
+inputs = [
+  { name = "world", tree = "{golden_dir}\\{info.world}" },
+  { name = "java.f2f-client.patch", file = "D:\\Prog\\AlphaMine\\ref\\patches\\f2f-client.patch" },
+  { name = "java.f2f-only.patch", file = "D:\\Prog\\AlphaMine\\ref\\patches\\f2f-only.patch" },
+  { name = "java.f2f-server.patch", file = "D:\\Prog\\AlphaMine\\ref\\patches\\f2f-server.patch", optional = true },
+  { name = "server.jar", file = "D:\\Prog\\AlphaMine\\ref\\jars\\minecraft_server.jar", hash = "sha1" },
+  { name = "server.bin", tree = "D:\\Prog\\AlphaMine\\ref\\minecraft_server\\bin" },
+  { name = "client.bin", tree = "D:\\Prog\\AlphaMine\\ref\\minecraft\\bin", impls = ["java"] },
+  { name = "engine.exe", file = "D:\\Prog\\AlphaMine\\engine\\VoxelCoreF2F.exe", impls = ["vc"] },
+  { name = "pack", tree = "{vc_root}\\content\\alphamine", impls = ["vc"] },
+]
+
+[compare]
+tool = "{vc_root}\\tools\\reference\\compare.py"
+size = "854x480"          # единственный стандарт кадра (agents/F2F.md §8); иной — только из поля size сценария
+tol = 0
+clear = [0, 0, 0]
+metric = "identical_pct"
+series_tol = 3            # таймлайн: допуск tol% по ключевым кадрам (как e2e_compare.py)
+# области разбивки отличий серии (854x480, GUI scale 2), первая подходящая; остальное — world
+regions = { hotbar = [245, 400, 609, 480], crosshair = [411, 224, 443, 256], chat = [0, 190, 660, 480], hand = [500, 240, 854, 480] }
+
+# ---------------------------------------------------------------- движок (сторона VoxelCore)
+[kinds.engine]
+description = "VoxelCoreF2F.exe + pack alphamine (tools/scenarios/alphamine_f2f.lua), void world, F2F port"
+# этап 3а: ядро добавляет --f2f-clock {clock} --f2f-window {window} (параметры аренды clock=virtual|realtime,
+# window=hidden|normal; если сборка их знает) и после старта требует hello.flags {input:"isolated", clock}
+clock = "virtual"
+exe = "D:\\Prog\\AlphaMine\\engine\\VoxelCoreF2F.exe"
+copy_exe = true            # data\builds\VoxelCoreF2F-<sha12>.exe: оригинал можно пересобирать во время прогонов
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{vc_root}\\res", "--dir", "{dir}"]
+logs = { latest = "{dir}\\latest.log" }
+default_log = "latest"
+f2f_idle = { cmd = "keepalive", every_s = 1.0 }   # пак шлёт KeepAlive серверу альфы (иначе разрыв через 60 с)
+params = { server = "127.0.0.1:25566", user = "Player", load_distance = 16 }
+prepare = [
+  { action = "template", src = "engine_settings.toml", dst = "settings.toml" },
+  { action = "packs", packs = ["alphamine"] },
+  { action = "copy", src = "{vc_root}\\tools\\scenarios\\alphamine_f2f.lua", dst = "alphamine_f2f.lua" },
+  { action = "write", path = "autorun_app_script.txt", text = "user:alphamine_f2f.lua" },
+  { action = "write", path = "alphamine_f2f.json", json = { server = "{param.server}", user = "{param.user}", load_distance = "{param.load_distance}" } },
+]
+# стартовый сценарий идёт только в кадрах F2F: шагать, пока hello не скажет handler=true (мир открыт)
+ready = [
+  { f2f = "hello", timeout = 60 },
+  { pump_f2f = { cmd = "hello", field = "handler", value = true }, max_frames = 1200 },
+]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# ---------------------------------------------------------------- Java-сервер Alpha SMP 0.1.1
+[kinds.server]
+description = "Java Alpha server (RetroMCP build), fresh copy of golden/<world>, server-ip 127.0.0.1; lockstep: --f2f {port.f2f}"
+exe = "C:\\Program Files\\Java\\jdk1.8.0_481\\bin\\java.exe"
+# f2f: порт команд пошагового сервера (agents/F2F.md §9). Ключ --f2f <порт> добавляет плагин (параметр f2f_args при
+# старте), когда сценарий объявляет server: {f2f: true}; без него сервер идёт по часам, порт просто не слушается.
+ports = ["game", "f2f"]
+f2f = "f2f"
+stdin = true               # мягкая остановка: «stop» в stdin (только так мир сохраняется полностью); lockstep — F2F quit
+cwd = "{dir}\\server"
+params = { ref = "D:\\Prog\\AlphaMine\\ref", golden = "D:\\Prog\\AlphaMine\\golden", world = "world_a", ops = [], f2f_args = [] }
+args = ["-Xms1024M", "-Xmx1024M", "-Dalphamine.dir={dir}\\server",
+        "-cp", "{param.ref}\\minecraft_server\\bin;{param.ref}\\minecraft_server\\jars\\deobfuscated.jar",
+        "net.minecraft.server.MinecraftServer", "nogui", "{param.f2f_args}"]
+prepare = [
+  { action = "copytree", src = "{param.golden}\\{param.world}", dst = "server\\world", exclude = ["session.lock"] },
+  { action = "properties", src = "{param.ref}\\minecraft_server\\game\\server.properties", dst = "server\\server.properties", set = { "server-port" = "{port.game}", "server-ip" = "127.0.0.1", "level-name" = "world" } },
+  { action = "copy", src = "{param.ref}\\minecraft_server\\game\\ops.txt", dst = "server\\ops.txt" },
+  { action = "append", path = "server\\ops.txt", lines = "{param.ops}" },   # оператор второго клиента (client_b)
+]
+default_log = "stderr"     # сервер альфы пишет журнал в stderr (кодировка консоли — decode.py)
+ready = [ { log = "Done!", stream = "stderr", timeout = 90 } ]
+# lockstep: консольная команда выполняется только в конце такта, а такты идут только по step харнесса — поэтому F2F quit
+stop = [ { f2f = "quit", wait_exit = 15, if_param = "f2f_args" }, { stdin = "stop\n", wait_exit = 15 } ]
+
+# ---------------------------------------------------------------- Java-клиент Alpha 1.0.16 (эталон, F2F)
+[kinds.ref_app]
+description = "Java Alpha 1.0.16 client with F2F (net.minecraft.src.F2FLaunch), launchwrapper like start_client.ps1"
+# этап 3а: только с --f2f (патч F2F: мышь не захватывается, фокус/пауза отключены — agents/F2F.md §0); этап 3б:
+# F2FAgent сообщает hello.flags {clock, input, window, grabbed} по живому состоянию — сверяются как у движка
+# (не совпало — дерево убивается, isolation-failed). window у Java — "normal" (окно-блит для глаз, кадр из FBO).
+isolation = { argv = "--f2f", hello = { "flags.input" = "isolated", "flags.clock" = "virtual" } }
+exe = "C:\\Program Files\\Java\\jdk1.8.0_481\\bin\\java.exe"
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+cwd = "{param.ref}\\minecraft\\game"
+params = { ref = "D:\\Prog\\AlphaMine\\ref", server = "127.0.0.1:25566", user = "Player", asset_index = "a1.0.14-local" }
+args = [
+  "-Djava.library.path={param.ref}\\libraries\\natives",
+  "-Dminecraft.launcher.brand=RetroMCP", "-Dminecraft.launcher.version=v1.2", "-Xms1024M", "-Xmx1024M",
+  "-cp", "{param.ref}\\libraries\\net\\java\\jinput\\jinput\\2.0.5\\jinput-2.0.5.jar;{param.ref}\\libraries\\net\\java\\jutils\\jutils\\1.0.0\\jutils-1.0.0.jar;{param.ref}\\libraries\\org\\lwjgl\\lwjgl\\lwjgl\\2.9.4-nightly-20150209\\lwjgl-2.9.4-nightly-20150209.jar;{param.ref}\\libraries\\org\\lwjgl\\lwjgl\\lwjgl_util\\2.9.4-nightly-20150209\\lwjgl_util-2.9.4-nightly-20150209.jar;{param.ref}\\libraries\\org\\lwjgl\\lwjgl\\lwjgl-platform\\2.9.4-nightly-20150209\\lwjgl-platform-2.9.4-nightly-20150209.jar;{param.ref}\\libraries\\com\\paulscode\\codecjorbis\\20230120\\codecjorbis-20230120.jar;{param.ref}\\libraries\\com\\paulscode\\codecwav\\20101023\\codecwav-20101023.jar;{param.ref}\\libraries\\com\\paulscode\\libraryjavasound\\20101123\\libraryjavasound-20101123.jar;{param.ref}\\libraries\\com\\paulscode\\librarylwjglopenal\\20100824\\librarylwjglopenal-20100824.jar;{param.ref}\\libraries\\com\\paulscode\\soundsystem\\20120107\\soundsystem-20120107.jar;{param.ref}\\libraries\\org\\mcphackers\\launchwrapper\\1.2.4\\launchwrapper-1.2.4.jar;{param.ref}\\libraries\\org\\json\\json\\20230311\\json-20230311.jar;{param.ref}\\libraries\\org\\ow2\\asm\\asm\\9.9\\asm-9.9.jar;{param.ref}\\libraries\\org\\ow2\\asm\\asm-tree\\9.9\\asm-tree-9.9.jar;{param.ref}\\libraries\\org\\ow2\\asm\\asm-commons\\9.9\\asm-commons-9.9.jar;{param.ref}\\minecraft\\bin;{param.ref}\\minecraft\\jars\\deobfuscated.jar",
+  "net.minecraft.src.F2FLaunch",
+  "--username", "{param.user}", "--uuid", "-", "--session", "-", "--version", "a1.0.16",
+  "--gameDir", ".", "--assetsDir", ".\\assets", "--assetIndex", "{param.asset_index}", "--accessToken", "-",
+  "--userProperties", "{}", "--userType", "legacy", "--versionType", "release", "--skinProxy", "pre-b1.9-pre4",
+  "--server", "{param.server}", "--f2f", "{port.f2f}", "--f2f-size", "{size}",
+]
+default_log = "stdout"
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# ---------------------------------------------------------------- тестовая сборка в реальном времени (этап 3а)
+# Для lab perf и разработки: та же F2F-сборка (ввод изолирован, окно без фокуса), часы realtime (время идёт само,
+# без step), мир alphamine_world.lua -> {param.server} как у обычного запуска; настройки пользователя (копия
+# VC_ROOT\settings.toml/controls.toml), кадр {size} (по умолчанию окно пользователя 1390x855). Пак видит
+# export\alphamine_realtime.txt (или f2f.clock() == "realtime") и ведёт себя как обычный запуск (game.f2f = false).
+[kinds.rt]
+description = "VoxelCoreF2F.exe, clock realtime, alphamine_world.lua -> {param.server} (lab perf, dev); input isolated"
+exe = "D:\\Prog\\AlphaMine\\engine\\VoxelCoreF2F.exe"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+clock = "realtime"
+size = "1390x855"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{vc_root}\\res", "--dir", "{dir}"]
+logs = { latest = "{dir}\\latest.log" }
+default_log = "latest"
+params = { server = "127.0.0.1:25566", pack = "{vc_root}\\content\\alphamine" }   # pack: вариант пака (perf_stream --variant)
+prepare = [
+  { action = "copy", src = "{vc_root}\\settings.toml", dst = "settings.toml" },
+  { action = "copy", src = "{vc_root}\\controls.toml", dst = "controls.toml" },
+  { action = "junction", link = "content\\alphamine", target = "{param.pack}" },
+  { action = "copy", src = "{vc_root}\\tools\\scenarios\\alphamine_world.lua", dst = "alphamine_world.lua" },
+  { action = "write", path = "autorun_app_script.txt", text = "user:alphamine_world.lua" },
+  { action = "write", path = "export\\alphamine_server.txt", text = "{param.server}" },
+  { action = "write", path = "export\\alphamine_realtime.txt", text = "realtime" },
+]
+ready = [
+  { f2f = "hello", timeout = 60 },
+  { log = "\\[alphamine_app\\] ready", stream = "latest", timeout = 120 },
+]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# ---------------------------------------------------------------- рантайм пользователя (этап 2б: lab play)
+# Рантайм VC_ROOT\VoxelCore.exe — один на машину (путь exe = предпочтение GPU и профиль NVIDIA, поэтому без копии).
+# Обычный режим (не F2F): настройки и управление пользователя (копия VC_ROOT\settings.toml — окно 1390x855, лимит
+# 120 fps), свой --dir в inst\vc-main (VC_ROOT\latest.log и миры пользователя не трогаются), прямой запуск мира
+# tools/scenarios/alphamine_world.lua с адресом сервера в export\alphamine_server.txt. kill_on_close = false: игра
+# пользователя переживает рестарт демона (наблюдение и отчёт тогда теряются).
+[kinds.runtime]
+description = "runtime VoxelCore.exe, normal mode (user's settings), alphamine_world.lua -> {param.server}; one per machine (lease vc-main)"
+role = "runtime"           # этап 3а: только lab play --user (пользователь) / --final-check (claude, с причиной)
+exe = "{vc_root}\\VoxelCore.exe"
+copy_exe = false
+kill_on_close = false
+cwd = "{vc_root}"
+args = ["--dir", "{dir}"]
+logs = { latest = "{dir}\\latest.log" }
+default_log = "latest"
+params = { server = "127.0.0.1:25566" }
+prepare = [
+  { action = "copy", src = "{vc_root}\\settings.toml", dst = "settings.toml" },
+  { action = "copy", src = "{vc_root}\\controls.toml", dst = "controls.toml" },
+  { action = "packs", packs = ["alphamine"] },
+  { action = "copy", src = "{vc_root}\\tools\\scenarios\\alphamine_world.lua", dst = "alphamine_world.lua" },
+  { action = "write", path = "autorun_app_script.txt", text = "user:alphamine_world.lua" },
+  { action = "write", path = "export\\alphamine_server.txt", text = "{param.server}" },
+]
+ready = [ { log = "\\[alphamine_app\\] ready", stream = "latest", timeout = 120 } ]
+stop = []                  # окно пользователя: мягкого протокола нет -> TerminateJobObject (только при stop/max_s)
+
+[play]
+description = "Java Alpha server on a fresh copy of a golden world + runtime VoxelCore.exe connected to it"
+order = ["server", "runtime"]          # порядок старта; стоп — обратный (сервер мягко, мир сохраняется)
+engine = "runtime"                     # выход этого процесса = конец сессии
+names = { runtime = "vc-main" }        # особая аренда: рантайм один на машину
+exclusive_exe = "{vc_root}\\VoxelCore.exe"   # уже запущен вне лаборатории (vc_start, пользователь) -> отказ
+ttl = 3600                             # аренды продлевает наблюдатель
+[play.params.server]
+world = "world_a"                      # lab play alphamine --param server.world=world_b
+[[play.link]]                          # порт game аренды server -> параметр server аренды runtime
+from = "server"
+port = "game"
+to = "runtime"
+param = "server"
+format = "127.0.0.1:{port}"
+[play.options.autowalk]                # --opt autowalk: ходьба паком без ввода ОС (content/alphamine/modules/autowalk.lua)
+files = [ { kind = "runtime", path = "export\\alphamine_autowalk.txt", text = "stand=100\nwalk=800\nsettle=100\nyaw=180\nturn=30\n" } ]
+[play.capture]                         # запись потока пакетов (прокси клиент<->сервер): точка подключения play.CAPTURE_HOOKS
+enabled = false                        # не реализовано
+[play.report]
+log_stream = "latest"
+server_kind = "server"
+server_stream = "stderr"
+size = "1390x855 (settings.toml пользователя)"
+chunks_field = "map_chunks"
+# строка статуса пака (game.lua, раз в 100 тактов обычного запуска)
+status = 'status tick (?P<tick>\d+) fps (?P<fps>[\d.]+) map_chunks (?P<map_chunks>\d+) stored (?P<stored>\d+) engine (?P<engine_chunks>\d+) dirty (?P<dirty>\d+)/(?P<pending>\d+) net in (?P<net_kb>\d+) KB, ticks (?P<tick_ms>[\d.]+) ms/tick, encode (?P<encode_ms>\d+) ms, inflate (?P<inflate_ms>\d+) ms'
+disconnect_events = ["disconnect", "kicked", "connect_failed"]
+[play.report.levels]
+error = '^\[E\]|\] [^\]]*error: |uncaught|stack traceback|Exception'
+warning = '^\[W\]'
+[play.report.events]
+connect = 'connected to (?P<server>\S+) in (?P<ms>[\d.]+) ms'
+login = 'login ok \(entity (?P<entity>\d+)\) at tick (?P<tick>\d+)'
+chunks441 = '441 map chunks at tick'
+chat = '\[alphamine\] chat: (?P<text>.*)$'
+disconnect = '(?:leaving the world|disconnected): (?P<reason>.*)$'
+kicked = 'kicked: (?P<reason>.*)$'
+connect_failed = 'GuiConnectFailed: (?P<reason>.*)$'
+focus = 'window lost focus|engine pause page'
+[play.report.server_events]
+join = '(?P<who>\S+) \[/127\.0\.0\.1:\d+\] logged in'
+leave = '(?P<who>\S+) lost connection: (?P<reason>.*)$'
+chat = '<(?P<who>[^>]+)> (?P<text>.*)$'
+
+# ---------------------------------------------------------------- история и ворота (этап 2б)
+[history]
+import = ["D:\\Prog\\AlphaMine\\runs"]   # старые раннеры (импорт как есть); runs_dir проекта добавляется сам
+
+[gate]
+eps = 0.0                                 # к ε из шума Java/Java кадра
+# собственный разброс vc между прогонами одного кода (ALPHAMINE §9: alpha_spawn 93.14 / 93.16 — дальняя листва в
+# тумане после relight.lua); без него ворота ловят шум, а не регрессии
+eps_by_scenario = { alpha_spawn = 0.05 }
+perf_metric = "all.fps_5s.p5"
+perf_rel_tol = 0.25                       # разброс прогонов одного кода заметный (спавн ±10 блоков): ALPHAMINE §9
+perf_fail = false                         # перф даёт warn, не fail

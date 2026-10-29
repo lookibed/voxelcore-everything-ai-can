@@ -1,0 +1,8 @@
+{
+    "post-effects": [
+        "blackhole"
+    ],
+    "models": [
+        "bh_sphere"
+    ]
+}

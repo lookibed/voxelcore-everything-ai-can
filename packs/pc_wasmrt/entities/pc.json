@@ -1,0 +1,7 @@
+{
+    "hitbox": [1, 1.44, 1],
+    "components": [
+        "pc_wasmrt:pc"
+    ],
+    "body-type": "dynamic"
+}

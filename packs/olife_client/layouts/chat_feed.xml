@@ -1,0 +1,10 @@
+<!-- Olife chat feed (UX A2): the last 6 chat lines over the hotbar while the chat overlay is closed; they fade out
+     after 8 s (olife_client:chat refresh). Permanent HUD element, not interactive. -->
+<container id="root" size-func="unpack(gui.get_viewport())" color="0" interactive="false">
+    <label id="f1" position-func="12, gui.get_viewport()[2] - 220" size="700,20" color="#FFFFFF00" interactive="false"></label>
+    <label id="f2" position-func="12, gui.get_viewport()[2] - 200" size="700,20" color="#FFFFFF00" interactive="false"></label>
+    <label id="f3" position-func="12, gui.get_viewport()[2] - 180" size="700,20" color="#FFFFFF00" interactive="false"></label>
+    <label id="f4" position-func="12, gui.get_viewport()[2] - 160" size="700,20" color="#FFFFFF00" interactive="false"></label>
+    <label id="f5" position-func="12, gui.get_viewport()[2] - 140" size="700,20" color="#FFFFFF00" interactive="false"></label>
+    <label id="f6" position-func="12, gui.get_viewport()[2] - 120" size="700,20" color="#FFFFFF00" interactive="false"></label>
+</container>

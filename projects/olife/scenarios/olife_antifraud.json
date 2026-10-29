@@ -1,0 +1,13 @@
+{
+ "description": "Antifraud p.2 (olife_antifraud, 16.10): nick protection (reserved, similar: case/Cyrillic/digits, ASCII Hello names; nick in play from another IP -> nick_in_use / Disconnect 18; same IP replaces (12); grace after leaving; fraud clear nick:), login limits per IP and /24 (rate_ip with exponential autoban 60 s -> 120 s, multi_account, rate_net, sessions_ip and gateway 13, gateway subnet connection rate -> events -> autoban), in-game scoring (chat flood -> Notice 13 warning -> Notice 14 throttle -> kick 10 -> autoban 5; second autoban x2 + IP; /fraud admin/player; lab olife fraud status; fraud clear -> trust x2 -> the same flood only scores; reconnect loops and blocks scored), negative branches (ticket replay 15, IP swap 18, nick cycling). Probes from 127.0.0.11..93 (tools/olife/fraud_check.py); cleanup lifts everything.",
+ "setup": {"session": {"clients": 0, "sandbox": false, "auth_ticket": true, "auth_mode": "both"}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 1}},
+  {"cmd": "olife_fraud_nick", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_limits", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_score", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_negative", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_cleanup", "args": {}, "optional": true},
+  {"cmd": "olife_fraud_report", "args": {}}
+ ]
+}

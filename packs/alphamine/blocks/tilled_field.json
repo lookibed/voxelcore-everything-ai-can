@@ -1,0 +1,180 @@
+{
+    "caption": "tilledField",
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.9375,
+        1.0
+    ],
+    "model": "aabb",
+    "texture-faces": [
+        "am_dirt",
+        "am_dirt",
+        "am_dirt_bottom",
+        "am_tilled_field_top",
+        "am_dirt",
+        "am_dirt"
+    ],
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_dirt",
+                    "am_dirt",
+                    "am_dirt_bottom",
+                    "am_tilled_field_top_m1",
+                    "am_dirt",
+                    "am_dirt"
+                ]
+            }
+        ]
+    },
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 60
+}

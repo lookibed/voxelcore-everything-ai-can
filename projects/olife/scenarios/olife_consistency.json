@@ -1,0 +1,10 @@
+{
+ "description": "State consistency on the real packs: world (content/olife_world, headless stock 0.32) + dev gateway + sandbox stub (scripted entities) + 2 bots (content/olife_client, headless stock 0.32, random walk). Per tick: the world's view hash of every session (views[eid]) vs the bot replica hash (entities + applied block changes); chunk read-back; latency; bytes.",
+ "setup": {"session": {"clients": 2, "client_kind": "bot", "sandbox": true}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 10}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 120}},
+  {"cmd": "olife_metrics"}
+ ]
+}

@@ -1,0 +1,7 @@
+{
+    "caption": "Black hole collapser",
+    "icon-type": "sprite",
+    "icon": "items:bh_collapser",
+    "script-name": "collapser",
+    "stack-size": 16
+}

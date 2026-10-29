@@ -1,0 +1,11 @@
+{
+    "module": "doom:modules/doom/doom_wasmrt.lua",
+    "graphics": "canvas",
+    "width": 320,
+    "height": 200,
+    "args": ["doom", "-iwad", "doom1.wad", "-nosound", "-nomusic", "-timedemo", "demo1"],
+    "files": "doom:wads",
+    "frame_pacing": "slice",
+    "slice_ms": 14,
+    "log_fps": true
+}

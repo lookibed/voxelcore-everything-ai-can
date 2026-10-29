@@ -1,0 +1,17 @@
+{
+ "description": "Wave 4c: client-side prediction with server reconciliation. World (snap=delta, inventory) + dev gateway + 2 bots with predicted movement (keys+look -> MoveInput; the world runs the same olife_proto:movement step; PlayerState -> compare/replay). Bot A (bot1) gets injected RTT 0 / 50 / 150 ms on the gateway (half each way); per phase: prediction error at ack (p50/p95/max), corrections per minute, snap magnitude, replay length. Sources of mispredictions: both bots break/place blocks (every 10 ticks) next to each other, and the world puts a 2-high wall in the cell 0.9 block ahead of every walking player every second (kept 0.5 s) (olife.disturb 10) — the client sees it one RTT late. Anti-cheat: a protocol client sends MoveInput 50/s (speed hack) — the world simulates <= 20/s of real time and drops the rest. End: bots halt, the movement state hash of every bot equals the world's (f32 pos/vel + flags), all inputs acked; per-tick replica hash consistency.",
+ "setup": {"session": {"clients": 2, "client_kind": "bot", "sandbox": false, "blocks": 10,
+                       "world_opts": "snap=delta,inv=1", "bot_opts": "move=predict,radius=5,sprint=1"}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 2}},
+  {"cmd": "olife_stdin", "args": {"cmd": "olife.disturb 10", "pattern": "disturb\\severy"}},
+  {"cmd": "olife_pred_phase", "args": {"rtt_ms": 0, "name": "bot1", "seconds": 20, "label": "rtt0"}},
+  {"cmd": "olife_pred_phase", "args": {"rtt_ms": 50, "name": "bot1", "seconds": 20, "label": "rtt50"}},
+  {"cmd": "olife_pred_phase", "args": {"rtt_ms": 150, "name": "bot1", "seconds": 20, "label": "rtt150"}},
+  {"cmd": "olife_speedhack", "args": {"seconds": 3, "rate": 50}},
+  {"cmd": "olife_move_check", "args": {"settle_s": 2.0}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 500}},
+  {"cmd": "olife_metrics"}
+ ]
+}

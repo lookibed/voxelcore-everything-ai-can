@@ -1,0 +1,15 @@
+{
+    "caption": "workbench",
+    "texture-faces": [
+        "am_workbench_side_t60",
+        "am_workbench_side",
+        "am_planks_bottom",
+        "am_workbench_top",
+        "am_workbench_side_t60",
+        "am_workbench_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 58
+}

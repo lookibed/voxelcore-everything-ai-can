@@ -1,0 +1,6 @@
+{
+    "module": "pong:modules/pong/pong.lua",
+    "graphics": "posteffect",
+    "width": 320,
+    "height": 200
+}

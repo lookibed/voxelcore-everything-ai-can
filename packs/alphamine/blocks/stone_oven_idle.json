@@ -1,0 +1,71 @@
+{
+    "caption": "stoneOvenIdle",
+    "texture-faces": [
+        "am_stone_oven_idle_side",
+        "am_stone_oven_idle_side",
+        "am_stone_bottom",
+        "am_stone",
+        "am_stone_oven_idle_side",
+        "am_stone_oven_idle_side"
+    ],
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "texture-faces": [
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_side",
+                    "am_stone_bottom",
+                    "am_stone",
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_side"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_side",
+                    "am_stone_bottom",
+                    "am_stone",
+                    "am_stone_oven_idle_front",
+                    "am_stone_oven_idle_side"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_side",
+                    "am_stone_bottom",
+                    "am_stone",
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_front"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_stone_oven_idle_front",
+                    "am_stone_oven_idle_side",
+                    "am_stone_bottom",
+                    "am_stone",
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_side"
+                ]
+            },
+            {
+                "texture-faces": [
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_front",
+                    "am_stone_bottom",
+                    "am_stone",
+                    "am_stone_oven_idle_side",
+                    "am_stone_oven_idle_side"
+                ]
+            }
+        ]
+    },
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 61
+}

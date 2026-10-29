@@ -1,0 +1,19 @@
+{
+  "items": [
+    "grenade",
+    "hole_egg",
+    "collapser",
+    "impact_grenade"
+  ],
+  "blocks": [
+    "void"
+  ],
+  "entities": [
+    "grenade_thrown",
+    "collapser_thrown",
+    "impact_thrown",
+    "hole",
+    "debris",
+    "ejecta"
+  ]
+}

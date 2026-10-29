@@ -1,0 +1,105 @@
+{
+ "description": "UX A1 (olife_a1): rights of entities ('repository' model) and friends on 3 windowed F2F 0.32 clients — alice (owner), bob (becomes a friend), carol (stranger, put on lists) + an admin protocol client (dev) and the real olife-sandboxd. Friends through the UI: bob opens alice's bench (read-only), Settings -> «Друзья» -> alice -> «Добавить»; alice gets a toast, opens the friends page with Shift+` and accepts; carol asks, alice denies; carol's refusals 16/17/15 with the refuse sound. Rights panel through the UI: alice sets move/clone -> friends and run -> list [carol] by clicks (world rules + toasts), bob/carol see the panel read-only with their own rights. Matrix: 9 actions x 4 audiences x 3 actors = 108 cells asserted by RequestReply codes (+ EntityPerms.mine bits); admin bypass (9 cells); negative protocol tests; world <-> supervisor DB friend sync.",
+ "setup": {
+  "session": {
+   "clients": 3,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": [
+    "olife-alice",
+    "olife-bob",
+    "olife-carol"
+   ],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 1
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_a1_setup",
+   "args": {
+    "admins": "dev"
+   }
+  },
+  {
+   "cmd": "olife_bench",
+   "args": {
+    "account": "alice",
+    "key": "p"
+   }
+  },
+  {
+   "cmd": "olife_bench",
+   "args": {
+    "account": "carol",
+    "key": "carol"
+   }
+  },
+  {
+   "cmd": "olife_friends_gui",
+   "args": {
+    "bench": "p"
+   }
+  },
+  {
+   "cmd": "olife_perms_gui",
+   "args": {
+    "bench": "p"
+   }
+  },
+  {
+   "cmd": "olife_perms_matrix",
+   "args": {
+    "bench": "p"
+   }
+  },
+  {
+   "cmd": "olife_perms_admin",
+   "args": {
+    "bench": "p"
+   }
+  },
+  {
+   "cmd": "olife_perms_neg",
+   "args": {
+    "bench": "p",
+    "own": "carol",
+    "mob": 1
+   }
+  },
+  {
+   "cmd": "olife_friends_db",
+   "args": {}
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 80
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "editor_status",
+    "pattern": "editor\\("
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {
+    "strict": false
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

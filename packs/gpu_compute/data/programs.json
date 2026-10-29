@@ -1,0 +1,37 @@
+{
+ "generated_by": "tools/gpu_compute_build.py",
+ "programs": {
+  "core": {
+   "pack": "gpu_compute",
+   "file": "gpu_compute/shaders/gpu_core.glsl",
+   "bank": 253,
+   "g0": 1,
+   "g1": 3,
+   "sha1": "45ddc8f2db15"
+  },
+  "noise": {
+   "pack": "gpu_compute",
+   "file": "gpu_compute/shaders/gpu_noise.glsl",
+   "bank": 253,
+   "g0": 4,
+   "g1": 4,
+   "sha1": "68dd32b5927c"
+  },
+  "gpu_worldgen": {
+   "pack": "gpu_worldgen",
+   "file": "gpu_worldgen/shaders/gpu_worldgen.glsl",
+   "bank": 254,
+   "g0": 3,
+   "g1": 9,
+   "sha1": "4f7ee7ca1206"
+  },
+  "smollm_gpu": {
+   "pack": "smollm_gpu",
+   "file": "smollm_gpu/shaders/gpu_smollm.glsl",
+   "bank": 255,
+   "g0": 0,
+   "g1": 255,
+   "sha1": "c25eda37eff0"
+  }
+ }
+}

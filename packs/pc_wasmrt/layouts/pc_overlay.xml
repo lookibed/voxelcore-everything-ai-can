@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Оверлей вокруг компьютера pc_wasmrt:pc (modules/pc_os.lua): открывается hud.show_overlay при входе за ПК,
+     закрывается hud.close при «встать» (приём dagger_pc; режим оверлея движка прячет хотбар и прицел).
+     Экрана здесь нет (он — фрейм в текстуре на модели), только кнопки и стикеры-подсказки в нижней полосе окна
+     (76 px под экраном при зуме 1). Позиции считает pc_overlay.xml.lua от gui.get_viewport(). -->
+<container id="root" pos="0,0" size="854,480" color="#00000000"
+    size-func="function() local s = gui.get_viewport() return s[1], s[2] end">
+    <!-- стикеры: камера, мышь, клавиши (тёмная плашка, тень, цветная кромка слева) -->
+    <container id="st_cam" pos="12,380" size="280,30" color="#00000000" interactive="false">
+        <container id="st_cam_sh" pos="3,3" size="280,30" color="#00000070" interactive="false"/>
+        <container id="st_cam_bg" pos="0,0" size="280,30" color="#1C2733E6" interactive="false"/>
+        <container id="st_cam_edge" pos="0,0" size="4,30" color="#7FB7FFFF" interactive="false"/>
+        <label id="st_cam_lbl" pos="12,7" size="264,18" color="#E8EEF5FF" interactive="false">камера</label>
+    </container>
+    <container id="st_mouse" pos="12,414" size="280,30" color="#00000000" interactive="false">
+        <container id="st_mouse_sh" pos="3,3" size="280,30" color="#00000070" interactive="false"/>
+        <container id="st_mouse_bg" pos="0,0" size="280,30" color="#1C2733E6" interactive="false"/>
+        <container id="st_mouse_edge" pos="0,0" size="4,30" color="#FFD36BFF" interactive="false"/>
+        <label id="st_mouse_lbl" pos="12,7" size="264,18" color="#E8EEF5FF" interactive="false">мышь</label>
+    </container>
+    <container id="st_keys" pos="560,380" size="280,30" color="#00000000" interactive="false">
+        <container id="st_keys_sh" pos="3,3" size="280,30" color="#00000070" interactive="false"/>
+        <container id="st_keys_bg" pos="0,0" size="280,30" color="#1C2733E6" interactive="false"/>
+        <container id="st_keys_edge" pos="0,0" size="4,30" color="#8FE39AFF" interactive="false"/>
+        <label id="st_keys_lbl" pos="12,7" size="264,18" color="#E8EEF5FF" interactive="false">клавиши</label>
+    </container>
+    <container id="st_hold" pos="560,414" size="280,30" color="#00000000" interactive="false">
+        <container id="st_hold_sh" pos="3,3" size="280,30" color="#00000070" interactive="false"/>
+        <container id="st_hold_bg" pos="0,0" size="280,30" color="#1C2733E6" interactive="false"/>
+        <container id="st_hold_edge" pos="0,0" size="4,30" color="#8FE39AFF" interactive="false"/>
+        <label id="st_hold_lbl" pos="12,7" size="264,18" color="#E8EEF5FF" interactive="false">-</label>
+    </container>
+    <!-- кнопки: встать (красная), залочить/отпустить мышь, приблизить/отдалить -->
+    <container id="btn_standup" pos="300,396" size="120,32" color="#E0522CFF" hover-color="#FF7040FF" pressed-color="#B03C1CFF" onclick="ov_action('standup')">
+        <label id="btn_standup_lbl" pos="0,8" size="120,18" text-align="center" color="#FFFFFFFF" interactive="false">встать</label>
+    </container>
+    <container id="btn_lock" pos="430,396" size="170,32" color="#2E6BD6FF" hover-color="#4A86F0FF" pressed-color="#1E4DA6FF" onclick="ov_action('lock')">
+        <label id="btn_lock_lbl" pos="0,8" size="170,18" text-align="center" color="#FFFFFFFF" interactive="false">залочить мышь</label>
+    </container>
+    <container id="btn_zoom" pos="610,396" size="140,32" color="#2E6BD6FF" hover-color="#4A86F0FF" pressed-color="#1E4DA6FF" onclick="ov_action('zoom')">
+        <label id="btn_zoom_lbl" pos="0,8" size="140,18" text-align="center" color="#FFFFFFFF" interactive="false">приблизить</label>
+    </container>
+</container>

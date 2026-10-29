@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Страница меню «Сценарии» -> gpu_worldgen: выбор пресета-витрины и seed. Логика: gpu_worldgen.xml.lua,
+     открытие мира — scripts/app/gpu_worldgen.lua (событие gpu_worldgen:open). -->
+<container id="root" pos="0, 0" size="854,480" interactive="true" color="#0B1016F0"
+    size-func="function() local s = gui.get_viewport() return s[1], s[2] end">
+    <container id="panel" pos="167,20" size="520,440" color="#00000000">
+        <label id="title" pos="0,0" size="520,24" text-align="center" color="#E8EEF5FF">GPU worldgen: генерация мира шейдером (3D-шум)</label>
+        <label id="sub" pos="0,24" size="520,20" text-align="center" color="#9FB0C0FF">Три мира-витрины: формы, которые не даст 2D-карта высот</label>
+
+        <button id="btn_mountains" pos="0,56" size="520,40" onclick="choose('mountains')">Горы и арки (Amplified)</button>
+        <label id="d_mountains" pos="8,98" size="512,18" color="#9FB0C0FF">башни и нависания до y 240, туннели насквозь, снег, водопады</label>
+
+        <button id="btn_caves" pos="0,124" size="520,40" onclick="choose('caves')">Пещерные миры (noise caves 1.18)</button>
+        <label id="d_caves" pos="8,166" size="512,18" color="#9FB0C0FF">залы с колоннами, озёра воды и лавы, аметист и светокамень</label>
+
+        <button id="btn_islands" pos="0,192" size="520,40" onclick="choose('islands')">Парящие острова (sky islands)</button>
+        <label id="d_islands" pos="8,234" size="512,18" color="#9FB0C0FF">три уровня островов, корни, мосты-арки, водопады в пустоту</label>
+
+        <button id="btn_classic" pos="0,262" size="520,30" onclick="choose('classic')">Классика (исходный 3D-шум пака)</button>
+
+        <label id="seed_lbl" pos="0,306" size="120,24" color="#E8EEF5FF">seed:</label>
+        <textbox id="seed" pos="120,302" size="400,30" padding="8,6,8,2" hint="пусто - seed пресета (мир GPU Worldgen &lt;пресет&gt;)"></textbox>
+        <label id="hint" pos="0,342" size="520,44" multiline="true" color="#9FB0C0FF">В мире: F6 или команда gpuwg.preset &lt;имя&gt; - сменить пресет. Свой seed - отдельный мир.</label>
+
+        <button id="back_btn" pos="0,396" size="520,34" onclick="leave()">@Back to Main Menu</button>
+    </container>
+</container>

@@ -1,0 +1,8 @@
+{
+    "id": "halflife",
+    "title": "Half-Life (wasmrt)",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Half-Life: Uplink на Xash3D FWGS + hlsdk-portable (GPL) как C-программа на wasmrt; программный рендер ref_soft",
+    "dependencies": ["wasmrt"]
+}

@@ -1,0 +1,8 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:spammer",
+    "model-name": "olife_spammer",
+    "caption": "Spammer",
+    "description": "LMB on a mob: capture its full snapshot into your library (your mobs, or mobs whose owner allowed cloning). RMB: throw a ball that spawns a new instance of the selected snapshot where it lands. [ / ] or Shift+wheel: select the snapshot; Shift+RMB: the library",
+    "stack-size": 1
+}

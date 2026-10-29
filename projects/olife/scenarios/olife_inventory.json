@@ -1,0 +1,15 @@
+{
+ "description": "Wave 4c: server-authoritative inventory. World (inventory gates place/break, snap=delta) + 2 bots with predicted movement walking close together (radius 2): break gives the block's item, place consumes the selected slot's item (the bot selects a placeable slot first), every 20 ticks a bot drops one item that either bot picks up by walking over it. End: bots go quiet, the world dumps inventories + dropped items + item ledger; every bot's mirror (slots, selected, hash) equals the world's, the world's item balance is 0 (created = in inventories + on the ground + placed + expired), drops/cross pickups/places happened; block consistency and per-tick replica hashes; then a protocol client sends invalid requests (bad slot, empty slot, count over, unknown op, place without the item, flood of 40) — each refused with its reason, the world lives.",
+ "setup": {"session": {"clients": 2, "client_kind": "bot", "sandbox": false, "blocks": 5,
+                       "world_opts": "snap=delta,inv=1", "bot_opts": "move=predict,drops=20,radius=2"}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 20}},
+  {"cmd": "olife_quiet", "args": {"seconds": 2.5}},
+  {"cmd": "olife_inventory_check", "args": {"min_drops": 5, "min_picks_cross": 1, "min_placed": 5, "min_picks": 3}},
+  {"cmd": "olife_blocks", "args": {"min_blocks": 20}},
+  {"cmd": "olife_inventory_negative", "args": {}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 300}},
+  {"cmd": "olife_metrics"}
+ ]
+}

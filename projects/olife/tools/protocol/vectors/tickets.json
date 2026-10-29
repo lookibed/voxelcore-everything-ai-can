@@ -1,0 +1,68 @@
+{
+ "master_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+ "gateway": "olife-gateway-test",
+ "gateway_key_hex": "0b4b5b7b55b797647d6913f20addedb3332b5fe764275cb5f1a0abfa7d6941d1",
+ "gw_hash": 478418052,
+ "ttl_max": 60,
+ "skew": 2,
+ "note": "verify cases in order with ONE verifier (replayed follows good)",
+ "cases": [
+  {
+   "name": "good",
+   "ticket": "T1.AWqxO55kZWZnaGlqa2xtbm8chBSEBGJvdDH1XSajCb0U6xuwER4u8fG8",
+   "now": 1790000001,
+   "want": "ok",
+   "account": "bot1"
+  },
+  {
+   "name": "replayed",
+   "ticket": "T1.AWqxO55kZWZnaGlqa2xtbm8chBSEBGJvdDH1XSajCb0U6xuwER4u8fG8",
+   "now": 1790000002,
+   "want": "replayed",
+   "after": "good"
+  },
+  {
+   "name": "expired",
+   "ticket": "T1.AWqxO0kHBwcHBwcHBwcHBwcchBSEBGJvdDJ9ecQLUYYwv3mpKykUr_36",
+   "now": 1790000000,
+   "want": "expired"
+  },
+  {
+   "name": "wrong_gateway",
+   "ticket": "T1.AWqxO54AAAAAAAAAAAAAAADawOQ4BGJvdDGG1vcv2RWdcTA1hHRgOIfY",
+   "now": 1790000001,
+   "want": "wrong_gateway"
+  },
+  {
+   "name": "bad_signature",
+   "ticket": "T1.AWqxO55kZWZnaGlqa2xtbm8chBSEBGJvdDH1XSajCb0U6xuwER4u8fA8",
+   "now": 1790000001,
+   "want": "bad_signature"
+  },
+  {
+   "name": "malformed",
+   "ticket": "T1.not-base64!",
+   "now": 1790000000,
+   "want": "malformed"
+  },
+  {
+   "name": "static_token",
+   "ticket": "olife-dev",
+   "now": 1790000000,
+   "want": "malformed"
+  },
+  {
+   "name": "long_account",
+   "ticket": "T1.AWqxO7wJCQkJCQkJCQkJCQkchBSEN2FhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFAFVdvIx6dnCSY5VRoFh4n",
+   "now": 1790000059,
+   "want": "ok",
+   "account": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  {
+   "name": "too_long_lifetime",
+   "ticket": "T1.AWqxO_gFBQUFBQUFBQUFBQUchBSEBGJvdDPu7SmKzLhQLPUSnbwUcRMs",
+   "now": 1790000000,
+   "want": "expired"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:gravity_gun",
+    "model-name": "olife_gravitygun",
+    "caption": "Gravity Gun",
+    "description": "LMB (or RMB) on a scripted entity: one press grabs, the next press releases (the server decides, one holder at a time)",
+    "stack-size": 1
+}

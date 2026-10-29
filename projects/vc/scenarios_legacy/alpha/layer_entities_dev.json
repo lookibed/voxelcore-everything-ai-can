@@ -1,0 +1,639 @@
+{
+ "name": "layer_entities_dev",
+ "base": "dev_base",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "description": "Мир разработчика: /give Player 4, 50, 264, 257 (яма 1x1 в (27,64,8): подбор без разлёта), выброс Q пяти стаков веером (yaw 0/15/30/345/330) из (40.5, 65, 4.5), снимки с (40.5, 65, 3.5) pitch 30: только entities со светом и entities+terrain.",
+ "steps": [
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 27.5 64 8.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     27.5,
+     65.62,
+     8.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     27.5,
+     65.62,
+     8.5,
+     0.01
+    ]
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 90
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "^never$",
+    "max_frames": 20
+   },
+   "optional": true,
+   "comment": "1 с настенного времени: сервер получил взгляд вниз до первого /give"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/give Player 4 1"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "^never$",
+    "max_frames": 80
+   },
+   "optional": true,
+   "comment": "4 с настенного времени: предмет выпал в яму и подобран (delayBeforeCanPickup 40); net_idle тут не ждёт — он уже выполнен"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/give Player 50 1"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "^never$",
+    "max_frames": 80
+   },
+   "optional": true,
+   "comment": "4 с настенного времени: предмет выпал в яму и подобран (delayBeforeCanPickup 40); net_idle тут не ждёт — он уже выполнен"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/give Player 264 1"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "^never$",
+    "max_frames": 80
+   },
+   "optional": true,
+   "comment": "4 с настенного времени: предмет выпал в яму и подобран (delayBeforeCanPickup 40); net_idle тут не ждёт — он уже выполнен"
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/give Player 257 1"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "^never$",
+    "max_frames": 80
+   },
+   "optional": true,
+   "comment": "4 с настенного времени: предмет выпал в яму и подобран (delayBeforeCanPickup 40); net_idle тут не ждёт — он уже выполнен"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 0
+   }
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 40.5 65 4.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     40.5,
+     66.62,
+     4.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   },
+   "expect": {
+    "near": [
+     40.5,
+     66.62,
+     4.5,
+     0.01
+    ]
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": false,
+     "Q": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 15,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "5": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "5": false,
+     "Q": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 30,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "6": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "6": false,
+     "Q": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 345,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "7": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "7": false,
+     "Q": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 330,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "8": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "8": false,
+     "Q": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "net_idle": 60,
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": false
+    }
+   }
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 40.5 65 3.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     40.5,
+     66.62,
+     3.5,
+     1.5
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "net_idle": 40,
+    "max_frames": 2400
+   }
+  },
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 30
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "entities": true,
+     "lighting": true,
+     "fog": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 30,
+    "entities": 6
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "items_near"
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "entities": true,
+     "terrain": true,
+     "lighting": true,
+     "fog": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "items_terrain"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 0
+   }
+  }
+ ]
+}

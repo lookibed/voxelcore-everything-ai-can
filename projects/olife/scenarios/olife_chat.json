@@ -1,0 +1,23 @@
+{
+ "description": "UX A2: chat. 2 windowed F2F 0.32 clients (alice = admin, bob) + protocol clients (carol, dev). Alice opens the chat with T (the engine's chat binding), types, Enter: bob gets ChatLine with sender/role admin/time; bob opens it with Enter and answers: alice hears fx_chat and sees the HUD feed. Carol floods 12 lines: 5..6 accepted, Notice 8 (code 20), bob sees exactly the accepted ones. Late joiner dev gets ChatHistory with the whole conversation in order and the join line goes out; /help for a player lists no admin commands. Alice's overlay window (14 lines) scrolls back by 5 with ^. Consistency 0.",
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": ["olife-alice", "olife-bob"],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_a2_setup", "args": {"admins": "alice"}},
+  {"cmd": "olife_a2_chat", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 80}},
+  {"cmd": "olife_stdin", "args": {"cmd": "ops_status", "pattern": "ops chat="}},
+  {"cmd": "olife_status", "args": {"strict": false}},
+  {"cmd": "olife_metrics"}
+ ]
+}

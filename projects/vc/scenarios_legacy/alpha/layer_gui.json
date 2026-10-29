@@ -1,0 +1,101 @@
+{
+ "name": "layer_gui",
+ "description": "Общая подготовка — alpha_spawn (свежая копия golden/world_a, connect, 441 чанк, /tp 24.5 65 104.5 -> /tp 104.5 67 104.5, ожидание чанков и приземления); затем look (вернуть взгляд — в am_layers слои идут подряд в одной сессии), mode seed 20260930, render {all:false, layers:{...}}. Только gui: ESC -> GuiIngameMenu (затемнение drawDefaultBackground + кнопки) поверх clear; снимок через 20 тиков и с курсором на кнопке; ESC закрывает меню (для следующих слоёв).",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "gui": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 0,
+     "y": 0
+    }
+   }
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "key": "ESCAPE"
+   },
+   "expect": {
+    "screen": "GuiIngameMenu"
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_menu"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 426,
+     "y": 188
+    }
+   },
+   "comment": "курсор на «Back to game» (центр кнопки из state.buttons)"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_hover"
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "key": "ESCAPE"
+   },
+   "expect": {
+    "screen": "ingame"
+   }
+  }
+ ]
+}

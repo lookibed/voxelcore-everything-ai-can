@@ -1,0 +1,13 @@
+{
+    "module": "eaglercraft:modules/eaglercraft.lua",
+    "extension": "eaglercraft:eag_host",
+    "graphics": "tris",
+    "width": 854,
+    "height": 480,
+    "args": ["eaglercraft"],
+    "files": "eaglercraft:data",
+    "log_fps": true,
+    "slice_ms": 40,
+    "trace_server": true,
+    "profile": true
+}

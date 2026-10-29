@@ -1,0 +1,8182 @@
+{
+ "0": {
+  "name": "grass_top",
+  "uses": [
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "top",
+    "via": "world:air"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "top",
+    "via": "world:snow_above"
+   }
+  ]
+ },
+ "1": {
+  "name": "stone",
+  "uses": [
+   {
+    "id": 1,
+    "block": "stone",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 1,
+    "block": "stone",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 1,
+    "block": "stone",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 1,
+    "block": "stone",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 1,
+    "block": "stone",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 1,
+    "block": "stone",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "bottom",
+    "via": "world:air"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "top",
+    "via": "world:air"
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "bottom",
+    "via": "world:air"
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "top",
+    "via": "world:air"
+   },
+   {
+    "id": 70,
+    "block": "pressurePlateStone",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 70,
+    "block": "pressurePlateStone",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 70,
+    "block": "pressurePlateStone",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 70,
+    "block": "pressurePlateStone",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 70,
+    "block": "pressurePlateStone",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 70,
+    "block": "pressurePlateStone",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 77,
+    "block": "button",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 77,
+    "block": "button",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 77,
+    "block": "button",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 77,
+    "block": "button",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 77,
+    "block": "button",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 77,
+    "block": "button",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "2": {
+  "name": "dirt",
+  "uses": [
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "bottom",
+    "via": "world:air"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "bottom",
+    "via": "world:snow_above"
+   },
+   {
+    "id": 3,
+    "block": "dirt",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 3,
+    "block": "dirt",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 3,
+    "block": "dirt",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 3,
+    "block": "dirt",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 3,
+    "block": "dirt",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 3,
+    "block": "dirt",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "3": {
+  "name": "grass",
+  "uses": [
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "east",
+    "via": "world:air"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "west",
+    "via": "world:air"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "north",
+    "via": "world:air"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "south",
+    "via": "world:air"
+   }
+  ]
+ },
+ "4": {
+  "name": "planks",
+  "uses": [
+   {
+    "id": 5,
+    "block": "planks",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 5,
+    "block": "planks",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 5,
+    "block": "planks",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 5,
+    "block": "planks",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 5,
+    "block": "planks",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 5,
+    "block": "planks",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 47,
+    "block": "bookshelf",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 47,
+    "block": "bookshelf",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "bottom",
+    "via": "world:air"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "top",
+    "via": "world:air"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "east",
+    "via": "world:air"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "west",
+    "via": "world:air"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "north",
+    "via": "world:air"
+   },
+   {
+    "id": 53,
+    "block": "stairCompactWood",
+    "face": "south",
+    "via": "world:air"
+   },
+   {
+    "id": 58,
+    "block": "workbench",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 63,
+    "block": "signStanding",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 63,
+    "block": "signStanding",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 63,
+    "block": "signStanding",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 63,
+    "block": "signStanding",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 63,
+    "block": "signStanding",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 63,
+    "block": "signStanding",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 68,
+    "block": "signWall",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 68,
+    "block": "signWall",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 68,
+    "block": "signWall",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 68,
+    "block": "signWall",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 68,
+    "block": "signWall",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 68,
+    "block": "signWall",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 72,
+    "block": "pressurePlateWood",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 72,
+    "block": "pressurePlateWood",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 72,
+    "block": "pressurePlateWood",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 72,
+    "block": "pressurePlateWood",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 72,
+    "block": "pressurePlateWood",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 72,
+    "block": "pressurePlateWood",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "5": {
+  "name": "stair_double_side",
+  "uses": [
+   {
+    "id": 43,
+    "block": "stairDouble",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 43,
+    "block": "stairDouble",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 43,
+    "block": "stairDouble",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 43,
+    "block": "stairDouble",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 44,
+    "block": "stairSingle",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 44,
+    "block": "stairSingle",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 44,
+    "block": "stairSingle",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 44,
+    "block": "stairSingle",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "6": {
+  "name": "stair_double_end",
+  "uses": [
+   {
+    "id": 43,
+    "block": "stairDouble",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 43,
+    "block": "stairDouble",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 44,
+    "block": "stairSingle",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 44,
+    "block": "stairSingle",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "7": {
+  "name": "brick",
+  "uses": [
+   {
+    "id": 45,
+    "block": "brick",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 45,
+    "block": "brick",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 45,
+    "block": "brick",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 45,
+    "block": "brick",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 45,
+    "block": "brick",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 45,
+    "block": "brick",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "8": {
+  "name": "tnt_side",
+  "uses": [
+   {
+    "id": 46,
+    "block": "tnt",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 46,
+    "block": "tnt",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 46,
+    "block": "tnt",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 46,
+    "block": "tnt",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "9": {
+  "name": "tnt_top",
+  "uses": [
+   {
+    "id": 46,
+    "block": "tnt",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "10": {
+  "name": "tnt_bottom",
+  "uses": [
+   {
+    "id": 46,
+    "block": "tnt",
+    "face": "bottom",
+    "via": "side"
+   }
+  ]
+ },
+ "12": {
+  "name": "plant_red",
+  "uses": [
+   {
+    "id": 38,
+    "block": "plantRed",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 38,
+    "block": "plantRed",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 38,
+    "block": "plantRed",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 38,
+    "block": "plantRed",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 38,
+    "block": "plantRed",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 38,
+    "block": "plantRed",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "13": {
+  "name": "plant_yellow",
+  "uses": [
+   {
+    "id": 37,
+    "block": "plantYellow",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 37,
+    "block": "plantYellow",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 37,
+    "block": "plantYellow",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 37,
+    "block": "plantYellow",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 37,
+    "block": "plantYellow",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 37,
+    "block": "plantYellow",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "15": {
+  "name": "sapling",
+  "uses": [
+   {
+    "id": 6,
+    "block": "sapling",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 6,
+    "block": "sapling",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 6,
+    "block": "sapling",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 6,
+    "block": "sapling",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 6,
+    "block": "sapling",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 6,
+    "block": "sapling",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "16": {
+  "name": "cobblestone",
+  "uses": [
+   {
+    "id": 4,
+    "block": "cobblestone",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 4,
+    "block": "cobblestone",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 4,
+    "block": "cobblestone",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 4,
+    "block": "cobblestone",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 4,
+    "block": "cobblestone",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 4,
+    "block": "cobblestone",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "bottom",
+    "via": "world:air"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "top",
+    "via": "world:air"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "east",
+    "via": "world:air"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "west",
+    "via": "world:air"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "north",
+    "via": "world:air"
+   },
+   {
+    "id": 67,
+    "block": "stairCompactStone",
+    "face": "south",
+    "via": "world:air"
+   }
+  ]
+ },
+ "17": {
+  "name": "bedrock",
+  "uses": [
+   {
+    "id": 7,
+    "block": "bedrock",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 7,
+    "block": "bedrock",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 7,
+    "block": "bedrock",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 7,
+    "block": "bedrock",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 7,
+    "block": "bedrock",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 7,
+    "block": "bedrock",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "18": {
+  "name": "sand",
+  "uses": [
+   {
+    "id": 12,
+    "block": "sand",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 12,
+    "block": "sand",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 12,
+    "block": "sand",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 12,
+    "block": "sand",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 12,
+    "block": "sand",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 12,
+    "block": "sand",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "19": {
+  "name": "gravel",
+  "uses": [
+   {
+    "id": 13,
+    "block": "gravel",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 13,
+    "block": "gravel",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 13,
+    "block": "gravel",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 13,
+    "block": "gravel",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 13,
+    "block": "gravel",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 13,
+    "block": "gravel",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "20": {
+  "name": "wood_side",
+  "uses": [
+   {
+    "id": 17,
+    "block": "wood",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 17,
+    "block": "wood",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 17,
+    "block": "wood",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 17,
+    "block": "wood",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "21": {
+  "name": "wood_end",
+  "uses": [
+   {
+    "id": 17,
+    "block": "wood",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 17,
+    "block": "wood",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "22": {
+  "name": "block_steel_top",
+  "uses": [
+   {
+    "id": 42,
+    "block": "blockSteel",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "23": {
+  "name": "block_gold_top",
+  "uses": [
+   {
+    "id": 41,
+    "block": "blockGold",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "24": {
+  "name": "block_diamond_top",
+  "uses": [
+   {
+    "id": 57,
+    "block": "blockDiamond",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "25": {
+  "name": "chest_end",
+  "uses": [
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "bottom",
+    "via": "world:air"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "top",
+    "via": "world:air"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "bottom",
+    "via": "world:same_x_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "top",
+    "via": "world:same_x_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "bottom",
+    "via": "world:same_x_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "top",
+    "via": "world:same_x_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "bottom",
+    "via": "world:same_z_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "top",
+    "via": "world:same_z_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "bottom",
+    "via": "world:same_z_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "top",
+    "via": "world:same_z_pos"
+   }
+  ]
+ },
+ "26": {
+  "name": "chest_side",
+  "uses": [
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "east",
+    "via": "world:air"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "north",
+    "via": "world:air"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "south",
+    "via": "world:air"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "north",
+    "via": "world:same_x_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "south",
+    "via": "world:same_x_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "north",
+    "via": "world:same_x_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "south",
+    "via": "world:same_x_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "east",
+    "via": "world:same_z_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "west",
+    "via": "world:same_z_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "east",
+    "via": "world:same_z_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "west",
+    "via": "world:same_z_pos"
+   }
+  ]
+ },
+ "27": {
+  "name": "chest_front",
+  "uses": [
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "west",
+    "via": "world:air"
+   }
+  ]
+ },
+ "28": {
+  "name": "mushroom_red",
+  "uses": [
+   {
+    "id": 40,
+    "block": "mushroomRed",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 40,
+    "block": "mushroomRed",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 40,
+    "block": "mushroomRed",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 40,
+    "block": "mushroomRed",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 40,
+    "block": "mushroomRed",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 40,
+    "block": "mushroomRed",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "29": {
+  "name": "mushroom_brown",
+  "uses": [
+   {
+    "id": 39,
+    "block": "mushroomBrown",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 39,
+    "block": "mushroomBrown",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 39,
+    "block": "mushroomBrown",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 39,
+    "block": "mushroomBrown",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 39,
+    "block": "mushroomBrown",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 39,
+    "block": "mushroomBrown",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "31": {
+  "name": "fire",
+  "uses": [
+   {
+    "id": 51,
+    "block": "fire",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 51,
+    "block": "fire",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 51,
+    "block": "fire",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 51,
+    "block": "fire",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 51,
+    "block": "fire",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 51,
+    "block": "fire",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "32": {
+  "name": "ore_gold",
+  "uses": [
+   {
+    "id": 14,
+    "block": "oreGold",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 14,
+    "block": "oreGold",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 14,
+    "block": "oreGold",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 14,
+    "block": "oreGold",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 14,
+    "block": "oreGold",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 14,
+    "block": "oreGold",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "33": {
+  "name": "ore_iron",
+  "uses": [
+   {
+    "id": 15,
+    "block": "oreIron",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 15,
+    "block": "oreIron",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 15,
+    "block": "oreIron",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 15,
+    "block": "oreIron",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 15,
+    "block": "oreIron",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 15,
+    "block": "oreIron",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "34": {
+  "name": "ore_coal",
+  "uses": [
+   {
+    "id": 16,
+    "block": "oreCoal",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 16,
+    "block": "oreCoal",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 16,
+    "block": "oreCoal",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 16,
+    "block": "oreCoal",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 16,
+    "block": "oreCoal",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 16,
+    "block": "oreCoal",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "35": {
+  "name": "bookshelf_side",
+  "uses": [
+   {
+    "id": 47,
+    "block": "bookshelf",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 47,
+    "block": "bookshelf",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 47,
+    "block": "bookshelf",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 47,
+    "block": "bookshelf",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "36": {
+  "name": "cobblestone_mossy",
+  "uses": [
+   {
+    "id": 48,
+    "block": "cobblestoneMossy",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 48,
+    "block": "cobblestoneMossy",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 48,
+    "block": "cobblestoneMossy",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 48,
+    "block": "cobblestoneMossy",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 48,
+    "block": "cobblestoneMossy",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 48,
+    "block": "cobblestoneMossy",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "37": {
+  "name": "obsidian",
+  "uses": [
+   {
+    "id": 49,
+    "block": "obsidian",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 49,
+    "block": "obsidian",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 49,
+    "block": "obsidian",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 49,
+    "block": "obsidian",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 49,
+    "block": "obsidian",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 49,
+    "block": "obsidian",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "38": {
+  "name": "block_steel_side",
+  "uses": [
+   {
+    "id": 42,
+    "block": "blockSteel",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 42,
+    "block": "blockSteel",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 42,
+    "block": "blockSteel",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 42,
+    "block": "blockSteel",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "39": {
+  "name": "block_gold_side",
+  "uses": [
+   {
+    "id": 41,
+    "block": "blockGold",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 41,
+    "block": "blockGold",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 41,
+    "block": "blockGold",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 41,
+    "block": "blockGold",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "40": {
+  "name": "block_diamond_side",
+  "uses": [
+   {
+    "id": 57,
+    "block": "blockDiamond",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 57,
+    "block": "blockDiamond",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 57,
+    "block": "blockDiamond",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 57,
+    "block": "blockDiamond",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "41": {
+  "name": "chest_front_same_x_pos",
+  "uses": [
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "west",
+    "via": "world:same_x_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "south",
+    "via": "world:same_z_neg"
+   }
+  ]
+ },
+ "42": {
+  "name": "chest_front_same_x_neg",
+  "uses": [
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "west",
+    "via": "world:same_x_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "south",
+    "via": "world:same_z_pos"
+   }
+  ]
+ },
+ "43": {
+  "name": "workbench_top",
+  "uses": [
+   {
+    "id": 58,
+    "block": "workbench",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "44": {
+  "name": "stone_oven_idle_front",
+  "uses": [
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "east",
+    "via": "world:air",
+    "meta": 2
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "west",
+    "via": "world:air",
+    "meta": 3
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "north",
+    "via": "world:air",
+    "meta": 4
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "south",
+    "via": "world:air",
+    "meta": 5
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "west",
+    "via": "side"
+   }
+  ]
+ },
+ "45": {
+  "name": "stone_oven_idle_side",
+  "uses": [
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "east",
+    "via": "world:air",
+    "meta": 0
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "west",
+    "via": "world:air",
+    "meta": 0
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "north",
+    "via": "world:air",
+    "meta": 0
+   },
+   {
+    "id": 61,
+    "block": "stoneOvenIdle",
+    "face": "south",
+    "via": "world:air",
+    "meta": 0
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "east",
+    "via": "world:air",
+    "meta": 0
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "west",
+    "via": "world:air",
+    "meta": 0
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "north",
+    "via": "world:air",
+    "meta": 0
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "south",
+    "via": "world:air",
+    "meta": 0
+   }
+  ]
+ },
+ "48": {
+  "name": "sponge",
+  "uses": [
+   {
+    "id": 19,
+    "block": "sponge",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 19,
+    "block": "sponge",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 19,
+    "block": "sponge",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 19,
+    "block": "sponge",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 19,
+    "block": "sponge",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 19,
+    "block": "sponge",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "49": {
+  "name": "glass",
+  "uses": [
+   {
+    "id": 20,
+    "block": "glass",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 20,
+    "block": "glass",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 20,
+    "block": "glass",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 20,
+    "block": "glass",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 20,
+    "block": "glass",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 20,
+    "block": "glass",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "50": {
+  "name": "ore_diamond",
+  "uses": [
+   {
+    "id": 56,
+    "block": "oreDiamond",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 56,
+    "block": "oreDiamond",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 56,
+    "block": "oreDiamond",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 56,
+    "block": "oreDiamond",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 56,
+    "block": "oreDiamond",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 56,
+    "block": "oreDiamond",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "51": {
+  "name": "ore_redstone",
+  "uses": [
+   {
+    "id": 73,
+    "block": "oreRedstone",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 73,
+    "block": "oreRedstone",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 73,
+    "block": "oreRedstone",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 73,
+    "block": "oreRedstone",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 73,
+    "block": "oreRedstone",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 73,
+    "block": "oreRedstone",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 74,
+    "block": "oreRedstoneGlowing",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 74,
+    "block": "oreRedstoneGlowing",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 74,
+    "block": "oreRedstoneGlowing",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 74,
+    "block": "oreRedstoneGlowing",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 74,
+    "block": "oreRedstoneGlowing",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 74,
+    "block": "oreRedstoneGlowing",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "52": {
+  "name": "leaves",
+  "uses": [
+   {
+    "id": 18,
+    "block": "leaves",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 18,
+    "block": "leaves",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 18,
+    "block": "leaves",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 18,
+    "block": "leaves",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 18,
+    "block": "leaves",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 18,
+    "block": "leaves",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "54": {
+  "name": "block_steel_bottom",
+  "uses": [
+   {
+    "id": 42,
+    "block": "blockSteel",
+    "face": "bottom",
+    "via": "side"
+   }
+  ]
+ },
+ "55": {
+  "name": "block_gold_bottom",
+  "uses": [
+   {
+    "id": 41,
+    "block": "blockGold",
+    "face": "bottom",
+    "via": "side"
+   }
+  ]
+ },
+ "56": {
+  "name": "block_diamond_bottom",
+  "uses": [
+   {
+    "id": 57,
+    "block": "blockDiamond",
+    "face": "bottom",
+    "via": "side"
+   }
+  ]
+ },
+ "57": {
+  "name": "chest_front_same_x_neg_t57",
+  "uses": [
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "east",
+    "via": "world:same_x_neg"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "north",
+    "via": "world:same_z_pos"
+   }
+  ]
+ },
+ "58": {
+  "name": "chest_front_same_x_pos_t58",
+  "uses": [
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "east",
+    "via": "world:same_x_pos"
+   },
+   {
+    "id": 54,
+    "block": "chest",
+    "face": "north",
+    "via": "world:same_z_neg"
+   }
+  ]
+ },
+ "59": {
+  "name": "workbench_side",
+  "uses": [
+   {
+    "id": 58,
+    "block": "workbench",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 58,
+    "block": "workbench",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "60": {
+  "name": "workbench_side_t60",
+  "uses": [
+   {
+    "id": 58,
+    "block": "workbench",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 58,
+    "block": "workbench",
+    "face": "north",
+    "via": "side"
+   }
+  ]
+ },
+ "61": {
+  "name": "stone_oven_active_front_m2",
+  "uses": [
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "east",
+    "via": "world:air",
+    "meta": 2
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "west",
+    "via": "world:air",
+    "meta": 3
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "north",
+    "via": "world:air",
+    "meta": 4
+   },
+   {
+    "id": 62,
+    "block": "stoneOvenActive",
+    "face": "south",
+    "via": "world:air",
+    "meta": 5
+   }
+  ]
+ },
+ "64": {
+  "name": "cloth",
+  "uses": [
+   {
+    "id": 35,
+    "block": "cloth",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 35,
+    "block": "cloth",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 35,
+    "block": "cloth",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 35,
+    "block": "cloth",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 35,
+    "block": "cloth",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 35,
+    "block": "cloth",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "65": {
+  "name": "mob_spawner",
+  "uses": [
+   {
+    "id": 52,
+    "block": "mobSpawner",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 52,
+    "block": "mobSpawner",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 52,
+    "block": "mobSpawner",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 52,
+    "block": "mobSpawner",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 52,
+    "block": "mobSpawner",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 52,
+    "block": "mobSpawner",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "66": {
+  "name": "snow",
+  "uses": [
+   {
+    "id": 78,
+    "block": "snow",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 78,
+    "block": "snow",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 78,
+    "block": "snow",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 78,
+    "block": "snow",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 78,
+    "block": "snow",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 78,
+    "block": "snow",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 80,
+    "block": "blockSnow",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 80,
+    "block": "blockSnow",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 80,
+    "block": "blockSnow",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 80,
+    "block": "blockSnow",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 80,
+    "block": "blockSnow",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 80,
+    "block": "blockSnow",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "67": {
+  "name": "ice",
+  "uses": [
+   {
+    "id": 79,
+    "block": "ice",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 79,
+    "block": "ice",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 79,
+    "block": "ice",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 79,
+    "block": "ice",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 79,
+    "block": "ice",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 79,
+    "block": "ice",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "68": {
+  "name": "grass_side_snow_above",
+  "uses": [
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "east",
+    "via": "world:snow_above"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "west",
+    "via": "world:snow_above"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "north",
+    "via": "world:snow_above"
+   },
+   {
+    "id": 2,
+    "block": "grass",
+    "face": "south",
+    "via": "world:snow_above"
+   }
+  ]
+ },
+ "69": {
+  "name": "cactus_top",
+  "uses": [
+   {
+    "id": 81,
+    "block": "cactus",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "70": {
+  "name": "cactus_side",
+  "uses": [
+   {
+    "id": 81,
+    "block": "cactus",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 81,
+    "block": "cactus",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 81,
+    "block": "cactus",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 81,
+    "block": "cactus",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "71": {
+  "name": "cactus_bottom",
+  "uses": [
+   {
+    "id": 81,
+    "block": "cactus",
+    "face": "bottom",
+    "via": "side"
+   }
+  ]
+ },
+ "72": {
+  "name": "block_clay",
+  "uses": [
+   {
+    "id": 82,
+    "block": "blockClay",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 82,
+    "block": "blockClay",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 82,
+    "block": "blockClay",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 82,
+    "block": "blockClay",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 82,
+    "block": "blockClay",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 82,
+    "block": "blockClay",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "73": {
+  "name": "reed",
+  "uses": [
+   {
+    "id": 83,
+    "block": "reed",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 83,
+    "block": "reed",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 83,
+    "block": "reed",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 83,
+    "block": "reed",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 83,
+    "block": "reed",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 83,
+    "block": "reed",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "74": {
+  "name": "jukebox",
+  "uses": [
+   {
+    "id": 84,
+    "block": "jukebox",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 84,
+    "block": "jukebox",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 84,
+    "block": "jukebox",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 84,
+    "block": "jukebox",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 84,
+    "block": "jukebox",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "75": {
+  "name": "jukebox_top",
+  "uses": [
+   {
+    "id": 84,
+    "block": "jukebox",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "80": {
+  "name": "torch",
+  "uses": [
+   {
+    "id": 50,
+    "block": "torch",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 50,
+    "block": "torch",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 50,
+    "block": "torch",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 50,
+    "block": "torch",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 50,
+    "block": "torch",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 50,
+    "block": "torch",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "81": {
+  "name": "door_wood_side_m8",
+  "uses": [
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "82": {
+  "name": "door_steel_side_m8",
+  "uses": [
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "83": {
+  "name": "ladder",
+  "uses": [
+   {
+    "id": 65,
+    "block": "ladder",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 65,
+    "block": "ladder",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 65,
+    "block": "ladder",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 65,
+    "block": "ladder",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 65,
+    "block": "ladder",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 65,
+    "block": "ladder",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "84": {
+  "name": "redstone_wire",
+  "uses": [
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "86": {
+  "name": "tilled_field_top_m1",
+  "uses": [
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "87": {
+  "name": "tilled_field_top",
+  "uses": [
+   {
+    "id": 60,
+    "block": "tilledField",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "88": {
+  "name": "crops",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "89": {
+  "name": "crops_m1",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 1
+   }
+  ]
+ },
+ "90": {
+  "name": "crops_m2",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 2
+   }
+  ]
+ },
+ "91": {
+  "name": "crops_m3",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 3
+   }
+  ]
+ },
+ "92": {
+  "name": "crops_m4",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 4
+   }
+  ]
+ },
+ "93": {
+  "name": "crops_m5",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 5
+   }
+  ]
+ },
+ "94": {
+  "name": "crops_m6",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   }
+  ]
+ },
+ "95": {
+  "name": "crops_m7",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   }
+  ]
+ },
+ "96": {
+  "name": "lever",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 69,
+    "block": "lever",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 69,
+    "block": "lever",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 69,
+    "block": "lever",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 69,
+    "block": "lever",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 69,
+    "block": "lever",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 69,
+    "block": "lever",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "97": {
+  "name": "door_wood",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 64,
+    "block": "doorWood",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "98": {
+  "name": "door_steel",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 71,
+    "block": "doorSteel",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "99": {
+  "name": "torch_redstone_active",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "100": {
+  "name": "redstone_wire_m1",
+  "uses": [
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 55,
+    "block": "redstoneWire",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 76,
+    "block": "torchRedstoneActive",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "101": {
+  "name": "crops_m13",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   }
+  ]
+ },
+ "102": {
+  "name": "crops_m14",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   }
+  ]
+ },
+ "103": {
+  "name": "crops_m15",
+  "uses": [
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 59,
+    "block": "crops",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "112": {
+  "name": "minecart_track_m6",
+  "uses": [
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "115": {
+  "name": "torch_redstone_idle",
+  "uses": [
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 1
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 2
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 3
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 4
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 5
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 6
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 7
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 8
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 9
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 10
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 11
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 12
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 13
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 14
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "bottom",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "east",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "west",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "north",
+    "via": "meta",
+    "meta": 15
+   },
+   {
+    "id": 75,
+    "block": "torchRedstoneIdle",
+    "face": "south",
+    "via": "meta",
+    "meta": 15
+   }
+  ]
+ },
+ "128": {
+  "name": "minecart_track",
+  "uses": [
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 66,
+    "block": "minecartTrack",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "205": {
+  "name": "water_moving_end",
+  "uses": [
+   {
+    "id": 8,
+    "block": "waterMoving",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 8,
+    "block": "waterMoving",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 9,
+    "block": "waterStill",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 9,
+    "block": "waterStill",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "206": {
+  "name": "water_moving_side",
+  "uses": [
+   {
+    "id": 8,
+    "block": "waterMoving",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 8,
+    "block": "waterMoving",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 8,
+    "block": "waterMoving",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 8,
+    "block": "waterMoving",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 9,
+    "block": "waterStill",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 9,
+    "block": "waterStill",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 9,
+    "block": "waterStill",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 9,
+    "block": "waterStill",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ },
+ "237": {
+  "name": "lava_moving_end",
+  "uses": [
+   {
+    "id": 10,
+    "block": "lavaMoving",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 10,
+    "block": "lavaMoving",
+    "face": "top",
+    "via": "side"
+   },
+   {
+    "id": 11,
+    "block": "lavaStill",
+    "face": "bottom",
+    "via": "side"
+   },
+   {
+    "id": 11,
+    "block": "lavaStill",
+    "face": "top",
+    "via": "side"
+   }
+  ]
+ },
+ "238": {
+  "name": "lava_moving_side",
+  "uses": [
+   {
+    "id": 10,
+    "block": "lavaMoving",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 10,
+    "block": "lavaMoving",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 10,
+    "block": "lavaMoving",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 10,
+    "block": "lavaMoving",
+    "face": "south",
+    "via": "side"
+   },
+   {
+    "id": 11,
+    "block": "lavaStill",
+    "face": "east",
+    "via": "side"
+   },
+   {
+    "id": 11,
+    "block": "lavaStill",
+    "face": "west",
+    "via": "side"
+   },
+   {
+    "id": 11,
+    "block": "lavaStill",
+    "face": "north",
+    "via": "side"
+   },
+   {
+    "id": 11,
+    "block": "lavaStill",
+    "face": "south",
+    "via": "side"
+   }
+  ]
+ }
+}

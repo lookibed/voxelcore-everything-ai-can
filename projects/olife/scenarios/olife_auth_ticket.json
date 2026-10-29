@@ -1,0 +1,13 @@
+{
+ "description": "Wave 4b: ticket auth. Auth service (tools/olife/auth_service.py, HTTPS with a self-signed cert, accounts/bans from the supervisor DB) issues short one-time tickets (HMAC per gateway, <= 60 s); bots fetch them over HTTPS from VoxelCore 0.32 (network.request, verify_ssl=false + request sealed to the pinned x25519 key) and log in with the ticket in Hello.token. Then tools/olife/ticket_check.py: good -> Welcome (+PacksChanged), replayed -> 15, expired -> 14, wrong gateway -> 17, bad signature -> 16, malformed -> 4, banned account: no ticket from the service and a minted one -> 5, bad token -> refused; gateway and world alive, replication consistent.",
+ "setup": {"session": {"clients": 2, "client_kind": "bot", "sandbox": false, "auth_ticket": true, "auth_mode": "both", "packs_reload": true}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 5}},
+  {"cmd": "olife_bots_check", "args": {"min_tickets": 1}},
+  {"cmd": "olife_ticket_auth", "args": {"packs": true}},
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 100}},
+  {"cmd": "olife_metrics"}
+ ]
+}

@@ -1,0 +1,15 @@
+{
+    "caption": "cobblestone",
+    "texture-faces": [
+        "am_cobblestone",
+        "am_cobblestone",
+        "am_cobblestone_bottom",
+        "am_cobblestone",
+        "am_cobblestone",
+        "am_cobblestone"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 4
+}

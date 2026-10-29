@@ -1,0 +1,8 @@
+{
+    "module": "wasmdemo:modules/demo.lua",
+    "graphics": "canvas",
+    "width": 160,
+    "height": 100,
+    "args": ["demo"],
+    "files": "wasmdemo:data"
+}

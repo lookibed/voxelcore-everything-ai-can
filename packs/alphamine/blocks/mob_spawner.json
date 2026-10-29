@@ -1,0 +1,15 @@
+{
+    "caption": "mobSpawner",
+    "texture-faces": [
+        "am_mob_spawner",
+        "am_mob_spawner",
+        "am_mob_spawner_bottom",
+        "am_mob_spawner",
+        "am_mob_spawner",
+        "am_mob_spawner"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 52
+}

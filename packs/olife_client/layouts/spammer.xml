@@ -1,0 +1,25 @@
+<!-- Olife Spammer library page (UX B2, 03.10, olife_b2): native 0.32 XML overlay in the style of the A1 pages.
+     Rows (built by olife_client:spammer sp_refresh into sp_rows): preview (texture of the captured look), name, size,
+     capture time / version, how many instances were thrown; «Выбрать» (the current slot), «Имя» (rename: the field below
+     + OK), «x» (delete). Quota and limits in the header. Opened with Shift+RMB while the Spammer is in hand. The world
+     decides everything: buttons send SpamSlotOp, the list shown is the last SpamList of the world. -->
+<container id="sp_root" color="#060A16E0" size-func="unpack(gui.get_viewport())">
+    <panel id="sp_panel" position-func="gui.get_viewport()[1]/2-300,math.max(8,gui.get_viewport()[2]/2-224)" size="600,448"
+           color="#141830F0" padding="10" interval="6" orientation="vertical">
+        <label id="sp_title" size="580,24" color="#FFD080">Спамер — снимки мобов</label>
+        <label id="sp_quota" size="580,18" color="#90A0B0"></label>
+        <panel id="sp_rows" size="580,280" color="#00000060" padding="4" interval="2" scrollable="true"></panel>
+        <container size="580,32" color="0">
+            <label id="sp_sel" pos="0,6" size="250,20" color="#C8D4E8"></label>
+            <textbox id="sp_name" pos="256,0" size="200,30" padding="8,6,8,2" hint="новое имя снимка"
+                     validator="function(t) return is_valid_snap_name(t) end"></textbox>
+            <button id="sp_rename_ok" pos="462,0" size="118,30" color="#5050ff80" onclick="ui_sp_rename_ok()"
+                    tooltip="Переименовать выбранный снимок">Переименовать</button>
+        </container>
+        <container size="580,32" color="0">
+            <button id="sp_close" pos="0,0" size="120,30" color="#5050ff" onclick="ui_sp_close()">ЗАКРЫТЬ</button>
+            <button id="sp_refresh" pos="126,0" size="140,30" color="#5050ff80" onclick="ui_sp_refresh()">Обновить</button>
+            <label id="sp_note" pos="272,6" size="308,20" color="#FFB0A0"></label>
+        </container>
+    </panel>
+</container>

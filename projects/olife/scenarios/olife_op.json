@@ -1,0 +1,22 @@
+{
+ "description": "UX A2: operator commands. alice (admin, windowed F2F) and bob (windowed F2F) + carol (protocol), real olife-sandboxd, samples bmob1/bmob2 (bob) and cmob (carol) running demo_orbit. Non-admin refusals (bob /kill from the chat window -> 16 + refuse sound; carol /freeze 16, /blah 17, /mobs only hers); /mobs bob; freeze/unfreeze a mob (world stops it, bob's tag FROZEN, Notice + fx_freeze); /limits bob fuel 20000 + bucket 0 -> sandboxd set_limits for bob's owner, sandbox throttles, tag THROTTLED, Notice; defaults back; per-mob actions 0 (world-side); CLI (olife.op via=cli) and panel (POST /call/olife.op via=panel); /tp; /kill and /killall; /kick bob (Disconnect 10, fx kicked); /ban carol (Disconnect 5, re-login refused), /unban; audit.jsonl has every command, refusals and via chat/cli/panel; op lines in chat.",
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": ["olife-alice", "olife-bob"],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_a2_setup", "args": {"admins": "alice", "samples": [["bob", "bmob1", "demo_orbit"], ["bob", "bmob2", "demo_orbit"], ["carol", "cmob", "demo_orbit"]], "settle": 2.0}},
+  {"cmd": "olife_a2_op", "args": {}},
+  {"cmd": "olife_stdin", "args": {"cmd": "ops_status", "pattern": "ops chat="}},
+  {"cmd": "olife_status", "args": {"strict": false}},
+  {"cmd": "olife_metrics"}
+ ]
+}

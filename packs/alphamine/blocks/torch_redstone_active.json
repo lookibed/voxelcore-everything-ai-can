@@ -1,0 +1,203 @@
+{
+    "caption": "torchRedstoneActive",
+    "model": "custom",
+    "model-name": "amblk_torch_redstone_active_m5",
+    "texture-faces": [
+        "am_torch_redstone_active",
+        "am_torch_redstone_active",
+        "am_torch_redstone_active",
+        "am_redstone_wire",
+        "am_torch_redstone_active",
+        "am_torch_redstone_active"
+    ],
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m1",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m2",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m3",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m4",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_torch_redstone_active_m5",
+                "texture-faces": [
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active",
+                    "am_redstone_wire_m1",
+                    "am_torch_redstone_active",
+                    "am_torch_redstone_active"
+                ]
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.4375,
+        0.0,
+        0.4375,
+        0.125,
+        0.625,
+        0.125
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 76
+}

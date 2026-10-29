@@ -1,0 +1,7 @@
+{
+    "root": {
+        "nodes": [
+            {"name": "ball", "model": "olife_spamball", "offset": [0, 0, 0], "nodes": []}
+        ]
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "sounds": [
+        "olife/inject",
+        "olife/grab",
+        "olife/release",
+        "olife/delete",
+        "olife/refuse",
+        "olife/ok",
+        "olife/fx_stop",
+        "olife/fx_save",
+        "olife/fx_spawn",
+        "olife/fx_fork",
+        "olife/fx_throttle",
+        "olife/fx_freeze",
+        "olife/fx_unfreeze",
+        "olife/fx_op",
+        "olife/fx_kick",
+        "olife/fx_restart",
+        "olife/fx_chat"
+    ],
+    "models": [
+        "olife_bench",
+        "olife_bone",
+        "olife_injector",
+        "olife_gravitygun",
+        "olife_spammer",
+        "olife_spamball",
+        "olife_menu_scene"
+    ],
+    "textures": [
+        "gui/olife_play",
+        "gui/olife_pause",
+        "gui/olife_save",
+        "gui/olife_close",
+        "entities/olife_bench",
+        "entities/olife_bone",
+        "entities/olife_spammer",
+        "entities/olife_spamball"
+    ],
+    "fonts": [
+        {
+            "name": "olife_mono",
+            "path": "fonts/olife_mono.ttf",
+            "size": 16
+        }
+    ],
+    "animation": [
+        "olife_wave",
+        "olife_spin",
+        "olife_bob",
+        "olife_pulse"
+    ]
+}

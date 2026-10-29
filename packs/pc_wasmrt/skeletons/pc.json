@@ -1,0 +1,12 @@
+{
+  "root": {
+    "nodes": [
+      {
+        "name": "body",
+        "model": "pc",
+        "offset":[0,-0.7,0],
+        "nodes": []
+      }
+    ]
+  }
+}

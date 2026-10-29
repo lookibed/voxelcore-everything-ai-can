@@ -1,0 +1,32 @@
+{
+ "description": "UX B1 (olife_b1): Injector in hand = «my mobs» mode. 3 windowed F2F 0.32 clients (alice, bob = admin, carol = stranger) + real olife-sandboxd. alice: demo_orbit sample (running) + two stopped benches; bob: one bench. Panel on M (only with the Injector): rows = the account's benches of the world (eid, name, status, position, loaded, credits/fuel/KV), bob sees only his, carol none, watch refresh, select -> HUD marker + world highlight; camera V: third person (3..6 bl, looks at the mob, follows it) -> from the eyes (<= 1 bl) -> own camera; rescue: the world drops a bench 25 bl underground, «Спасти» -> MobConfirm (nothing moves), wrong token -> 23, «Подтвердить» -> back to the last safe position (<= 1 bl) + MobRescued + sound, carol -> 3; destroy: without confirmation the bench stays, «Отмена», stale token -> 23, with confirmation gone + a last-state slot, carol -> 3; restore: KV + look set, operator /kill (A2) -> dead row, carol -> 3, «Восстановить» + confirm -> new eid with the same code_fnv/model/texture/KV, RUN and moving, again -> 26; editor: 3 saves -> 3 commits, tab «Профиль» (owner, rights, hash), «Вернуть» #2 -> 4 commits and the world's code = v2, «Открыть» #3 -> text in the editor, a syntax error on line 2 -> ERROR + «ошибка в строке 2» + caret on it.",
+ "setup": {
+  "session": {
+   "clients": 3,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": ["olife-alice", "olife-bob", "olife-carol"],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_a2_setup", "args": {"admins": "bob", "samples": [["alice", "m_orbit", "demo_orbit"]], "settle": 2.0}},
+  {"cmd": "olife_bench", "args": {"account": "alice", "key": "a_stop", "name": "a_stop"}},
+  {"cmd": "olife_bench", "args": {"account": "alice", "key": "a_del", "name": "a_del"}},
+  {"cmd": "olife_bench", "args": {"account": "bob", "key": "b1", "name": "b1"}},
+  {"cmd": "olife_b1_list", "args": {}},
+  {"cmd": "olife_b1_camera", "args": {"mob": "m_orbit"}},
+  {"cmd": "olife_b1_rescue", "args": {"mob": "a_stop", "depth": 25}},
+  {"cmd": "olife_b1_destroy", "args": {"mob": "a_del", "other": "a_stop"}},
+  {"cmd": "olife_b1_restore", "args": {"mob": "m_orbit"}},
+  {"cmd": "olife_b1_editor", "args": {"bench": "a_stop"}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 80}},
+  {"cmd": "olife_stdin", "args": {"cmd": "mobs_status", "pattern": "mobs\\("}},
+  {"cmd": "olife_stdin", "args": {"cmd": "editor_status", "pattern": "editor\\("}},
+  {"cmd": "olife_status", "args": {"strict": false}},
+  {"cmd": "olife_metrics"}
+ ]
+}

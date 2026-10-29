@@ -1,0 +1,109 @@
+# Архитектура
+
+```
+C / Java / Rust ──(wasi-sdk / TeaVM 0.10.2)──> .wasm ──(Spider: spider-cli -t lua-no-ffi)──> модуль .lua
+                                                                                              │
+VoxelCore ── пак wasmrt ── host.lua (загрузка, JIT) ── app.lua (манифест, импорты vc.*, WASI, кадры)
+                                  │                           │
+                                  │          графика: gfx_canvas.lua / gfx_post.lua / gfx_tris.lua
+                                  │                           │
+                                  └──── шейдеры: shaders/ui.glslf (canvas, палитра, треугольники),
+                                                 shaders/effects/wasmrt_*.glsl (постэффекты)
+```
+
+## Spider (`/root/Spider`)
+- `spider-cli <file.wasm> -t lua-no-ffi [--yield-every N] [--saturating-truncation]` → Lua-модуль:
+  `local module, host_api = dofile(...)`; `module(imports)` → экспорты, `exports.__host` — доступ к памяти.
+- Цели: `lua-no-ffi` (везде сейчас), `lua-jit` (FFI, не в VoxelCore), `luau`. У `lua-no-ffi` флаг
+  `--memory table|bytearray`: `table` (по умолчанию) — память как таблица упакованных 32-битных слов,
+  `bytearray` — байты в `Bytearray` VoxelCore (в обычном LuaJIT — `ffi`); принтер общий, отличается только
+  модуль памяти рантайма. Старое `-t lua-bytearray` — синоним с предупреждением. Хосты обязаны ходить в
+  память через `__host` (wasmrt так и делает); `wasm_host.lua` паков gameboy/doom/videoplayer читают `__w`
+  напрямую — только для `table`. Сравнение режимов в движке — `export/membench/README.txt`.
+- `--yield-every N` — точки уступки в циклах: хост вызывает `__host.set_yield_hook(fn, N)`; wasmrt так режет
+  долгие вычисления на кванты (`slice_ms`) и снимает профиль.
+- `--saturating-truncation` — все `trunc` float→int как `trunc_sat` (NaN → 0): семантика Java `(int)`,
+  нужна TeaVM-коду.
+- `--f32 number` (11.10) — f32 как число Lua (`runtime/core/f32_number.lua`: округление до binary32 после каждой операции,
+  биты только на load/store/reinterpret; бит в бит, кроме знака и полезной нагрузки NaN); по умолчанию `bits`. Включено у
+  smollm (prefill 869 → 683 мс/токен); Quake/Doom остаются на битах (выигрыш у Quake в движке не стабилен).
+- Обход лимитов LuaJIT (кадр 250 слотов, 60 upvalue, 200 локальных, прыжок ±32767, 200 уровней синтаксиса):
+  широкие вызовы через таблицу (`rt_call_spread`), вынос длинных последовательностей в замыкания
+  (`--[[spider:chunk]]`), плоский `if … goto __spider_skip_N … ::label:: do end` при глубокой вложенности,
+  «кадровый режим» (`__spider_frame`, `__spider_parts`) для функций с аномальной вложенностью (TeaVM).
+  Подробности — `/root/Spider/Hosts/README.md`, код — `Targets/LuaNoFFI/Printer/src/{statement,expression,lib}.rs`.
+- Каждая функция модуля помечена `--[[fn:имя]]` (секция `name` wasm) — для профиля и стеков падений.
+
+## wasmrt (`content/wasmrt`)
+- `modules/app.lua` — запуск по манифесту (`wasm.json`), модели программы: **frame** (экспорт `vc_frame`,
+  хост зовёт каждый тик) и **main** (`_start` в корутине, уступки на `vc_frame_end`/`gfx_present` и в точках
+  уступки). Импорты: `vc.*` (ABI), `wasi_snapshot_preview1`, `teavmMath`/`teavm` (для TeaVM), плюс
+  расширение пака (`"extension": "пак:модуль"` → функция `ctx -> {имя = функция, __tick = ...}`).
+- `modules/host.lua` — загрузка модуля, JIT-настройки (`set_jit_tuned`, `flush_jit`, `reroll_jit`).
+- `modules/wasi.lua` — WASI (stdout/stderr → лог, чтение файлов пака, часы).
+- Графика (поле манифеста `graphics`):
+  - `canvas` — команды `vc_gfx_submit` растеризуются на Lua / кадр RGBA через `vc_gfx_present` →
+    Canvas → `<image>`. Палитра на GPU (`"palette": "gpu"`): индексы по 4 в тексель + палитра, цвет
+    подставляет `shaders/ui.glslf` (маркер цвета картинки `#FF00FF80`).
+  - `posteffect` — команды/кадр в uniform-массивах постэффекта (`effects/wasmrt_cmds.glsl`,
+    `wasmrt_indexed.glsl`). Только в мире, массивы до ~1018 vec4.
+  - `tris` — **GPU-растеризация треугольников** (`modules/gfx_tris.lua` + `ui.glslf`, маркер `#FF01FF80`):
+    одна текстура canvas 2048 × (2048 + 1 + 256 + 1 + 128): атлас текстур программы (упаковка guillotine),
+    заголовок (число треугольников, размер экрана, цвет и глубина очистки, биннинг, слоты текстур),
+    треугольники по 16 текселей (формат — `VcGL.java`, до 32768 за кадр), таблица тайлов 32×32 и списки
+    номеров треугольников по тайлам (биннинг на CPU в `frame`, формат — в начале `gfx_tris.lua`).
+    Шейдер для пикселя проходит список своего тайла по порядку: перспективно-корректные UV/цвет, текстура
+    (+ `CC_swap_rb`), альфа-тест, глубина с допуском, смешивание (8 режимов). Манифест: `tris_tile`
+    (сторона тайла, 0 — полный перебор), `tris_verify` (1 — сверка с полным перебором, расхождения пурпурным;
+    2 — коэффициент тумана серым; 3 + `tris_probe: [x, y]` — числовой зонд пикселя через `vc_shader_cells`,
+    см. `tools/mcp/README.md`). Туман: наборы (цвет, режим, начало, длина, коэффициенты восстановления
+    позиции в пространстве камеры из 1/w и NDC пикселя) приходят импортом `eag_fog` перед кадром в строки
+    после индексов; треугольник несёт флаг 8 и номер набора (биты 14–21 слова 13); формула — `core.glsl:212-216`.
+- ABI `vc.*` — `/root/Spider/Hosts/VoxelCore/include/vc.h`, описание — `content/wasmrt/README.md`.
+- WASM-4 (`platform: wasm4`) — отдельный хост `modules/w4.lua` (память по адресам WASM-4, шрифт, звук).
+
+## Паки-программы
+| Пак | Исходник (Spider `tests/manual/`) | Как рисует |
+|---|---|---|
+| `pong` | `real-world-pong` (C, `vc.h`) | posteffect / canvas |
+| `wasmdemo` | `wasmrt-demo` | canvas |
+| `doom` | `real-world-doomgeneric` (`dg_wasmrt.c`) | canvas (+ свой старый хост `wasm_host.lua`) |
+| `quake` | `real-world-quakegeneric` (`qg_wasmrt.c`) | canvas + GPU-палитра / CPU / posteffect |
+| `eaglercraft` | `real-world-eaglercraft` (Java, TeaVM) | tris (GPU), расширение `eag_host.lua` |
+| `halflife` | `real-world-halflife` (Xash3D FWGS + hlsdk-portable, `vc_platform.c`; клиент/сервер/ref/fs — статические «DLL», символы локализованы `tools/wasm_localize.py`) | canvas, кадр ref_soft 16 бит → цвет на GPU (`vc_gfx_present_rgb16`) |
+| `smollm` | `real-world-smollm` (C, llama2.c runq: LLM Ru-Small-Instruct 94M, Q8_0) | без графики: своя XML-страница чата `smollm_chat`, расширение `llm_host.lua` (промпты/ответ по токенам через `vc.llm_*`), веса 100 МБ читаются WASI `fread` в память модуля; горячие ядра (матвек Q8, внимание) — ручной Lua `llm_kernels.lua` через импорты `vc.llm_matmul`/`llm_attention` (C — запасной путь и эталон) |
+| `smollm_gpu` | `real-world-smollm-gpu` (данные: страницы весов из `model_q8.bin`, эталоны C) | не wasmrt: вся модель на GPU — фреймы GUI в текстуру как страницы памяти, режимы вычислений — программа `smollm_gpu` в общем `ui.glslf` пака `gpu_compute` (`shaders/gpu_smollm.glsl`, маркер `#FF<режим>FF80`, fp64), чтение `assets.to_canvas`; страница демо `smollm_gpu` (agents/research/SMOLLM_GPU.md) |
+| `gpu_worldgen` | — (только пак: Lua + GLSL) | не wasmrt: генерация мира на GPU — генератор пустоты `gpu_worldgen:gpu`, программа `gpu_worldgen` в общем `ui.glslf` пака `gpu_compute` (`shaders/gpu_worldgen.glsl`, маркер `#FE03FF80`) считает 3D-шум чанков во фрейме `gpuwg_fb`, чтение `assets.to_canvas`, запись `world.set_chunk_data` по `on_chunk_present` (agents/research/GPU_WORLDGEN.md) |
+| `gpu_compute` | — (только пак: Lua + GLSL; `tools/gpu_compute_build.py`) | не wasmrt: API «compute-шейдера» для паков — один общий `ui.glslf` с программами клиентов (маркер `#RRGGBB80`: R банк, G код; собирается заранее из `content/<пак>/shaders/gpu_<имя>.glsl`), проходы = фреймы в текстуру, чтение `assets.to_canvas`, порядок фреймов — проба; клиенты `gpu_worldgen` и `smollm_gpu` работают в одном мире (content/gpu_compute/README.md) |
+
+## Eaglercraft (Minecraft 1.5.2) подробно
+- Клиент: `upstream/` (копия `minecraft/eaglercraft-lax1dude` = Eaglercraft-SP2-1.5-src) + платформа
+  `src/vc/java/...` вместо браузерной `src/teavm` (JSO/WebGL):
+  - `EaglerAdapterImpl2.java` — сгенерирован стабом из десктопного адаптера (`tools/gen_stub.py`), затем
+    наполнен. **Оставшиеся стабы могут расходиться с браузерной версией** — сверять с
+    `upstream/src/teavm/.../EaglerAdapterImpl2.java` (так нашлись `connectionOpen`, `clientLANClosed`).
+  - `VcGL.java` — эмуляция WebGL2 для `EaglerAdapterGL30`/`FixedFunctionShader`: буферы, VAO, программы
+    по `#define CC_*`, униформы, трансформ вершин на CPU, отсечение ближней плоскостью, отсечение задних
+    граней, обратная глубина Eaglercraft (`clearDepth(-1)` → 0, `GEQUAL`), выдача треугольников хосту.
+    Математика на `double`, каждая вершина диапазона трансформируется один раз, квады по шаблону
+    `_wglDrawQuadArrays` без чтения индексов, кэш UV на буфер (ключ — версия данных и matrix_t).
+    **FBO — replay:** пока привязан FBO с цветовой текстурой, треугольники копятся в его список; квад с
+    этой текстурой размером с экран заменяется записью очистки глубины и копией списка (так рисуется весь
+    HUD Eaglercraft: `GameOverlayFramebuffer`). Лайтмапа (`CC_unit1`, координаты `a_texture1`/`texCoordV1`,
+    билинейно с clamp) и освещение сущностей (`CC_lighting`, формула эталона) запекаются в цвет вершины;
+    линии — квад шириной 1 px; `glColorMask(false)` — бит 13 слова 13; режимы смешивания 4–7
+    (инверсия прицела, `2·src·dst`, `dst·(1−src)`, `src²+dst`); туман — см. `tris` выше. `_wisWebGL()` = true.
+  - `VcHost.java` — импорты `vc.eag_*`; `VcInput.java` — ввод (коды LWJGL, клик держится 3 кадра);
+    `VcPNG.java` — декодер PNG; `VcReflect.java` — генерируемые фабрики вместо `Class.newInstance`.
+  - `net/minecraft/src/VcDebug.java` — автоматизация (`export/eagler_cmd.txt`), состояние, трассировка пакетов.
+  - Патч upstream: `patches/0001-vc-platform.patch` (рефлексия, `System.gc()`, хуки VcDebug, кэш чанков
+    прямой адресации в `ChunkProviderClient`, таблица символов в `ChatAllowedCharacters`/`FontRenderer`,
+    счётчик `WorldRenderer.queuedCount` вместо `List.contains` в `RenderGlobal`).
+- Сервер (одиночная игра): **оригинальный** `classes_server.js` (TeaVM JS) в Node —
+  `native_server/launcher.js` (TCP :25599, кадр `u16 канал, u32 данные`) + `worker.js` (шим воркера,
+  `fake-indexeddb`). Хост `eag_host.lua` держит TCP-мост; клиент — очереди каналов как в браузере.
+  Трансляция сервера в wasm (`build_server.sh`, `server/src/vc`) упёрлась в баг кодогенерации TeaVM
+  (`processAsyncMessageQueue`/`handleIpcPacket` — невалидный wasm) и отложена.
+- Хост пака: `content/eaglercraft/modules/eag_host.lua` (клавиши LWJGL → имена движка, мышь с защёлкой,
+  текстуры/кадры → `gfx_tris`, TCP-мост, команды автоматизации). Манифест: `wasm.json`
+  (`trace_server`, `profile` — диагностика).

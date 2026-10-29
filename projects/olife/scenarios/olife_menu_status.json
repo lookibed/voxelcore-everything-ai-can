@@ -1,0 +1,25 @@
+{
+ "description": "UX B (olife_menu, 16.10): the client's main menu and the login status screen (agents/OLIFE_UX.md §8 p.1-2). F2F 0.32 test build runs the pack's app script (= «Сценарии» -> olife): the menu page (VCM 3D scene, the camera turns, fields pre-filled from export:olife_server.txt), «Войти» -> the status page shows every phase (ticket, gateway, Welcome, manifest, downloads with files/bytes/current file, sha256, replica world with world:content + reopen, first chunks, play); in the game the HUD status shows packs on the fly (live and with a world reopen) and «мир перезапускается, держитесь» with the reconnect phases. Errors on the same screen with code and reason + Повторить/Назад: no server (tcp), gateway silent (Welcome timeout), auth service down (http 0) -> Повторить after it is back, bad token (auth), ban (lab olife ban -> unban -> Повторить), whitelist (on -> whitelist -> add -> Повторить), nick of a token account (nick_reserved), file changed after the manifest (HTTP 409), sha256 mismatch (a proxy swaps a file of the pack distribution). Gates are the status lines/state (F2F `menu`), not pixels; shots are evidence.",
+ "setup": {"session": {"clients": 0, "sandbox": false, "auth_ticket": true, "packs_reload": true, "auth_mode": "tickets"}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 1}},
+  {"cmd": "olife_menu_engine", "args": {}},
+  {"cmd": "olife_menu_start", "args": {"account": "dev", "token": "olife-dev"}},
+  {"cmd": "olife_menu_packs", "args": {"path": "olife_client/modules/hot/rev.lua", "text": "-- olife_menu: served before the login\nreturn {rev = 5}\n"}},
+  {"cmd": "olife_menu_login", "args": {"name": "login_normal", "expect": "play", "rev": 5, "phases_run": ["ticket", "connect", "welcome", "manifest", "download", "verify", "world", "chunks"]}},
+  {"cmd": "olife_menu_ingame", "args": {"what": "packs_live", "rev": 6}},
+  {"cmd": "olife_menu_ingame", "args": {"what": "packs_reopen"}},
+  {"cmd": "olife_menu_ingame", "args": {"what": "restart", "down_s": 3}},
+  {"cmd": "olife_menu_leave", "args": {}},
+  {"cmd": "olife_menu_case", "args": {"case": "no_server"}},
+  {"cmd": "olife_menu_case", "args": {"case": "timeout"}},
+  {"cmd": "olife_menu_case", "args": {"case": "auth_down"}},
+  {"cmd": "olife_menu_case", "args": {"case": "bad_token"}},
+  {"cmd": "olife_menu_case", "args": {"case": "banned"}},
+  {"cmd": "olife_menu_case", "args": {"case": "whitelist"}},
+  {"cmd": "olife_menu_case", "args": {"case": "nick_reserved"}},
+  {"cmd": "olife_menu_case", "args": {"case": "http409"}},
+  {"cmd": "olife_menu_case", "args": {"case": "sha256"}},
+  {"cmd": "olife_menu_report", "args": {}}
+ ]
+}

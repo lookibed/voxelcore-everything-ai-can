@@ -1,0 +1,15 @@
+{
+    "caption": "oreDiamond",
+    "texture-faces": [
+        "am_ore_diamond",
+        "am_ore_diamond",
+        "am_ore_diamond_bottom",
+        "am_ore_diamond",
+        "am_ore_diamond",
+        "am_ore_diamond"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 56
+}

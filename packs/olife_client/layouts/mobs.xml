@@ -1,0 +1,28 @@
+<!-- Olife "my mobs" panel, UX B1 (03.10, olife_b1): native 0.32 XML overlay. Opens with M while the Injector is in hand
+     (or the HUD button). Rows (built by olife_client:mobs refresh into mb_rows from the world's MobsList): name, status,
+     cost (credits/min, fuel/min, KV memory, owner VM), where (distance, relative direction, "вне прогрузки"), buttons
+     Выбрать (marker + highlight) / Камера (V) / Спасти / Уничтожить; the "last state" slots of removed mobs with
+     Восстановить (mb_dead). Emergency actions need a confirmation: the world's MobConfirm shows in mb_confirm with
+     Подтвердить / Отмена. The world decides everything; this page only asks and shows. -->
+<container id="mb_root" color="#060A16E0" size-func="unpack(gui.get_viewport())">
+    <panel id="mb_panel" position-func="gui.get_viewport()[1]/2-390,math.max(4,gui.get_viewport()[2]/2-232)" size="780,464"
+           color="#141830F0" padding="10" interval="5" orientation="vertical">
+        <label id="mb_title" size="760,22" color="#FFD080">Мои мобы (Injector в руке; M - закрыть)</label>
+        <label id="mb_count" size="760,18" color="#90A0B0"></label>
+        <panel id="mb_rows" size="760,214" color="#00000060" padding="4" interval="3" scrollable="true"></panel>
+        <label id="mb_dead_title" size="760,18" color="#FFD080">Последнее состояние удалённых / убитых мобов:</label>
+        <panel id="mb_dead" size="760,58" color="#00000060" padding="4" interval="2" scrollable="true"></panel>
+        <container id="mb_confirm" size="760,30" color="#50301080" visible="false">
+            <label id="mb_confirm_text" pos="6,6" size="540,20" color="#FFD080"></label>
+            <button id="mb_ok" pos="550,2" size="110,26" color="#C0303090" hover-color="#E04040" onclick="ui_mb_confirm()"
+                    tooltip="Выполнить действие (токен подтверждения мира)">Подтвердить</button>
+            <button id="mb_cancel" pos="664,2" size="92,26" color="#FFFFFF20" onclick="ui_mb_cancel()">Отмена</button>
+        </container>
+        <container size="760,30" color="0">
+            <button id="mb_close" pos="0,0" size="130,28" color="#5050ff" hover-color="#5050ffc6" onclick="ui_mb_close()">ЗАКРЫТЬ [M]</button>
+            <button id="mb_cam" pos="136,0" size="210,28" color="#5050ff80" onclick="ui_mb_cam()"
+                    tooltip="Камера выбранного моба: третье лицо -> из глаз -> назад (клавиша V)">Камера [V]</button>
+            <label id="mb_hint" pos="352,5" size="400,20" color="#90A0B0">Выбрать: маркер в HUD + подсветка</label>
+        </container>
+    </panel>
+</container>

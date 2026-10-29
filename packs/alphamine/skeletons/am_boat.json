@@ -1,0 +1,26 @@
+{
+  "root": {
+    "nodes": [
+      {
+        "name": "p0",
+        "model": "am_boat_0"
+      },
+      {
+        "name": "p1",
+        "model": "am_boat_1"
+      },
+      {
+        "name": "p2",
+        "model": "am_boat_2"
+      },
+      {
+        "name": "p3",
+        "model": "am_boat_3"
+      },
+      {
+        "name": "p4",
+        "model": "am_boat_4"
+      }
+    ]
+  }
+}

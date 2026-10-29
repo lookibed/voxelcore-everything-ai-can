@@ -1,0 +1,122 @@
+{
+ "name": "layer_particles",
+ "description": "Общая подготовка — alpha_spawn (свежая копия golden/world_a, connect, 441 чанк, /tp 24.5 65 104.5 -> /tp 104.5 67 104.5, ожидание чанков и приземления); затем look (вернуть взгляд — в am_layers слои идут подряд в одной сессии), mode seed 20260930, render {all:false, layers:{...}}. Только particles: взгляд вниз (pitch 60) на траву в 1 блоке, ЛКМ 11 тиков (частицы удара EntityDiggingFX), отпустить; 4 снимка по времени, а не по сторонам: частицы есть только у блока.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 60
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "particles": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 60
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      true,
+      false,
+      false
+     ]
+    }
+   },
+   "comment": "копать траву под ногами: частицы удара каждый тик; 12 тиков < 18 до разрушения, мир не меняется"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 4,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_dig4"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 4,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_dig8"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 3,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_dig11"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_release5"
+  }
+ ]
+}

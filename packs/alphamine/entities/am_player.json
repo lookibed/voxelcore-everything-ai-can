@@ -1,0 +1,11 @@
+{
+  "body-type": "kinematic",
+  "blocking": false,
+  "save": false,
+  "hitbox": [
+    0.6,
+    1.8,
+    0.6
+  ],
+  "skeleton-name": "alphamine:am_player"
+}

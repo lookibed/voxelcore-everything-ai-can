@@ -1,0 +1,16 @@
+{
+    "caption": "glass",
+    "texture-faces": [
+        "am_glass",
+        "am_glass",
+        "am_glass_bottom",
+        "am_glass",
+        "am_glass",
+        "am_glass"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "draw-group": 2,
+    "breakable": false,
+    "alphamine:id": 20
+}

@@ -1,0 +1,243 @@
+{
+ "name": "u_swing",
+ "description": "Агент U (фаза 3): взмах руки после клика ЛКМ в воздух (pitch -60, блока в досягаемости нет: только swingItem) и анимация экипировки при смене слота 0 -> 1 (огниво -> бревно), только слой hand. Снимки при partial 0: рисуется prevSwingProgress / prevEquippedProgress. В конце слот 0 обратно.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": -60
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "hand": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": -60
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      true,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_swing1"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_swing2"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_swing4"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_swing6"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 10,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "4_equip1"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "5_equip2"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "6_equip3"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 2,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "7_equip5"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 10,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "8_block"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   }
+  }
+ ]
+}

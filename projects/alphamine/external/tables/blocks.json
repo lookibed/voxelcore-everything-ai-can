@@ -1,0 +1,6097 @@
+[
+ {
+  "id": 1,
+  "name": "stone",
+  "name_snake": "stone",
+  "class": "BlockStone",
+  "class_chain": [
+   "BlockStone",
+   "Block"
+  ],
+  "obf_class": "bz",
+  "obf_field": "t",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 1.5,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 1,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "tiles": {
+   "bottom": 1,
+   "top": 1,
+   "east": 1,
+   "west": 1,
+   "north": 1,
+   "south": 1
+  },
+  "item_icon": 1,
+  "id_dropped": 4
+ },
+ {
+  "id": 2,
+  "name": "grass",
+  "name_snake": "grass",
+  "class": "BlockGrass",
+  "class_chain": [
+   "BlockGrass",
+   "Block"
+  ],
+  "obf_class": "ml",
+  "obf_field": "u",
+  "material": "grass",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.6,
+  "resistance": 3.0,
+  "explosion_resistance": 0.6,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 3,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   3,
+   3,
+   3,
+   3,
+   3,
+   3
+  ],
+  "tiles": {
+   "bottom": 3,
+   "top": 3,
+   "east": 3,
+   "west": 3,
+   "north": 3,
+   "south": 3
+  },
+  "world_tiles": {
+   "defined_in": "BlockGrass",
+   "world_calls": [
+    "getBlockMaterial"
+   ],
+   "variants": {
+    "air": {
+     "neighbours": {},
+     "meta0": [
+      2,
+      0,
+      3,
+      3,
+      3,
+      3
+     ],
+     "by_meta": {}
+    },
+    "snow_above": {
+     "neighbours": {
+      "0,65,0": "snow"
+     },
+     "meta0": [
+      2,
+      0,
+      68,
+      68,
+      68,
+      68
+     ],
+     "by_meta": {}
+    }
+   }
+  },
+  "item_icon": 3,
+  "id_dropped": 3
+ },
+ {
+  "id": 3,
+  "name": "dirt",
+  "name_snake": "dirt",
+  "class": "BlockDirt",
+  "class_chain": [
+   "BlockDirt",
+   "Block"
+  ],
+  "obf_class": "hq",
+  "obf_field": "v",
+  "material": "grass",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.5,
+  "resistance": 2.5,
+  "explosion_resistance": 0.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 2,
+  "step_sound": {
+   "field": "soundGravelFootstep",
+   "name": "gravel",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.gravel",
+   "break": "step.gravel"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   2,
+   2,
+   2,
+   2,
+   2,
+   2
+  ],
+  "tiles": {
+   "bottom": 2,
+   "top": 2,
+   "east": 2,
+   "west": 2,
+   "north": 2,
+   "south": 2
+  },
+  "item_icon": 2,
+  "id_dropped": 3
+ },
+ {
+  "id": 4,
+  "name": "cobblestone",
+  "name_snake": "cobblestone",
+  "class": "Block",
+  "class_chain": [
+   "Block"
+  ],
+  "obf_class": "ln",
+  "obf_field": "w",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 16,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   16,
+   16,
+   16,
+   16,
+   16,
+   16
+  ],
+  "tiles": {
+   "bottom": 16,
+   "top": 16,
+   "east": 16,
+   "west": 16,
+   "north": 16,
+   "south": 16
+  },
+  "item_icon": 16,
+  "id_dropped": 4
+ },
+ {
+  "id": 5,
+  "name": "planks",
+  "name_snake": "planks",
+  "class": "Block",
+  "class_chain": [
+   "Block"
+  ],
+  "obf_class": "ln",
+  "obf_field": "x",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 4,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "tiles": {
+   "bottom": 4,
+   "top": 4,
+   "east": 4,
+   "west": 4,
+   "north": 4,
+   "south": 4
+  },
+  "item_icon": 4,
+  "id_dropped": 5
+ },
+ {
+  "id": 6,
+  "name": "sapling",
+  "name_snake": "sapling",
+  "class": "BlockSapling",
+  "class_chain": [
+   "BlockSapling",
+   "BlockFlower",
+   "Block"
+  ],
+  "obf_class": "do",
+  "obf_field": "y",
+  "material": "plants",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 1,
+  "renderer": "renderBlockReed",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.09999999999999998,
+   0.0,
+   0.09999999999999998,
+   0.9,
+   0.8,
+   0.9
+  ],
+  "block_index_in_texture": 15,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   15,
+   15,
+   15,
+   15,
+   15,
+   15
+  ],
+  "tiles": {
+   "bottom": 15,
+   "top": 15,
+   "east": 15,
+   "west": 15,
+   "north": 15,
+   "south": 15
+  },
+  "item_icon": 15,
+  "id_dropped": 6
+ },
+ {
+  "id": 7,
+  "name": "bedrock",
+  "name_snake": "bedrock",
+  "class": "Block",
+  "class_chain": [
+   "Block"
+  ],
+  "obf_class": "ln",
+  "obf_field": "z",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": -1.0,
+  "resistance": 18000000.0,
+  "explosion_resistance": 3600000.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 17,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   17,
+   17,
+   17,
+   17,
+   17,
+   17
+  ],
+  "tiles": {
+   "bottom": 17,
+   "top": 17,
+   "east": 17,
+   "west": 17,
+   "north": 17,
+   "south": 17
+  },
+  "item_icon": 17,
+  "id_dropped": 7
+ },
+ {
+  "id": 8,
+  "name": "waterMoving",
+  "name_snake": "water_moving",
+  "class": "BlockFlowing",
+  "class_chain": [
+   "BlockFlowing",
+   "BlockFluid",
+   "Block"
+  ],
+  "obf_class": "hl",
+  "obf_field": "A",
+  "material": "water",
+  "material_props": {
+   "liquid": true,
+   "solid": false,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 4,
+  "renderer": "renderBlockFluids",
+  "render_as_normal_block": false,
+  "render_pass": 1,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 3,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 100.0,
+  "resistance": 500.0,
+  "explosion_resistance": 100.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 205,
+  "step_sound": {
+   "field": "soundPowderFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 5,
+  "class_fields": {
+   "numAdjacentSources": 0,
+   "fluidType": 1
+  },
+  "tiles_by_side": [
+   205,
+   205,
+   206,
+   206,
+   206,
+   206
+  ],
+  "tiles": {
+   "bottom": 205,
+   "top": 205,
+   "east": 206,
+   "west": 206,
+   "north": 206,
+   "south": 206
+  },
+  "item_icon": 206,
+  "id_dropped": 0
+ },
+ {
+  "id": 9,
+  "name": "waterStill",
+  "name_snake": "water_still",
+  "class": "BlockStationary",
+  "class_chain": [
+   "BlockStationary",
+   "BlockFluid",
+   "Block"
+  ],
+  "obf_class": "hd",
+  "obf_field": "B",
+  "material": "water",
+  "material_props": {
+   "liquid": true,
+   "solid": false,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 4,
+  "renderer": "renderBlockFluids",
+  "render_as_normal_block": false,
+  "render_pass": 1,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 3,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 100.0,
+  "resistance": 500.0,
+  "explosion_resistance": 100.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 205,
+  "step_sound": {
+   "field": "soundPowderFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 5,
+  "class_fields": {
+   "fluidType": 1
+  },
+  "tiles_by_side": [
+   205,
+   205,
+   206,
+   206,
+   206,
+   206
+  ],
+  "tiles": {
+   "bottom": 205,
+   "top": 205,
+   "east": 206,
+   "west": 206,
+   "north": 206,
+   "south": 206
+  },
+  "item_icon": 206,
+  "id_dropped": 0
+ },
+ {
+  "id": 10,
+  "name": "lavaMoving",
+  "name_snake": "lava_moving",
+  "class": "BlockFlowing",
+  "class_chain": [
+   "BlockFlowing",
+   "BlockFluid",
+   "Block"
+  ],
+  "obf_class": "hl",
+  "obf_field": "C",
+  "material": "lava",
+  "material_props": {
+   "liquid": true,
+   "solid": false,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 4,
+  "renderer": "renderBlockFluids",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 15,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 237,
+  "step_sound": {
+   "field": "soundPowderFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 30,
+  "class_fields": {
+   "numAdjacentSources": 0,
+   "fluidType": 2
+  },
+  "tiles_by_side": [
+   237,
+   237,
+   238,
+   238,
+   238,
+   238
+  ],
+  "tiles": {
+   "bottom": 237,
+   "top": 237,
+   "east": 238,
+   "west": 238,
+   "north": 238,
+   "south": 238
+  },
+  "item_icon": 238,
+  "id_dropped": 0
+ },
+ {
+  "id": 11,
+  "name": "lavaStill",
+  "name_snake": "lava_still",
+  "class": "BlockStationary",
+  "class_chain": [
+   "BlockStationary",
+   "BlockFluid",
+   "Block"
+  ],
+  "obf_class": "hd",
+  "obf_field": "D",
+  "material": "lava",
+  "material_props": {
+   "liquid": true,
+   "solid": false,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 4,
+  "renderer": "renderBlockFluids",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 15,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 100.0,
+  "resistance": 500.0,
+  "explosion_resistance": 100.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 237,
+  "step_sound": {
+   "field": "soundPowderFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 30,
+  "class_fields": {
+   "fluidType": 2
+  },
+  "tiles_by_side": [
+   237,
+   237,
+   238,
+   238,
+   238,
+   238
+  ],
+  "tiles": {
+   "bottom": 237,
+   "top": 237,
+   "east": 238,
+   "west": 238,
+   "north": 238,
+   "south": 238
+  },
+  "item_icon": 238,
+  "id_dropped": 0
+ },
+ {
+  "id": 12,
+  "name": "sand",
+  "name_snake": "sand",
+  "class": "BlockSand",
+  "class_chain": [
+   "BlockSand",
+   "Block"
+  ],
+  "obf_class": "dc",
+  "obf_field": "E",
+  "material": "sand",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.5,
+  "resistance": 2.5,
+  "explosion_resistance": 0.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 18,
+  "step_sound": {
+   "field": "soundSandFootstep",
+   "name": "sand",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.sand",
+   "break": "step.gravel"
+  },
+  "tick_rate": 3,
+  "tiles_by_side": [
+   18,
+   18,
+   18,
+   18,
+   18,
+   18
+  ],
+  "tiles": {
+   "bottom": 18,
+   "top": 18,
+   "east": 18,
+   "west": 18,
+   "north": 18,
+   "south": 18
+  },
+  "item_icon": 18,
+  "id_dropped": 12
+ },
+ {
+  "id": 13,
+  "name": "gravel",
+  "name_snake": "gravel",
+  "class": "BlockGravel",
+  "class_chain": [
+   "BlockGravel",
+   "BlockSand",
+   "Block"
+  ],
+  "obf_class": "gp",
+  "obf_field": "F",
+  "material": "sand",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.6,
+  "resistance": 3.0,
+  "explosion_resistance": 0.6,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 19,
+  "step_sound": {
+   "field": "soundGravelFootstep",
+   "name": "gravel",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.gravel",
+   "break": "step.gravel"
+  },
+  "tick_rate": 3,
+  "tiles_by_side": [
+   19,
+   19,
+   19,
+   19,
+   19,
+   19
+  ],
+  "tiles": {
+   "bottom": 19,
+   "top": 19,
+   "east": 19,
+   "west": 19,
+   "north": 19,
+   "south": 19
+  },
+  "item_icon": 19,
+  "id_dropped": null,
+  "id_dropped_note": "needs Random or world: Random.nextInt"
+ },
+ {
+  "id": 14,
+  "name": "oreGold",
+  "name_snake": "ore_gold",
+  "class": "BlockOre",
+  "class_chain": [
+   "BlockOre",
+   "Block"
+  ],
+  "obf_class": "gm",
+  "obf_field": "G",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 32,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   32,
+   32,
+   32,
+   32,
+   32,
+   32
+  ],
+  "tiles": {
+   "bottom": 32,
+   "top": 32,
+   "east": 32,
+   "west": 32,
+   "north": 32,
+   "south": 32
+  },
+  "item_icon": 32,
+  "id_dropped": 14
+ },
+ {
+  "id": 15,
+  "name": "oreIron",
+  "name_snake": "ore_iron",
+  "class": "BlockOre",
+  "class_chain": [
+   "BlockOre",
+   "Block"
+  ],
+  "obf_class": "gm",
+  "obf_field": "H",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 33,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   33,
+   33,
+   33,
+   33,
+   33,
+   33
+  ],
+  "tiles": {
+   "bottom": 33,
+   "top": 33,
+   "east": 33,
+   "west": 33,
+   "north": 33,
+   "south": 33
+  },
+  "item_icon": 33,
+  "id_dropped": 15
+ },
+ {
+  "id": 16,
+  "name": "oreCoal",
+  "name_snake": "ore_coal",
+  "class": "BlockOre",
+  "class_chain": [
+   "BlockOre",
+   "Block"
+  ],
+  "obf_class": "gm",
+  "obf_field": "I",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 34,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   34,
+   34,
+   34,
+   34,
+   34,
+   34
+  ],
+  "tiles": {
+   "bottom": 34,
+   "top": 34,
+   "east": 34,
+   "west": 34,
+   "north": 34,
+   "south": 34
+  },
+  "item_icon": 34,
+  "id_dropped": 263
+ },
+ {
+  "id": 17,
+  "name": "wood",
+  "name_snake": "wood",
+  "class": "BlockLog",
+  "class_chain": [
+   "BlockLog",
+   "Block"
+  ],
+  "obf_class": "lw",
+  "obf_field": "J",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 10.0,
+  "explosion_resistance": 2.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 20,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   21,
+   21,
+   20,
+   20,
+   20,
+   20
+  ],
+  "tiles": {
+   "bottom": 21,
+   "top": 21,
+   "east": 20,
+   "west": 20,
+   "north": 20,
+   "south": 20
+  },
+  "item_icon": 20,
+  "id_dropped": 17
+ },
+ {
+  "id": 18,
+  "name": "leaves",
+  "name_snake": "leaves",
+  "class": "BlockLeaves",
+  "class_chain": [
+   "BlockLeaves",
+   "BlockLeavesBase",
+   "Block"
+  ],
+  "obf_class": "iq",
+  "obf_field": "K",
+  "material": "leaves",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 1,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.2,
+  "resistance": 1.0,
+  "explosion_resistance": 0.2,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 52,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "leafTexIndex": 52,
+   "decayCounter": 0,
+   "graphicsLevel": false
+  },
+  "tiles_by_side": [
+   52,
+   52,
+   52,
+   52,
+   52,
+   52
+  ],
+  "tiles": {
+   "bottom": 52,
+   "top": 52,
+   "east": 52,
+   "west": 52,
+   "north": 52,
+   "south": 52
+  },
+  "item_icon": 52,
+  "id_dropped": 6
+ },
+ {
+  "id": 19,
+  "name": "sponge",
+  "name_snake": "sponge",
+  "class": "BlockSponge",
+  "class_chain": [
+   "BlockSponge",
+   "Block"
+  ],
+  "obf_class": "mt",
+  "obf_field": "L",
+  "material": "sponge",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.6,
+  "resistance": 3.0,
+  "explosion_resistance": 0.6,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 48,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   48,
+   48,
+   48,
+   48,
+   48,
+   48
+  ],
+  "tiles": {
+   "bottom": 48,
+   "top": 48,
+   "east": 48,
+   "west": 48,
+   "north": 48,
+   "south": 48
+  },
+  "item_icon": 48,
+  "id_dropped": 19
+ },
+ {
+  "id": 20,
+  "name": "glass",
+  "name_snake": "glass",
+  "class": "BlockGlass",
+  "class_chain": [
+   "BlockGlass",
+   "BlockBreakable",
+   "Block"
+  ],
+  "obf_class": "cp",
+  "obf_field": "M",
+  "material": "glass",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.3,
+  "resistance": 1.5,
+  "explosion_resistance": 0.3,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 49,
+  "step_sound": {
+   "field": "soundGlassFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "random.glass"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "localFlag": false
+  },
+  "tiles_by_side": [
+   49,
+   49,
+   49,
+   49,
+   49,
+   49
+  ],
+  "tiles": {
+   "bottom": 49,
+   "top": 49,
+   "east": 49,
+   "west": 49,
+   "north": 49,
+   "south": 49
+  },
+  "item_icon": 49,
+  "id_dropped": 20
+ },
+ {
+  "id": 35,
+  "name": "cloth",
+  "name_snake": "cloth",
+  "class": "Block",
+  "class_chain": [
+   "Block"
+  ],
+  "obf_class": "ln",
+  "obf_field": "ab",
+  "material": "cloth",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.8,
+  "resistance": 4.0,
+  "explosion_resistance": 0.8,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 64,
+  "step_sound": {
+   "field": "soundClothFootstep",
+   "name": "cloth",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.cloth",
+   "break": "step.cloth"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   64,
+   64,
+   64,
+   64,
+   64,
+   64
+  ],
+  "tiles": {
+   "bottom": 64,
+   "top": 64,
+   "east": 64,
+   "west": 64,
+   "north": 64,
+   "south": 64
+  },
+  "item_icon": 64,
+  "id_dropped": 35
+ },
+ {
+  "id": 37,
+  "name": "plantYellow",
+  "name_snake": "plant_yellow",
+  "class": "BlockFlower",
+  "class_chain": [
+   "BlockFlower",
+   "Block"
+  ],
+  "obf_class": "me",
+  "obf_field": "ad",
+  "material": "plants",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 1,
+  "renderer": "renderBlockReed",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.3,
+   0.0,
+   0.3,
+   0.7,
+   0.6000000000000001,
+   0.7
+  ],
+  "block_index_in_texture": 13,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   13,
+   13,
+   13,
+   13,
+   13,
+   13
+  ],
+  "tiles": {
+   "bottom": 13,
+   "top": 13,
+   "east": 13,
+   "west": 13,
+   "north": 13,
+   "south": 13
+  },
+  "item_icon": 13,
+  "id_dropped": 37
+ },
+ {
+  "id": 38,
+  "name": "plantRed",
+  "name_snake": "plant_red",
+  "class": "BlockFlower",
+  "class_chain": [
+   "BlockFlower",
+   "Block"
+  ],
+  "obf_class": "me",
+  "obf_field": "ae",
+  "material": "plants",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 1,
+  "renderer": "renderBlockReed",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.3,
+   0.0,
+   0.3,
+   0.7,
+   0.6000000000000001,
+   0.7
+  ],
+  "block_index_in_texture": 12,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   12,
+   12,
+   12,
+   12,
+   12,
+   12
+  ],
+  "tiles": {
+   "bottom": 12,
+   "top": 12,
+   "east": 12,
+   "west": 12,
+   "north": 12,
+   "south": 12
+  },
+  "item_icon": 12,
+  "id_dropped": 38
+ },
+ {
+  "id": 39,
+  "name": "mushroomBrown",
+  "name_snake": "mushroom_brown",
+  "class": "BlockMushroom",
+  "class_chain": [
+   "BlockMushroom",
+   "BlockFlower",
+   "Block"
+  ],
+  "obf_class": "kn",
+  "obf_field": "af",
+  "material": "plants",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 1,
+  "renderer": "renderBlockReed",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 1,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.3,
+   0.0,
+   0.3,
+   0.7,
+   0.4,
+   0.7
+  ],
+  "block_index_in_texture": 29,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   29,
+   29,
+   29,
+   29,
+   29,
+   29
+  ],
+  "tiles": {
+   "bottom": 29,
+   "top": 29,
+   "east": 29,
+   "west": 29,
+   "north": 29,
+   "south": 29
+  },
+  "item_icon": 29,
+  "id_dropped": 39
+ },
+ {
+  "id": 40,
+  "name": "mushroomRed",
+  "name_snake": "mushroom_red",
+  "class": "BlockMushroom",
+  "class_chain": [
+   "BlockMushroom",
+   "BlockFlower",
+   "Block"
+  ],
+  "obf_class": "kn",
+  "obf_field": "ag",
+  "material": "plants",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 1,
+  "renderer": "renderBlockReed",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.3,
+   0.0,
+   0.3,
+   0.7,
+   0.4,
+   0.7
+  ],
+  "block_index_in_texture": 28,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   28,
+   28,
+   28,
+   28,
+   28,
+   28
+  ],
+  "tiles": {
+   "bottom": 28,
+   "top": 28,
+   "east": 28,
+   "west": 28,
+   "north": 28,
+   "south": 28
+  },
+  "item_icon": 28,
+  "id_dropped": 40
+ },
+ {
+  "id": 41,
+  "name": "blockGold",
+  "name_snake": "block_gold",
+  "class": "BlockOreBlock",
+  "class_chain": [
+   "BlockOreBlock",
+   "Block"
+  ],
+  "obf_class": "c",
+  "obf_field": "ah",
+  "material": "iron",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 39,
+  "step_sound": {
+   "field": "soundMetalFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.5,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   55,
+   23,
+   39,
+   39,
+   39,
+   39
+  ],
+  "tiles": {
+   "bottom": 55,
+   "top": 23,
+   "east": 39,
+   "west": 39,
+   "north": 39,
+   "south": 39
+  },
+  "item_icon": 39,
+  "id_dropped": 41
+ },
+ {
+  "id": 42,
+  "name": "blockSteel",
+  "name_snake": "block_steel",
+  "class": "BlockOreBlock",
+  "class_chain": [
+   "BlockOreBlock",
+   "Block"
+  ],
+  "obf_class": "c",
+  "obf_field": "ai",
+  "material": "iron",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 5.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 38,
+  "step_sound": {
+   "field": "soundMetalFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.5,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   54,
+   22,
+   38,
+   38,
+   38,
+   38
+  ],
+  "tiles": {
+   "bottom": 54,
+   "top": 22,
+   "east": 38,
+   "west": 38,
+   "north": 38,
+   "south": 38
+  },
+  "item_icon": 38,
+  "id_dropped": 42
+ },
+ {
+  "id": 43,
+  "name": "stairDouble",
+  "name_snake": "stair_double",
+  "class": "BlockStep",
+  "class_chain": [
+   "BlockStep",
+   "Block"
+  ],
+  "obf_class": "nu",
+  "obf_field": "aj",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 6,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "blockType": true
+  },
+  "tiles_by_side": [
+   6,
+   6,
+   5,
+   5,
+   5,
+   5
+  ],
+  "tiles": {
+   "bottom": 6,
+   "top": 6,
+   "east": 5,
+   "west": 5,
+   "north": 5,
+   "south": 5
+  },
+  "item_icon": 5,
+  "id_dropped": 44
+ },
+ {
+  "id": 44,
+  "name": "stairSingle",
+  "name_snake": "stair_single",
+  "class": "BlockStep",
+  "class_chain": [
+   "BlockStep",
+   "Block"
+  ],
+  "obf_class": "nu",
+  "obf_field": "ak",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.5,
+   1.0
+  ],
+  "block_index_in_texture": 6,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "blockType": false
+  },
+  "tiles_by_side": [
+   6,
+   6,
+   5,
+   5,
+   5,
+   5
+  ],
+  "tiles": {
+   "bottom": 6,
+   "top": 6,
+   "east": 5,
+   "west": 5,
+   "north": 5,
+   "south": 5
+  },
+  "item_icon": 5,
+  "id_dropped": 44
+ },
+ {
+  "id": 45,
+  "name": "brick",
+  "name_snake": "brick",
+  "class": "Block",
+  "class_chain": [
+   "Block"
+  ],
+  "obf_class": "ln",
+  "obf_field": "al",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 7,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   7,
+   7,
+   7,
+   7,
+   7,
+   7
+  ],
+  "tiles": {
+   "bottom": 7,
+   "top": 7,
+   "east": 7,
+   "west": 7,
+   "north": 7,
+   "south": 7
+  },
+  "item_icon": 7,
+  "id_dropped": 45
+ },
+ {
+  "id": 46,
+  "name": "tnt",
+  "name_snake": "tnt",
+  "class": "BlockTNT",
+  "class_chain": [
+   "BlockTNT",
+   "Block"
+  ],
+  "obf_class": "p",
+  "obf_field": "am",
+  "material": "tnt",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 8,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   10,
+   9,
+   8,
+   8,
+   8,
+   8
+  ],
+  "tiles": {
+   "bottom": 10,
+   "top": 9,
+   "east": 8,
+   "west": 8,
+   "north": 8,
+   "south": 8
+  },
+  "item_icon": 8,
+  "id_dropped": 46
+ },
+ {
+  "id": 47,
+  "name": "bookshelf",
+  "name_snake": "bookshelf",
+  "class": "BlockBookshelf",
+  "class_chain": [
+   "BlockBookshelf",
+   "Block"
+  ],
+  "obf_class": "dn",
+  "obf_field": "an",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 1.5,
+  "resistance": 7.5,
+  "explosion_resistance": 1.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 35,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   4,
+   4,
+   35,
+   35,
+   35,
+   35
+  ],
+  "tiles": {
+   "bottom": 4,
+   "top": 4,
+   "east": 35,
+   "west": 35,
+   "north": 35,
+   "south": 35
+  },
+  "item_icon": 35,
+  "id_dropped": 47
+ },
+ {
+  "id": 48,
+  "name": "cobblestoneMossy",
+  "name_snake": "cobblestone_mossy",
+  "class": "Block",
+  "class_chain": [
+   "Block"
+  ],
+  "obf_class": "ln",
+  "obf_field": "ao",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 36,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   36,
+   36,
+   36,
+   36,
+   36,
+   36
+  ],
+  "tiles": {
+   "bottom": 36,
+   "top": 36,
+   "east": 36,
+   "west": 36,
+   "north": 36,
+   "south": 36
+  },
+  "item_icon": 36,
+  "id_dropped": 48
+ },
+ {
+  "id": 49,
+  "name": "obsidian",
+  "name_snake": "obsidian",
+  "class": "BlockObsidian",
+  "class_chain": [
+   "BlockObsidian",
+   "BlockStone",
+   "Block"
+  ],
+  "obf_class": "ci",
+  "obf_field": "ap",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 10.0,
+  "resistance": 6000.0,
+  "explosion_resistance": 1200.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 37,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   37,
+   37,
+   37,
+   37,
+   37,
+   37
+  ],
+  "tiles": {
+   "bottom": 37,
+   "top": 37,
+   "east": 37,
+   "west": 37,
+   "north": 37,
+   "south": 37
+  },
+  "item_icon": 37,
+  "id_dropped": 49
+ },
+ {
+  "id": 50,
+  "name": "torch",
+  "name_snake": "torch",
+  "class": "BlockTorch",
+  "class_chain": [
+   "BlockTorch",
+   "Block"
+  ],
+  "obf_class": "lz",
+  "obf_field": "aq",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 2,
+  "renderer": "renderBlockTorch",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 14,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 80,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   80,
+   80,
+   80,
+   80,
+   80,
+   80
+  ],
+  "tiles": {
+   "bottom": 80,
+   "top": 80,
+   "east": 80,
+   "west": 80,
+   "north": 80,
+   "south": 80
+  },
+  "item_icon": 80,
+  "id_dropped": 50
+ },
+ {
+  "id": 51,
+  "name": "fire",
+  "name_snake": "fire",
+  "class": "BlockFire",
+  "class_chain": [
+   "BlockFire",
+   "Block"
+  ],
+  "obf_class": "ns",
+  "obf_field": "ar",
+  "material": "fire",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 3,
+  "renderer": "renderBlockFire",
+  "render_as_normal_block": false,
+  "render_pass": 1,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 15,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 31,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   31,
+   31,
+   31,
+   31,
+   31,
+   31
+  ],
+  "tiles": {
+   "bottom": 31,
+   "top": 31,
+   "east": 31,
+   "west": 31,
+   "north": 31,
+   "south": 31
+  },
+  "item_icon": 31,
+  "id_dropped": 51
+ },
+ {
+  "id": 52,
+  "name": "mobSpawner",
+  "name_snake": "mob_spawner",
+  "class": "BlockMobSpawner",
+  "class_chain": [
+   "BlockMobSpawner",
+   "BlockContainer",
+   "Block"
+  ],
+  "obf_class": "bf",
+  "obf_field": "as",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 5.0,
+  "resistance": 25.0,
+  "explosion_resistance": 5.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 65,
+  "step_sound": {
+   "field": "soundMetalFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.5,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   65,
+   65,
+   65,
+   65,
+   65,
+   65
+  ],
+  "tiles": {
+   "bottom": 65,
+   "top": 65,
+   "east": 65,
+   "west": 65,
+   "north": 65,
+   "south": 65
+  },
+  "item_icon": 65,
+  "id_dropped": 0
+ },
+ {
+  "id": 53,
+  "name": "stairCompactWood",
+  "name_snake": "stair_compact_wood",
+  "class": "BlockStairs",
+  "class_chain": [
+   "BlockStairs",
+   "Block"
+  ],
+  "obf_class": "kb",
+  "obf_field": "at",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 10,
+  "renderer": "renderBlockStairs",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 4,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "modelBlock": {
+    "block": "planks",
+    "id": 5
+   }
+  },
+  "tiles_by_side": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "tiles": {
+   "bottom": 4,
+   "top": 4,
+   "east": 4,
+   "west": 4,
+   "north": 4,
+   "south": 4
+  },
+  "world_tiles": {
+   "defined_in": "BlockStairs",
+   "world_calls": [
+    "getBlockMetadata"
+   ],
+   "variants": {
+    "air": {
+     "neighbours": {},
+     "meta0": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "by_meta": {}
+    }
+   }
+  },
+  "item_icon": 4,
+  "id_dropped": 5
+ },
+ {
+  "id": 54,
+  "name": "chest",
+  "name_snake": "chest",
+  "class": "BlockChest",
+  "class_chain": [
+   "BlockChest",
+   "BlockContainer",
+   "Block"
+  ],
+  "obf_class": "b",
+  "obf_field": "au",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.5,
+  "resistance": 12.5,
+  "explosion_resistance": 2.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 26,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   25,
+   25,
+   26,
+   27,
+   26,
+   26
+  ],
+  "tiles": {
+   "bottom": 25,
+   "top": 25,
+   "east": 26,
+   "west": 27,
+   "north": 26,
+   "south": 26
+  },
+  "world_tiles": {
+   "defined_in": "BlockChest",
+   "world_calls": [
+    "getBlockId"
+   ],
+   "variants": {
+    "air": {
+     "neighbours": {},
+     "meta0": [
+      25,
+      25,
+      26,
+      27,
+      26,
+      26
+     ],
+     "by_meta": {}
+    },
+    "same_x_neg": {
+     "neighbours": {
+      "-1,64,0": "chest"
+     },
+     "meta0": [
+      25,
+      25,
+      57,
+      42,
+      26,
+      26
+     ],
+     "by_meta": {}
+    },
+    "same_x_pos": {
+     "neighbours": {
+      "1,64,0": "chest"
+     },
+     "meta0": [
+      25,
+      25,
+      58,
+      41,
+      26,
+      26
+     ],
+     "by_meta": {}
+    },
+    "same_z_neg": {
+     "neighbours": {
+      "0,64,-1": "chest"
+     },
+     "meta0": [
+      25,
+      25,
+      26,
+      26,
+      58,
+      41
+     ],
+     "by_meta": {}
+    },
+    "same_z_pos": {
+     "neighbours": {
+      "0,64,1": "chest"
+     },
+     "meta0": [
+      25,
+      25,
+      26,
+      26,
+      57,
+      42
+     ],
+     "by_meta": {}
+    }
+   }
+  },
+  "item_icon": 26,
+  "id_dropped": 54
+ },
+ {
+  "id": 55,
+  "name": "redstoneWire",
+  "name_snake": "redstone_wire",
+  "class": "BlockRedstoneWire",
+  "class_chain": [
+   "BlockRedstoneWire",
+   "Block"
+  ],
+  "obf_class": "jv",
+  "obf_field": "av",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 5,
+  "renderer": "renderBlockRedstoneWire",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.0625,
+   1.0
+  ],
+  "block_index_in_texture": 84,
+  "step_sound": {
+   "field": "soundPowderFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "wiresProvidePower": true
+  },
+  "tiles_by_side": [
+   84,
+   84,
+   84,
+   84,
+   84,
+   84
+  ],
+  "tiles": {
+   "bottom": 84,
+   "top": 84,
+   "east": 84,
+   "west": 84,
+   "north": 84,
+   "south": 84
+  },
+  "tiles_by_meta": {
+   "1": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "2": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "3": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "4": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "5": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "6": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "7": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "8": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "9": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "10": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "11": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "12": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "13": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "14": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "15": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ]
+  },
+  "item_icon": 84,
+  "id_dropped": 331
+ },
+ {
+  "id": 56,
+  "name": "oreDiamond",
+  "name_snake": "ore_diamond",
+  "class": "BlockOre",
+  "class_chain": [
+   "BlockOre",
+   "Block"
+  ],
+  "obf_class": "gm",
+  "obf_field": "aw",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 50,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   50,
+   50,
+   50,
+   50,
+   50,
+   50
+  ],
+  "tiles": {
+   "bottom": 50,
+   "top": 50,
+   "east": 50,
+   "west": 50,
+   "north": 50,
+   "south": 50
+  },
+  "item_icon": 50,
+  "id_dropped": 264
+ },
+ {
+  "id": 57,
+  "name": "blockDiamond",
+  "name_snake": "block_diamond",
+  "class": "BlockOreBlock",
+  "class_chain": [
+   "BlockOreBlock",
+   "Block"
+  ],
+  "obf_class": "c",
+  "obf_field": "ax",
+  "material": "iron",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 5.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 40,
+  "step_sound": {
+   "field": "soundMetalFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.5,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   56,
+   24,
+   40,
+   40,
+   40,
+   40
+  ],
+  "tiles": {
+   "bottom": 56,
+   "top": 24,
+   "east": 40,
+   "west": 40,
+   "north": 40,
+   "south": 40
+  },
+  "item_icon": 40,
+  "id_dropped": 57
+ },
+ {
+  "id": 58,
+  "name": "workbench",
+  "name_snake": "workbench",
+  "class": "BlockWorkbench",
+  "class_chain": [
+   "BlockWorkbench",
+   "Block"
+  ],
+  "obf_class": "co",
+  "obf_field": "ay",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.5,
+  "resistance": 12.5,
+  "explosion_resistance": 2.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 59,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   4,
+   43,
+   60,
+   59,
+   60,
+   59
+  ],
+  "tiles": {
+   "bottom": 4,
+   "top": 43,
+   "east": 60,
+   "west": 59,
+   "north": 60,
+   "south": 59
+  },
+  "item_icon": 60,
+  "id_dropped": 58
+ },
+ {
+  "id": 59,
+  "name": "crops",
+  "name_snake": "crops",
+  "class": "BlockCrops",
+  "class_chain": [
+   "BlockCrops",
+   "BlockFlower",
+   "Block"
+  ],
+  "obf_class": "gt",
+  "obf_field": "az",
+  "material": "plants",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 6,
+  "renderer": "renderBlockCrops",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.25,
+   1.0
+  ],
+  "block_index_in_texture": 88,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   88,
+   88,
+   88,
+   88,
+   88,
+   88
+  ],
+  "tiles": {
+   "bottom": 88,
+   "top": 88,
+   "east": 88,
+   "west": 88,
+   "north": 88,
+   "south": 88
+  },
+  "tiles_by_meta": {
+   "1": [
+    89,
+    89,
+    89,
+    89,
+    89,
+    89
+   ],
+   "2": [
+    90,
+    90,
+    90,
+    90,
+    90,
+    90
+   ],
+   "3": [
+    91,
+    91,
+    91,
+    91,
+    91,
+    91
+   ],
+   "4": [
+    92,
+    92,
+    92,
+    92,
+    92,
+    92
+   ],
+   "5": [
+    93,
+    93,
+    93,
+    93,
+    93,
+    93
+   ],
+   "6": [
+    94,
+    94,
+    94,
+    94,
+    94,
+    94
+   ],
+   "7": [
+    95,
+    95,
+    95,
+    95,
+    95,
+    95
+   ],
+   "8": [
+    96,
+    96,
+    96,
+    96,
+    96,
+    96
+   ],
+   "9": [
+    97,
+    97,
+    97,
+    97,
+    97,
+    97
+   ],
+   "10": [
+    98,
+    98,
+    98,
+    98,
+    98,
+    98
+   ],
+   "11": [
+    99,
+    99,
+    99,
+    99,
+    99,
+    99
+   ],
+   "12": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "13": [
+    101,
+    101,
+    101,
+    101,
+    101,
+    101
+   ],
+   "14": [
+    102,
+    102,
+    102,
+    102,
+    102,
+    102
+   ],
+   "15": [
+    103,
+    103,
+    103,
+    103,
+    103,
+    103
+   ]
+  },
+  "item_icon": 88,
+  "id_dropped": null,
+  "id_dropped_note": "needs Random or world: field out on <stub System>"
+ },
+ {
+  "id": 60,
+  "name": "tilledField",
+  "name_snake": "tilled_field",
+  "class": "BlockFarmland",
+  "class_chain": [
+   "BlockFarmland",
+   "Block"
+  ],
+  "obf_class": "ly",
+  "obf_field": "aA",
+  "material": "grass",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.6,
+  "resistance": 3.0,
+  "explosion_resistance": 0.6,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.9375,
+   1.0
+  ],
+  "block_index_in_texture": 87,
+  "step_sound": {
+   "field": "soundGravelFootstep",
+   "name": "gravel",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.gravel",
+   "break": "step.gravel"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   2,
+   87,
+   2,
+   2,
+   2,
+   2
+  ],
+  "tiles": {
+   "bottom": 2,
+   "top": 87,
+   "east": 2,
+   "west": 2,
+   "north": 2,
+   "south": 2
+  },
+  "tiles_by_meta": {
+   "1": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "2": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "3": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "4": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "5": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "6": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "7": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "8": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "9": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "10": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "11": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "12": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "13": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "14": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ],
+   "15": [
+    2,
+    86,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  "item_icon": 87,
+  "id_dropped": 3
+ },
+ {
+  "id": 61,
+  "name": "stoneOvenIdle",
+  "name_snake": "stone_oven_idle",
+  "class": "BlockFurnace",
+  "class_chain": [
+   "BlockFurnace",
+   "BlockContainer",
+   "Block"
+  ],
+  "obf_class": "kj",
+  "obf_field": "aB",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.5,
+  "resistance": 17.5,
+  "explosion_resistance": 3.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 45,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "isActive": false
+  },
+  "tiles_by_side": [
+   1,
+   1,
+   45,
+   44,
+   45,
+   45
+  ],
+  "tiles": {
+   "bottom": 1,
+   "top": 1,
+   "east": 45,
+   "west": 44,
+   "north": 45,
+   "south": 45
+  },
+  "world_tiles": {
+   "defined_in": "BlockFurnace",
+   "world_calls": [
+    "getBlockMetadata"
+   ],
+   "variants": {
+    "air": {
+     "neighbours": {},
+     "meta0": [
+      1,
+      1,
+      45,
+      45,
+      45,
+      45
+     ],
+     "by_meta": {
+      "2": [
+       1,
+       1,
+       44,
+       45,
+       45,
+       45
+      ],
+      "3": [
+       1,
+       1,
+       45,
+       44,
+       45,
+       45
+      ],
+      "4": [
+       1,
+       1,
+       45,
+       45,
+       44,
+       45
+      ],
+      "5": [
+       1,
+       1,
+       45,
+       45,
+       45,
+       44
+      ]
+     }
+    }
+   }
+  },
+  "item_icon": 45,
+  "id_dropped": 61
+ },
+ {
+  "id": 62,
+  "name": "stoneOvenActive",
+  "name_snake": "stone_oven_active",
+  "class": "BlockFurnace",
+  "class_chain": [
+   "BlockFurnace",
+   "BlockContainer",
+   "Block"
+  ],
+  "obf_class": "kj",
+  "obf_field": "aC",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 13,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.5,
+  "resistance": 17.5,
+  "explosion_resistance": 3.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 45,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "isActive": true
+  },
+  "tiles_by_side": [
+   1,
+   1,
+   45,
+   44,
+   45,
+   45
+  ],
+  "tiles": {
+   "bottom": 1,
+   "top": 1,
+   "east": 45,
+   "west": 44,
+   "north": 45,
+   "south": 45
+  },
+  "world_tiles": {
+   "defined_in": "BlockFurnace",
+   "world_calls": [
+    "getBlockMetadata"
+   ],
+   "variants": {
+    "air": {
+     "neighbours": {},
+     "meta0": [
+      1,
+      1,
+      45,
+      45,
+      45,
+      45
+     ],
+     "by_meta": {
+      "2": [
+       1,
+       1,
+       61,
+       45,
+       45,
+       45
+      ],
+      "3": [
+       1,
+       1,
+       45,
+       61,
+       45,
+       45
+      ],
+      "4": [
+       1,
+       1,
+       45,
+       45,
+       61,
+       45
+      ],
+      "5": [
+       1,
+       1,
+       45,
+       45,
+       45,
+       61
+      ]
+     }
+    }
+   }
+  },
+  "item_icon": 45,
+  "id_dropped": 61
+ },
+ {
+  "id": 63,
+  "name": "signStanding",
+  "name_snake": "sign_standing",
+  "class": "BlockSign",
+  "class_chain": [
+   "BlockSign",
+   "BlockContainer",
+   "Block"
+  ],
+  "obf_class": "lg",
+  "obf_field": "aD",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": -1,
+  "renderer": "none (TileEntity renderer)",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 1.0,
+  "resistance": 5.0,
+  "explosion_resistance": 1.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.25,
+   0.0,
+   0.25,
+   0.75,
+   1.0,
+   0.75
+  ],
+  "block_index_in_texture": 4,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "isFreestanding": true
+  },
+  "tiles_by_side": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "tiles": {
+   "bottom": 4,
+   "top": 4,
+   "east": 4,
+   "west": 4,
+   "north": 4,
+   "south": 4
+  },
+  "item_icon": 4,
+  "id_dropped": 323
+ },
+ {
+  "id": 64,
+  "name": "doorWood",
+  "name_snake": "door_wood",
+  "class": "BlockDoor",
+  "class_chain": [
+   "BlockDoor",
+   "Block"
+  ],
+  "obf_class": "fn",
+  "obf_field": "aE",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 7,
+  "renderer": "renderBlockDoor",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 97,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   97,
+   97,
+   97,
+   97,
+   97,
+   -97
+  ],
+  "tiles": {
+   "bottom": 97,
+   "top": 97,
+   "east": 97,
+   "west": 97,
+   "north": 97,
+   "south": -97
+  },
+  "tiles_by_meta": {
+   "1": [
+    97,
+    97,
+    97,
+    -97,
+    97,
+    97
+   ],
+   "2": [
+    97,
+    97,
+    97,
+    97,
+    -97,
+    97
+   ],
+   "3": [
+    97,
+    97,
+    -97,
+    97,
+    97,
+    97
+   ],
+   "4": [
+    97,
+    97,
+    -97,
+    97,
+    97,
+    97
+   ],
+   "6": [
+    97,
+    97,
+    97,
+    -97,
+    97,
+    97
+   ],
+   "7": [
+    97,
+    97,
+    97,
+    97,
+    -97,
+    97
+   ],
+   "8": [
+    97,
+    97,
+    97,
+    97,
+    81,
+    -81
+   ],
+   "9": [
+    97,
+    97,
+    81,
+    -81,
+    97,
+    97
+   ],
+   "10": [
+    97,
+    97,
+    97,
+    97,
+    -81,
+    81
+   ],
+   "11": [
+    97,
+    97,
+    -81,
+    81,
+    97,
+    97
+   ],
+   "12": [
+    97,
+    97,
+    -81,
+    81,
+    97,
+    97
+   ],
+   "13": [
+    97,
+    97,
+    97,
+    97,
+    81,
+    -81
+   ],
+   "14": [
+    97,
+    97,
+    81,
+    -81,
+    97,
+    97
+   ],
+   "15": [
+    97,
+    97,
+    97,
+    97,
+    -81,
+    81
+   ]
+  },
+  "negative_tiles_mean": "mirrored U (RenderBlocks: tex < 0 -> flip, index = -tex)",
+  "item_icon": 97,
+  "id_dropped": 324
+ },
+ {
+  "id": 65,
+  "name": "ladder",
+  "name_snake": "ladder",
+  "class": "BlockLadder",
+  "class_chain": [
+   "BlockLadder",
+   "Block"
+  ],
+  "obf_class": "bn",
+  "obf_field": "aF",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 8,
+  "renderer": "renderBlockLadder",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.4,
+  "resistance": 2.0,
+  "explosion_resistance": 0.4,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 83,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   83,
+   83,
+   83,
+   83,
+   83,
+   83
+  ],
+  "tiles": {
+   "bottom": 83,
+   "top": 83,
+   "east": 83,
+   "west": 83,
+   "north": 83,
+   "south": 83
+  },
+  "item_icon": 83,
+  "id_dropped": 65
+ },
+ {
+  "id": 66,
+  "name": "minecartTrack",
+  "name_snake": "minecart_track",
+  "class": "BlockMinecartTrack",
+  "class_chain": [
+   "BlockMinecartTrack",
+   "Block"
+  ],
+  "obf_class": "hv",
+  "obf_field": "aG",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 9,
+  "renderer": "renderBlockMinecartTrack",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.7,
+  "resistance": 3.5,
+  "explosion_resistance": 0.7,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.125,
+   1.0
+  ],
+  "block_index_in_texture": 128,
+  "step_sound": {
+   "field": "soundMetalFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.5,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   128,
+   128,
+   128,
+   128,
+   128,
+   128
+  ],
+  "tiles": {
+   "bottom": 128,
+   "top": 128,
+   "east": 128,
+   "west": 128,
+   "north": 128,
+   "south": 128
+  },
+  "tiles_by_meta": {
+   "6": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "7": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "8": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "9": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "10": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "11": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "12": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "13": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "14": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ],
+   "15": [
+    112,
+    112,
+    112,
+    112,
+    112,
+    112
+   ]
+  },
+  "item_icon": 128,
+  "id_dropped": 66
+ },
+ {
+  "id": 67,
+  "name": "stairCompactStone",
+  "name_snake": "stair_compact_stone",
+  "class": "BlockStairs",
+  "class_chain": [
+   "BlockStairs",
+   "Block"
+  ],
+  "obf_class": "kb",
+  "obf_field": "aH",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 10,
+  "renderer": "renderBlockStairs",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 16,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "modelBlock": {
+    "block": "cobblestone",
+    "id": 4
+   }
+  },
+  "tiles_by_side": [
+   16,
+   16,
+   16,
+   16,
+   16,
+   16
+  ],
+  "tiles": {
+   "bottom": 16,
+   "top": 16,
+   "east": 16,
+   "west": 16,
+   "north": 16,
+   "south": 16
+  },
+  "world_tiles": {
+   "defined_in": "BlockStairs",
+   "world_calls": [
+    "getBlockMetadata"
+   ],
+   "variants": {
+    "air": {
+     "neighbours": {},
+     "meta0": [
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+     ],
+     "by_meta": {}
+    }
+   }
+  },
+  "item_icon": 16,
+  "id_dropped": 4
+ },
+ {
+  "id": 68,
+  "name": "signWall",
+  "name_snake": "sign_wall",
+  "class": "BlockSign",
+  "class_chain": [
+   "BlockSign",
+   "BlockContainer",
+   "Block"
+  ],
+  "obf_class": "lg",
+  "obf_field": "aI",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": -1,
+  "renderer": "none (TileEntity renderer)",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 1.0,
+  "resistance": 5.0,
+  "explosion_resistance": 1.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.25,
+   0.0,
+   0.25,
+   0.75,
+   1.0,
+   0.75
+  ],
+  "block_index_in_texture": 4,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "isFreestanding": false
+  },
+  "tiles_by_side": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "tiles": {
+   "bottom": 4,
+   "top": 4,
+   "east": 4,
+   "west": 4,
+   "north": 4,
+   "south": 4
+  },
+  "item_icon": 4,
+  "id_dropped": 323
+ },
+ {
+  "id": 69,
+  "name": "lever",
+  "name_snake": "lever",
+  "class": "BlockLever",
+  "class_chain": [
+   "BlockLever",
+   "Block"
+  ],
+  "obf_class": "nb",
+  "obf_field": "aJ",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 12,
+  "renderer": "renderBlockLever",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.5,
+  "resistance": 2.5,
+  "explosion_resistance": 0.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 96,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   96,
+   96,
+   96,
+   96,
+   96,
+   96
+  ],
+  "tiles": {
+   "bottom": 96,
+   "top": 96,
+   "east": 96,
+   "west": 96,
+   "north": 96,
+   "south": 96
+  },
+  "item_icon": 96,
+  "id_dropped": 69
+ },
+ {
+  "id": 70,
+  "name": "pressurePlateStone",
+  "name_snake": "pressure_plate_stone",
+  "class": "BlockPressurePlate",
+  "class_chain": [
+   "BlockPressurePlate",
+   "Block"
+  ],
+  "obf_class": "aj",
+  "obf_field": "aK",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.5,
+  "resistance": 2.5,
+  "explosion_resistance": 0.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0625,
+   0.0,
+   0.0625,
+   0.9375,
+   0.03125,
+   0.9375
+  ],
+  "block_index_in_texture": 1,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 20,
+  "tiles_by_side": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "tiles": {
+   "bottom": 1,
+   "top": 1,
+   "east": 1,
+   "west": 1,
+   "north": 1,
+   "south": 1
+  },
+  "item_icon": 1,
+  "id_dropped": 70
+ },
+ {
+  "id": 71,
+  "name": "doorSteel",
+  "name_snake": "door_steel",
+  "class": "BlockDoor",
+  "class_chain": [
+   "BlockDoor",
+   "Block"
+  ],
+  "obf_class": "fn",
+  "obf_field": "aL",
+  "material": "iron",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 7,
+  "renderer": "renderBlockDoor",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 5.0,
+  "resistance": 25.0,
+  "explosion_resistance": 5.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 98,
+  "step_sound": {
+   "field": "soundMetalFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.5,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   98,
+   98,
+   98,
+   98,
+   98,
+   -98
+  ],
+  "tiles": {
+   "bottom": 98,
+   "top": 98,
+   "east": 98,
+   "west": 98,
+   "north": 98,
+   "south": -98
+  },
+  "tiles_by_meta": {
+   "1": [
+    98,
+    98,
+    98,
+    -98,
+    98,
+    98
+   ],
+   "2": [
+    98,
+    98,
+    98,
+    98,
+    -98,
+    98
+   ],
+   "3": [
+    98,
+    98,
+    -98,
+    98,
+    98,
+    98
+   ],
+   "4": [
+    98,
+    98,
+    -98,
+    98,
+    98,
+    98
+   ],
+   "6": [
+    98,
+    98,
+    98,
+    -98,
+    98,
+    98
+   ],
+   "7": [
+    98,
+    98,
+    98,
+    98,
+    -98,
+    98
+   ],
+   "8": [
+    98,
+    98,
+    98,
+    98,
+    82,
+    -82
+   ],
+   "9": [
+    98,
+    98,
+    82,
+    -82,
+    98,
+    98
+   ],
+   "10": [
+    98,
+    98,
+    98,
+    98,
+    -82,
+    82
+   ],
+   "11": [
+    98,
+    98,
+    -82,
+    82,
+    98,
+    98
+   ],
+   "12": [
+    98,
+    98,
+    -82,
+    82,
+    98,
+    98
+   ],
+   "13": [
+    98,
+    98,
+    98,
+    98,
+    82,
+    -82
+   ],
+   "14": [
+    98,
+    98,
+    82,
+    -82,
+    98,
+    98
+   ],
+   "15": [
+    98,
+    98,
+    98,
+    98,
+    -82,
+    82
+   ]
+  },
+  "negative_tiles_mean": "mirrored U (RenderBlocks: tex < 0 -> flip, index = -tex)",
+  "item_icon": 98,
+  "id_dropped": 330
+ },
+ {
+  "id": 72,
+  "name": "pressurePlateWood",
+  "name_snake": "pressure_plate_wood",
+  "class": "BlockPressurePlate",
+  "class_chain": [
+   "BlockPressurePlate",
+   "Block"
+  ],
+  "obf_class": "aj",
+  "obf_field": "aM",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.5,
+  "resistance": 2.5,
+  "explosion_resistance": 0.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0625,
+   0.0,
+   0.0625,
+   0.9375,
+   0.03125,
+   0.9375
+  ],
+  "block_index_in_texture": 4,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 20,
+  "tiles_by_side": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "tiles": {
+   "bottom": 4,
+   "top": 4,
+   "east": 4,
+   "west": 4,
+   "north": 4,
+   "south": 4
+  },
+  "item_icon": 4,
+  "id_dropped": 72
+ },
+ {
+  "id": 73,
+  "name": "oreRedstone",
+  "name_snake": "ore_redstone",
+  "class": "BlockRedstoneOre",
+  "class_chain": [
+   "BlockRedstoneOre",
+   "Block"
+  ],
+  "obf_class": "ag",
+  "obf_field": "aN",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 3.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 51,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 30,
+  "class_fields": {
+   "glowing": false
+  },
+  "tiles_by_side": [
+   51,
+   51,
+   51,
+   51,
+   51,
+   51
+  ],
+  "tiles": {
+   "bottom": 51,
+   "top": 51,
+   "east": 51,
+   "west": 51,
+   "north": 51,
+   "south": 51
+  },
+  "item_icon": 51,
+  "id_dropped": 331
+ },
+ {
+  "id": 74,
+  "name": "oreRedstoneGlowing",
+  "name_snake": "ore_redstone_glowing",
+  "class": "BlockRedstoneOre",
+  "class_chain": [
+   "BlockRedstoneOre",
+   "Block"
+  ],
+  "obf_class": "ag",
+  "obf_field": "aO",
+  "material": "rock",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 9,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 3.0,
+  "resistance": 15.0,
+  "explosion_resistance": 3.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 51,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 30,
+  "class_fields": {
+   "glowing": true
+  },
+  "tiles_by_side": [
+   51,
+   51,
+   51,
+   51,
+   51,
+   51
+  ],
+  "tiles": {
+   "bottom": 51,
+   "top": 51,
+   "east": 51,
+   "west": 51,
+   "north": 51,
+   "south": 51
+  },
+  "item_icon": 51,
+  "id_dropped": 331
+ },
+ {
+  "id": 75,
+  "name": "torchRedstoneIdle",
+  "name_snake": "torch_redstone_idle",
+  "class": "BlockRedstoneTorch",
+  "class_chain": [
+   "BlockRedstoneTorch",
+   "BlockTorch",
+   "Block"
+  ],
+  "obf_class": "bc",
+  "obf_field": "aP",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 2,
+  "renderer": "renderBlockTorch",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 115,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 2,
+  "class_fields": {
+   "torchActive": false
+  },
+  "tiles_by_side": [
+   115,
+   84,
+   115,
+   115,
+   115,
+   115
+  ],
+  "tiles": {
+   "bottom": 115,
+   "top": 84,
+   "east": 115,
+   "west": 115,
+   "north": 115,
+   "south": 115
+  },
+  "tiles_by_meta": {
+   "1": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "2": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "3": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "4": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "5": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "6": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "7": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "8": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "9": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "10": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "11": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "12": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "13": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "14": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ],
+   "15": [
+    115,
+    100,
+    115,
+    115,
+    115,
+    115
+   ]
+  },
+  "item_icon": 115,
+  "id_dropped": 76
+ },
+ {
+  "id": 76,
+  "name": "torchRedstoneActive",
+  "name_snake": "torch_redstone_active",
+  "class": "BlockRedstoneTorch",
+  "class_chain": [
+   "BlockRedstoneTorch",
+   "BlockTorch",
+   "Block"
+  ],
+  "obf_class": "bc",
+  "obf_field": "aQ",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 2,
+  "renderer": "renderBlockTorch",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 7,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 99,
+  "step_sound": {
+   "field": "soundWoodFootstep",
+   "name": "wood",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.wood",
+   "break": "step.wood"
+  },
+  "tick_rate": 2,
+  "class_fields": {
+   "torchActive": true
+  },
+  "tiles_by_side": [
+   99,
+   84,
+   99,
+   99,
+   99,
+   99
+  ],
+  "tiles": {
+   "bottom": 99,
+   "top": 84,
+   "east": 99,
+   "west": 99,
+   "north": 99,
+   "south": 99
+  },
+  "tiles_by_meta": {
+   "1": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "2": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "3": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "4": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "5": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "6": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "7": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "8": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "9": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "10": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "11": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "12": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "13": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "14": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ],
+   "15": [
+    99,
+    100,
+    99,
+    99,
+    99,
+    99
+   ]
+  },
+  "item_icon": 99,
+  "id_dropped": 76
+ },
+ {
+  "id": 77,
+  "name": "button",
+  "name_snake": "button",
+  "class": "BlockButton",
+  "class_chain": [
+   "BlockButton",
+   "Block"
+  ],
+  "obf_class": "hk",
+  "obf_field": "aR",
+  "material": "circuits",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.5,
+  "resistance": 2.5,
+  "explosion_resistance": 0.5,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 1,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 20,
+  "tiles_by_side": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "tiles": {
+   "bottom": 1,
+   "top": 1,
+   "east": 1,
+   "west": 1,
+   "north": 1,
+   "south": 1
+  },
+  "item_icon": 1,
+  "id_dropped": 77
+ },
+ {
+  "id": 78,
+  "name": "snow",
+  "name_snake": "snow",
+  "class": "BlockSnow",
+  "class_chain": [
+   "BlockSnow",
+   "Block"
+  ],
+  "obf_class": "ev",
+  "obf_field": "aS",
+  "material": "snow",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.1,
+  "resistance": 0.5,
+  "explosion_resistance": 0.1,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   0.125,
+   1.0
+  ],
+  "block_index_in_texture": 66,
+  "step_sound": {
+   "field": "soundClothFootstep",
+   "name": "cloth",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.cloth",
+   "break": "step.cloth"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   66,
+   66,
+   66,
+   66,
+   66,
+   66
+  ],
+  "tiles": {
+   "bottom": 66,
+   "top": 66,
+   "east": 66,
+   "west": 66,
+   "north": 66,
+   "south": 66
+  },
+  "item_icon": 66,
+  "id_dropped": 332
+ },
+ {
+  "id": 79,
+  "name": "ice",
+  "name_snake": "ice",
+  "class": "BlockIce",
+  "class_chain": [
+   "BlockIce",
+   "BlockBreakable",
+   "Block"
+  ],
+  "obf_class": "gu",
+  "obf_field": "aT",
+  "material": "ice",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 1,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 3,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.5,
+  "resistance": 2.5,
+  "explosion_resistance": 0.5,
+  "slipperiness": 0.98,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 67,
+  "step_sound": {
+   "field": "soundGlassFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "random.glass"
+  },
+  "tick_rate": 10,
+  "class_fields": {
+   "localFlag": false
+  },
+  "tiles_by_side": [
+   67,
+   67,
+   67,
+   67,
+   67,
+   67
+  ],
+  "tiles": {
+   "bottom": 67,
+   "top": 67,
+   "east": 67,
+   "west": 67,
+   "north": 67,
+   "south": 67
+  },
+  "item_icon": 67,
+  "id_dropped": 79
+ },
+ {
+  "id": 80,
+  "name": "blockSnow",
+  "name_snake": "block_snow",
+  "class": "BlockSnowBlock",
+  "class_chain": [
+   "BlockSnowBlock",
+   "Block"
+  ],
+  "obf_class": "o",
+  "obf_field": "aU",
+  "material": "craftedSnow",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.2,
+  "resistance": 1.0,
+  "explosion_resistance": 0.2,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 66,
+  "step_sound": {
+   "field": "soundClothFootstep",
+   "name": "cloth",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.cloth",
+   "break": "step.cloth"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   66,
+   66,
+   66,
+   66,
+   66,
+   66
+  ],
+  "tiles": {
+   "bottom": 66,
+   "top": 66,
+   "east": 66,
+   "west": 66,
+   "north": 66,
+   "south": 66
+  },
+  "item_icon": 66,
+  "id_dropped": 332
+ },
+ {
+  "id": 81,
+  "name": "cactus",
+  "name_snake": "cactus",
+  "class": "BlockCactus",
+  "class_chain": [
+   "BlockCactus",
+   "Block"
+  ],
+  "obf_class": "ho",
+  "obf_field": "aV",
+  "material": "cactus",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 13,
+  "renderer": "renderBlockCactus",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.4,
+  "resistance": 2.0,
+  "explosion_resistance": 0.4,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 70,
+  "step_sound": {
+   "field": "soundClothFootstep",
+   "name": "cloth",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.cloth",
+   "break": "step.cloth"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   71,
+   69,
+   70,
+   70,
+   70,
+   70
+  ],
+  "tiles": {
+   "bottom": 71,
+   "top": 69,
+   "east": 70,
+   "west": 70,
+   "north": 70,
+   "south": 70
+  },
+  "item_icon": 70,
+  "id_dropped": 81
+ },
+ {
+  "id": 82,
+  "name": "blockClay",
+  "name_snake": "block_clay",
+  "class": "BlockClay",
+  "class_chain": [
+   "BlockClay",
+   "Block"
+  ],
+  "obf_class": "jl",
+  "obf_field": "aW",
+  "material": "clay",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": false
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 0.6,
+  "resistance": 3.0,
+  "explosion_resistance": 0.6,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 72,
+  "step_sound": {
+   "field": "soundGravelFootstep",
+   "name": "gravel",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.gravel",
+   "break": "step.gravel"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   72,
+   72,
+   72,
+   72,
+   72,
+   72
+  ],
+  "tiles": {
+   "bottom": 72,
+   "top": 72,
+   "east": 72,
+   "west": 72,
+   "north": 72,
+   "south": 72
+  },
+  "item_icon": 72,
+  "id_dropped": 337
+ },
+ {
+  "id": 83,
+  "name": "reed",
+  "name_snake": "reed",
+  "class": "BlockReed",
+  "class_chain": [
+   "BlockReed",
+   "Block"
+  ],
+  "obf_class": "jc",
+  "obf_field": "aX",
+  "material": "plants",
+  "material_props": {
+   "liquid": false,
+   "solid": false,
+   "can_block_grass": false,
+   "can_burn": false
+  },
+  "render_type": 1,
+  "renderer": "renderBlockReed",
+  "render_as_normal_block": false,
+  "render_pass": 0,
+  "is_opaque_cube": false,
+  "opaque_cube_lookup": false,
+  "light_value": 0,
+  "light_opacity": 0,
+  "can_block_grass": false,
+  "tick_on_load": true,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "explosion_resistance": 0.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.125,
+   0.0,
+   0.125,
+   0.875,
+   1.0,
+   0.875
+  ],
+  "block_index_in_texture": 73,
+  "step_sound": {
+   "field": "soundGrassFootstep",
+   "name": "grass",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.grass",
+   "break": "step.grass"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   73,
+   73,
+   73,
+   73,
+   73,
+   73
+  ],
+  "tiles": {
+   "bottom": 73,
+   "top": 73,
+   "east": 73,
+   "west": 73,
+   "north": 73,
+   "south": 73
+  },
+  "item_icon": 73,
+  "id_dropped": 338
+ },
+ {
+  "id": 84,
+  "name": "jukebox",
+  "name_snake": "jukebox",
+  "class": "BlockJukeBox",
+  "class_chain": [
+   "BlockJukeBox",
+   "Block"
+  ],
+  "obf_class": "cr",
+  "obf_field": "aY",
+  "material": "wood",
+  "material_props": {
+   "liquid": false,
+   "solid": true,
+   "can_block_grass": true,
+   "can_burn": true
+  },
+  "render_type": 0,
+  "renderer": "renderStandardBlock",
+  "render_as_normal_block": true,
+  "render_pass": 0,
+  "is_opaque_cube": true,
+  "opaque_cube_lookup": true,
+  "light_value": 0,
+  "light_opacity": 255,
+  "can_block_grass": false,
+  "tick_on_load": false,
+  "hardness": 2.0,
+  "resistance": 30.0,
+  "explosion_resistance": 6.0,
+  "slipperiness": 0.6,
+  "particle_gravity": 1.0,
+  "bounds": [
+   0.0,
+   0.0,
+   0.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "block_index_in_texture": 74,
+  "step_sound": {
+   "field": "soundStoneFootstep",
+   "name": "stone",
+   "volume": 1.0,
+   "pitch": 1.0,
+   "step": "step.stone",
+   "break": "step.stone"
+  },
+  "tick_rate": 10,
+  "tiles_by_side": [
+   74,
+   75,
+   74,
+   74,
+   74,
+   74
+  ],
+  "tiles": {
+   "bottom": 74,
+   "top": 75,
+   "east": 74,
+   "west": 74,
+   "north": 74,
+   "south": 74
+  },
+  "item_icon": 74,
+  "id_dropped": 84
+ }
+]

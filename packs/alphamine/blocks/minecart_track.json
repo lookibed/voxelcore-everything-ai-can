@@ -1,0 +1,98 @@
+{
+    "caption": "minecartTrack",
+    "model": "custom",
+    "model-name": "amblk_minecart_track_m0",
+    "texture": "am_minecart_track",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m1",
+                "texture": "am_minecart_track"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m2",
+                "texture": "am_minecart_track"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m3",
+                "texture": "am_minecart_track"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m4",
+                "texture": "am_minecart_track"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m5",
+                "texture": "am_minecart_track"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m6",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m7",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m8",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m9",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m6",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m6",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m6",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m6",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_minecart_track_m6",
+                "texture": "am_minecart_track_m6"
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.125,
+        1.0
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 66
+}

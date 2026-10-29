@@ -1,0 +1,15 @@
+{
+    "caption": "jukebox",
+    "texture-faces": [
+        "am_jukebox",
+        "am_jukebox",
+        "am_jukebox_bottom",
+        "am_jukebox_top",
+        "am_jukebox",
+        "am_jukebox"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 84
+}

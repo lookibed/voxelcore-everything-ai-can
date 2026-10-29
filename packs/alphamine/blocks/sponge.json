@@ -1,0 +1,15 @@
+{
+    "caption": "sponge",
+    "texture-faces": [
+        "am_sponge",
+        "am_sponge",
+        "am_sponge_bottom",
+        "am_sponge",
+        "am_sponge",
+        "am_sponge"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 19
+}

@@ -1,0 +1,13 @@
+{
+    "Lua.diagnostics.globals": [
+        "mat4",
+        "on_render",
+        "entity",
+        "on_attacked",
+        "on_used",
+        "quat"
+    ],
+    "Lua.diagnostics.disable": [
+        "unused-function"
+    ]
+}

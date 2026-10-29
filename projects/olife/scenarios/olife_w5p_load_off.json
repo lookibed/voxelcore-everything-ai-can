@@ -1,0 +1,49 @@
+{
+ "description": "Wave 5p (olife_w5p) profile variant: olife_load (6 bots, sandbox, consistency) — interpreter only, stock GC. World --opts prof=1,jitlog=1,jit=off,gc=auto. Per-tick CSV world_prof.csv + JIT trace summary (olife_w5p.py); NOT a clean perf claim.",
+ "setup": {
+  "session": {
+   "clients": 6,
+   "client_kind": "bot",
+   "sandbox": true,
+   "blocks": 20,
+   "world_opts": "prof=1,jitlog=1,jit=off,gc=auto"
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_prof_mark"
+  },
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 15
+   }
+  },
+  {
+   "cmd": "olife_prof",
+   "args": {
+    "warmup_ticks": 0
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {}
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 150
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+    "caption": "sand",
+    "texture-faces": [
+        "am_sand",
+        "am_sand",
+        "am_sand_bottom",
+        "am_sand",
+        "am_sand",
+        "am_sand"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 12
+}

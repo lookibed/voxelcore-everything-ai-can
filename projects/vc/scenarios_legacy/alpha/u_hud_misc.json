@@ -1,0 +1,24 @@
+{
+ "name": "u_hud_misc",
+ "description": "Агент U (фаза 3), без golden: строка чата в HUD (сообщение сервера после chat), Esc клавишей движка (обработчик key:escape пака -> GuiIngameMenu), клик по «Back to game» командой gui; слои hud + gui.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [0, 0, 0],
+ "steps": [
+  {"cmd": "look", "args": {"yaw": 0, "pitch": 0}},
+  {"cmd": "mode", "args": {"fixed": true, "seed": 20260930, "clear_chat": true}},
+  {"cmd": "render", "args": {"all": false, "layers": {"hud": true, "gui": true}, "clear": [0, 0, 0]}},
+  {"cmd": "chat", "args": {"text": "hello from agent U"}},
+  {"cmd": "wait", "args": {"chat": "hello", "max_frames": 200}},
+  {"cmd": "step", "args": {"ticks": 5, "frames": 1}},
+  {"cmd": "shot", "name": "0_chat"},
+  {"cmd": "input", "args": {"keys": {"escape": true}}},
+  {"cmd": "step", "args": {"ticks": 1, "frames": 1}},
+  {"cmd": "input", "args": {"keys": {"escape": false}}},
+  {"cmd": "step", "args": {"ticks": 5, "frames": 1}},
+  {"cmd": "shot", "name": "1_esc_menu"},
+  {"cmd": "gui", "args": {"click": [426, 188]}, "expect": {"screen": "ingame"}},
+  {"cmd": "step", "args": {"ticks": 1, "frames": 1}},
+  {"cmd": "shot", "name": "2_back"}
+ ]
+}

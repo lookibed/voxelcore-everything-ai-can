@@ -1,0 +1,112 @@
+<!-- Olife editor, UX round 1 (02.10, olife_ux1): the user's original editor (prototype 0.30.6, Olife/layouts/console.xml)
+     rebuilt on native 0.32 XML. Whole viewport (size-func), splitboxes like the original: code (largest) over the
+     console, the scripts panel on the right; one toolbar (Close, Run/Stop, file name, Save, Edit, tabs) and ONE status
+     line. Pages: Code / Profiler / Entity settings (tabs). The world decides everything: buttons only send requests,
+     the state shown is the last ScriptState / ConsoleDelta / ScriptProfile / EntityLook (olife_client:olife). -->
+<container id="root" color="#060A16F2" size-func="unpack(gui.get_viewport())">
+    <splitbox id="split_main" orientation="horizontal" split-pos="0.8" size-func="unpack(gui.get_viewport())">
+        <splitbox id="split_left" orientation="vertical" split-pos="0.75">
+            <container id="left_top" color="0">
+                <panel id="toolbar" orientation="horizontal" interval="6" padding="6,4,6,4" color="#14183080"
+                       size-func="-1,44">
+                    <button id="btn_close" size="84,36" color="#5050ff" hover-color="#5050ffc6"
+                            onclick="ui_close()" tooltip="Esc: close and give the lock back">ЗАКРЫТЬ</button>
+                    <container id="back_run" size="96,36" color="#5050ff60">
+                        <image id="run_icon" src="gui/olife_play" size="20,20" pos="8,8" interactive="false"></image>
+                        <button id="btn_run" color="0" hover-color="#5050ffa0" pos="30,0" size="66,36"
+                                onclick="ui_run_toggle()" tooltip="Run: save (if edited) and run on the server; Stop">RUN</button>
+                    </container>
+                    <textbox id="fname" size="160,36" color="#5050ff40" padding="8,6,8,2" hint="имя_скрипта"
+                             validator="function(t) return is_valid_name(t) end"></textbox>
+                    <container id="back_save" size="124,36" color="#5050ff60">
+                        <image id="save_icon" src="gui/olife_save" size="20,20" pos="8,8" interactive="false"></image>
+                        <button id="btn_save" color="0" hover-color="#5050ffa0" pos="30,0" size="94,36"
+                                onclick="ui_save()" tooltip="Ctrl+S: code to the server; with a name also config:olife/scripts/NAME.lua">СОХРАНИТЬ</button>
+                    </container>
+                    <button id="btn_edit" size="88,36" color="#30A05080" onclick="ui_edit()"
+                            tooltip="Take the editor lock">ПРАВИТЬ</button>
+                </panel>
+                <panel id="tabs" pos="0,46" orientation="horizontal" interval="4" padding="6,0,6,0" color="0" size="400,32">
+                    <button id="tab_code" size="64,30" color="#FFFFFF30" onclick="ui_tab('code')">Код</button>
+                    <button id="tab_prof" size="110,30" color="#FFFFFF10" onclick="ui_tab('prof')">Профайлер</button>
+                    <button id="tab_set" size="110,30" color="#FFFFFF10" onclick="ui_tab('set')">Настройки</button>
+                    <button id="tab_mob" size="94,30" color="#FFFFFF10" onclick="ui_tab('mob')" tooltip="UX B1: профиль моба и версии кода (коммиты)">Профиль</button>
+                </panel>
+                <label id="status" pos="406,52" size-func="-413,20" color="#C8D4E8"></label>
+                <container id="page_code" pos="0,82" size-func="-1,-83" color="#000000A0" cursor="text"
+                           onclick="if not document.code.focused then document.code.focused = true end">
+                    <textbox id="code" size-func="-1,-1" color="0" padding="6" multiline="true" line-numbers="true"
+                             syntax="lua" text-wrap="false" font="olife_mono" scroll-step="48" keep-line-selection="true"
+                             oncontrolkey="on_control_key" sub-consumer="on_code_edit"></textbox>
+                </container>
+                <container id="page_prof" pos="0,82" size-func="-1,-83" color="#00000080" visible="false" scrollable="true">
+                    <label pos="12,6" size="420,20" color="#FFD080">Профайлер сущности (обновление раз в секунду)</label>
+                    <label id="pf_left" pos="12,30" size="330,180" multiline="true" color="#E0E8F0"></label>
+                    <label id="pf_right" pos="350,30" size="320,180" multiline="true" color="#E0E8F0"></label>
+                    <label pos="12,212" size="420,18" color="#90A0B0">Кредиты за такт, последние 60 с:</label>
+                    <container id="spark" pos="12,232" size="484,40" color="#FFFFFF10"></container>
+                </container>
+                <!-- UX A1 (03.10, olife_a1): left column — the entity (name, owner, look, fork, friends, delete);
+                     right column — the rights panel: per action owner / friends / list / everyone (+ list, OK),
+                     rows built by olife_client:olife (perm_build) into perm_box; only the owner or an admin changes them -->
+                <container id="page_set" pos="0,82" size-func="-1,-83" color="#00000080" visible="false" scrollable="true">
+                    <label pos="8,6" size="270,20" color="#FFD080">Настройки сущности</label>
+                    <label pos="8,36" size="70,20">Имя</label>
+                    <textbox id="set_name" pos="80,32" size="134,26" padding="6,4,6,2" hint="имя"></textbox>
+                    <button id="btn_rename" pos="218,32" size="62,26" color="#5050ff80" onclick="ui_rename()" tooltip="Переименовать (право «вид/имя»)">OK</button>
+                    <label pos="8,64" size="70,20">Владелец</label>
+                    <label id="set_owner" pos="84,64" size="196,20" color="#C8D4E8"></label>
+                    <label pos="8,96" size="70,20">Модель</label>
+                    <select id="set_model" pos="80,90" size="200,26" width="200" selected="olife_bench" onselect="ui_pick_model">
+                        <option value="olife_bench">Bench (original)</option>
+                        <option value="olife_bone">Bone (original)</option>
+                        <option value="olife_gravitygun">Gravity gun (original)</option>
+                        <option value="olife_injector">Injector (original)</option>
+                        <option value="block">Block (engine)</option>
+                    </select>
+                    <label pos="8,128" size="70,20">Текстура</label>
+                    <select id="set_texture" pos="80,122" size="200,26" width="200" selected="entities/olife_bench" onselect="ui_pick_texture">
+                        <option value="entities/olife_bench">Bench (original)</option>
+                        <option value="blocks:planks">Planks</option>
+                        <option value="blocks:green_lamp">Green lamp</option>
+                        <option value="blocks:red_lamp">Red lamp</option>
+                        <option value="blocks:stone">Stone</option>
+                        <option value="blocks:wood">Wood</option>
+                        <option value="blocks:metal">Metal</option>
+                    </select>
+                    <button id="btn_look" pos="80,154" size="200,26" color="#5050ff80" onclick="ui_apply_look()">Применить вид</button>
+                    <label id="set_look" pos="8,184" size="276,18" color="#90A0B0"></label>
+                    <button id="btn_fork" pos="8,208" size="134,28" color="#30A05090" hover-color="#40C060"
+                            onclick="ui_fork()" tooltip="Своя копия: код, права, вид — новый бенч перед вами (право «форк»)">Форк</button>
+                    <button id="btn_friends" pos="146,208" size="134,28" color="#5050ff80"
+                            onclick="ui_friends()" tooltip="Друзья: запросы, список (также Shift+`)">Друзья</button>
+                    <button id="btn_delete" pos="8,242" size="134,28" color="#C03030C0" hover-color="#E04040"
+                            onclick="ui_delete()" tooltip="Twice to confirm; Shift+LMB with an Olife tool deletes the last opened entity">Удалить</button>
+                    <label id="set_note" pos="146,240" size="138,34" multiline="true" color="#FFB0A0"></label>
+                    <label id="perm_note" pos="292,6" size="390,20" color="#FFD080"></label>
+                    <container id="perm_box" pos="292,30" size="390,236" color="0"></container>
+                </container>
+                <!-- UX B1 (03.10, olife_b1): mob profile (MobProfile of the world) and the code history as commits
+                     (CodeHistory; rows built by olife_client:mobs editor_refresh into ver_box: Открыть / Вернуть) -->
+                <container id="page_mob" pos="0,82" size-func="-1,-83" color="#00000080" visible="false" scrollable="true">
+                    <label pos="12,6" size="270,20" color="#FFD080">Профиль моба</label>
+                    <label id="pf_mob" pos="12,30" size="276,240" multiline="true" text-wrap="true" color="#E0E8F0"></label>
+                    <label id="ver_note" pos="296,6" size="386,20" color="#FFD080">Версии кода (коммиты)</label>
+                    <panel id="ver_box" pos="296,30" size="386,240" color="#00000060" padding="2" interval="2" scrollable="true"></panel>
+                </container>
+            </container>
+            <container id="console_box" color="#0400FF40">
+                <label pos="8,4" size="200,18" color="#C8D4E8" tooltip="RMB on the text: clear the local view">КОНСОЛЬ:</label>
+                <label id="err_line" pos="210,4" size-func="-220,18" color="#FF9080" text-align="right"></label>   <!-- UX B1 -->
+                <container pos="0,24" size-func="-1,-25" color="#00000087">
+                    <textbox id="console" size-func="-1,-1" color="0" padding="8" text-color="#FFFFFFD6"
+                             multiline="true" text-wrap="true" editable="false" font="olife_mono"
+                             onrightclick="console_clear()"></textbox>
+                </container>
+            </container>
+        </splitbox>
+        <panel id="scripts" color="#00000060" padding="6,10,6,10" interval="4" scrollable="true">
+            <label>СКРИПТЫ:</label>
+        </panel>
+    </splitbox>
+</container>

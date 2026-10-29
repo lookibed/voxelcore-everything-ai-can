@@ -1,0 +1,13 @@
+{
+ "description": "Load on the REAL olife-sandboxd: 500 scripted entities (typical: move on a circle, rotate, read view of <= 8 within 6 blocks, keep state) of 50 owners x 10 + 2 bots. Reports world ms/tick (TickResult rows after warm-up), sandbox service ms/tick, fuel/credits per owner. NOT a clean perf claim (no idle gate): the clean run is `lab perf olife sandbox_load`.",
+ "setup": {"session": {"clients": 2, "client_kind": "bot", "sandbox": true, "scripted": 0}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 2}},
+  {"cmd": "olife_spawn", "args": {"spawns": [["typical", 1, 10, 50]], "wait_entities": 500, "timeout": 30}},
+  {"cmd": "olife_run", "args": {"seconds": 25}},
+  {"cmd": "olife_sandbox_check", "args": {"warmup_ticks": 60, "min_rows": 300, "min_entities": 500, "min_owners": 50,
+   "controls": [1, 25, 50], "max_bad_control_rows": 5}},
+  {"cmd": "olife_status", "args": {"strict": false}},
+  {"cmd": "olife_metrics"}
+ ]
+}

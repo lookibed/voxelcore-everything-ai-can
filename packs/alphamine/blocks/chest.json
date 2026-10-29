@@ -1,0 +1,15 @@
+{
+    "caption": "chest",
+    "texture-faces": [
+        "am_chest_side",
+        "am_chest_side",
+        "am_chest_end_bottom",
+        "am_chest_end",
+        "am_chest_side",
+        "am_chest_front"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 54
+}

@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:am_brick",
+    "stack-size": 64,
+    "caption": "brick"
+}

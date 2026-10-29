@@ -1,0 +1,15 @@
+{
+    "caption": "wood",
+    "texture-faces": [
+        "am_wood_side",
+        "am_wood_side",
+        "am_wood_end_bottom",
+        "am_wood_end",
+        "am_wood_side",
+        "am_wood_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 17
+}

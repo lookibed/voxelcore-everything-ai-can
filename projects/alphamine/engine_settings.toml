@@ -1,0 +1,41 @@
+[audio]
+enabled = false
+
+[display]
+width = {size_w}
+height = {size_h}
+samples = 0
+framerate = -1
+window-mode = 0
+adaptive-menu-fps = false
+
+[camera]
+sensitivity = 2
+fov = 70
+fov-effects = false
+shaking = false
+inertia = false
+
+[chunks]
+load-distance = {param.load_distance}
+load-speed = 32
+padding = 2
+
+[graphics]
+fog-curve = 1
+backlight = false
+dense-render = false
+gamma = 1
+frustum-culling = true
+advanced-render = false
+ssao = 0
+shadows-quality = 0
+soft-lighting = false
+clouds-quality = 0
+
+[ui]
+language = "en_US"
+
+[debug]
+generator-test-mode = false
+do-write-lights = true

@@ -1,0 +1,127 @@
+{
+ "name": "layer_clouds",
+ "description": "Общая подготовка — alpha_spawn (свежая копия golden/world_a, connect, 441 чанк, /tp 24.5 65 104.5 -> /tp 104.5 67 104.5, ожидание чанков и приземления); затем look (вернуть взгляд — в am_layers слои идут подряд в одной сессии), mode seed 20260930, render {all:false, layers:{...}}. Только clouds (fancy-облака), fog выкл.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "clouds": true,
+     "fog": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 100,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_yaw0"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 90,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_yaw90"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_yaw180"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 270,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_yaw270"
+  }
+ ]
+}

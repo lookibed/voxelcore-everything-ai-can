@@ -1,0 +1,477 @@
+{
+ "name": "e2e_walk1_ls",
+ "description": "e2e_walk1 на пошаговом сервере (agents/F2F.md 9): тот же таймлайн, сервер --f2f шагает такт в такт с клиентом (барьеры rx/tx, сиды mode), без темпа 50 мс. E2E (F2F.md 8): мир world_b, точка alpha_spawn (104.5 67 104.5, yaw 0). 600 тактов (30 с): стоит 20, идёт W 100 (поворот +45 на 50, назад на 85, прыжки на 60 и 100), взгляд вниз 48°, ЛКМ держится 19 тактов — трава перед игроком сломана, в яму за предметом, выпрыгнуть вперёд, разворот 180, слот 2 (земля), ПКМ — земля в яму; инвентарь I (наведение на 5 слотов), закрыть I; чат T, 'hello', Enter; обратно W 140 с поворотами и прыжком, осмотр по 90°. Ключевые кадры каждые 20 тактов + после каждого действия, state каждые 5.",
+ "size": "854x480",
+ "server": {
+  "f2f": true
+ },
+ "setup": {
+  "world": "world_b",
+  "base": "alpha_spawn",
+  "mode": {
+   "seed": 20260930,
+   "clear_chat": true
+  }
+ },
+ "ticks": 600,
+ "state_every": 5,
+ "state_radius": 8,
+ "keyframes_every": 20,
+ "keyframes": [
+  1,
+  21,
+  51,
+  61,
+  101,
+  121,
+  131,
+  136,
+  141,
+  146,
+  151,
+  154,
+  155,
+  158,
+  161,
+  170,
+  175,
+  185,
+  191,
+  206,
+  212,
+  216,
+  217,
+  231,
+  242,
+  249,
+  255,
+  261,
+  267,
+  273,
+  281,
+  292,
+  294,
+  296,
+  299,
+  300,
+  305,
+  311,
+  361,
+  381,
+  451,
+  481,
+  521,
+  561
+ ],
+ "timeline": [
+  {
+   "tick": 20,
+   "input": {
+    "keys": {
+     "W": true
+    }
+   },
+   "comment": "walk forward (yaw 0 = +Z)"
+  },
+  {
+   "tick": 50,
+   "input": {
+    "mouse": {
+     "dx": 300
+    }
+   },
+   "comment": "turn +45 deg"
+  },
+  {
+   "tick": 60,
+   "input": {
+    "keys": {
+     "SPACE": true
+    }
+   },
+   "comment": "jump 1"
+  },
+  {
+   "tick": 62,
+   "input": {
+    "keys": {
+     "SPACE": false
+    }
+   }
+  },
+  {
+   "tick": 85,
+   "input": {
+    "mouse": {
+     "dx": -300
+    }
+   },
+   "comment": "turn back to yaw 0"
+  },
+  {
+   "tick": 100,
+   "input": {
+    "keys": {
+     "SPACE": true
+    }
+   },
+   "comment": "jump 2"
+  },
+  {
+   "tick": 102,
+   "input": {
+    "keys": {
+     "SPACE": false
+    }
+   }
+  },
+  {
+   "tick": 120,
+   "input": {
+    "keys": {
+     "W": false
+    }
+   },
+   "comment": "stop (100 ticks of W)"
+  },
+  {
+   "tick": 130,
+   "input": {
+    "mouse": {
+     "dy": -320
+    }
+   },
+   "comment": "look down 48 deg"
+  },
+  {
+   "tick": 135,
+   "input": {
+    "mouse": {
+     "buttons": [
+      true,
+      false,
+      false
+     ]
+    }
+   },
+   "comment": "LMB held: dig the grass block in front"
+  },
+  {
+   "tick": 154,
+   "input": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   },
+   "comment": "release right after the block broke (19th tick)"
+  },
+  {
+   "tick": 160,
+   "input": {
+    "keys": {
+     "W": true
+    }
+   },
+   "comment": "walk into the hole (pick up the drop)"
+  },
+  {
+   "tick": 172,
+   "input": {
+    "keys": {
+     "W": false
+    }
+   }
+  },
+  {
+   "tick": 190,
+   "input": {
+    "keys": {
+     "W": true,
+     "SPACE": true
+    }
+   },
+   "comment": "jump out forward"
+  },
+  {
+   "tick": 193,
+   "input": {
+    "keys": {
+     "SPACE": false
+    }
+   }
+  },
+  {
+   "tick": 200,
+   "input": {
+    "keys": {
+     "W": false
+    }
+   }
+  },
+  {
+   "tick": 205,
+   "input": {
+    "mouse": {
+     "dx": 1200
+    }
+   },
+   "comment": "turn 180 to face the hole"
+  },
+  {
+   "tick": 210,
+   "input": {
+    "keys": {
+     "4": true
+    }
+   },
+   "comment": "LWJGL code 4 = KEY_3 -> slot 2 (dirt)"
+  },
+  {
+   "tick": 211,
+   "input": {
+    "keys": {
+     "4": false
+    }
+   }
+  },
+  {
+   "tick": 215,
+   "input": {
+    "mouse": {
+     "buttons": [
+      false,
+      true,
+      false
+     ]
+    }
+   },
+   "comment": "RMB: place dirt into the hole"
+  },
+  {
+   "tick": 216,
+   "input": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   }
+  },
+  {
+   "tick": 230,
+   "input": {
+    "mouse": {
+     "dy": 320
+    }
+   },
+   "comment": "look level again"
+  },
+  {
+   "tick": 240,
+   "input": {
+    "mouse": {
+     "x": 0,
+     "y": 0
+    },
+    "keys": {
+     "I": true
+    }
+   },
+   "comment": "open inventory (keyBindInventory = I)"
+  },
+  {
+   "tick": 241,
+   "input": {
+    "keys": {
+     "I": false
+    }
+   }
+  },
+  {
+   "tick": 248,
+   "input": {
+    "mouse": {
+     "x": 318,
+     "y": 374
+    }
+   },
+   "comment": "hover hotbar slot 1 (logs)"
+  },
+  {
+   "tick": 254,
+   "input": {
+    "mouse": {
+     "x": 354,
+     "y": 374
+    }
+   },
+   "comment": "hover hotbar slot 2 (dirt)"
+  },
+  {
+   "tick": 260,
+   "input": {
+    "mouse": {
+     "x": 287,
+     "y": 261
+    }
+   },
+   "comment": "hover empty main slot"
+  },
+  {
+   "tick": 266,
+   "input": {
+    "mouse": {
+     "x": 442,
+     "y": 142
+    }
+   },
+   "comment": "hover crafting grid"
+  },
+  {
+   "tick": 272,
+   "input": {
+    "mouse": {
+     "x": 554,
+     "y": 162
+    }
+   },
+   "comment": "hover crafting result"
+  },
+  {
+   "tick": 280,
+   "gui": {
+    "key": "I"
+   },
+   "comment": "close inventory (GuiContainer.keyTyped: inventory key)"
+  },
+  {
+   "tick": 290,
+   "input": {
+    "keys": {
+     "T": true
+    }
+   },
+   "comment": "open chat (keyBindChat = T)"
+  },
+  {
+   "tick": 291,
+   "input": {
+    "keys": {
+     "T": false
+    }
+   }
+  },
+  {
+   "tick": 293,
+   "input": {
+    "chars": "hello"
+   },
+   "comment": "type hello"
+  },
+  {
+   "tick": 298,
+   "input": {
+    "keys": {
+     "RETURN": true
+    }
+   },
+   "comment": "send"
+  },
+  {
+   "tick": 299,
+   "input": {
+    "keys": {
+     "RETURN": false
+    }
+   }
+  },
+  {
+   "tick": 310,
+   "input": {
+    "keys": {
+     "W": true
+    }
+   },
+   "comment": "walk back towards the start"
+  },
+  {
+   "tick": 360,
+   "input": {
+    "mouse": {
+     "dx": -300
+    }
+   },
+   "comment": "turn -45 deg"
+  },
+  {
+   "tick": 380,
+   "input": {
+    "keys": {
+     "SPACE": true
+    }
+   },
+   "comment": "jump 3"
+  },
+  {
+   "tick": 382,
+   "input": {
+    "keys": {
+     "SPACE": false
+    }
+   }
+  },
+  {
+   "tick": 400,
+   "input": {
+    "mouse": {
+     "dx": 300
+    }
+   },
+   "comment": "turn back"
+  },
+  {
+   "tick": 450,
+   "input": {
+    "keys": {
+     "W": false
+    }
+   },
+   "comment": "stop (140 ticks of W)"
+  },
+  {
+   "tick": 480,
+   "input": {
+    "mouse": {
+     "dx": 600
+    }
+   },
+   "comment": "look around +90"
+  },
+  {
+   "tick": 520,
+   "input": {
+    "mouse": {
+     "dx": 600,
+     "dy": 150
+    }
+   },
+   "comment": "look around +90, up 22.5"
+  },
+  {
+   "tick": 560,
+   "input": {
+    "mouse": {
+     "dx": 600,
+     "dy": -150
+    }
+   },
+   "comment": "+90, level"
+  }
+ ]
+}

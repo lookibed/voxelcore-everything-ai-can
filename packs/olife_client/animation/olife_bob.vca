@@ -1,0 +1,2 @@
+@configure duration 1
+@move bone body by y func (sin(t * 2 * pi) * 0.25)

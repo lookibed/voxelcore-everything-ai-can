@@ -1,0 +1,60 @@
+{
+ "description": "Wave 4a: GravityGun on 2 windowed F2F 0.32 clients. A (hotbar key 2, aim, LMB via F2F input) grabs a bench; the world decides (one holder) and moves it with A's look/position (ToolUse aim); B sees the holder (EntityOwnership) and cannot grab (RequestReply 8); A releases (LMB); final positions of A and B equal the world's; then B grabs (0) and releases. Consistency 0. UX A1: the bench's `move` right is set to everyone (default since A1: owner only) — B may grab after A releases.",
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": [
+    "olife-alice",
+    "olife-bob"
+   ],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_bench",
+   "args": {
+    "account": "alice",
+    "key": "g",
+    "perms": {
+     "move": "everyone"
+    }
+   }
+  },
+  {
+   "cmd": "olife_gravity",
+   "args": {
+    "bench": "g",
+    "turn_deg": 60,
+    "steps": 12
+   }
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 80
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "editor_status",
+    "pattern": "editor\\("
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+    "skeleton-name": "olife_client:spam_ball",
+    "hitbox": [0.6, 0.6, 0.6],
+    "body-type": "static",
+    "blocking": false,
+    "save": false
+}

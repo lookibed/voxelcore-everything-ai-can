@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:am_slime_ball",
+    "stack-size": 64,
+    "caption": "slimeBall"
+}

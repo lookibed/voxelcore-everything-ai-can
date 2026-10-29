@@ -1,0 +1,7 @@
+{
+    "id": "videoplayer",
+    "title": "Video Player",
+    "creator": "VulpesDust, Andryha",
+    "version": "0.3.0",
+    "description": "Видеоплеер MP4 (H.264 baseline) на canvas: h264bsd + minimp4, C -> wasm -> Lua через Spider"
+}

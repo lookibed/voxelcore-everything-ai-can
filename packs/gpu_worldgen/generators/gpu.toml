@@ -1,0 +1,9 @@
+# Стоковый генератор пустоты: весь чанк — воздух (скрипта нет, карта высот нулевая, единственный слой core:air).
+# Блоки приходят от пака: чанк считается на GPU (shaders/ui.glslf, modules/gpu.lua) и пишется world.set_chunk_data
+# по on_chunk_present (modules/gen.lua). Хука «вернуть готовые воксели» у генератора на Lua нет (agents/research/GPU_WORLDGEN.md).
+caption = "GPU 3D noise (gpu_worldgen)"
+biome-parameters = 0
+sea-level = 0
+player-spawn-radius = 0
+player-min-spawn-height = 140
+player-max-spawn-height = 140

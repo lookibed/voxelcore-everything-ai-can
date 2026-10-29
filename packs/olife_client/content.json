@@ -1,0 +1,14 @@
+{
+  "entities": [
+    "avatar",
+    "bench",
+    "drop",
+    "spam_ball"
+  ],
+  "items": [
+    "injector",
+    "gravity_gun",
+    "spammer"
+  ],
+  "blocks": []
+}

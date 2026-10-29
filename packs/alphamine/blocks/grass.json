@@ -1,0 +1,15 @@
+{
+    "caption": "grass",
+    "texture-faces": [
+        "am_grass",
+        "am_grass",
+        "am_dirt_bottom",
+        "am_grass_top",
+        "am_grass",
+        "am_grass"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 2
+}

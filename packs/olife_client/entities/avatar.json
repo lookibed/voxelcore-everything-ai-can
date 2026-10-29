@@ -1,0 +1,7 @@
+{
+    "hitbox": [0.6, 1.8, 0.6],
+    "body-type": "kinematic",
+    "blocking": false,
+    "save": false,
+    "skeleton-name": "base:player"
+}

@@ -1,0 +1,21 @@
+{
+ "description": "World + gateway + REAL olife-sandboxd (wasmtime + Lua 5.1 in wasm, JSON lines over TCP) + 2 bots. Scripted entities: 2 orbit of owner 1 (world --scripted) + admin `spawn_scripted` (orbit x2 owner 2, typical x3 owners 3 and 4). Asserts: every control owner's entities are updated in EVERY TickResult after warm-up (status ok, position changed), actions applied by the world, meters per owner/entity on both sides (world olife.sandbox_dump, service `meters`), world tick p95 <= 5 ms, replication consistent for both bots.",
+ "setup": {"session": {"clients": 2, "client_kind": "bot", "sandbox": true, "scripted": 2}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_spawn", "args": {"spawns": [["orbit", 2, 2, 1], ["typical", 3, 3, 2]], "wait_entities": 15}},
+  {"cmd": "olife_run", "args": {"seconds": 12}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 150}},
+  {"cmd": "olife_sandbox_check", "args": {
+    "controls": [1, 2, 3, 4], "warmup_ticks": 20, "max_bad_control_rows": 0, "world_ms_p95_max": 5.0, "min_rows": 150,
+    "min_entities": 10, "min_owners": 4,
+    "expect": [
+     {"case": "orbit (world --scripted)", "owner": 1, "script": "orbit", "status_any": ["ok"], "status_none": ["error", "killed", "throttled"], "min_applied": 300},
+     {"case": "orbit (spawn_scripted)", "owner": 2, "script": "orbit", "status_any": ["ok"], "status_none": ["error", "killed", "throttled"], "min_applied": 300},
+     {"case": "typical owner 3", "owner": 3, "script": "typical", "status_any": ["ok"], "status_none": ["error", "killed", "throttled"], "min_applied": 300},
+     {"case": "typical owner 4", "owner": 4, "script": "typical", "status_any": ["ok"], "status_none": ["error", "killed", "throttled"], "min_applied": 300}
+    ]}},
+  {"cmd": "olife_metrics"}
+ ]
+}

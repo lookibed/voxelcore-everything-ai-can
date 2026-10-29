@@ -1,0 +1,14 @@
+{
+  "body-type": "kinematic",
+  "blocking": false,
+  "save": false,
+  "hitbox": [
+    0.1,
+    0.1,
+    0.1
+  ],
+  "components": [
+    "alphamine:am_frame"
+  ],
+  "skeleton-name": "alphamine:am_none"
+}

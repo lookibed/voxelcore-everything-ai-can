@@ -1,0 +1,15 @@
+{
+    "caption": "oreRedstone",
+    "texture-faces": [
+        "am_ore_redstone",
+        "am_ore_redstone",
+        "am_ore_redstone_bottom",
+        "am_ore_redstone",
+        "am_ore_redstone",
+        "am_ore_redstone"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 73
+}

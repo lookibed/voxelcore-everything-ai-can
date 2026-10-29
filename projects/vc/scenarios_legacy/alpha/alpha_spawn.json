@@ -1,0 +1,221 @@
+{
+ "name": "alpha_spawn",
+ "description": "Сервер с копией golden/world_b (= world_a после одного прогона этого сценария и /stop: все чанки вокруг спавна и обеих точек /tp сгенерированы, заселены и освещены на диске — сервер больше не генерирует и не заселяет чанки во время прогона, отсюда детерминизм света на дальних чанках и ×3 быстрее ожидание чанков; снимки побайтно равны golden на world_a), клиент F2F: connect, все 441 чанк спавна; /tp в два прыжка (24.5 65 104.5 — внутри загруженного радиуса спавна, затем 104.5 67 104.5 — трава, чанк уже загружен, иначе клиент падает сквозь пустой чанк и получает урон; огонь мира в 250+ блоках — вне дальности); дождаться чанков и приземления; mode (сиды + сброс тиковых счётчиков, чат очищен), 100 тиков, 4 снимка по сторонам света (dx 600 = 90° yaw).",
+ "setup": {
+  "server": {
+   "world": "world_b"
+  },
+  "client": {
+   "size": "854x480"
+  }
+ },
+ "steps": [
+  {
+   "cmd": "connect"
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "world": true,
+    "max_frames": 1200
+   },
+   "expect": {
+    "screen": "ingame"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chunks": 441,
+    "net_idle": 40,
+    "max_frames": 3000
+   },
+   "expect": {
+    "health": 20
+   }
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 24.5 65 104.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     24.5,
+     66.62,
+     104.5,
+     3
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "new_chunks": 100,
+    "net_idle": 40,
+    "max_frames": 6000
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 20,
+    "max_frames": 1200
+   },
+   "expect": {
+    "near": [
+     24.5,
+     66.62,
+     104.5,
+     0.01
+    ],
+    "health": 20
+   }
+  },
+  {
+   "cmd": "chat",
+   "args": {
+    "text": "/tp 104.5 67 104.5"
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "near": [
+     104.5,
+     68.62,
+     104.5,
+     3
+    ],
+    "max_frames": 600
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "new_chunks": 1,
+    "net_idle": 60,
+    "max_frames": 6000
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "on_ground": true,
+    "still": 40,
+    "max_frames": 1200
+   },
+   "expect": {
+    "near": [
+     104.5,
+     68.62,
+     104.5,
+     0.01
+    ],
+    "on_ground": true,
+    "screen": "ingame",
+    "health": 20
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 100,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_yaw0"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 90
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_yaw90"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_yaw180"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 270
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_yaw270"
+  },
+  {
+   "cmd": "state",
+   "args": {
+    "radius": 8
+   }
+  }
+ ]
+}

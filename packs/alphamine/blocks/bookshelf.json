@@ -1,0 +1,15 @@
+{
+    "caption": "bookshelf",
+    "texture-faces": [
+        "am_bookshelf_side",
+        "am_bookshelf_side",
+        "am_planks_bottom",
+        "am_planks",
+        "am_bookshelf_side",
+        "am_bookshelf_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 47
+}

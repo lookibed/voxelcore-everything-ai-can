@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Документация — wasmrt</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="header"><div class="header-in">
+  <a class="logo" href="index.html"><img src="img/logo.png" width="26" height="26">wasm<span>rt</span></a>
+  <div class="nav">
+    <a href="index.html" id="nav-home">Главная</a>
+    <a href="gallery.html" id="nav-gallery">Галерея</a>
+    <a href="docs.html" class="active" id="nav-docs">Документация</a>
+    <a href="demo.html" id="nav-demo">Демо</a>
+    <a href="about.html" id="nav-about">О проекте</a>
+    <button class="theme-btn" id="theme" title="Тема">☾</button>
+  </div>
+</div></div>
+
+<div class="page-head">
+  <div class="crumbs"><a href="index.html">Главная</a> / Документация</div>
+  <h1>Документация</h1>
+  <p>Как устроен запуск программ в VoxelCore — и заодно проверка типографики: заголовки, списки, код, таблицы.</p>
+</div>
+<div class="wrap prose">
+  <div class="toc">
+    <b>На странице</b>
+    <a href="#pipeline" id="toc-pipeline">Конвейер</a>
+    <a href="#build" id="toc-build">Сборка</a>
+    <a href="#packs" id="toc-packs">Паки</a>
+    <a href="#stack" id="toc-stack">Стек этой страницы</a>
+    <a href="#limits" id="toc-limits">Ограничения</a>
+  </div>
+
+  <h2 id="pipeline">Конвейер</h2>
+  <p>Обычная программа на <b>C</b>, <b>Java</b> или <b>Rust</b> собирается в WebAssembly
+  (<i>wasi-sdk</i> или <i>TeaVM 0.10.2</i>), затем <b>Spider</b> печатает из неё Lua-модуль, а пак
+  <code>wasmrt</code> запускает его внутри VoxelCore по манифесту <code>wasm.json</code>.</p>
+  <ol>
+    <li>Компиляция в <code>.wasm</code> — модель <em>main</em> (<code>_start</code>) или <em>frame</em> (экспорт <code>vc_frame</code>).</li>
+    <li>Трансляция: <code>spider-cli file.wasm -t lua-no-ffi</code>.
+      <ul>
+        <li><code>--yield-every N</code> — точки уступки в циклах;</li>
+        <li><code>--memory table|bytearray</code> — модель памяти;</li>
+        <li><code>--saturating-truncation</code> — семантика Java <code>(int)</code>.</li>
+      </ul>
+    </li>
+    <li>Раскладка в пак и запуск из меню «Сценарии».</li>
+  </ol>
+
+  <blockquote>Целесообразность не наш конёк: нестандартные пути — Java → wasm → Lua, растеризация
+  на GPU в UI-шейдере — исследовать и доводить, а не отвергать.
+  <cite>— правила пользователя, AGENTS.md</cite></blockquote>
+
+  <h2 id="build">Сборка и раскладка</h2>
+  <p>Всё собирается из Spider одной командой; проверки бывают быстрые (без движка) и полные:</p>
+<pre><span class="c"># собрать и разложить в паки</span>
+<span class="k">Hosts/VoxelCore/pipeline/deploy.sh</span> quake  <span class="c"># pong doom … all</span>
+<span class="k">Hosts/VoxelCore/pipeline/verify.sh</span> quick
+<span class="c"># этот сайт</span>
+<span class="k">tests/manual/real-world-html/build.sh</span> &amp;&amp; <span class="k">./deploy_pack.sh</span></pre>
+  <h3>Манифест пака</h3>
+  <p>Поле <code>graphics</code> выбирает вывод, <code>files</code> — каталог, видимый программе как корень:</p>
+<pre>{
+  <span class="s">"module"</span>: <span class="s">"html:modules/html.lua"</span>,
+  <span class="s">"graphics"</span>: <span class="s">"canvas"</span>,
+  <span class="s">"files"</span>: <span class="s">"html:site"</span>
+}</pre>
+  <p class="muted">Прокрутка: колесо мыши, полоса справа, <kbd>↑</kbd> <kbd>↓</kbd>, <kbd>PgUp</kbd> <kbd>PgDn</kbd>,
+  <kbd>Home</kbd> <kbd>End</kbd>.</p>
+
+  <h2 id="packs">Паки-программы</h2>
+  <table class="data">
+    <tr><th>Пак</th><th>Исходник</th><th>Язык</th><th>Как рисует</th></tr>
+    <tr><td><b>pong</b></td><td>real-world-pong</td><td>C</td><td>posteffect / canvas</td></tr>
+    <tr><td><b>doom</b></td><td>real-world-doomgeneric</td><td>C</td><td>canvas</td></tr>
+    <tr><td><b>quake</b></td><td>real-world-quakegeneric</td><td>C</td><td>canvas + GPU-палитра</td></tr>
+    <tr><td><b>eaglercraft</b></td><td>real-world-eaglercraft</td><td>Java</td><td>tris (GPU) <span class="tag hot">новое</span></td></tr>
+    <tr><td><b>html</b></td><td>real-world-html</td><td>C/C++</td><td>canvas <span class="tag">этот сайт</span></td></tr>
+  </table>
+  <h3>Замеры</h3>
+  <table class="data">
+    <tr><th>Что</th><th>Условия</th><th>Результат</th></tr>
+    <tr><td>WASM-4</td><td>151 картридж</td><td class="num">ok 151, fail 0</td></tr>
+    <tr><td>Quake timedemo</td><td>canvas, notail-хелперы памяти</td><td class="num">35.8–37.0 fps</td></tr>
+    <tr><td>Doom timedemo</td><td>wasmrt</td><td class="num">221–224 fps</td></tr>
+    <tr><td>Eaglercraft</td><td>мир, сид 1234567890</td><td class="num">7.5–9.2 fps</td></tr>
+  </table>
+
+  <h2 id="stack">Стек этой страницы</h2>
+  <ul>
+    <li><b>litehtml</b> + <b>gumbo</b> — разбор HTML5, каскад CSS, flex, таблицы, layout;</li>
+    <li><b>свой растеризатор</b> — заливки, скругления, рамки, градиенты, <span class="tag ok">box-shadow</span>;</li>
+    <li><b>stb_truetype</b> — шрифты Inter и DejaVu с кириллицей, настоящий <i>курсив</i> и <b>жирный</b>;</li>
+    <li><b>stb_image</b> — PNG / JPEG, уменьшение с усреднением;</li>
+    <li><b>QuickJS-NG</b> — ES2023, DOM на JS поверх нативного <code>__dom</code>.</li>
+  </ul>
+  <div class="note"><b>Шрифты.</b> Inter — SIL Open Font License 1.1; DejaVu — свободная лицензия Bitstream Vera.
+  Файлы лицензий лежат рядом со шрифтами в <code>site/fonts/</code>.</div>
+
+  <h2 id="limits">Ограничения</h2>
+  <p>Нет полей ввода, <code>transform</code>, <code>opacity</code>, <code>transition</code>, CSS grid
+  и <code>gap</code>; после правки DOM — каскад поддерева, layout всего документа и перерисовка кадра
+  (наведение и прокрутка перерисовывают только изменившиеся полосы).
+  <a href="#pipeline" id="to-top">Наверх ↑</a></p>
+</div>
+
+<div class="footer">
+  <div class="footer-cols">
+    <div><h4>wasmrt · html</h4>Прототип браузерной вёрстки для VoxelCore 0.31.<br>Страницы лежат в паке <code>html</code>.</div>
+    <div><h4>Разделы</h4><a href="gallery.html">Галерея</a><a href="docs.html">Документация</a><a href="about.html">О проекте</a></div>
+    <div><h4>Внутри</h4><a href="docs.html#stack">litehtml + gumbo</a><a href="docs.html#stack">QuickJS-NG</a><a href="docs.html#stack">stb_truetype</a></div>
+  </div>
+  <div class="copy">Шрифты Inter (OFL) и DejaVu · картинки сгенерированы процедурно · 2026</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="site.js"></script>
+</body>
+</html>

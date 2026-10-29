@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Галерея — wasmrt</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="header"><div class="header-in">
+  <a class="logo" href="index.html"><img src="img/logo.png" width="26" height="26">wasm<span>rt</span></a>
+  <div class="nav">
+    <a href="index.html" id="nav-home">Главная</a>
+    <a href="gallery.html" class="active" id="nav-gallery">Галерея</a>
+    <a href="docs.html" id="nav-docs">Документация</a>
+    <a href="demo.html" id="nav-demo">Демо</a>
+    <a href="about.html" id="nav-about">О проекте</a>
+    <button class="theme-btn" id="theme" title="Тема">☾</button>
+  </div>
+</div></div>
+
+<div class="page-head">
+  <div class="crumbs"><a href="index.html">Главная</a> / Галерея</div>
+  <h1>Галерея</h1>
+  <p>PNG через stb_image: уменьшение с усреднением, скруглённые углы, тени. Нажмите на картинку.</p>
+</div>
+<div class="wrap">
+  <div class="filters">
+    <span class="chip on" id="f-all" data-f="all">Все · 12</span>
+    <span class="chip" id="f-proc" data-f="proc">Процедурные · 6</span>
+    <span class="chip" id="f-pack" data-f="pack">Паки движка · 6</span>
+  </div>
+  <div class="grid">
+  <div class="shot" id="shot0" data-kind="proc" data-src="img/g_terrain.png" data-w="320" data-h="200">
+    <img src="img/g_terrain.png" width="184" height="115">
+    <div class="cap"><b>Воксельный остров</b><span>Изометрические кубы по карте высот</span></div>
+  </div>
+  <div class="shot" id="shot1" data-kind="proc" data-src="img/g_sunset.png" data-w="320" data-h="200">
+    <img src="img/g_sunset.png" width="184" height="115">
+    <div class="cap"><b>Закат</b><span>Градиент неба, солнце и три гряды гор</span></div>
+  </div>
+  <div class="shot" id="shot2" data-kind="proc" data-src="img/g_mandel.png" data-w="320" data-h="200">
+    <img src="img/g_mandel.png" width="184" height="115">
+    <div class="cap"><b>Множество Мандельброта</b><span>80 итераций, гладкая раскраска</span></div>
+  </div>
+  <div class="shot" id="shot3" data-kind="proc" data-src="img/g_plasma.png" data-w="320" data-h="200">
+    <img src="img/g_plasma.png" width="184" height="115">
+    <div class="cap"><b>Плазма</b><span>Сумма синусов — классика демосцены</span></div>
+  </div>
+  <div class="shot" id="shot4" data-kind="proc" data-src="img/g_rings.png" data-w="320" data-h="200">
+    <img src="img/g_rings.png" width="184" height="115">
+    <div class="cap"><b>Волны</b><span>Три источника интерференции</span></div>
+  </div>
+  <div class="shot" id="shot5" data-kind="proc" data-src="img/g_galaxy.png" data-w="320" data-h="200">
+    <img src="img/g_galaxy.png" width="184" height="115">
+    <div class="cap"><b>Галактика</b><span>Две спиральные ветви, 5000 звёзд</span></div>
+  </div>
+  <div class="shot pack" id="shot6" data-kind="pack" data-src="img/packs/doom.png" data-w="192" data-h="192">
+    <img src="img/packs/doom.png" width="96" height="96">
+    <div class="cap"><b>Doom</b><span>doomgeneric на wasmrt, ~285–305 кадров/с в timedemo</span></div>
+  </div>
+  <div class="shot pack" id="shot7" data-kind="pack" data-src="img/packs/quake.png" data-w="192" data-h="192">
+    <img src="img/packs/quake.png" width="96" height="96">
+    <div class="cap"><b>Quake</b><span>canvas + GPU-палитра, timedemo 36–37 кадров/с</span></div>
+  </div>
+  <div class="shot pack" id="shot8" data-kind="pack" data-src="img/packs/eaglercraft.png" data-w="192" data-h="192">
+    <img src="img/packs/eaglercraft.png" width="96" height="96">
+    <div class="cap"><b>Eaglercraft</b><span>Minecraft 1.5.2: Java → TeaVM → wasm → Lua</span></div>
+  </div>
+  <div class="shot pack" id="shot9" data-kind="pack" data-src="img/packs/pong.png" data-w="192" data-h="192">
+    <img src="img/packs/pong.png" width="96" height="96">
+    <div class="cap"><b>Pong</b><span>Первая программа на C и vc.h</span></div>
+  </div>
+  <div class="shot pack" id="shot10" data-kind="pack" data-src="img/packs/pc_wasmrt.png" data-w="192" data-h="192">
+    <img src="img/packs/pc_wasmrt.png" width="96" height="96">
+    <div class="cap"><b>pc_wasmrt</b><span>Компьютер с «Windows XP» в мире</span></div>
+  </div>
+  <div class="shot pack" id="shot11" data-kind="pack" data-src="img/packs/wasmrt.png" data-w="192" data-h="192">
+    <img src="img/packs/wasmrt.png" width="96" height="96">
+    <div class="cap"><b>wasmrt</b><span>Рантайм: запуск wasm-программ по манифесту</span></div>
+  </div>
+  </div>
+  <p class="muted">Процедурные картинки сгенерированы скриптом <code>tools/gen_site_images.py</code>,
+  иконки — из паков <code>content/*/icon.png</code>, уменьшены до 96×96.</p>
+</div>
+
+<div class="overlay lightbox" id="lightbox">
+  <div class="dialog">
+    <div class="dialog-head"><h3 id="lb-title">—</h3><button class="close" id="lb-close">✕</button></div>
+    <div class="dialog-body"><div id="lb-img"></div><p class="muted" id="lb-desc"></p></div>
+    <div class="dialog-foot">
+      <button class="btn btn-outline btn-sm" id="lb-prev">← Назад</button>
+      <button class="btn btn-sm" id="lb-next">Далее →</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-cols">
+    <div><h4>wasmrt · html</h4>Прототип браузерной вёрстки для VoxelCore 0.31.<br>Страницы лежат в паке <code>html</code>.</div>
+    <div><h4>Разделы</h4><a href="gallery.html">Галерея</a><a href="docs.html">Документация</a><a href="about.html">О проекте</a></div>
+    <div><h4>Внутри</h4><a href="docs.html#stack">litehtml + gumbo</a><a href="docs.html#stack">QuickJS-NG</a><a href="docs.html#stack">stb_truetype</a></div>
+  </div>
+  <div class="copy">Шрифты Inter (OFL) и DejaVu · картинки сгенерированы процедурно · 2026</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="site.js"></script>
+<script src="gallery.js"></script>
+</body>
+</html>

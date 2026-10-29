@@ -1,0 +1,8 @@
+{
+    "id": "eaglercraft",
+    "title": "Eaglercraft 1.5.2 (wasmrt)",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Eaglercraft 1.5.2 (Minecraft 1.5.2 на Java): TeaVM -> wasm -> Spider -> Lua; вызовы GL превращаются в треугольники, растеризует шейдер UI на GPU",
+    "dependencies": ["wasmrt"]
+}

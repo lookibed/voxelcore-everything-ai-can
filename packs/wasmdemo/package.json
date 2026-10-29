@@ -1,0 +1,8 @@
+{
+    "id": "wasmdemo",
+    "title": "wasmrt demo (main + canvas)",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Обычная C-программа с main() и libc, кадровый буфер через canvas; запускается паком wasmrt",
+    "dependencies": ["wasmrt"]
+}

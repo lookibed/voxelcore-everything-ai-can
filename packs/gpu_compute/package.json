@@ -1,0 +1,7 @@
+{
+    "id": "gpu_compute",
+    "title": "GPU compute (API)",
+    "creator": "Andryha",
+    "version": "0.1.0",
+    "description": "«Compute-шейдер» для стокового VoxelCore: один общий ui.glslf с диспетчером программ паков-клиентов (маркер цвета картинки), проходы = фреймы GUI в текстуру, буферы = canvas-текстуры, чтение = assets.to_canvas, проба порядка фреймов для цепочек. Клиенты: gpu_worldgen, smollm_gpu"
+}

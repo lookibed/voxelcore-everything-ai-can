@@ -1,0 +1,210 @@
+{
+ "name": "layer_entities",
+ "description": "Общая подготовка — alpha_spawn (свежая копия golden/world_a, connect, 441 чанк, /tp 24.5 65 104.5 -> /tp 104.5 67 104.5, ожидание чанков и приземления); затем look (вернуть взгляд — в am_layers слои идут подряд в одной сессии), mode seed 20260930, render {all:false, layers:{...}}. Только entities: игрок выбрасывает бревно (Q) вперёд, ≥3 с ждём, затем mode ещё раз (сброс тиков, сидов, age/hoverStart у EntityItem) и 4 снимка; бревно на земле в снимке yaw0 (+ тень).",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": true
+    }
+   },
+   "comment": "код 3 = KEY_2 -> слот 1 (брёвна); числовая строка — код LWJGL"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": false,
+     "Q": true
+    }
+   },
+   "comment": "Q — выбросить один предмет вперёд (Packet21 -> сервер создаёт EntityItem)"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "Q": false
+    }
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "net_idle": 60,
+    "max_frames": 600
+   },
+   "comment": "≥3 с настенного времени: предмет долетел, сервер прислал позицию"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": true
+    }
+   },
+   "comment": "код 2 = KEY_1 -> слот 0 (огниво), как в других слоях"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": false
+    }
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "entities": true,
+     "lighting": true,
+     "fog": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 100,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0,
+    "entities": 2
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_yaw0"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 90,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_yaw90"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 180,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_yaw180"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "dx": 600
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 270,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_yaw270"
+  }
+ ]
+}

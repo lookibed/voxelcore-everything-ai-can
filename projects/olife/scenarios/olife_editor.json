@@ -1,0 +1,91 @@
+{
+ "description": "Wave 4a: editor/console/lock on 2 windowed F2F 0.32 clients (alice = owner, bob = admin) + real olife-sandboxd. A opens the bench editor with the Injector (hotbar key 1, aim, RMB via F2F input), clears, types code (F2F chars + Enter) and clicks Run (mouse on the XML button rect): world status RUN with the typed code hash, the bench moves on the server and on B; ConsoleDelta only at A (subscribed); B opens read-only (RequestReply 4, Save -> 5); A Esc -> lock free -> B Edit, Save (0), Close. Then A again: template from the select (button mode), file save/load (config:olife/scripts), a syntax error -> ERROR (console line, B's tag), Stop, Close. Then negative requests of carol (not owner/admin) and a console flood (bounded deltas), consistency 0.",
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": [
+    "olife-alice",
+    "olife-bob"
+   ],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_bench",
+   "args": {
+    "account": "alice",
+    "admins": "bob"
+   }
+  },
+  {
+   "cmd": "olife_bench",
+   "args": {
+    "account": "carol",
+    "key": "carol"
+   }
+  },
+  {
+   "cmd": "olife_editor",
+   "args": {
+    "bench": "alice",
+    "run_seconds": 4
+   }
+  },
+  {
+   "cmd": "olife_editor_neg",
+   "args": {
+    "bench": "alice",
+    "own": "carol",
+    "flood_seconds": 6
+   }
+  },
+  {
+   "cmd": "olife_bench",
+   "args": {
+    "account": "alice",
+    "key": "alice2"
+   }
+  },
+  {
+   "cmd": "olife_editor_extras",
+   "args": {
+    "bench": "alice2",
+    "file": "w4a_test"
+   }
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 80
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "editor_status",
+    "pattern": "editor\\("
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {
+    "strict": false
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

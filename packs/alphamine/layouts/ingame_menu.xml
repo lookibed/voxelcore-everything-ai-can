@@ -1,0 +1,7 @@
+<!-- GuiIngameMenu альфы: содержимое строит modules/gui.lua (фон drawDefaultBackground, кнопки GuiButton, шрифт). -->
+<container id="root" pos="0,0" size="854,480" color="#00000000" interactive="true"
+           onclick="require('alphamine:gui').on_click()">
+    <container id="am_screen" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+    <!-- "Saving level.." of GuiIngameMenu (pulses every frame for 1 s): rebuilt alone, not with the whole screen -->
+    <container id="am_saving" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+</container>

@@ -1,0 +1,15 @@
+{
+    "caption": "blockGold",
+    "texture-faces": [
+        "am_block_gold_side",
+        "am_block_gold_side",
+        "am_block_gold_bottom_bottom",
+        "am_block_gold_top",
+        "am_block_gold_side",
+        "am_block_gold_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 41
+}

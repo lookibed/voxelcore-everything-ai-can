@@ -1,0 +1,390 @@
+{
+"contract": "internal",
+"version": 1,
+"vectors": [
+{
+"name": "GatewayHello",
+"id": 1,
+"mode": "lo",
+"value": {
+"proto": 0,
+"gateway": "",
+"secret": "",
+"client_proto": 0
+},
+"frame": "4f49010001000000080000000000000000"
+},
+{
+"name": "GatewayHello",
+"id": 1,
+"mode": "hi",
+"value": {
+"proto": 65535,
+"gateway": " _0€жz€a0",
+"secret": " y0xéz9ж0",
+"client_proto": 65535
+},
+"frame": "4f4901000100000021ffff000e205f30e282acd0b67ae282ac6130000b20793078c3a97a39d0b630ffff"
+},
+{
+"name": "GatewayHello",
+"id": 1,
+"mode": "rnd",
+"value": {
+"proto": 14957,
+"gateway": "x_z9zéa",
+"secret": "-жbzЖ0aé x",
+"client_proto": 18653
+},
+"frame": "4f490100010000001d3a6d0008785f7a397ac3a961000d2dd0b6627ad0963061c3a9207848dd"
+},
+{
+"name": "GatewayHello",
+"id": 1,
+"mode": "rnd",
+"value": {
+"proto": 62130,
+"gateway": "yba 9b9é",
+"secret": " _ay",
+"client_proto": 279
+},
+"frame": "4f4901000100000015f2b2000979626120396239c3a90004205f61790117"
+},
+{
+"name": "WorldHello",
+"id": 2,
+"mode": "lo",
+"value": {
+"proto": 0,
+"world": "",
+"tick": 0,
+"tps": 0,
+"client_proto": 0
+},
+"frame": "4f490100020000000b0000000000000000000000"
+},
+{
+"name": "WorldHello",
+"id": 2,
+"mode": "hi",
+"value": {
+"proto": 65535,
+"world": "€9ééz",
+"tick": 4294967295,
+"tps": 255,
+"client_proto": 65535
+},
+"frame": "4f4901000200000014ffff0009e282ac39c3a9c3a97affffffffffffff"
+},
+{
+"name": "WorldHello",
+"id": 2,
+"mode": "rnd",
+"value": {
+"proto": 56416,
+"world": "cyc",
+"tick": 1168415333,
+"tps": 150,
+"client_proto": 20296
+},
+"frame": "4f490100020000000edc60000363796345a49a65964f48"
+},
+{
+"name": "WorldHello",
+"id": 2,
+"mode": "rnd",
+"value": {
+"proto": 24216,
+"world": "ж0zbz€bé0b",
+"tick": 2647773433,
+"tps": 26,
+"client_proto": 61675
+},
+"frame": "4f49010002000000195e98000ed0b6307a627ae282ac62c3a930629dd1d0f91af0eb"
+},
+{
+"name": "Attach",
+"id": 3,
+"mode": "lo",
+"value": {
+"session": 0,
+"account": "",
+"name": "",
+"addr": "",
+"perms": 0
+},
+"frame": "4f490100030000000e0000000000000000000000000000"
+},
+{
+"name": "Attach",
+"id": 3,
+"mode": "hi",
+"value": {
+"session": 4294967295,
+"account": "ж _ Жa ",
+"name": " a-ж9-",
+"addr": "жy-x",
+"perms": 4294967295
+},
+"frame": "4f4901000300000023ffffffff0009d0b6205f20d0966120000720612dd0b6392d0005d0b6792d78ffffffff"
+},
+{
+"name": "Attach",
+"id": 3,
+"mode": "rnd",
+"value": {
+"session": 3023514007,
+"account": "é",
+"name": " z-€abc",
+"addr": "x",
+"perms": 2483157442
+},
+"frame": "4f490100030000001ab43729970002c3a90009207a2de282ac6162630001789401f9c2"
+},
+{
+"name": "Attach",
+"id": 3,
+"mode": "rnd",
+"value": {
+"session": 3627247690,
+"account": "жЖЖ_xb b_é",
+"name": "-b",
+"addr": "Ж9cé",
+"perms": 1581959981
+},
+"frame": "4f4901000300000024d833684a000ed0b6d096d0965f786220625fc3a900022d620006d0963963c3a95e4acb2d"
+},
+{
+"name": "Detach",
+"id": 4,
+"mode": "lo",
+"value": {
+"session": 0,
+"code": 0,
+"reason": ""
+},
+"frame": "4f49010004000000080000000000000000"
+},
+{
+"name": "Detach",
+"id": 4,
+"mode": "hi",
+"value": {
+"session": 4294967295,
+"code": 65535,
+"reason": "ycy-"
+},
+"frame": "4f490100040000000cffffffffffff00047963792d"
+},
+{
+"name": "Detach",
+"id": 4,
+"mode": "rnd",
+"value": {
+"session": 3122086222,
+"code": 25006,
+"reason": "cz"
+},
+"frame": "4f490100040000000aba17414e61ae0002637a"
+},
+{
+"name": "Detach",
+"id": 4,
+"mode": "rnd",
+"value": {
+"session": 292879874,
+"code": 57386,
+"reason": "ézayЖ éaxé"
+},
+"frame": "4f49010004000000161174fe02e02a000ec3a97a6179d09620c3a96178c3a9"
+},
+{
+"name": "Data",
+"id": 5,
+"mode": "lo",
+"value": {
+"session": 0,
+"type": 0,
+"payload": {
+"$bytes": ""
+}
+},
+"frame": "4f490100050000000a00000000000000000000"
+},
+{
+"name": "Data",
+"id": 5,
+"mode": "hi",
+"value": {
+"session": 4294967295,
+"type": 65535,
+"payload": {
+"$bytes": "3eda78e63ec18c80655a4ffa2cc83c48d28d8b41daa6e983ecaf9c3db0ee7003a9f3"
+}
+},
+"frame": "4f490100050000002cffffffffffff000000223eda78e63ec18c80655a4ffa2cc83c48d28d8b41daa6e983ecaf9c3db0ee7003a9f3"
+},
+{
+"name": "Data",
+"id": 5,
+"mode": "rnd",
+"value": {
+"session": 4159970737,
+"type": 36175,
+"payload": {
+"$bytes": "a8026e2a863e4205d6c0844c85ee7da90458d3e0"
+}
+},
+"frame": "4f490100050000001ef7f41db18d4f00000014a8026e2a863e4205d6c0844c85ee7da90458d3e0"
+},
+{
+"name": "Data",
+"id": 5,
+"mode": "rnd",
+"value": {
+"session": 2915536341,
+"type": 4660,
+"payload": {
+"$bytes": "a8ab701f"
+}
+},
+"frame": "4f490100050000000eadc78dd5123400000004a8ab701f"
+},
+{
+"name": "Multicast",
+"id": 6,
+"mode": "lo",
+"value": {
+"sessions": [],
+"type": 0,
+"payload": {
+"$bytes": ""
+}
+},
+"frame": "4f49010006000000080000000000000000"
+},
+{
+"name": "Multicast",
+"id": 6,
+"mode": "hi",
+"value": {
+"sessions": [
+1860528794,
+1763587274,
+1090714944
+],
+"type": 65535,
+"payload": {
+"$bytes": "a7d32cd5f96d2e19cc7c"
+}
+},
+"frame": "4f490100060000001e00036ee56a9a691e34ca4102fd40ffff0000000aa7d32cd5f96d2e19cc7c"
+},
+{
+"name": "Multicast",
+"id": 6,
+"mode": "rnd",
+"value": {
+"sessions": [],
+"type": 42637,
+"payload": {
+"$bytes": "fd0735efdc067cec13607ca64fd965e9f0b878f47bc0a69ef84c3f26d13939e2a0af8fe0cae7"
+}
+},
+"frame": "4f490100060000002e0000a68d00000026fd0735efdc067cec13607ca64fd965e9f0b878f47bc0a69ef84c3f26d13939e2a0af8fe0cae7"
+},
+{
+"name": "Multicast",
+"id": 6,
+"mode": "rnd",
+"value": {
+"sessions": [],
+"type": 34123,
+"payload": {
+"$bytes": "f3975e924858f433ca854a1851876d108c5983c99c521ea2a06c334c24f685cc29b4"
+}
+},
+"frame": "4f490100060000002a0000854b00000022f3975e924858f433ca854a1851876d108c5983c99c521ea2a06c334c24f685cc29b4"
+},
+{
+"name": "Ping",
+"id": 7,
+"mode": "lo",
+"value": {
+"seq": 0,
+"ms": 445038368.1464844
+},
+"frame": "4f490100070000000c0000000041ba86bf20258000"
+},
+{
+"name": "Ping",
+"id": 7,
+"mode": "hi",
+"value": {
+"seq": 4294967295,
+"ms": 829615476.7167969
+},
+"frame": "4f490100070000000cffffffff41c8b976ba5bc000"
+},
+{
+"name": "Ping",
+"id": 7,
+"mode": "rnd",
+"value": {
+"seq": 2008232650,
+"ms": 460632183.5449219
+},
+"frame": "4f490100070000000c77b332ca41bb74b0778b8000"
+},
+{
+"name": "Ping",
+"id": 7,
+"mode": "rnd",
+"value": {
+"seq": 3192560101,
+"ms": -558616897.7480469
+},
+"frame": "4f490100070000000cbe4a99e5c1c0a5e8a0dfc000"
+},
+{
+"name": "Pong",
+"id": 8,
+"mode": "lo",
+"value": {
+"seq": 0,
+"ms": 161050222.95410156
+},
+"frame": "4f490100080000000c0000000041a332dcdde88000"
+},
+{
+"name": "Pong",
+"id": 8,
+"mode": "hi",
+"value": {
+"seq": 4294967295,
+"ms": 602689519.2519531
+},
+"frame": "4f490100080000000cffffffff41c1f627f7a04000"
+},
+{
+"name": "Pong",
+"id": 8,
+"mode": "rnd",
+"value": {
+"seq": 850184391,
+"ms": 700170460.1679688
+},
+"frame": "4f490100080000000c32acc8c741c4dde06e158000"
+},
+{
+"name": "Pong",
+"id": 8,
+"mode": "rnd",
+"value": {
+"seq": 1391824139,
+"ms": -635392019.5839844
+},
+"frame": "4f490100080000000c52f58d0bc1c2efa809cac000"
+}
+]
+}

@@ -1,0 +1,26 @@
+{
+ "description": "UX A3: mob script API on 2 windowed F2F 0.32 clients (A = alice, B = bob) + real olife-sandboxd (--state-dir, persist every 20 ticks). alice's bench runs sandbox/a3_api_test.lua: queries answered next tick (block.get/get_area/raycast/is_replaceable/find, nearby, skeleton:bones, memory), block.set with state + fill_area 3x1x3 read back, appearance (scale, rot {yaw}, texture *, bone transform, bone model, text3d, wave animation), refusals of the world (bounds, bad texture/sound/bone/text, value too large) back as rejected events; world state (`mob_api`) and the engine view on B and A (transform size/rot, skeleton textures/matrices/models, animation time advancing, text3d, visibility toggles, sounds); permission stub (olife.api_deny sound -> forbidden, no sounds on B; allow -> sounds again); price of every call from the world's per-tick rows (a3_cost_probe); the five demo_* samples via spawn_sample; consistency; then a world restart (memory and the Lua variable continue: LoadKeep, appearance back on B, animation not persisted) and a hard kill of the sandbox (variable continues from the owner image on disk, memory from the world store).",
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": ["olife-alice", "olife-bob"],
+   "reconnect": 5,
+   "sandbox": true,
+   "sandbox_params": {"persist_every": 20},
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_a3_api", "args": {"account": "alice", "viewers": ["client2", "client1"]}},
+  {"cmd": "olife_a3_costs", "args": {"account": "costprobe"}},
+  {"cmd": "olife_a3_demos", "args": {"account": "alice", "viewer": "client2", "seconds": 8}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 80}},
+  {"cmd": "olife_a3_restart", "args": {"viewer": "client2"}},
+  {"cmd": "olife_stdin", "args": {"cmd": "mobapi_status", "pattern": "mobapi\\("}},
+  {"cmd": "olife_metrics"}
+ ]
+}

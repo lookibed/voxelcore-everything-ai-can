@@ -1,0 +1,10 @@
+{
+    "components": [
+        "blackhole:impact_thrown"
+    ],
+    "skeleton-name": "blackhole:grenade_thrown",
+    "hitbox": [0.3, 0.3, 0.3],
+    "blocking": false,
+    "selectable": false,
+    "save": false
+}

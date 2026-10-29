@@ -1,0 +1,576 @@
+# olife — перестройка Olife на VoxelCore 0.32 (agents/research/OLIFE_ARCHITECTURE.md, OLIFE_ASSESSMENT.md).
+# Сессия = мир (headless стоковый 0.32) + шлюз + песочница + N клиентов (тестовая сборка F2F 0.32) или ботов (headless 0.32).
+# Паки — настоящие (волна 2, 02.10): content/olife_proto (сгенерированные кодеки), content/olife_world (авторитетный
+# мир), content/olife_client (клиент/бот); шлюз — tools/olife/gateway_dev.py; песочница — tools/olife/sandbox_stub.py
+# (протокол sandboxd; настоящий sandboxd — Linux, /root/olife/sandboxd). Протокол — tools/olife/protocol/*.yaml.
+# Проверки — согласованность состояния по тактам (мир против каждого клиента), задержки, байты, негативные попытки.
+[project]
+name = "olife"
+description = "Olife on VoxelCore 0.32: headless world + dev gateway + real olife-sandboxd (or stub) + N clients/bots (real packs), vctest"
+scenarios_dir = "{project_dir}\\scenarios"
+runs_dir = "{lab_data}\\runs"
+plugin = "plugin.py"
+# 22.10 (v0327): golden меню/статуса — отдельная база на версию движка (старая не затирается); CAS общий
+golden_dir = "D:\\Prog\\Olife\\golden\\v0327"
+golden_store = "D:\\Prog\\Olife\\golden\\store"
+
+[engines]
+# 22.10 (v0327): умолчание — релиз 0.32.7 (lab.toml [engines.v0327]); v032 (0.32.0 dc62ccfb) — легаси, через
+# --param engine=v032. Перекрытие [engines.v032] от 16.10 снято: lab.toml указывает на voxelcore-0.32.0_dc62ccfb.
+default = "v0327"
+
+[scenario]
+# шаговые сценарии olife: старт — хук start плагина (сессия из setup.session), шаги — плагина (olife_*)
+# impl rs (волна 3c): та же сессия, но шлюз — Rust olife-gateway (вид gateway_rs): lab run olife <сценарий> --impl rs
+impls = { vc = "world", rs = "world" }
+default_size = "854x480"
+vctest = { headless = "vctest", window = "vctest_window" }
+
+# ------------------------------------------------------------------ мир: headless СТОКОВЫЙ 0.32 (без окна, без ввода)
+# Настоящий пак мира: content/olife_world (+ olife_proto), стартовый сценарий content/olife_world/server_start.lua.
+[kinds.world]
+description = "world: stock VoxelCore 0.32 --headless --script server_start.lua (content/olife_world) --tps 20 --stdin-cmd"
+role = "headless"
+exe = "{engine.stock}"
+copy_exe = false
+ports = ["game"]
+stdin = true
+stdin_poke = "console"
+cwd = "{dir}"
+args = ["--headless", "{param.mode}", "{dir}\\{param.script}", "--tps", "{param.tps}", "--dir", "{dir}",
+        "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--log", "{dir}\\world.log", "--stdin-cmd",
+        "--", "--port", "{port.game}", "--ticks", "{param.ticks}", "--sandbox", "{param.sandbox}",
+        "--sandbox-proto", "{param.sandbox_proto}", "--secret", "{param.secret}", "--view", "{param.view}",
+        "--mobs", "{param.mobs}", "--scripted", "{param.scripted}", "--journal-every", "{param.journal_every}",
+        "--opts", "{param.opts}"]
+# journal_every: этап 6 — мир пишет export\sup_state_{a,b}.json (кольцо 256 входящих кадров, игроки, песочница) раз в N тактов
+# волна 4b: мост мир<->песочница по умолчанию — бинарный контракт sandbox.yaml (sandboxd умеет оба по первому байту);
+# JSON-строки — запасной путь: --param sandbox_proto=jsonl или "sandbox_proto": "jsonl" в setup.session сценария
+params = { mode = "--script", script = "server_start.lua", tps = 20, ticks = 0, sandbox = 0, sandbox_proto = "bin", secret = "olife-dev-secret", view = 3, mobs = 3, scripted = 2, journal_every = 0, opts = "none", packs = ["olife_proto", "olife_world"] }
+# opts (волна 4c, сетевой код): "snap=full|delta,snap_budget=1200,keyframe=100,inv=0|1,move_burst=10" (none — умолчания)
+logs = { log = "{dir}\\world.log" }
+default_log = "stdout"
+prepare = [
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{vc_root}\\content\\olife_world\\{param.script}", dst = "{param.script}" },
+  { action = "mkdir", path = "export" },
+]
+ready = [ { log = "\\[olife_world\\] ready", stream = "stdout", timeout = 90 } ]
+stop = [ { stdin = "olife.stop\n", wait_exit = 8 } ]
+
+# ------------------------------------------------------------------ шлюз: tools/olife/gateway_dev.py (dev sockets_auth)
+[kinds.gateway]
+description = "gateway: tools/olife/gateway_dev.py — handshake/auth (static tokens), bans, rate limits, keepalive, internal protocol to the world"
+engine = "none"
+exe = "{python}"
+ports = ["gw", "f2f", "http"]
+f2f = "f2f"
+cwd = "{dir}"
+# этап 6: auth_url — токены/баны из БД supervisor (http://127.0.0.1:<демон>/sup), пусто — файлы; http — раздача паков
+# по манифесту packs_manifest (lab olife packs manifest)
+args = ["-u", "-B", "{vc_root}\\tools\\olife\\gateway_dev.py", "--listen", "{port.gw}", "--upstream", "127.0.0.1:{param.upstream}",
+        "--f2f", "{port.f2f}", "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}",
+        "--bans", "{dir}\\bans.json", "--name", "{lease}", "--auth-url", "{param.auth_url}",
+        "--packs-http", "{port.http}", "--packs-manifest", "{param.packs_manifest}",
+        "--ticket-key", "{param.ticket_key}", "--gw-id", "{param.gw_id}", "--auth-mode", "{param.auth_mode}",
+        "--assets-dir", "{param.assets_dir}", "--packs-url", "{param.packs_url}"]
+# UX B (olife_menu): packs_url — адрес раздачи паков в PacksChanged (пусто — своя http; сценарий olife_menu_status ставит
+# посредника, который подменяет файл: проверка sha256 у клиента)
+# UX A4: assets_dir — CAS мира (<мир>\worlds\olife\olife_store\cas): GET /assets/<sha256> на порту http
+# волна 4b: ticket_key — файл ключа шлюза (билеты), gw_id — аудитория билета, auth_mode tokens|tickets|both (пусто — по ключу)
+params = { upstream = 0, secret = "olife-dev-secret", auth_url = "", packs_manifest = "", ticket_key = "", gw_id = "", auth_mode = "", assets_dir = "", packs_url = "" }
+default_log = "stdout"
+prepare = [ { action = "copy", src = "{vc_root}\\tools\\olife\\gateway_bans.json", dst = "bans.json" } ]
+ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_gateway\\] ready", stream = "stdout", timeout = 20 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+# ------------------------------------------------------------------ песочница: НАСТОЯЩИЙ olife-sandboxd (волна 3a, 02.10)
+# Rust + wasmtime 49 + PUC Lua 5.1 в wasm (исходники /root/olife/sandboxd, Windows-сборка x86_64-pc-windows-gnu ->
+# D:\Prog\Olife\sandboxd, scripts/deploy_windows.sh). Данные — JSON-строки по TCP (порт sb; мир говорит jsonl, бинарный
+# контракт sandboxd пока не умеет); управление — протокол F2F лаборатории на порту f2f (--ctl): hello (здоровье),
+# meters {owner?, entities?} (накопленные счётчики по владельцам/сущностям + время такта сервиса), stats, quit.
+# Окна и ввода нет (hello.flags.input = "none"). wasm — по OLIFE_LUA_WASM (exe запускается копией из builds\), кэш
+# предкомпиляции *.cwasm пишется рядом с olife_lua.wasm.
+[kinds.sandbox]
+description = "sandbox: REAL olife-sandboxd.exe (wasmtime + Lua 5.1 in wasm, fuel/preemption/memory limits, VM per owner) — jsonl over TCP port sb, lab control port f2f (hello/meters/stats/quit)"
+engine = "none"
+exe = "D:\\Prog\\Olife\\sandboxd\\olife-sandboxd.exe"
+copy_exe = true                     # копия по содержимому в builds\: пересборка (deploy_windows.sh) не упирается в запущенный exe
+ports = ["sb", "f2f"]
+f2f = "f2f"
+cwd = "{dir}"
+env = { OLIFE_LUA_WASM = "D:\\Prog\\Olife\\sandboxd\\olife_lua.wasm" }
+# UX A3: --state-dir — owner VM images on disk (restored when the service restarts in the same lease dir: Lua variables
+# survive a sandbox restart); persist_every N ticks (0 = only at ctl `persist`/`quit`; olife_script_api uses 20)
+args = ["--runtime", "wasm", "--threads", "{param.threads}", "--tcp", "127.0.0.1:{port.sb}", "--ctl", "{port.f2f}",
+        "--state-dir", "{dir}\\sbstate", "--persist-every", "{param.persist_every}"]
+params = { threads = 4, persist_every = 0 }
+default_log = "stdout"
+ready = [ { f2f = "hello", timeout = 30 }, { log = "\\[olife_sandbox\\] ready", stream = "stdout", timeout = 30 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+# ------------------------------------------------------------------ заглушка песочницы: tools/olife/sandbox_stub.py (бинарный контракт; код не исполняет)
+# Нужна сценарию olife_sandbox_bin (sandboxd бинарный контракт пока не говорит) и как эталон обвязки; сессия — sandbox_kind="sandbox_stub".
+[kinds.sandbox_stub]
+description = "sandbox stub: tools/olife/sandbox_stub.py — bridge protocol of sandboxd (jsonl + binary contract), built-in orbit behaviour; exec always denied"
+engine = "none"
+exe = "{python}"
+ports = ["sb", "f2f"]
+f2f = "f2f"
+cwd = "{dir}"
+args = ["-u", "-B", "{vc_root}\\tools\\olife\\sandbox_stub.py", "--listen", "{port.sb}", "--f2f", "{port.f2f}", "--dir", "{dir}"]
+default_log = "stdout"
+ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_sandbox\\] ready", stream = "stdout", timeout = 20 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+# ------------------------------------------------------------------ шлюз прод: Rust olife-gateway (волна 3c, olife_w3g)
+# Исходники /root/olife/gateway (кодеки — gen_codecs.py --lang rust), бинарник D:\Prog\Olife\gateway\olife-gateway.exe
+# (README рядом). Поведение и коды Disconnect — как gateway_dev.py; плюс админ HTTP (порт admin: /status /sessions /kick
+# /ban /drain), журнал JSONL, лимиты соединений на IP, drain. Копия exe по содержимому (copy_exe): пересборка не мешает.
+# auth_url (этап 6) — токены/баны из БД supervisor, файл токенов — запасной; пусто — только файл.
+[kinds.gateway_rs]
+description = "gateway (Rust, production sockets_auth): D:\\Prog\\Olife\\gateway\\olife-gateway.exe — same protocol/codes as gateway_dev.py + admin HTTP, JSONL log, per-IP limits, drain"
+engine = "none"
+exe = "D:\\Prog\\Olife\\gateway\\olife-gateway.exe"
+copy_exe = true
+ports = ["gw", "f2f", "admin", "http"]
+f2f = "f2f"
+cwd = "{dir}"
+args = ["--listen", "{port.gw}", "--upstream", "127.0.0.1:{param.upstream}", "--f2f", "{port.f2f}", "--admin", "{port.admin}",
+        "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}", "--tokens", "{vc_root}\\tools\\olife\\gateway_tokens.json",
+        "--bans", "{dir}\\bans.json", "--name", "{lease}", "--log", "{dir}\\gateway.jsonl", "--threads", "{param.threads}",
+        "--auth-url", "{param.auth_url}", "--max-conns-per-ip", "{param.max_conns_per_ip}", "--conn-rate-ip", "{param.conn_rate_ip}",
+        "--conn-burst-ip", "{param.conn_burst_ip}", "--ticket-key", "{param.ticket_key}", "--gw-id", "{param.gw_id}",
+        "--auth-mode", "{param.auth_mode}", "--packs-manifest", "{param.packs_manifest}", "--packs-http", "{port.http}",
+        "--assets-dir", "{param.assets_dir}"]
+# лимиты соединений на IP — прод-умолчания; все боты лаборатории идут с 127.0.0.1, поэтому сценарий нагрузки поднимает их
+# своим "params": {"gateway_rs": {...}} (olife_gw_throughput)
+params = { upstream = 0, secret = "olife-dev-secret", threads = 4, auth_url = "", max_conns_per_ip = 64, conn_rate_ip = 20, conn_burst_ip = 60, ticket_key = "", gw_id = "", auth_mode = "", packs_manifest = "", assets_dir = "" }
+logs = { log = "{dir}\\gateway.jsonl" }
+default_log = "stdout"
+prepare = [ { action = "copy", src = "{vc_root}\\tools\\olife\\gateway_bans.json", dst = "bans.json" } ]
+ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_gateway\\] ready", stream = "stdout", timeout = 20 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+# ------------------------------------------------------------------ публичный режим (16.10, olife_friends)
+# `lab play olife --user --public` / `lab olife play-up --public` / `play.bat public`: шлюз, сервис билетов и раздача паков
+# слушают 0.0.0.0 на ФИКСИРОВАННЫХ портах [play.public] (проброс на роутере — один раз), не из пула аренд; admin/f2f-порты —
+# из пула и только 127.0.0.1. `--info` — файл ServerInfo (ответ на InfoRequest: порты билетов/паков, ключ запечатывания).
+# agents/research/OLIFE_PUBLIC_PLAY.md.
+[kinds.gateway_rs_public]
+description = "gateway (Rust) of the PUBLIC play stack: client port {param.listen} and packs HTTP {param.packs_port} on 0.0.0.0 (fixed, [play.public]); admin/f2f from the pool on 127.0.0.1; ServerInfo from {param.info}"
+engine = "none"
+exe = "D:\\Prog\\Olife\\gateway\\olife-gateway.exe"
+copy_exe = true
+ports = ["f2f", "admin"]
+f2f = "f2f"
+cwd = "{dir}"
+args = ["--listen", "{param.listen}", "--public", "1", "--upstream", "127.0.0.1:{param.upstream}", "--f2f", "{port.f2f}", "--admin", "{port.admin}",
+        "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}", "--tokens", "{vc_root}\\tools\\olife\\gateway_tokens.json",
+        "--bans", "{dir}\\bans.json", "--name", "{lease}", "--log", "{dir}\\gateway.jsonl", "--threads", "{param.threads}",
+        "--auth-url", "{param.auth_url}", "--max-conns-per-ip", "{param.max_conns_per_ip}", "--conn-rate-ip", "{param.conn_rate_ip}",
+        "--conn-burst-ip", "{param.conn_burst_ip}", "--ticket-key", "{param.ticket_key}", "--gw-id", "{param.gw_id}",
+        "--auth-mode", "{param.auth_mode}", "--packs-manifest", "{param.packs_manifest}", "--packs-http", "{param.packs_port}",
+        "--packs-public", "1", "--assets-dir", "{param.assets_dir}", "--info", "{param.info}"]
+params = { listen = 0, packs_port = 0, info = "", upstream = 0, secret = "olife-dev-secret", threads = 4, auth_url = "", max_conns_per_ip = 64, conn_rate_ip = 20, conn_burst_ip = 60, ticket_key = "", gw_id = "", auth_mode = "", packs_manifest = "", assets_dir = "" }
+logs = { log = "{dir}\\gateway.jsonl" }
+default_log = "stdout"
+prepare = [ { action = "copy", src = "{vc_root}\\tools\\olife\\gateway_bans.json", dst = "bans.json" } ]
+ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_gateway\\] ready", stream = "stdout", timeout = 20 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+[kinds.auth_public]
+description = "auth service of the PUBLIC play stack: HTTPS {param.listen} on 0.0.0.0 (fixed, [play.public]), control port from the pool on 127.0.0.1"
+engine = "none"
+exe = "{python}"
+ports = ["f2f"]
+f2f = "f2f"
+cwd = "{dir}"
+args = ["-u", "-B", "{vc_root}\\tools\\olife\\auth_service.py", "--listen", "{param.listen}", "--public", "1", "--f2f", "{port.f2f}", "--dir", "{dir}",
+        "--master", "{param.master}", "--ttl", "{param.ttl}", "--gateways", "{param.gateways}", "--auth-url", "{param.auth_url}",
+        "--require-sealed", "{param.require_sealed}", "--tls", "{param.tls}", "--seal-key", "{param.seal_key}"]
+params = { listen = 0, master = "", ttl = 30, gateways = "", auth_url = "", require_sealed = 1, tls = 1, seal_key = "" }
+default_log = "stdout"
+ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_auth\\] ready", stream = "stdout", timeout = 20 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+# ------------------------------------------------------------------ мир-заглушка для замеров шлюза (без движка)
+# tools/olife/world_fake.py: контракт internal (секрет, Welcome, TickSync 20 Гц на сессию, Multicast чата, Ping), повторно
+# декодирует каждое тело; меряется шлюз, а не мир. Сессия: world_kind = "world_fake".
+[kinds.world_fake]
+description = "fake world (no engine): tools/olife/world_fake.py — internal contract, Welcome, TickSync per session, chat Multicast; for gateway throughput/soak"
+engine = "none"
+exe = "{python}"
+ports = ["game", "f2f"]
+f2f = "f2f"
+cwd = "{dir}"
+args = ["-u", "-B", "{vc_root}\\tools\\olife\\world_fake.py", "--port", "{port.game}", "--f2f", "{port.f2f}", "--secret", "{param.secret}",
+        "--tps", "{param.tps}", "--stats", "{dir}\\world_stats.json"]
+params = { secret = "olife-dev-secret", tps = 20 }
+default_log = "stdout"
+ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[fake_world\\] ready", stream = "stdout", timeout = 20 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+# ------------------------------------------------------------------ нагрузка на шлюз: tools/olife/gw_load.py (протокольные боты без движка)
+# Шаги olife_gw_load / olife_soak и перф gateway_load (gateway_rs.py) берут эту аренду, ждут выхода и читают {dir}\gw_load.json.
+[kinds.gw_load]
+description = "gateway load: tools/olife/gw_load.py — N protocol bots (Hello, keepalive, PlayerInput at a rate under the limit, chat), result JSON"
+engine = "none"
+exe = "{python}"
+cwd = "{dir}"
+args = ["-u", "-B", "{vc_root}\\tools\\olife\\gw_load.py", "--gateway", "{param.gateway}", "--bots", "{param.bots}", "--rate", "{param.rate}",
+        "--seconds", "{param.seconds}", "--chat-every", "{param.chat_every}", "--chat-len", "{param.chat_len}", "--prefix", "{param.prefix}",
+        "--progress", "{param.progress}", "--out", "{dir}\\gw_load.json"]
+params = { gateway = 0, bots = 20, rate = 55, seconds = 30, chat_every = 0, chat_len = 200, prefix = "load", progress = 10 }
+default_log = "stdout"
+ready = []
+stop = []
+
+# ------------------------------------------------------------------ клиент: тестовая сборка F2F 0.32 (окно без фокуса)
+[kinds.client]
+description = "client: VoxelCoreF2F-0327 (--f2f, input isolated, clock realtime) + content/olife_client/client_start.lua"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "realtime"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--dir", "{dir}",
+        "--script", "{dir}\\client_start.lua", "--", "--gateway", "{param.gateway}", "--name", "{param.name}",
+        "--ticks", "{param.ticks}", "--token", "{param.token}", "--blocks", "{param.blocks}", "--walk", "{param.walk}",
+        "--reconnect", "{param.reconnect}", "--opts", "{param.opts}", "--auth", "{param.auth}", "--gw-id", "{param.gw_id}", "--auth-pub", "{param.auth_pub}",
+        "--auth-verify", "{param.auth_verify}"]
+params = { gateway = 0, name = "client", ticks = 0, token = "olife-dev", blocks = 0, walk = 1, reconnect = 0, auth = "", gw_id = "", auth_pub = "", auth_verify = 0, opts = "none", packs = ["olife_proto", "olife_client"] }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "stdout"
+prepare = [
+  { action = "write", path = "settings.toml", text = "# lab: F2F test instance, silent (22.10): backend on, master gain 0\n[audio]\nenabled = true\nvolume-master = 0\n" },
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{vc_root}\\content\\olife_client\\client_start.lua", dst = "client_start.lua" },
+  { action = "mkdir", path = "export" },
+]
+ready = [ { f2f = "hello", timeout = 90 }, { log = "\\[olife_client\\] connected", stream = "stdout", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# ------------------------------------------------------------------ бот: headless стоковый 0.32 (нагрузка, без рендера)
+[kinds.bot]
+description = "bot: stock VoxelCore 0.32 --headless --script content/olife_client/client_start.lua (own replica world, random walk, place/break)"
+role = "headless"
+exe = "{engine.stock}"
+copy_exe = false
+cwd = "{dir}"
+args = ["--headless", "--script", "{dir}\\client_start.lua", "--tps", "{param.tps}", "--dir", "{dir}",
+        "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--log", "{dir}\\client.log", "--stdin-cmd",
+        "--", "--gateway", "{param.gateway}", "--name", "{param.name}", "--ticks", "{param.ticks}",
+        "--token", "{param.token}", "--blocks", "{param.blocks}", "--walk", "{param.walk}", "--reconnect", "{param.reconnect}",
+        "--opts", "{param.opts}", "--auth", "{param.auth}", "--gw-id", "{param.gw_id}", "--auth-pub", "{param.auth_pub}", "--auth-verify", "{param.auth_verify}"]
+# opts (волна 4c): "move=predict|legacy,drops=<тактов>,radius=<блоков>,sprint=0|1" (none — умолчания)
+params = { gateway = 0, name = "bot", ticks = 0, tps = 20, token = "olife-bot", blocks = 0, walk = 1, reconnect = 0, auth = "", gw_id = "", auth_pub = "", auth_verify = 0, opts = "none", packs = ["olife_proto", "olife_client"] }
+logs = { log = "{dir}\\client.log" }
+default_log = "stdout"
+prepare = [
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{vc_root}\\content\\olife_client\\client_start.lua", dst = "client_start.lua" },
+  { action = "mkdir", path = "export" },
+]
+stdin = true
+stdin_poke = "console"
+ready = [ { log = "\\[olife_client\\] connected", stream = "stdout", timeout = 90 } ]
+stop = [ { stdin = "olife.stop\n", wait_exit = 8 } ]
+
+# ------------------------------------------------------------------ vctest: Lua-тест движка под --test (lab run olife <file.lua>)
+[kinds.vctest]
+description = "native 0.32 test: stock VoxelCore --headless --test <file.lua> --log (exit code = verdict)"
+role = "headless"
+exe = "{engine.stock}"
+copy_exe = false
+cwd = "{dir}"
+args = ["--headless", "--test", "{param.test}", "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--dir", "{dir}", "--log", "{dir}\\test.log"]
+params = { test = "", packs = ["olife_proto", "olife_world", "olife_client"] }
+logs = { log = "{dir}\\test.log" }
+default_log = "stdout"
+# паки olife и векторы кодеков (tools/olife/tests/codec_vectors.lua читает user:export/vectors/*.json)
+prepare = [ { action = "mkdir", path = "shots" },
+            { action = "packs", packs = "{param.packs}" },
+            { action = "copytree", src = "{vc_root}\\tools\\olife\\protocol\\vectors", dst = "export\\vectors" } ]
+ready = []
+stop = []
+
+[kinds.vctest_window]
+description = "native 0.32 test in a window: VoxelCoreF2F-0327 --f2f (input isolated, hidden, realtime) --test <file.lua>"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "realtime"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--test", "{param.test}", "--res", "{engine.res}", "--project", "{project_dir}\\vcproject",
+        "--dir", "{dir}", "--log", "{dir}\\test.log"]
+params = { test = "", packs = ["olife_proto", "olife_client"] }
+logs = { log = "{dir}\\test.log" }
+default_log = "stdout"
+# UX A4: паки olife (как у vctest) — оконные пробы активов (tools/olife/probes/probe_store_window.lua)
+prepare = [ { action = "mkdir", path = "shots" }, { action = "packs", packs = "{param.packs}" },
+  { action = "write", path = "settings.toml", text = "# lab: F2F test instance, silent (22.10): backend on, master gain 0\n[audio]\nenabled = true\nvolume-master = 0\n" } ]
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = []
+
+# ------------------------------------------------------------------ этап 4a (lab_032): дымовой клиент без шлюза
+# Вид `client` (F2F 0.32), но без соединения: tools/lab/projects/olife/scripts/olife_client_smoke.lua грузит паки клиента
+# (только недостающие — в окне base уже загружен меню), открывает локальный мир, маркер готовности; затем hello/shot.
+# `lab lease olife client_smoke --start` -> `lab f2f <аренда> shot` -> `lab release`. Часы — --param clock=virtual|realtime.
+[kinds.client_smoke]
+description = "client smoke: VoxelCoreF2F-0327 (--f2f, input isolated, hidden, realtime) + lab olife_client_smoke.lua (no gateway): world open + hello + shot"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "realtime"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--dir", "{dir}",
+        "--script", "{dir}\\olife_client_smoke.lua", "--", "--name", "{param.name}", "--packs", "{param.packs_arg}"]
+params = { name = "smoke", packs = ["olife_proto", "olife_client"], packs_arg = "base,olife_proto,olife_client" }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "stdout"
+prepare = [
+  { action = "write", path = "settings.toml", text = "# lab: F2F test instance, silent (22.10): backend on, master gain 0\n[audio]\nenabled = true\nvolume-master = 0\n" },
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{project_dir}\\scripts\\olife_client_smoke.lua", dst = "olife_client_smoke.lua" },
+  { action = "mkdir", path = "export" },
+]
+ready = [ { f2f = "hello", timeout = 90 }, { log = "\\[olife_client_smoke\\] ready", stream = "stdout", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# ------------------------------------------------------------------ волна 4b (olife_w4b): сервис билетов (tools/olife/auth_service.py)
+# Долгий токен аккаунта -> короткий одноразовый билет для Hello.token (tools/olife/olife_ticket.py). HTTPS (ssl, самоподписанный
+# сертификат генерируется в каталог аренды) или HTTP (tls=0); аккаунты и баны — БД supervisor (auth_url = /sup демона), файлы —
+# запасной путь; master — файл мастер-ключа (сессия генерирует его и выводит из него ключ шлюза); порт управления f2f:
+# hello, metrics, mint (только для негативных тестов), quit.
+[kinds.auth]
+description = "auth: tools/olife/auth_service.py — account token -> short one-time ticket (HMAC per gateway), HTTPS self-signed (dev) + sealed request to a pinned x25519 key"
+engine = "none"
+exe = "{python}"
+ports = ["https", "f2f"]
+f2f = "f2f"
+cwd = "{dir}"
+args = ["-u", "-B", "{vc_root}\\tools\\olife\\auth_service.py", "--listen", "{port.https}", "--f2f", "{port.f2f}", "--dir", "{dir}",
+        "--master", "{param.master}", "--ttl", "{param.ttl}", "--gateways", "{param.gateways}", "--auth-url", "{param.auth_url}",
+        "--require-sealed", "{param.require_sealed}", "--tls", "{param.tls}", "--seal-key", "{param.seal_key}"]
+params = { master = "", ttl = 30, gateways = "", auth_url = "", require_sealed = 0, tls = 1, seal_key = "" }
+default_log = "stdout"
+ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_auth\\] ready", stream = "stdout", timeout = 20 } ]
+stop = [ { f2f = "quit", wait_exit = 3 } ]
+
+# ================================================================== путь игрока (02.10, olife_play): lab play olife
+# `lab play olife --user` (пользователь, свой терминал или D:\Prog\Olife\play.bat) / `--final-check --reason` (главная
+# сессия): [play].order — сначала «коляска» play_stack (поднимает стек под supervisor: olife.play_up в olife_play.py), затем
+# СТОКОВЫЙ рантайм 0.32 (окно пользователя) со скриптом content/olife_client/scripts/app/olife.lua (он же — пункт меню
+# «Сценарии» -> olife). Выход рантайма = конец сеанса: play.py гасит коляску (stdin stop -> olife.play_down: сводка
+# olife_session.md в прогон, сохранение мира, снятие группы) и пишет play_report.md. Сухой прогон (без стокового движка) —
+# `lab play olife --dry-run` = сценарий olife_play_dry (тот же стек + клиент F2F 0.32 с тем же скриптом).
+
+# мир игры: как world, но worlds\ — junction на постоянный каталог миров (D:\Prog\Olife\play\worlds) или копию (сухой прогон)
+[kinds.world_play]
+description = "world for the player: stock VoxelCore 0.32 --headless server_start.lua (content/olife_world); worlds\\ = junction to {param.worlds} (persistent D:\\Prog\\Olife\\play\\worlds or a dry-run copy)"
+role = "headless"
+exe = "{engine.stock}"
+copy_exe = false
+ports = ["game"]
+stdin = true
+stdin_poke = "console"
+cwd = "{dir}"
+args = ["--headless", "{param.mode}", "{dir}\\{param.script}", "--tps", "{param.tps}", "--dir", "{dir}",
+        "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--log", "{dir}\\world.log", "--stdin-cmd",
+        "--", "--port", "{port.game}", "--ticks", "{param.ticks}", "--sandbox", "{param.sandbox}",
+        "--sandbox-proto", "{param.sandbox_proto}", "--secret", "{param.secret}", "--view", "{param.view}",
+        "--mobs", "{param.mobs}", "--scripted", "{param.scripted}", "--journal-every", "{param.journal_every}",
+        "--opts", "{param.opts}"]
+params = { mode = "--script", script = "server_start.lua", tps = 20, ticks = 0, sandbox = 0, sandbox_proto = "bin", secret = "olife-dev-secret", view = 3, mobs = 0, scripted = 0, journal_every = 20, opts = "none", worlds = "", packs = ["olife_proto", "olife_world"] }
+logs = { log = "{dir}\\world.log" }
+default_log = "stdout"
+prepare = [
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{vc_root}\\content\\olife_world\\{param.script}", dst = "{param.script}" },
+  { action = "mkdir", path = "export" },
+  { action = "junction", link = "worlds", target = "{param.worlds}" },
+]
+ready = [ { log = "\\[olife_world\\] ready", stream = "stdout", timeout = 90 } ]
+stop = [ { stdin = "olife.stop\n", wait_exit = 15 } ]
+
+# «коляска» сеанса игры: поднимает/снимает стек через HTTP демона (olife.play_up/play_down), печатает статус стека
+[kinds.play_stack]
+description = "play sidecar: tools/lab/projects/olife/play_stack.py — olife.play_up (supervised world on the persistent world + real sandbox + auth tickets + Rust gateway + account user + sample benches + client config), stack status every 10 s, olife.play_down on stop"
+engine = "none"
+exe = "{python}"
+cwd = "{dir}"
+args = ["-u", "-B", "{project_dir}\\play_stack.py", "--owner", "{owner}", "--lease", "{lease}", "--dir", "{dir}",
+        "--run-dir", "{run_dir}", "--mode", "{param.mode}", "--daemon-port", "{param.daemon_port}", "--public", "{param.public}"]
+# public = 1 (olife_friends 16.10): `lab play olife --user --public` / `play.bat public` -> fixed ports of [play.public] on 0.0.0.0
+params = { mode = "play", daemon_port = 25700, public = 0 }
+stdin = true
+default_log = "stdout"
+ready = [ { log = "\\[olife_play\\] stack ready", stream = "stdout", timeout = 240 } ]
+stop = [ { stdin = "stop\n", wait_exit = 120 } ]
+
+# рантайм игрока: СТОКОВЫЙ VoxelCore 0.32 (только lab play: --user / --final-check), обычное окно, каталог пользователя
+# 0.32 (его settings.toml; content\olife_client, content\olife_proto — junction на VC_ROOT\content, sync в olife.play_up),
+# скрипт меню «Сценарии» -> olife, адрес — export\olife_server.txt (пишет olife.play_up). Одна аренда на машину.
+[kinds.runtime]
+description = "runtime: STOCK VoxelCore 0.32 (voxelcore-0.32.7_win64\\VoxelCore.exe), normal window, user dir = the 0.32 root (its settings, content junctions), --script content\\olife_client\\scripts\\app\\olife.lua -> export\\olife_server.txt"
+role = "runtime"
+exe = "{engine.stock}"
+copy_exe = false
+kill_on_close = false
+cwd = "{engine.root}"
+args = ["--dir", "{engine.root}", "--script", "{engine.root}\\content\\olife_client\\scripts\\app\\olife.lua"]
+logs = { latest = "{engine.root}\\latest.log" }
+default_log = "stdout"
+ready = [ { log = "\\[olife_play\\] (menu ready|world open)", stream = "stdout", timeout = 120 } ]   # UX B: the menu first
+stop = []
+
+# сухой прогон: тестовая сборка F2F 0.32 (ввод изолирован, окно скрыто, часы realtime) с тем же скриптом и файлом
+# подключения; без --project — права проекта по умолчанию, как у стокового рантайма
+[kinds.play_client]
+description = "dry-run client: VoxelCoreF2F-0327 (--f2f, input isolated, hidden, realtime) + content/olife_client/scripts/app/olife.lua, export\\olife_server.txt = {param.config}; default 0.32 project (no --project) like the stock runtime"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "realtime"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}",
+        "--script", "{dir}\\content\\olife_client\\scripts\\app\\olife.lua", "--", "--autologin", "1"]
+# UX B (olife_menu): the app script opens the client's menu; --autologin 1 = «Войти» with the autofill at once
+params = { config = "", packs = ["olife_proto", "olife_client"] }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "stdout"
+prepare = [
+  { action = "write", path = "settings.toml", text = "# lab: F2F test instance, silent (22.10): backend on, master gain 0\n[audio]\nenabled = true\nvolume-master = 0\n" },
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{param.config}", dst = "export\\olife_server.txt" },
+]
+ready = [ { f2f = "hello", timeout = 90 }, { log = "\\[olife_play\\] connected", stream = "stdout", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+[play]
+description = "Olife: supervised stack (world on D:\\Prog\\Olife\\play, real sandbox, auth tickets, Rust gateway, account user, sample benches) via the play_stack sidecar + STOCK 0.32 runtime auto-connecting by ticket"
+order = ["play_stack", "runtime"]      # коляска (стек готов) -> рантайм; стоп обратный: рантайм уже вышел -> play_stack stop
+engine = "runtime"                     # выход окна = конец сеанса
+names = { runtime = "vc032-main" }     # рантайм один на машину
+exclusive_exe = "D:\\Prog\\VoxelCore\\voxelcore-0.32.7_win64\\VoxelCore.exe"   # уже запущен вне лаборатории -> отказ
+ttl = 3600
+[play.params.play_stack]
+mode = "play"
+# публичный режим (olife_friends 16.10): фиксированные порты (TCP; проброс на роутере один раз). Не пересекаются с демоном
+# (25700), пулом аренд (25600–25699), тестовыми демонами (25791–25793), изолированными демонами и их арендами (25800–26349),
+# лаунчером Eaglercraft (25599). Перекрыть — D:\Prog\Olife\play\server.toml, секция [public] с теми же ключами.
+[play.public]
+gateway = 27750          # шлюз: единственное, что знает друг (ip:27750)
+auth = 27751             # сервис билетов (HTTPS, самоподписанный + запечатанный запрос к ключу из ServerInfo)
+packs = 27752            # раздача паков и активов (HTTP, только файлы манифеста и CAS по sha256)
+whitelist = true         # вход по нику — только из вайтлиста (play.bat friend НИК)
+name = "Olife"           # имя сервера в ServerInfo
+motd = ""
+[play.options.public]    # `lab play olife --user --public` (= --opt public) / `play.bat public`: стек на портах [play.public], 0.0.0.0
+params = { play_stack = { public = 1 } }
+[play.capture]
+enabled = false
+[play.report]
+log_stream = "stdout"                  # print/debug.log клиента + журнал движка (latest.log — без print)
+server_kind = "play_stack"             # «сервер» отчёта — коляска: события стека, сводка play_down
+server_stream = "stdout"
+server_tail = 60
+size = "окно пользователя (settings.toml 0.32)"
+chunks_field = "chunks"
+status = '\[olife_play\] status fps (?P<fps>[\d.]+) frames (?P<frames>\d+) state (?P<state>\S+) ping (?P<ping_ms>[-\d.]+) entities (?P<entities>\d+) chunks (?P<chunks>\d+) kb_in (?P<kb_in>\d+) kb_out (?P<kb_out>\d+) reconnects (?P<reconnects>\d+)'
+disconnect_events = ["disconnect"]
+[play.report.levels]
+error = '^\[E\]|uncaught|stack traceback|Exception'
+warning = '^\[W\]'
+[play.report.events]
+world_open = '\[olife_play\] world open (?P<world>\S+)'
+connect = '\[olife_play\] connected account=(?P<account>\S+) session=(?P<session>\S+)'
+disconnect = '\[olife_play\] disconnected state=\S+ reason=(?P<reason>.*)$'
+packs = '\[olife_play\] packs reopen'
+leave = '\[olife_play\] (?:leaving after|world closed)'
+no_config = '\[olife_play\] no .*olife_server'
+[play.report.server_events]
+ready = '\[olife_play\] stack ready in (?P<s>[\d.]+) s'
+login = '\[olife_play\] login (?P<who>\S+)'
+logout = '\[olife_play\] logout (?P<who>\S+)'
+incident = '\[olife_play\] incident (?P<id>\S+)'
+restart = '\[olife_play\] restart (?P<role>\S+)'
+failed = '\[olife_play\] .*FAILED'
+
+# проверка пункта меню «Сценарии» -> olife (путь пользователя без lab play): F2F 0.32 в главном меню (без --script),
+# паки клиента и файл подключения в каталоге экземпляра; дальше F2F input: Scripts -> olife (agents: olife_play)
+[kinds.menu_client]
+description = "menu check: VoxelCoreF2F-0327 (--f2f, input isolated, hidden, realtime) at the main menu (no --script), client packs + export\\olife_server.txt = {param.config}; F2F clicks Scripts -> olife"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "realtime"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}"]
+params = { config = "", packs = ["olife_proto", "olife_client"] }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "stdout"
+prepare = [
+  { action = "write", path = "settings.toml", text = "# lab: F2F test instance, silent (22.10): backend on, master gain 0\n[audio]\nenabled = true\nvolume-master = 0\n" },
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{param.config}", dst = "export\\olife_server.txt" },
+]
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# UX B (16.10, olife_menu): главное меню клиента и экран статуса входа — F2F 0.32 (--f2f, ввод изолирован, окно скрыто,
+# часы realtime) с app-скриптом пака (`{param.app}` = olife: меню «Сценарии» -> olife) или пробой ({param.script} -> copy);
+# паки клиента (junction), файл автозаполнения export\olife_server.txt = {param.config} (пустой — меню без автозаполнения).
+# Стек (мир, песочница, билеты, шлюз) поднимает шаг сценария (olife_menu.py) или `olife.play_up mode=dry`.
+[kinds.menu_app]
+description = "olife_menu: VoxelCoreF2F-0327 (--f2f, isolated, hidden, realtime) + client packs; --script content\\olife_client\\scripts\\app\\{param.app}.lua (main menu of the client with the 3D scene, login, status screen); export\\olife_server.txt = {param.config}"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "realtime"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}",
+        "--script", "{dir}\\{param.script_name}", "--", "--autologin", "{param.autologin}"]
+params = { app = "olife", autologin = 0, script = "{vc_root}\\content\\olife_client\\scripts\\app\\olife.lua", script_name = "olife_app.lua", config = "{project_dir}\\scripts\\olife_server_empty.txt", packs = ["olife_proto", "olife_client"] }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "stdout"
+prepare = [
+  { action = "write", path = "settings.toml", text = "# lab: F2F test instance, silent (22.10): backend on, master gain 0\n[audio]\nenabled = true\nvolume-master = 0\n" },
+  { action = "packs", packs = "{param.packs}" },
+  { action = "copy", src = "{param.script}", dst = "{param.script_name}" },
+  { action = "copy", src = "{param.config}", dst = "export\\olife_server.txt" },
+]
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# olife_friends (16.10): проверка zip другу (`lab olife bundle`) — F2F-сборка 0.32 (НЕ стоковый exe из zip: ввод изолирован,
+# окно скрыто) с --dir распакованного каталога и тем же --script, что в OLIFE.bat; res — из zip (= стоковый res 0.32)
+[kinds.bundle_client]
+description = "olife_bundle: VoxelCoreF2F-0327 (--f2f, isolated, hidden, realtime) with --dir = the unpacked friend's bundle {param.root} and --script {param.root}\\content\\olife_client\\scripts\\app\\olife.lua (the line of OLIFE.bat)"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "realtime"
+cwd = "{param.root}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{param.root}\\res", "--dir", "{param.root}",
+        "--script", "{param.root}\\content\\olife_client\\scripts\\app\\olife.lua", "--", "--autologin", "0"]
+params = { root = "" }
+logs = { latest = "{param.root}\\latest.log" }
+default_log = "stdout"
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]

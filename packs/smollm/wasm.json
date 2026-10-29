@@ -1,0 +1,20 @@
+{
+    "module": "smollm:modules/smollm.lua",
+    "graphics": "canvas",
+    "width": 2,
+    "height": 2,
+    "args": [
+        "smollm"
+    ],
+    "files": "smollm:data",
+    "extension": "smollm:llm_host",
+    "slice_ms": 12,
+    "capture_escape": false,
+    "log_fps": false,
+    "jit": "tuned",
+    "kernels": "lua",
+    "prefill_batch": 16,
+    "jit_opt": [
+        "+loop"
+    ]
+}

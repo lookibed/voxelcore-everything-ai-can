@@ -1,0 +1,35 @@
+<!-- Olife chat overlay (UX A2, 03.10, olife_a2): native 0.32 XML. Opens on T (the engine's chat binding) or Enter;
+     a window of 14 log lines (colour per kind: player / admin / operator / system / op / reply / notice), ▲/▼ scroll
+     by 5 lines (PageUp/PageDown too), the prompt: Enter sends ("/" = operator command), ↑/↓ = sent history, Esc closes.
+     Model: olife_client:chat (this file only lays it out). -->
+<container id="root" color="#00000030" size-func="unpack(gui.get_viewport())">
+    <container id="box" position-func="8, gui.get_viewport()[2] - 380" size-func="math.min(720, gui.get_viewport()[1] - 16), 372"
+               color="#060A16D8">
+        <label id="title" pos="8,4" size="300,20" color="#9FB4D0">ЧАТ | /help - команды</label>
+        <label id="pos" position-func="math.min(720, gui.get_viewport()[1] - 16) - 150, 4" size="100,20" color="#69707D"
+               text-align="right"></label>
+        <button id="btn_close" position-func="math.min(720, gui.get_viewport()[1] - 16) - 36, 2" size="32,24" color="#5050ff60"
+                onclick="ui_close()" tooltip="Esc">x</button>
+        <label id="l1" pos="8,30" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l2" pos="8,52" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l3" pos="8,74" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l4" pos="8,96" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l5" pos="8,118" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l6" pos="8,140" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l7" pos="8,162" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l8" pos="8,184" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l9" pos="8,206" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l10" pos="8,228" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l11" pos="8,250" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l12" pos="8,272" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l13" pos="8,294" size-func="-60,20" color="#E6EAF0"></label>
+        <label id="l14" pos="8,316" size-func="-60,20" color="#E6EAF0"></label>
+        <button id="btn_up" position-func="math.min(720, gui.get_viewport()[1] - 16) - 40, 30" size="32,140" color="#FFFFFF18"
+                onclick="ui_scroll(-5)" tooltip="PageUp">^</button>
+        <button id="btn_down" position-func="math.min(720, gui.get_viewport()[1] - 16) - 40, 176" size="32,140" color="#FFFFFF18"
+                onclick="ui_scroll(5)" tooltip="PageDown">v</button>
+        <label id="more" pos="300,4" size="260,20" color="#FFD27A"></label>
+        <textbox id="prompt" pos="4,338" size-func="-8,30" color="#00000080" padding="6,4,6,2" hint="сообщение или /команда"
+                 consumer="on_submit" onup="ui_history(-1)" ondown="ui_history(1)" oncontrolkey="on_key"></textbox>
+    </container>
+</container>

@@ -1,0 +1,97 @@
+{
+    "caption": "stairCompactStone",
+    "model": "custom",
+    "model-name": "amblk_stair_compact_stone_m0",
+    "texture": "am_cobblestone",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m1",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m2",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m3",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m0",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m1",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m2",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m3",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m0",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m1",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m2",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m3",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m0",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m1",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_stair_compact_stone_m2",
+                "texture": "am_cobblestone"
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 67
+}

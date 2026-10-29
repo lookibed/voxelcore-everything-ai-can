@@ -1,0 +1,10 @@
+{
+    "id": "smollm",
+    "title": "Ru-Small-Instruct chat",
+    "creator": "Andryha",
+    "version": "0.1.0",
+    "description": "Чат с языковой моделью Ru-Small-Instruct (94M, Q8_0): llama2.c runq на C -> wasm -> Lua через Spider, рантайм wasmrt",
+    "dependencies": [
+        "wasmrt"
+    ]
+}

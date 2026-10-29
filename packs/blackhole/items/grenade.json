@@ -1,0 +1,7 @@
+{
+    "caption": "Black hole grenade",
+    "icon-type": "sprite",
+    "icon": "items:bh_grenade",
+    "script-name": "grenade",
+    "stack-size": 16
+}

@@ -1,0 +1,11 @@
+{
+    "id": "gpu_worldgen_light",
+    "title": "GPU worldgen: light in shaders",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Дополнение к gpu_worldgen: небесный свет движка выключен (все блоки sky-light-passing), видимость неба и AO считают шейдеры мира из функции плотности генератора",
+    "dependencies": [
+        "base",
+        "gpu_worldgen"
+    ]
+}

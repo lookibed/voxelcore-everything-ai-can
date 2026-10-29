@@ -1,0 +1,10 @@
+{
+ "name": "eag_menu",
+ "description": "Eaglercraft: старт движка с паком eaglercraft -> профиль -> главное меню",
+ "steps": [
+  {"tool": "eag_start", "args": {}, "expect": {"screen": "GuiScreenEditProfile|GuiMainMenu"},
+   "checkpoint": "profile", "limit": 300, "slow_s": 60},
+  {"tool": "eag_click", "args": {"target": "Done"}, "skip_if": {"screen": "GuiMainMenu"},
+   "expect": {"screen": "GuiMainMenu"}, "checkpoint": "menu", "limit": 20}
+ ]
+}

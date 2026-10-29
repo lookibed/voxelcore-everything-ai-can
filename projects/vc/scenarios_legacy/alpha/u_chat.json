@@ -1,0 +1,332 @@
+{
+ "name": "u_chat",
+ "description": "GuiChat (E2E 01.10): слои hud + gui на чёрном. 0 — T открыл чат (updateCounter 0, курсор «_»), 1 — набрано «hel» (input.chars), 2 — «hello», updateCounter 6: курсор погас (updateCounter/6%2), 3 — updateCounter 12: снова виден, 4 — Backspace + символы «`§» (не из ChatAllowedCharacters — отброшены) + «o» = «hello», Enter (Packet3Chat, чат закрыт), 5..9 — строка эха «<Player> hello» в HUD при возрасте 5 / 150 / 185 / 195 (затухание последних 20 тактов из 200) / 205 (исчезла) — шаг харнесса chat_age выставляет точный возраст строки (эхо сервера приходит по настенным часам), 10 — T снова: при открытом чате история до 20 строк с полной альфой, 11 — Esc закрыл.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "hud": true,
+     "gui": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0,
+    "screen": "ingame"
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "T": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "screen": "GuiChat"
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "T": false
+    }
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_open"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "chars": "hel"
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_hel"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "chars": "lo"
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_blink_off"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 6,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_blink_on"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "BACK": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "BACK": false
+    }
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "chars": "`§o"
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "4_edit"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "RETURN": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "screen": "ingame"
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "RETURN": false
+    }
+   }
+  },
+  {
+   "cmd": "wait",
+   "args": {
+    "chat": "<Player> hello",
+    "max_frames": 400
+   }
+  },
+  {
+   "cmd": "chat_age",
+   "args": {
+    "match": "<Player> hello",
+    "age": 5
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "5_line"
+  },
+  {
+   "cmd": "chat_age",
+   "args": {
+    "match": "<Player> hello",
+    "age": 150
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "6_age150"
+  },
+  {
+   "cmd": "chat_age",
+   "args": {
+    "match": "<Player> hello",
+    "age": 185
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "7_fade185"
+  },
+  {
+   "cmd": "chat_age",
+   "args": {
+    "match": "<Player> hello",
+    "age": 195
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "8_fade195"
+  },
+  {
+   "cmd": "chat_age",
+   "args": {
+    "match": "<Player> hello",
+    "age": 205
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "9_gone"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "T": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "screen": "GuiChat"
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "T": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "10_reopen"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "ESCAPE": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   },
+   "expect": {
+    "screen": "ingame"
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "ESCAPE": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "11_esc"
+  }
+ ]
+}

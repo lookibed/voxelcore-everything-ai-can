@@ -1,0 +1,4 @@
+@configure duration 1
+@scale bone body by x func (1 + sin(t * 2 * pi) * 0.2)
+@scale bone body by y func (1 + sin(t * 2 * pi) * 0.2)
+@scale bone body by z func (1 + sin(t * 2 * pi) * 0.2)

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Демо — wasmrt</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="header"><div class="header-in">
+  <a class="logo" href="index.html"><img src="img/logo.png" width="26" height="26">wasm<span>rt</span></a>
+  <div class="nav">
+    <a href="index.html" id="nav-home">Главная</a>
+    <a href="gallery.html" id="nav-gallery">Галерея</a>
+    <a href="docs.html" id="nav-docs">Документация</a>
+    <a href="demo.html" class="active" id="nav-demo">Демо</a>
+    <a href="about.html" id="nav-about">О проекте</a>
+    <button class="theme-btn" id="theme" title="Тема">☾</button>
+  </div>
+</div></div>
+
+<div class="page-head">
+  <div class="crumbs"><a href="index.html">Главная</a> / Демо</div>
+  <h1>Интерактив на JS</h1>
+  <p>Вкладки, форма из кнопок, прогресс на таймере, аккордеон, модальное окно и тема — QuickJS-NG + DOM поверх litehtml.</p>
+</div>
+<div class="wrap" style="padding-top: 16px">
+  <div class="panel">
+    <div class="tabs">
+      <span class="tab on" id="tab-counter" data-tab="counter">Счётчик</span>
+      <span class="tab" id="tab-form" data-tab="form">Заказ</span>
+      <span class="tab" id="tab-timer" data-tab="timer">Таймер</span>
+    </div>
+    <div class="tab-body on" id="body-counter">
+      <div class="counter">
+        <button class="round" id="dec">−</button>
+        <div class="big" id="count">0</div>
+        <button class="round" id="inc">+</button>
+        <div style="margin-left: 16px; flex: 1">
+          <b id="count-label">Цель: 10 нажатий</b>
+          <div class="bar"><div id="count-bar" style="width: 0%"></div></div>
+          <span class="muted" id="count-hint">Нажмите «+», чтобы заполнить полосу.</span>
+        </div>
+        <button class="btn btn-outline btn-sm" id="reset" style="margin-left: 12px">Сброс</button>
+      </div>
+    </div>
+    <div class="tab-body" id="body-form">
+      <div class="field"><div class="label">Тариф</div>
+        <div class="seg" id="plans">
+          <span class="on" id="plan-base" data-price="0">Базовый</span><span id="plan-pro" data-price="490">Про</span><span id="plan-team" data-price="1490">Команда</span>
+        </div>
+      </div>
+      <div class="field"><div class="label">Опции</div>
+        <span class="check on" id="opt-gpu" data-price="0"><span class="box">✓</span>Палитра на GPU</span>
+        <span class="check" id="opt-sound" data-price="150"><span class="box"></span>Звук PCM +150</span>
+        <span class="check" id="opt-mcp" data-price="300"><span class="box"></span>MCP-журнал +300</span>
+      </div>
+      <div class="field"><div class="label">Мест</div>
+        <div class="counter">
+          <button class="round" id="seat-dec" style="width: 28px; height: 28px; line-height: 26px; font-size: 16px">−</button>
+          <b id="seats" style="width: 40px; text-align: center; font-size: 16px">1</b>
+          <button class="round" id="seat-inc" style="width: 28px; height: 28px; line-height: 26px; font-size: 16px">+</button>
+        </div>
+      </div>
+      <div class="summary">
+        <div class="total">Итого: <b id="total">0 ₽</b> <span class="muted">/ месяц</span></div>
+        <button class="btn btn-outline btn-sm" id="form-clear" style="margin-right: 8px">Очистить</button>
+        <button class="btn btn-sm" id="form-send">Отправить</button>
+      </div>
+      <div class="alert hidden" id="form-ok">✓ Заявка принята.</div>
+    </div>
+    <div class="tab-body" id="body-timer">
+      <div class="counter">
+        <div style="flex: 1">
+          <div class="clock" id="clock">00:00.0</div>
+          <div class="bar"><div id="timer-bar" style="width: 0%"></div></div>
+          <span class="muted" id="timer-state">Остановлен · setInterval 100 мс</span>
+        </div>
+        <button class="btn btn-sm" id="timer-go" style="margin-left: 16px">Старт</button>
+        <button class="btn btn-outline btn-sm" id="timer-reset" style="margin-left: 8px">Сброс</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="panel panel-pad">
+      <h3>Тема оформления</h3>
+      <p class="muted" style="margin: 0 0 10px 0">classList на body и html, выбор хранится в localStorage.</p>
+      <div class="switch-row" id="theme-switch"><div class="switch"><div></div></div><b id="theme-label">Светлая тема</b></div>
+    </div>
+    <div class="panel panel-pad">
+      <h3>Модальное окно</h3>
+      <p class="muted" style="margin: 0 0 10px 0">Фиксированный слой поверх страницы, закрытие по ✕, кнопке или Esc.</p>
+      <button class="btn btn-sm" id="open-modal">Открыть окно</button>
+    </div>
+  </div>
+
+  <div class="panel" id="faq">
+    <div class="acc-item open" id="acc-0"><div class="acc-head"><span>Это настоящий браузер?</span><i>−</i></div>
+      <div class="acc-body">Нет: вёрстку делает litehtml (CSS 2.1, flex, таблицы), а не Blink или Gecko. Но HTML, CSS и JS — обычные файлы в каталоге <code>site/</code> пака.</div></div>
+    <div class="acc-item" id="acc-1"><div class="acc-head"><span>Почему JS работает медленнее, чем в браузере?</span><i>+</i></div>
+      <div class="acc-body">QuickJS — это C, оттранслированный в Lua: JS исполняется поверх LuaJIT в 150–300 раз медленнее натива. Кадр с изменением DOM — каскад стилей поддерева, layout документа и перерисовка кадра; наведение и прокрутка перерисовывают только изменившиеся полосы.</div></div>
+    <div class="acc-item" id="acc-2"><div class="acc-head"><span>Откуда берутся шрифты?</span><i>+</i></div>
+      <div class="acc-body">Inter и DejaVu в <code>site/fonts/</code>; stb_truetype растеризует глифы по требованию и кэширует их.</div></div>
+    <div class="acc-item" id="acc-3"><div class="acc-head"><span>Можно ли вводить текст?</span><i>+</i></div>
+      <div class="acc-body">Пока нет: полей ввода нет, форма на этой странице собрана из кнопок. Клавиши доходят до <code>keydown</code> документа.</div></div>
+  </div>
+</div>
+
+<div class="overlay" id="modal">
+  <div class="dialog">
+    <div class="dialog-head"><h3>Привет из wasm!</h3><button class="close" id="modal-close">✕</button></div>
+    <div class="dialog-body">
+      <p>Это окно — обычный <code>div</code> с <code>position: fixed</code> и полупрозрачным фоном.
+      Его показывает <code>classList.add("open")</code>.</p>
+      <p class="muted" id="modal-info">Открыто 0 раз.</p>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn btn-outline btn-sm" id="modal-toast" style="margin-right: 6px">Уведомление</button>
+      <button class="btn btn-sm" id="modal-ok">Понятно</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-cols">
+    <div><h4>wasmrt · html</h4>Прототип браузерной вёрстки для VoxelCore 0.31.<br>Страницы лежат в паке <code>html</code>.</div>
+    <div><h4>Разделы</h4><a href="gallery.html">Галерея</a><a href="docs.html">Документация</a><a href="about.html">О проекте</a></div>
+    <div><h4>Внутри</h4><a href="docs.html#stack">litehtml + gumbo</a><a href="docs.html#stack">QuickJS-NG</a><a href="docs.html#stack">stb_truetype</a></div>
+  </div>
+  <div class="copy">Шрифты Inter (OFL) и DejaVu · картинки сгенерированы процедурно · 2026</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="site.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>

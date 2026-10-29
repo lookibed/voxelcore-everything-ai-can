@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:am_ingot_gold",
+    "stack-size": 64,
+    "caption": "ingotGold"
+}

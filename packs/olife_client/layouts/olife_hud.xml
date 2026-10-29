@@ -1,0 +1,11 @@
+<!-- Olife HUD toast (UX round 1): one short message line at the top of the screen (delete / refusal / grab feedback),
+     opened as a permanent HUD element by olife_client:olife; the text fades out after a few seconds. -->
+<container id="root" size-func="unpack(gui.get_viewport())" color="0" interactive="false">
+    <label id="toast" position-func="gui.get_viewport()[1] / 2 - 320, 64" size="640,24" text-align="center"
+           color="#FFFFFF00" interactive="false"></label>
+    <!-- UX B1 (olife_b1): marker of the selected mob (olife_client:mobs projects it every frame; off-screen = edge arrow)
+         and the "my mobs" button, visible only with the Injector in hand -->
+    <label id="mob_marker" pos="0,0" size="220,22" text-align="center" color="#FFD08000" interactive="false"></label>
+    <button id="mob_btn" position-func="gui.get_viewport()[1] - 150, gui.get_viewport()[2] - 72" size="142,26" color="#5050ff80"
+            visible="false" onclick="ui_mobs()" tooltip="Мои мобы: список, спасти/уничтожить/восстановить, камера">Мои мобы [M]</button>
+</container>

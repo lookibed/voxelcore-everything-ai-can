@@ -1,0 +1,8 @@
+{
+    "id": "blackhole",
+    "title": "Black Hole",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Чёрная дыра на максималках: граната, воронка из блоков по спирали, линзирование пост-эффектом, процедурный звук",
+    "dependencies": ["base"]
+}

@@ -1,0 +1,14 @@
+{
+    "root": {
+        "nodes": [
+            {
+                "name": "arm",
+                "model": "am_hand/arm"
+            },
+            {
+                "name": "item",
+                "model": "am_hand/item"
+            }
+        ]
+    }
+}

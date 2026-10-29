@@ -1,0 +1,78 @@
+{
+ "setup": {
+  "session": {
+   "clients": 2,
+   "client_kind": "bot",
+   "sandbox": true,
+   "scripted": 2,
+   "sandbox_proto": "jsonl"
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 2
+   }
+  },
+  {
+   "cmd": "olife_spawn",
+   "args": {
+    "spawns": [
+     [
+      "typical",
+      1,
+      10,
+      50
+     ]
+    ],
+    "wait_entities": 500,
+    "timeout": 30
+   }
+  },
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 20
+   }
+  },
+  {
+   "cmd": "olife_sandbox_wire",
+   "args": {
+    "proto": "jsonl"
+   }
+  },
+  {
+   "cmd": "olife_sandbox_check",
+   "args": {
+    "warmup_ticks": 60,
+    "min_rows": 250,
+    "min_entities": 500,
+    "min_owners": 50,
+    "controls": [
+     1,
+     25,
+     50
+    ],
+    "max_bad_control_rows": 5
+   }
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 200
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {
+    "strict": false
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ],
+ "description": "Wave 4b: twin of olife_sandbox_binary with the JSON-lines transport (fallback flag sandbox_proto=jsonl): same 500 entities, same checks — for the size/time comparison."
+}

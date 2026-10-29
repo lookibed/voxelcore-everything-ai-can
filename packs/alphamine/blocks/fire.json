@@ -1,0 +1,12 @@
+{
+    "caption": "fire",
+    "model": "X",
+    "texture": "am_fire",
+    "light-passing": true,
+    "sky-light-passing": true,
+    "draw-group": 2,
+    "obstacle": false,
+    "replaceable": false,
+    "breakable": false,
+    "alphamine:id": 51
+}

@@ -1,0 +1,9 @@
+{
+    "components": [
+        "blackhole:hole"
+    ],
+    "body-type": "static",
+    "hitbox": [0.4, 0.4, 0.4],
+    "blocking": false,
+    "selectable": false
+}

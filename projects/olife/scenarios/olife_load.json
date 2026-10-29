@@ -1,0 +1,10 @@
+{
+ "description": "Load: 6 bots (headless stock 0.32, random walk, block actions every 20 ticks) through the dev gateway into one world with the sandbox stub; per-tick consistency of every session, world tick time by phase, bytes, latency.",
+ "setup": {"session": {"clients": 6, "client_kind": "bot", "sandbox": true, "blocks": 20}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 15}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 150}},
+  {"cmd": "olife_metrics"}
+ ]
+}

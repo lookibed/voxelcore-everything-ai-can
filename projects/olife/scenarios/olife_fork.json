@@ -1,0 +1,70 @@
+{
+ "description": "UX A1 (olife_a1): fork = a copy of a bench (code, rights, look) for the requester. alice's bench (look olife_bone, clone -> friends), alice+bob friends: bob clicks «Форк» on the Settings page -> a new stopped bench of bob in front of him with the same code hash, look and rules, forked_from = source, toast + sound; bob opens the fork with Shift+RMB and runs it (RUN, it moves); carol: the Fork button is disabled, the request anyway -> 3 with a toast and the refuse sound; fork of the fork: alice (friend of bob) 0, carol 3.",
+ "setup": {
+  "session": {
+   "clients": 3,
+   "client_kind": "client",
+   "walk": 0,
+   "tokens": [
+    "olife-alice",
+    "olife-bob",
+    "olife-carol"
+   ],
+   "sandbox": true,
+   "scripted": 0,
+   "mobs": 0
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_bench",
+   "args": {
+    "account": "alice",
+    "key": "f"
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "olife.friends ''",
+    "pattern": "friends loaded"
+   }
+  },
+  {
+   "cmd": "olife_fork",
+   "args": {
+    "bench": "f",
+    "min_moved": 0.0
+   }
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 80
+   }
+  },
+  {
+   "cmd": "olife_stdin",
+   "args": {
+    "cmd": "editor_status",
+    "pattern": "editor\\("
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {
+    "strict": false
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

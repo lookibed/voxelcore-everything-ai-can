@@ -1,0 +1,10 @@
+{
+    "id": "doom",
+    "title": "DOOM",
+    "creator": "Andryha",
+    "version": "0.1.0",
+    "description": "DOOM (doomgeneric) на canvas: C -> wasm -> Lua через Spider. В комплекте Shareware-эпизод",
+    "dependencies": [
+        "wasmrt"
+    ]
+}

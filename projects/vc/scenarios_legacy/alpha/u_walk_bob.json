@@ -1,0 +1,204 @@
+{
+ "name": "u_walk_bob",
+ "description": "Агент U (фаза 3): покачивание вида (viewBobbing, по умолчанию вкл.) при ходьбе: W 20 тиков — снимки на 5/10/15/20 тиках, слои terrain (без lighting и fog) + hand: камера качается — сравнивается весь кадр; затем S 20 тиков — только hand. Проверяет и интерполяцию камеры prevPos при partial 0.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "terrain": true,
+     "hand": true,
+     "lighting": false,
+     "fog": false
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "W": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_w5"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_w10"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_w15"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "3_w20"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "W": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "hand": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "S": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "4_s5"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "5_s10"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "6_s15"
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "7_s20"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "S": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 40,
+    "frames": 1
+   }
+  }
+ ]
+}

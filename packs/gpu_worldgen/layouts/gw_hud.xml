@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Подсказка пресета gpu_worldgen в HUD (hud.open_permanent в scripts/hud.lua): имя пресета, F6, очередь чанков;
+     вторая строка — размер прохода, плиток за проход, чанков на кадр (gen.pass_info / gen.last_cpf) -->
+<container id="root" pos="0,0" size="854,480" color="#00000000" interactive="false" z-index="-2"
+    size-func="function() local s = gui.get_viewport() return s[1], s[2] end">
+    <container id="box" pos="8,8" size="740,48" color="#101820B0" interactive="false">
+        <label id="lbl" pos="8,5" size="730,40" multiline="true" color="#E8EEF5FF" interactive="false">GPU worldgen</label>
+    </container>
+</container>

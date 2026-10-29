@@ -1,0 +1,12 @@
+{
+ "description": "Blocks: 3 bots place/break (every 5 ticks) around spawn; the world validates (reach, rate, loaded, in view) and broadcasts; then bots go quiet and every bot compares every position the world changed with its own replica world (block.get), plus per-tick consistency.",
+ "setup": {"session": {"clients": 3, "client_kind": "bot", "sandbox": false, "blocks": 5}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 12}},
+  {"cmd": "olife_quiet", "args": {"seconds": 1.5}},
+  {"cmd": "olife_blocks", "args": {"min_blocks": 20}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 150}},
+  {"cmd": "olife_metrics"}
+ ]
+}

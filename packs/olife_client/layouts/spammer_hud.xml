@@ -1,0 +1,8 @@
+<!-- Olife Spammer HUD line (UX B2, 03.10, olife_b2): while the Spammer is the selected item — the selected snapshot slot
+     ("слот i/n: имя (xN)") and the keys; hidden otherwise. A permanent HUD element opened by olife_client:spammer. -->
+<container id="root" size-func="unpack(gui.get_viewport())" color="0" interactive="false">
+    <label id="sp_line" position-func="gui.get_viewport()[1] / 2 - 320, gui.get_viewport()[2] - 92" size="640,22"
+           text-align="center" color="#FFD080FF" interactive="false" visible="false"></label>
+    <label id="sp_keys" position-func="gui.get_viewport()[1] / 2 - 320, gui.get_viewport()[2] - 72" size="640,18"
+           text-align="center" color="#C8D4E8C0" interactive="false" visible="false"></label>
+</container>

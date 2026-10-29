@@ -1,0 +1,17 @@
+{
+    "caption": "ice",
+    "texture-faces": [
+        "am_ice",
+        "am_ice",
+        "am_ice_bottom",
+        "am_ice",
+        "am_ice",
+        "am_ice"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "draw-group": 2,
+    "translucent": true,
+    "breakable": false,
+    "alphamine:id": 79
+}

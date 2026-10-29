@@ -1,0 +1,174 @@
+{
+ "name": "u_hud_wide",
+ "description": "Агент U (фаза 3): HUD (хотбар, сердца, предметы 3D/плоские с числами, строка версии) и GuiIngameMenu при кадре 1390x855 — масштаб GUI 3 с дробной шириной единицы (1390/463 = 3.00216 пикселя: Java растягивает glOrtho(0, 463, 285, 0) на кадр); слот 1, затем слот 0; меню ESC.",
+ "size": "1390x855",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [
+  0,
+  0,
+  0
+ ],
+ "steps": [
+  {
+   "cmd": "look",
+   "args": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "mode",
+   "args": {
+    "fixed": true,
+    "seed": 20260930,
+    "clear_chat": true
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "hud": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   },
+   "expect": {
+    "yaw": 0,
+    "pitch": 0
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "0_hud"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "3": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "1_slot1"
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": true
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 1,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "keys": {
+     "2": false
+    }
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 5,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "render",
+   "args": {
+    "all": false,
+    "layers": {
+     "gui": true
+    },
+    "clear": [
+     0,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "cmd": "input",
+   "args": {
+    "mouse": {
+     "x": 0,
+     "y": 0
+    }
+   }
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "key": "ESCAPE"
+   },
+   "expect": {
+    "screen": "GuiIngameMenu"
+   }
+  },
+  {
+   "cmd": "step",
+   "args": {
+    "ticks": 20,
+    "frames": 1
+   }
+  },
+  {
+   "cmd": "shot",
+   "name": "2_menu"
+  },
+  {
+   "cmd": "gui",
+   "args": {
+    "key": "ESCAPE"
+   },
+   "expect": {
+    "screen": "ingame"
+   }
+  }
+ ]
+}

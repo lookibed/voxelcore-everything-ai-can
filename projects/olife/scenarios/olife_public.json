@@ -1,0 +1,19 @@
+{
+ "description": "olife_friends (16.10): public play stack (= play.bat public / lab olife play-up --public, dry: a copy of the user's world, own keys, whitelist scope gw-olife-pubtest): the Rust gateway, the auth service and the pack server listen on 0.0.0.0 at the FIXED ports of [play.public] (27750/27751/27752); admin/f2f of every service, world, sandbox and the lab daemon on 127.0.0.1 only (netstat). InfoRequest on the host's LAN address -> ServerInfo (gw_id, ports, sealing key) + Disconnect 19; manifest and /health over the LAN address. A friend's client (F2F 0.32, NO autofill file) types one line 'LAN-ip:27750' (+ #fingerprint) and a whitelisted nick -> discovery -> ticket -> play; /players of the admin shows the LAN address; a nick not on the whitelist -> [whitelist] on the status screen; the auth service down -> [auth_down http 0] -> back -> Повторить -> play; a wrong #fingerprint -> [server_key fingerprint]; a second client with the same nick from the same address replaces the first (Disconnect 12, antifraud: same IP). Test nicks/whitelist/antifraud state are removed at the end.",
+ "setup": {"session": {"public_play": true}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 1}},
+  {"cmd": "olife_pub_ports", "args": {}},
+  {"cmd": "olife_pub_info", "args": {}},
+  {"cmd": "olife_pub_menu", "args": {"role": "client1"}},
+  {"cmd": "olife_pub_login", "args": {"name": "friend_lan", "whitelist": "add", "nick": "kent1", "fp": "good", "login": {"expect": "play", "then": "stay"}}},
+  {"cmd": "olife_pub_players", "args": {"nick": "kent1"}},
+  {"cmd": "olife_menu_leave", "args": {}},
+  {"cmd": "olife_pub_login", "args": {"name": "friend_no_fp", "nick": "kent1", "login": {"expect": "play", "then": "leave", "after_shots": false}}},
+  {"cmd": "olife_pub_login", "args": {"name": "not_whitelisted", "whitelist": "remove", "nick": "stranger1", "login": {"expect": {"kind": "whitelist", "code": "whitelist", "phase": "ticket"}}}},
+  {"cmd": "olife_pub_login", "args": {"name": "auth_down", "nick": "kent1", "auth_down": true, "retry_after": true, "login": {"expect": {"kind": "auth_down", "code": "http 0", "phase": "ticket"}, "then": "stay"}}},
+  {"cmd": "olife_pub_login", "args": {"name": "bad_fingerprint", "nick": "kent1", "fp": "bad", "login": {"expect": {"kind": "server_key", "code": "fingerprint", "phase": "config"}}}},
+  {"cmd": "olife_pub_dup", "args": {"nick": "kent2", "first": "client1", "second": "client2"}},
+  {"cmd": "olife_pub_report", "args": {}}
+ ]
+}

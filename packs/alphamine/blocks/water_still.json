@@ -1,0 +1,20 @@
+{
+    "caption": "waterStill",
+    "texture-faces": [
+        "am_water_moving_side",
+        "am_water_moving_side",
+        "am_water_moving_end_bottom",
+        "am_water_moving_end",
+        "am_water_moving_side",
+        "am_water_moving_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "draw-group": 3,
+    "translucent": true,
+    "selectable": false,
+    "replaceable": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 9
+}

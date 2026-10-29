@@ -1,0 +1,49 @@
+{
+ "description": "Проба детерминизма VoxelCore (этап 3б, задача 4): только копание. world_b, точка alpha_spawn (104.5 67 104.5), взгляд вниз 48° (как e2e_walk1 на такте 130), ЛКМ 19 тактов (трава ломается на 19-м, как в e2e_walk1 на такте 154), затем 46 тактов на разлёт частиц разрушения. Ключевой кадр каждый такт, state каждые 5. Lockstep (умолчание проекта). Сравнивать vc/vc: отличия кадров при равных state — недетерминизм рендера.",
+ "size": "854x480",
+ "setup": {
+  "world": "world_b",
+  "base": "alpha_spawn",
+  "look": {
+   "yaw": 0,
+   "pitch": 48
+  },
+  "mode": {
+   "seed": 20260930,
+   "clear_chat": true
+  }
+ },
+ "ticks": 70,
+ "state_every": 5,
+ "state_radius": 4,
+ "keyframes_every": 1,
+ "timeline": [
+  {
+   "tick": 3,
+   "input": {
+    "mouse": {
+     "buttons": [
+      true,
+      false,
+      false
+     ]
+    }
+   },
+   "comment": "LMB held"
+  },
+  {
+   "tick": 22,
+   "input": {
+    "mouse": {
+     "buttons": [
+      false,
+      false,
+      false
+     ]
+    }
+   },
+   "comment": "release after the block broke"
+  }
+ ],
+ "name": "det_dig"
+}

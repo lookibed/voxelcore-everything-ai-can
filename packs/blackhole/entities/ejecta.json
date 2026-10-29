@@ -1,0 +1,10 @@
+{
+    "components": [
+        "blackhole:ejecta"
+    ],
+    "skeleton-name": "blackhole:debris",
+    "hitbox": [0.7, 0.7, 0.7],
+    "blocking": false,
+    "selectable": false,
+    "save": false
+}

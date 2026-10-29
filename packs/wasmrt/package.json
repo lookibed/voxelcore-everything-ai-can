@@ -1,0 +1,7 @@
+{
+    "id": "wasmrt",
+    "title": "wasmrt — WebAssembly runtime",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Запуск wasm-программ, оттранслированных Spider в Lua: WASI, ввод, графика через canvas или постэффект"
+}

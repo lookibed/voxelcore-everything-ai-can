@@ -1,0 +1,98 @@
+{
+    "caption": "lever",
+    "model": "custom",
+    "model-name": "amblk_lever_m0",
+    "texture": "am_lever",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m1",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m2",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m3",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m4",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m0",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m6",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m0",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m8",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m9",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m10",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m11",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m12",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m8",
+                "texture": "am_lever"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_lever_m14",
+                "texture": "am_lever"
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 69
+}

@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:am_redstone",
+    "stack-size": 64,
+    "caption": "redstone"
+}

@@ -1,0 +1,8 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:injector",
+    "model-name": "olife_injector",
+    "caption": "Injector",
+    "description": "RMB on a scripted entity: open its editor. Shift+RMB: editor of the last opened entity. Shift+LMB: delete the last opened entity (owner/admin). ` (backtick) while aiming at a bench: editor",
+    "stack-size": 1
+}

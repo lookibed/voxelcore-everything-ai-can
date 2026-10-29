@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HUD-оверлей эмулятора в мире (scripts/hud.lua). Логика общая со страницей меню. -->
+<container
+    pos="0, 0"
+    size-func="function() local size = gui.get_viewport() return size[1], size[2] end"
+    interactive="true"
+    color="#00000088">
+</container>

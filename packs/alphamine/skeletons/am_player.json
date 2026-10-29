@@ -1,0 +1,37 @@
+{
+  "root": {
+    "nodes": [
+      {
+        "name": "head",
+        "model": "am_player_head"
+      },
+      {
+        "name": "headwear",
+        "model": "am_player_headwear"
+      },
+      {
+        "name": "body",
+        "model": "am_player_body"
+      },
+      {
+        "name": "rarm",
+        "model": "am_player_rarm"
+      },
+      {
+        "name": "larm",
+        "model": "am_player_larm"
+      },
+      {
+        "name": "rleg",
+        "model": "am_player_rleg"
+      },
+      {
+        "name": "lleg",
+        "model": "am_player_lleg"
+      },
+      {
+        "name": "item"
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+ "name": "u_hand_items",
+ "description": "Агент U (фаза 3), без golden: рука от первого лица с блоком (слот 1 — бревно, 3D-модель блока) и пустая рука (слот 3), только слой hand; визуальная проверка, затем слот 0 обратно.",
+ "base": "alpha_spawn",
+ "base_until": "mode",
+ "clear": [0, 0, 0],
+ "steps": [
+  {"cmd": "look", "args": {"yaw": 0, "pitch": 0}},
+  {"cmd": "mode", "args": {"fixed": true, "seed": 20260930, "clear_chat": true}},
+  {"cmd": "render", "args": {"all": false, "layers": {"hand": true}, "clear": [0, 0, 0]}},
+  {"cmd": "input", "args": {"keys": {"3": true}}},
+  {"cmd": "step", "args": {"ticks": 1, "frames": 1}},
+  {"cmd": "input", "args": {"keys": {"3": false}}},
+  {"cmd": "step", "args": {"ticks": 20, "frames": 1}},
+  {"cmd": "shot", "name": "0_block"},
+  {"cmd": "input", "args": {"keys": {"5": true}}},
+  {"cmd": "step", "args": {"ticks": 1, "frames": 1}},
+  {"cmd": "input", "args": {"keys": {"5": false}}},
+  {"cmd": "step", "args": {"ticks": 20, "frames": 1}},
+  {"cmd": "shot", "name": "1_arm"},
+  {"cmd": "input", "args": {"keys": {"2": true}}},
+  {"cmd": "step", "args": {"ticks": 1, "frames": 1}},
+  {"cmd": "input", "args": {"keys": {"2": false}}},
+  {"cmd": "step", "args": {"ticks": 20, "frames": 1}},
+  {"cmd": "shot", "name": "2_item"}
+ ]
+}

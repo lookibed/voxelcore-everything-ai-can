@@ -1,0 +1,15 @@
+{
+    "caption": "gravel",
+    "texture-faces": [
+        "am_gravel",
+        "am_gravel",
+        "am_gravel_bottom",
+        "am_gravel",
+        "am_gravel",
+        "am_gravel"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 13
+}

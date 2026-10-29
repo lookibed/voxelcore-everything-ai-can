@@ -1,0 +1,15 @@
+{
+    "caption": "obsidian",
+    "texture-faces": [
+        "am_obsidian",
+        "am_obsidian",
+        "am_obsidian_bottom",
+        "am_obsidian",
+        "am_obsidian",
+        "am_obsidian"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 49
+}

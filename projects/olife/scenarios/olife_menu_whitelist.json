@@ -1,0 +1,10 @@
+{
+ "description": "UX B p.3 (olife_menu, 16.10): whitelist by nick. One supervisor DB (account_settings _wl:<gateway id>), three ways to manage it: the admin's chat `/whitelist on|add|list` (world -> daemon over HTTP, OpResult, op line, audit), a player's /whitelist -> 16, CLI (`lab olife whitelist` = feature olife.whitelist), the panel button (POST /call/olife.whitelist via=panel), the lab op (`lab olife op whitelist ...`). Then logins from the client's menu by nick (no token): listed -> play; unlisted -> status screen «нет в вайтлисте» -> add -> Повторить -> play; whitelist off -> any free nick plays. The account token never goes into the game socket (tickets; the gateway takes tickets and, for the protocol chat clients of this test, static tokens: auth_mode both).",
+ "setup": {"session": {"clients": 0, "sandbox": false, "auth_ticket": true, "auth_mode": "both"}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 1}},
+  {"cmd": "olife_menu_start", "args": {"account": "dev", "token": "olife-dev"}},
+  {"cmd": "olife_menu_wl", "args": {}},
+  {"cmd": "olife_menu_report", "args": {}}
+ ]
+}

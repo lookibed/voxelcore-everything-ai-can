@@ -1,0 +1,11 @@
+{
+ "description": "Gateway soak (wave 3c): REAL world (content/olife_world, headless stock 0.32) + gateway (vc = gateway_dev.py, --impl rs = Rust olife-gateway) + 6 real bots (headless 0.32, blocks every 20 ticks) + 20 protocol bots (gw_load, 20 PlayerInput/s each, chat every 50th) for 10 minutes. Gateway memory must be stable (median private bytes of the last 10% of samples <= first 10% after 60 s warmup * 1.10 + 4 MB), nothing dropped, then the world/bot state is still consistent. olife_status is optional: after ~10 min the world log is > 512 KiB and the lab stdin capture (read_tail window) misses the reply (lab core bug, 02.10).",
+ "setup": {"session": {"clients": 6, "client_kind": "bot", "sandbox": false, "blocks": 20}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 5}},
+  {"cmd": "olife_soak", "args": {"name": "soak", "bots": 20, "rate": 20, "seconds": 600, "chat_every": 50, "sample_s": 5, "prefix": "s"}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 1000}},
+  {"cmd": "olife_metrics"},
+  {"cmd": "olife_status", "args": {}, "optional": true}
+ ]
+}

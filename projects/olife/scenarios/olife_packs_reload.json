@@ -1,0 +1,18 @@
+{
+ "description": "Wave 4b: pack hot reload. The gateway watches the supervisor-style pack manifest (a per-session copy of olife_client + olife_proto) and sends client.PacksChanged after Welcome and on every change. Change 1: modules/hot/rev.lua (rev 2) -> bots download it, materialize the pack in world:content and apply it LIVE (no reopen). Change 2: scripts/world.lua (world script, not live) -> bots download, Bye, app.reopen_world() (pack now loaded from world:content/olife_client), reconnect with a fresh ticket; replication consistent across it.",
+ "setup": {"session": {"clients": 2, "client_kind": "bot", "sandbox": false, "auth_ticket": true, "packs_reload": true, "reconnect": 2}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 5}},
+  {"cmd": "olife_bots_check", "args": {"min_tickets": 1}},
+  {"cmd": "olife_packs_change", "args": {"path": "olife_client/modules/hot/rev.lua", "text": "-- changed by olife_packs_reload (live)\nreturn {rev = 2}\n"}},
+  {"cmd": "olife_packs_wait", "args": {"rev": 2, "timeout": 20}},
+  {"cmd": "olife_run", "args": {"seconds": 2}},
+  {"cmd": "olife_packs_change", "args": {"path": "olife_client/scripts/world.lua", "append": "\n-- olife_packs_reload: needs a world reopen\n"}},
+  {"cmd": "olife_packs_wait", "args": {"rev": 2, "reopen": true, "timeout": 40}},
+  {"cmd": "olife_run", "args": {"seconds": 4}},
+  {"cmd": "olife_bots_check", "args": {"min_tickets": 2}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 100}},
+  {"cmd": "olife_metrics"}
+ ]
+}

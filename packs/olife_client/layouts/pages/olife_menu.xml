@@ -1,0 +1,29 @@
+<!-- Olife client main menu (UX B, 16.10, olife_menu): native 0.32 XML page (menu.page = "olife_menu", opened by the
+     application script scripts/app/olife.lua = «Сценарии» -> olife). Left: the 3D scene — <modelviewer> of the VCM
+     models/olife_menu_scene.vcm (the user's Olife models on a planks floor), the camera turns slowly (the node is
+     re-created with a new cam-rotation by olife_client:menu). Right: the simplest login — gateway ip:port, nick, «Войти»,
+     recent servers (config:olife_client/menu.json); export:olife_server.txt only pre-fills. Model: olife_client:menu. -->
+<container id="root" color="#060A16" size-func="unpack(gui.get_viewport())">
+    <container id="mn_scene_box" pos="0,0" size-func="math.max(200, gui.get_viewport()[1] - 400), gui.get_viewport()[2]" color="#0C1224">
+        <modelviewer id="mn_scene" pos="0,0" size="400,400" src="olife_menu_scene" center="0,0.55,0" cam-rotation="35,-24,0" interactive="false"/>
+    </container>
+    <label id="mn_logo" pos="16,12" size="360,28" color="#FFD080">OLIFE</label>
+    <label id="mn_sub" pos="16,40" size="380,18" color="#90A0B0">программируемые сущности, мир на сервере</label>
+    <container id="mn_panel" position-func="gui.get_viewport()[1] - 392, math.max(8, math.floor(gui.get_viewport()[2] / 2 - 230))" size="384,460" color="#141830F0">
+        <label id="mn_title" pos="14,10" size="356,24" color="#FFD080">Вход на сервер</label>
+        <label id="mn_l_addr" pos="14,44" size="356,18" color="#C8D0E0">Шлюз (ip:port)</label>
+        <textbox id="mn_addr" pos="14,64" size="356,30" padding="8,6,8,2" hint="ip:порт, например 192.168.1.5:27750"
+                 validator="function(t) return t == '' or t:match('^[%w%.%-:#_]+$') ~= nil end"></textbox>
+        <label id="mn_l_nick" pos="14,102" size="356,18" color="#C8D0E0">Ник</label>
+        <textbox id="mn_nick" pos="14,122" size="356,30" padding="8,6,8,2" hint="ник (латиница, цифры, _ . -)"
+                 validator="function(t) return t == '' or t:match('^[%w_%.%-]+$') ~= nil end" consumer="ui_mn_submit"></textbox>
+        <button id="mn_login" pos="14,162" size="356,34" color="#30A05090" hover-color="#40C060" onclick="ui_mn_login()"
+                tooltip="Билет у сервиса -> шлюз -> паки -> мир (экран статуса)">Войти</button>
+        <label id="mn_hint" pos="14,202" size="356,18" color="#96DCA0"></label>
+        <label id="mn_auto" pos="14,222" size="356,18" color="#69707D"></label>
+        <label id="mn_l_recent" pos="14,248" size="356,18" color="#FFD080">Последние серверы</label>
+        <panel id="mn_recent" pos="14,268" size="356,140" color="#00000060" padding="4" interval="3" scrollable="true"></panel>
+        <button id="mn_quit" pos="14,418" size="356,30" color="#5050ff80" hover-color="#5050ffc6" onclick="ui_mn_quit()"
+                tooltip="В меню движка">Выход</button>
+    </container>
+</container>

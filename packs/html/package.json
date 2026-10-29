@@ -1,0 +1,8 @@
+{
+    "id": "html",
+    "title": "html (браузерная вёрстка, прототип)",
+    "version": "0.2.0",
+    "creator": "Andryha",
+    "description": "Демонстрационный сайт (5 страниц HTML + CSS + JS) в VoxelCore: litehtml, QuickJS-NG, stb_truetype в wasm, оттранслированные Spider в Lua; запускается паком wasmrt",
+    "dependencies": ["wasmrt"]
+}

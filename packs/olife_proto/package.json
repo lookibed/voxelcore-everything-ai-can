@@ -1,0 +1,7 @@
+{
+    "id": "olife_proto",
+    "title": "Olife protocol codecs",
+    "version": "1.0.0",
+    "creator": "olife",
+    "description": "Generated codecs of the Olife protocol (contracts client, internal, sandbox) — tools/olife/gen_codecs.py from tools/olife/protocol/*.yaml. Library pack used by olife_world and olife_client. Hand-written shared modules: movement.lua (deterministic player movement for prediction), items.lua (inventory helpers), looks.lua (models/textures an owner may pick, UX round 1). No items of its own (the test coin was removed in UX round 1)."
+}

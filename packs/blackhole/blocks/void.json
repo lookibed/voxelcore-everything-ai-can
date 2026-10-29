@@ -1,0 +1,11 @@
+{
+    "texture": "bh_void",
+    "model": "none",
+    "obstacle": false,
+    "selectable": false,
+    "replaceable": true,
+    "light-passing": true,
+    "sky-light-passing": true,
+    "hidden": true,
+    "breakable": false
+}

@@ -1,0 +1,7 @@
+{
+    "texture": "gw_crystal",
+    "emission": [7, 3, 12],
+    "shadeless": true,
+    "material": "base:glass",
+    "base:durability": 0.4
+}

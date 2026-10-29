@@ -1,0 +1,8 @@
+{
+    "id": "gpu_worldgen",
+    "title": "GPU worldgen (3D noise)",
+    "version": "0.1.0",
+    "creator": "Andryha",
+    "description": "Генерация мира на GPU: 3D-шум Перлина в UI-шейдере фрейма -> чтение текстуры в Lua -> world.set_chunk_data",
+    "dependencies": ["base", "gpu_compute"]
+}

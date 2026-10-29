@@ -1,0 +1,11 @@
+# Olife: подключение клиента (пишет lab: `lab play olife`, `lab olife play-up`; читает olife_client:play,
+# пункт «Сценарии» -> olife). Токен — секрет аккаунта user: не выкладывать.
+gateway=127.0.0.1:25605
+auth=https://127.0.0.1:25603
+gw_id=gw-olife-play
+auth_pub=gwX0vADMVqv8env93Q1aRhhhIJ5hnXhcstftYglrbgI
+auth_verify=0
+account=user
+name=user
+token=olife-u-O_gE11GuREeFHPpwaffOOdcezn1R28M2
+reconnect=3

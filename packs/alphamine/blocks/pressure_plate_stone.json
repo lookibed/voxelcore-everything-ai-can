@@ -1,0 +1,25 @@
+{
+    "caption": "pressurePlateStone",
+    "hitbox": [
+        0.0625,
+        0.0,
+        0.0625,
+        0.875,
+        0.03125,
+        0.875
+    ],
+    "model": "aabb",
+    "texture-faces": [
+        "am_stone",
+        "am_stone",
+        "am_stone_bottom",
+        "am_stone",
+        "am_stone",
+        "am_stone"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 70
+}

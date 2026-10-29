@@ -1,0 +1,11 @@
+<!-- HUD альфы (GuiIngame.renderGameOverlay): содержимое строит modules/hud.lua (элементы <image>/<container>
+     в единицах GUI x масштаб ScaledResolution); порядок детей = порядок рисования Java. -->
+<container id="root" pos="0,0" size="854,480" color="#00000000" interactive="false" z-index="-10">
+    <image id="am_vignette" src="gui/am_vignette" pos="0,0" size="854,480" color="#00000000" interactive="false"/>
+    <container id="am_hotbar" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+    <container id="am_hearts" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+    <container id="am_items" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+    <container id="am_text" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+    <container id="am_chat" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+    <container id="am_trash" pos="0,0" size="1,1" color="#00000000" interactive="false" visible="false"/>
+</container>

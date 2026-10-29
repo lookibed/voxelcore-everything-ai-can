@@ -1,0 +1,18 @@
+{
+    "caption": "lavaStill",
+    "texture-faces": [
+        "am_lava_moving_side",
+        "am_lava_moving_side",
+        "am_lava_moving_end_bottom",
+        "am_lava_moving_end",
+        "am_lava_moving_side",
+        "am_lava_moving_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "selectable": false,
+    "replaceable": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 11
+}

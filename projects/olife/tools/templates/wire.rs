@@ -1,0 +1,357 @@
+//! olife_proto::wire — runtime of the generated Olife codecs (Rust, no unsafe).
+//! Big-endian, strict: bounds/type/range checks; every error is a `ProtoError` (never a panic).
+//! Same rules as templates/wire.py and wire.lua: floats finite, bool/opt only 0|1, utf-8 strings,
+//! length limits from the schema, trailing bytes in a body = error, frame header checked before the body arrives.
+#![allow(dead_code)]
+use std::fmt;
+
+pub const HEADER: usize = 9;
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProtoError(pub String);
+
+impl fmt::Display for ProtoError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
+impl std::error::Error for ProtoError {}
+
+pub type R<T> = Result<T, ProtoError>;
+
+#[cold]
+pub fn fail<T>(path: &str, what: impl fmt::Display) -> R<T> {
+    Err(ProtoError(format!("olife_proto: {}: {}", path, what)))
+}
+
+// ---------------------------------------------------------------- bytes<N> value (JSON form {"$bytes": hex})
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct Bytes(pub Vec<u8>);
+
+impl std::ops::Deref for Bytes {
+    type Target = Vec<u8>;
+    fn deref(&self) -> &Vec<u8> {
+        &self.0
+    }
+}
+
+impl From<Vec<u8>> for Bytes {
+    fn from(v: Vec<u8>) -> Self {
+        Bytes(v)
+    }
+}
+
+impl From<&[u8]> for Bytes {
+    fn from(v: &[u8]) -> Self {
+        Bytes(v.to_vec())
+    }
+}
+
+pub fn hex(b: &[u8]) -> String {
+    const D: &[u8; 16] = b"0123456789abcdef";
+    let mut s = String::with_capacity(b.len() * 2);
+    for x in b {
+        s.push(D[(x >> 4) as usize] as char);
+        s.push(D[(x & 15) as usize] as char);
+    }
+    s
+}
+
+pub fn unhex(s: &str) -> Option<Vec<u8>> {
+    if s.len() % 2 != 0 {
+        return None;
+    }
+    let v = |c: u8| match c {
+        b'0'..=b'9' => Some(c - b'0'),
+        b'a'..=b'f' => Some(c - b'a' + 10),
+        b'A'..=b'F' => Some(c - b'A' + 10),
+        _ => None,
+    };
+    s.as_bytes().chunks(2).map(|p| Some(v(p[0])? << 4 | v(p[1])?)).collect()
+}
+
+impl serde::Serialize for Bytes {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::SerializeMap;
+        let mut m = s.serialize_map(Some(1))?;
+        m.serialize_entry("$bytes", &hex(&self.0))?;
+        m.end()
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for Bytes {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        #[derive(serde::Deserialize)]
+        struct H {
+            #[serde(rename = "$bytes")]
+            b: String,
+        }
+        let h = H::deserialize(d)?;
+        unhex(&h.b).map(Bytes).ok_or_else(|| serde::de::Error::custom("bad $bytes hex"))
+    }
+}
+
+// ---------------------------------------------------------------- writers (Vec<u8>)
+#[inline]
+pub fn w_u8(b: &mut Vec<u8>, v: u8) {
+    b.push(v)
+}
+#[inline]
+pub fn w_u16(b: &mut Vec<u8>, v: u16) {
+    b.extend_from_slice(&v.to_be_bytes())
+}
+#[inline]
+pub fn w_u32(b: &mut Vec<u8>, v: u32) {
+    b.extend_from_slice(&v.to_be_bytes())
+}
+#[inline]
+pub fn w_i8(b: &mut Vec<u8>, v: i8) {
+    b.extend_from_slice(&v.to_be_bytes())
+}
+#[inline]
+pub fn w_i16(b: &mut Vec<u8>, v: i16) {
+    b.extend_from_slice(&v.to_be_bytes())
+}
+#[inline]
+pub fn w_i32(b: &mut Vec<u8>, v: i32) {
+    b.extend_from_slice(&v.to_be_bytes())
+}
+#[inline]
+pub fn w_bool(b: &mut Vec<u8>, v: bool) {
+    b.push(v as u8)
+}
+
+#[inline]
+pub fn w_f32(b: &mut Vec<u8>, v: f32, path: &str) -> R<()> {
+    if !v.is_finite() {
+        return fail(path, format!("expected finite f32, got {}", v));
+    }
+    b.extend_from_slice(&v.to_be_bytes());
+    Ok(())
+}
+
+#[inline]
+pub fn w_f64(b: &mut Vec<u8>, v: f64, path: &str) -> R<()> {
+    if !v.is_finite() {
+        return fail(path, format!("expected finite f64, got {}", v));
+    }
+    b.extend_from_slice(&v.to_be_bytes());
+    Ok(())
+}
+
+pub fn w_str(b: &mut Vec<u8>, v: &str, mx: usize, path: &str) -> R<()> {
+    if v.len() > mx {
+        return fail(path, format!("string too long: {} > {}", v.len(), mx));
+    }
+    w_u16(b, v.len() as u16);
+    b.extend_from_slice(v.as_bytes());
+    Ok(())
+}
+
+pub fn w_bytes(b: &mut Vec<u8>, v: &[u8], mx: usize, path: &str) -> R<()> {
+    if v.len() > mx {
+        return fail(path, format!("bytes too long: {} > {}", v.len(), mx));
+    }
+    w_u32(b, v.len() as u32);
+    b.extend_from_slice(v);
+    Ok(())
+}
+
+#[inline]
+pub fn c_count(n: usize, mx: usize, path: &str) -> R<()> {
+    if n > mx {
+        return fail(path, format!("too many elements: {} > {}", n, mx));
+    }
+    Ok(())
+}
+
+// ---------------------------------------------------------------- reader
+pub struct Reader<'a> {
+    pub b: &'a [u8],
+    pub p: usize,
+}
+
+impl<'a> Reader<'a> {
+    pub fn new(b: &'a [u8]) -> Self {
+        Reader { b, p: 0 }
+    }
+
+    #[inline]
+    fn need(&mut self, n: usize, path: &str) -> R<&'a [u8]> {
+        if self.b.len() - self.p < n {
+            return fail(path, "truncated");
+        }
+        let s = &self.b[self.p..self.p + n];
+        self.p += n;
+        Ok(s)
+    }
+
+    #[inline]
+    pub fn u8(&mut self, path: &str) -> R<u8> {
+        Ok(self.need(1, path)?[0])
+    }
+    #[inline]
+    pub fn u16(&mut self, path: &str) -> R<u16> {
+        let s = self.need(2, path)?;
+        Ok(u16::from_be_bytes([s[0], s[1]]))
+    }
+    #[inline]
+    pub fn u32(&mut self, path: &str) -> R<u32> {
+        let s = self.need(4, path)?;
+        Ok(u32::from_be_bytes([s[0], s[1], s[2], s[3]]))
+    }
+    #[inline]
+    pub fn i8(&mut self, path: &str) -> R<i8> {
+        Ok(self.need(1, path)?[0] as i8)
+    }
+    #[inline]
+    pub fn i16(&mut self, path: &str) -> R<i16> {
+        let s = self.need(2, path)?;
+        Ok(i16::from_be_bytes([s[0], s[1]]))
+    }
+    #[inline]
+    pub fn i32(&mut self, path: &str) -> R<i32> {
+        let s = self.need(4, path)?;
+        Ok(i32::from_be_bytes([s[0], s[1], s[2], s[3]]))
+    }
+    pub fn bool(&mut self, path: &str) -> R<bool> {
+        match self.u8(path)? {
+            0 => Ok(false),
+            1 => Ok(true),
+            v => fail(path, format!("bad bool {}", v)),
+        }
+    }
+    pub fn f32(&mut self, path: &str) -> R<f32> {
+        let s = self.need(4, path)?;
+        let v = f32::from_be_bytes([s[0], s[1], s[2], s[3]]);
+        if !v.is_finite() {
+            return fail(path, "non-finite f32");
+        }
+        Ok(v)
+    }
+    pub fn f64(&mut self, path: &str) -> R<f64> {
+        let s = self.need(8, path)?;
+        let v = f64::from_be_bytes([s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]]);
+        if !v.is_finite() {
+            return fail(path, "non-finite f64");
+        }
+        Ok(v)
+    }
+    pub fn str(&mut self, mx: usize, path: &str) -> R<String> {
+        let n = self.u16(path)? as usize;
+        if n > mx {
+            return fail(path, format!("string too long: {} > {}", n, mx));
+        }
+        let s = self.need(n, path)?;
+        match std::str::from_utf8(s) {
+            Ok(x) => Ok(x.to_owned()),
+            Err(_) => fail(path, "invalid utf-8"),
+        }
+    }
+    pub fn bytes(&mut self, mx: usize, path: &str) -> R<Bytes> {
+        let n = self.u32(path)? as usize;
+        if n > mx {
+            return fail(path, format!("bytes too long: {} > {}", n, mx));
+        }
+        Ok(Bytes(self.need(n, path)?.to_vec()))
+    }
+    pub fn count(&mut self, mx: usize, path: &str) -> R<usize> {
+        let n = self.u16(path)? as usize;
+        if n > mx {
+            return fail(path, format!("too many elements: {} > {}", n, mx));
+        }
+        Ok(n)
+    }
+    pub fn finish(&self, name: &str) -> R<()> {
+        if self.p != self.b.len() {
+            return fail(name, format!("trailing bytes: {}", self.b.len() - self.p));
+        }
+        Ok(())
+    }
+}
+
+pub fn fnv1a(data: &[u8]) -> u32 {
+    let mut h: u32 = 2166136261;
+    for &x in data {
+        h = (h ^ x as u32).wrapping_mul(16777619);
+    }
+    h
+}
+
+// ---------------------------------------------------------------- frames
+pub fn header(magic: u16, version: u8, id: u16, n: u32) -> [u8; HEADER] {
+    let mut h = [0u8; HEADER];
+    h[0..2].copy_from_slice(&magic.to_be_bytes());
+    h[2] = version;
+    h[3..5].copy_from_slice(&id.to_be_bytes());
+    h[5..9].copy_from_slice(&n.to_be_bytes());
+    h
+}
+
+/// Stream reader of one connection: `feed(data)`; `next()` -> `Ok(Some((id, body)))` | `Ok(None)` (need more) |
+/// `Err` on bad magic / version / size / unknown type — checked as soon as the 9-byte header is in, before the body
+/// (the caller drops the connection; there is no resynchronisation).
+pub struct Framer {
+    buf: Vec<u8>,
+    start: usize,
+    pub magic: u16,
+    pub version: u8,
+    pub max: u32,
+    known: fn(u16) -> bool,
+    pub frames: u64,
+}
+
+impl Framer {
+    pub fn new(magic: u16, version: u8, max: u32, known: fn(u16) -> bool) -> Self {
+        Framer { buf: Vec::new(), start: 0, magic, version, max, known, frames: 0 }
+    }
+
+    pub fn feed(&mut self, data: &[u8]) {
+        if self.start > 0 && (self.start >= self.buf.len() || self.start > 65536) {
+            self.buf.drain(..self.start);
+            self.start = 0;
+        }
+        self.buf.extend_from_slice(data);
+    }
+
+    pub fn buffered(&self) -> usize {
+        self.buf.len() - self.start
+    }
+
+    /// next frame as (id, body slice range) without copying; the slice is valid until the next feed/next call
+    pub fn next_ref(&mut self) -> R<Option<(u16, &[u8])>> {
+        let b = &self.buf[self.start..];
+        if b.len() < HEADER {
+            return Ok(None);
+        }
+        let magic = u16::from_be_bytes([b[0], b[1]]);
+        let ver = b[2];
+        let id = u16::from_be_bytes([b[3], b[4]]);
+        let n = u32::from_be_bytes([b[5], b[6], b[7], b[8]]);
+        if magic != self.magic {
+            return Err(ProtoError(format!("bad magic 0x{:04X}", magic)));
+        }
+        if ver != self.version {
+            return Err(ProtoError(format!("wrong version {} (want {})", ver, self.version)));
+        }
+        if n > self.max {
+            return Err(ProtoError(format!("frame too large {} > {}", n, self.max)));
+        }
+        if !(self.known)(id) {
+            return Err(ProtoError(format!("unknown type {}", id)));
+        }
+        let total = HEADER + n as usize;
+        if b.len() < total {
+            return Ok(None);
+        }
+        let s = self.start;
+        self.start += total;
+        self.frames += 1;
+        Ok(Some((id, &self.buf[s + HEADER..s + total])))
+    }
+
+    pub fn next(&mut self) -> R<Option<(u16, Vec<u8>)>> {
+        Ok(self.next_ref()?.map(|(id, b)| (id, b.to_vec())))
+    }
+}

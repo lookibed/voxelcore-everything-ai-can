@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:am_bucket_water",
+    "stack-size": 1,
+    "caption": "bucketWater"
+}

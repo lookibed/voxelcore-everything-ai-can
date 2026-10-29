@@ -1,0 +1,26 @@
+{
+ "description": "Wave 4a: world restart keeps bench code/status/console. Supervised session (world -> real sandbox -> gateway, 1 bot, accounts from the supervisor DB). carol's bench gets code and RUN through the protocol client (tools/olife/editor_neg.py), alice's bench gets code but stays STOP; save; kill the world -> supervisor restarts it from the save -> carol's bench is RUN with the same code hash and moves again (loaded into the sandbox on connect), alice's is STOP with its code, consoles kept.",
+ "setup": {"session": {"supervise": true, "clients": 1, "client_kind": "bot", "walk": 0, "sandbox": true, "reconnect": 2,
+                       "poll_s": 2, "autosave_s": 0,
+                       "policy": {"backoff_s": 1.0, "factor": 2.0, "backoff_max_s": 30, "health_every_s": 2,
+                                  "health_grace_s": 5, "max_restarts": 5, "window_s": 600}}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_bench", "args": {"account": "carol", "key": "carol"}},
+  {"cmd": "olife_bench", "args": {"account": "alice", "key": "alice"}},
+  {"cmd": "olife_bench_code", "args": {"bench": "carol", "run": true, "token": "olife-carol", "name": "carol"}},
+  {"cmd": "olife_bench_code", "args": {"bench": "alice", "run": false, "token": "olife-alice", "name": "alice",
+                                       "code": "-- alice: stored, not running\nfunction on_tick() end\n"}},
+  {"cmd": "olife_bench_check", "args": {"bench": "carol", "status": "run", "min_moved": 0.3, "tag": "before"}},
+  {"cmd": "olife_bench_check", "args": {"bench": "alice", "status": "stop", "tag": "before"}},
+  {"cmd": "olife_stdin", "args": {"cmd": "save", "pattern": "save requested"}},
+  {"cmd": "olife_run", "args": {"seconds": 2}},
+  {"cmd": "olife_kill", "args": {"role": "world", "how": "proc"}},
+  {"cmd": "olife_wait_restart", "args": {"role": "world", "timeout": 60}},
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_bench_check", "args": {"bench": "carol", "status": "run", "min_moved": 0.3, "min_console": 3, "timeout": 15, "tag": "after"}},
+  {"cmd": "olife_bench_check", "args": {"bench": "alice", "status": "stop", "min_console": 2, "tag": "after"}},
+  {"cmd": "olife_stdin", "args": {"cmd": "editor_status", "pattern": "editor\\("}},
+  {"cmd": "olife_metrics"}
+ ]
+}

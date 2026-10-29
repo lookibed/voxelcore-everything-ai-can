@@ -1,0 +1,11 @@
+{
+ "description": "Gateway throughput (wave 3c): fake world (tools/olife/world_fake.py, no engine) + gateway (vc = gateway_dev.py, --impl rs = Rust olife-gateway) + protocol bots (tools/olife/gw_load.py) flooding WITHIN the limits: 55 PlayerInput/s per session (limit 60), every 20th message a 200-byte ChatSend fanned out by the world as Multicast to all sessions. Nothing may be dropped: every bot ends with Bye, no rejects, >= 95% of the plan sent. Measures msgs/s up/down, TickSync delay world->bot through the gateway, gateway CPU and memory (psutil).",
+ "setup": {"session": {"clients": 0, "sandbox": false, "world_kind": "world_fake",
+                       "gateway_params": {"max_conns_per_ip": 512, "conn_rate_ip": 200, "conn_burst_ip": 512}}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 1}},
+  {"cmd": "olife_gw_load", "args": {"name": "b50", "bots": 50, "rate": 55, "seconds": 30, "chat_every": 20, "prefix": "a"}},
+  {"cmd": "olife_gw_load", "args": {"name": "b100", "bots": 100, "rate": 55, "seconds": 30, "chat_every": 20, "prefix": "b"}},
+  {"cmd": "olife_metrics"}
+ ]
+}

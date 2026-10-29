@@ -1,0 +1,11 @@
+{
+    "caption": "plantYellow",
+    "model-name": "amblk_cross",
+    "model": "custom",
+    "texture": "am_plant_yellow",
+    "light-passing": true,
+    "sky-light-passing": true,
+    "obstacle": false,
+    "breakable": false,
+    "alphamine:id": 37
+}

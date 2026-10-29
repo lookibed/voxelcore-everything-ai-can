@@ -1,0 +1,9 @@
+{
+    "texture": "gw_lava",
+    "emission": [13, 8, 2],
+    "shadeless": true,
+    "obstacle": false,
+    "selectable": false,
+    "replaceable": true,
+    "tags": ["core:liquid"]
+}

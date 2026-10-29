@@ -1,0 +1,7 @@
+{
+    "hitbox": [0.4, 0.25, 0.4],
+    "body-type": "kinematic",
+    "blocking": false,
+    "save": false,
+    "skeleton-name": "base:drop"
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>wasmrt — веб в VoxelCore</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="header"><div class="header-in">
+  <a class="logo" href="index.html"><img src="img/logo.png" width="26" height="26">wasm<span>rt</span></a>
+  <div class="nav">
+    <a href="index.html" class="active" id="nav-home">Главная</a>
+    <a href="gallery.html" id="nav-gallery">Галерея</a>
+    <a href="docs.html" id="nav-docs">Документация</a>
+    <a href="demo.html" id="nav-demo">Демо</a>
+    <a href="about.html" id="nav-about">О проекте</a>
+    <button class="theme-btn" id="theme" title="Тема">☾</button>
+  </div>
+</div></div>
+
+<div class="hero"><div class="hero-in">
+  <div class="hero-text">
+    <span class="pill">HTML · CSS · JS внутри воксельного движка</span>
+    <h1>Настоящий веб-сайт в меню VoxelCore</h1>
+    <p>Эту страницу разобрал <b>litehtml</b>, нарисовал собственный растеризатор, а кнопки оживил
+    <b>QuickJS</b>. Всё это — C/C++, собранный в WebAssembly и оттранслированный <b>Spider</b> в Lua.</p>
+    <a class="btn btn-light" href="demo.html" id="cta-demo">Открыть демо</a>
+    <a class="btn btn-ghost" href="#features" id="cta-more">Что внутри ↓</a>
+  </div>
+  <img class="hero-art" src="img/hero.png" width="240" height="180">
+</div></div>
+
+<div class="stats">
+  <div class="stat"><b>151/151</b><span>картридж WASM-4 работает без правок</span></div>
+  <div class="stat"><b>312/312</b><span>тестов конформанса у цели lua-jit</span></div>
+  <div class="stat"><b>~36 fps</b><span>Quake timedemo на Lua-рендере</span></div>
+  <div class="stat"><b>1.5.2</b><span>Minecraft (Eaglercraft) через TeaVM</span></div>
+</div>
+
+<div class="wrap">
+  <div class="section" id="features">
+    <h2 class="section-title">Что внутри</h2>
+    <p class="section-lead">Цепочка из обычных программ: ни строчки движка браузера на Lua руками.</p>
+    <div class="cards">
+      <div class="card"><div class="icon i1">⚙</div><h3>Spider</h3>
+        <p>Транслятор wasm → Lua: обходит лимиты LuaJIT на слоты, прыжки и вложенность.</p></div>
+      <div class="card"><div class="icon i2">▶</div><h3>wasmrt</h3>
+        <p>Пак-рантайм с ABI <code>vc.h</code> и WASI: модели frame и main, профиль, стеки падений.</p></div>
+      <div class="card"><div class="icon i3">◆</div><h3>Графика</h3>
+        <p>canvas, постэффект и растеризация треугольников на GPU прямо в UI-шейдере.</p></div>
+      <div class="card"><div class="icon i4">★</div><h3>Игры</h3>
+        <p>Doom, Quake, Minecraft 1.5.2, Pong и все картриджи WASM-4.</p></div>
+      <div class="card"><div class="icon i5">✎</div><h3>Вёрстка</h3>
+        <p>litehtml + gumbo, stb_truetype, stb_image и QuickJS-NG в одном модуле.</p></div>
+      <div class="card"><div class="icon i6">⚑</div><h3>Инструменты</h3>
+        <p>MCP-сервер: запуск, клики, скриншоты, журнал действий и сценарии.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Галерея</h2>
+    <p class="section-lead">Процедурные картинки и иконки паков — <a href="gallery.html">смотреть все</a>.</p>
+    <div class="strip">
+      <a href="gallery.html"><img src="img/g_terrain.png" width="140" height="88"></a>
+      <a href="gallery.html"><img src="img/g_sunset.png" width="140" height="88"></a>
+      <a href="gallery.html"><img src="img/g_mandel.png" width="140" height="88"></a>
+      <a href="gallery.html"><img src="img/g_rings.png" width="140" height="88"></a>
+    </div>
+  </div>
+</div>
+
+<div class="cta">
+  <div><h3>Попробуйте интерактив</h3><p>Вкладки, аккордеон, модальное окно, форма и тёмная тема — всё на JS.</p></div>
+  <a class="btn btn-light" href="demo.html">Перейти к демо</a>
+</div>
+
+<div class="footer">
+  <div class="footer-cols">
+    <div><h4>wasmrt · html</h4>Прототип браузерной вёрстки для VoxelCore 0.31.<br>Страницы лежат в паке <code>html</code>.</div>
+    <div><h4>Разделы</h4><a href="gallery.html">Галерея</a><a href="docs.html">Документация</a><a href="about.html">О проекте</a></div>
+    <div><h4>Внутри</h4><a href="docs.html#stack">litehtml + gumbo</a><a href="docs.html#stack">QuickJS-NG</a><a href="docs.html#stack">stb_truetype</a></div>
+  </div>
+  <div class="copy">Шрифты Inter (OFL) и DejaVu · картинки сгенерированы процедурно · 2026</div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="site.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+ "description": "olife_load with the wave-2/3 netcode (wave 4c before/after): world opts snap=full,inv=0 (EntitySnapshot, no inventory gate), bots move=legacy (position PlayerInput). Same composition and steps as olife_load.",
+ "setup": {
+  "session": {
+   "clients": 6,
+   "client_kind": "bot",
+   "sandbox": true,
+   "blocks": 20,
+   "world_opts": "snap=full,inv=0",
+   "bot_opts": "move=legacy"
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 15
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {}
+  },
+  {
+   "cmd": "olife_consistency",
+   "args": {
+    "max_divergences": 0,
+    "min_ticks": 150
+   }
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

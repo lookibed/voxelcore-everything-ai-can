@@ -1,0 +1,6 @@
+{
+    "icon-type": "sprite",
+    "icon": "items:pc_item",
+    "script-name": "pc_spawn",
+    "model-name": "pc"
+}

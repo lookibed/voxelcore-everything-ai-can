@@ -1,0 +1,9 @@
+{
+    "module": "doom:modules/doom/doom_wasmrt.lua",
+    "graphics": "canvas",
+    "width": 320,
+    "height": 200,
+    "args": ["doom", "-iwad", "doom1.wad", "-nosound", "-nomusic"],
+    "files": "doom:wads",
+    "log_fps": true
+}

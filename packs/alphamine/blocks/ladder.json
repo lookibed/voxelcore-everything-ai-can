@@ -1,0 +1,97 @@
+{
+    "caption": "ladder",
+    "model": "custom",
+    "model-name": "amblk_ladder_m2",
+    "texture": "am_ladder",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m3",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m4",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m5",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_ladder_m2",
+                "texture": "am_ladder"
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.125
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 65
+}

@@ -1,0 +1,61 @@
+# Olife protocol, contract "internal": gateway <-> world (one TCP connection per gateway, sessions multiplexed).
+# Data.payload is a body of the "client" contract (same schema, already validated by the gateway; the world
+# decodes it again — the world never trusts the gateway's parsing).
+contract: internal
+version: 1
+magic: 0x4F49          # "OI"
+max_frame: 4194304     # 4 MiB
+
+messages:
+  - id: 1
+    name: GatewayHello    # first frame from the gateway; world drops the connection on a bad secret/proto
+    dir: g2w
+    fields:
+      proto: u16
+      gateway: str<32>
+      secret: str<128>
+      client_proto: u16   # client contract version the gateway speaks
+  - id: 2
+    name: WorldHello
+    dir: w2g
+    fields:
+      proto: u16
+      world: str<64>
+      tick: u32
+      tps: u8
+      client_proto: u16
+  - id: 3
+    name: Attach          # authenticated player session
+    dir: g2w
+    fields:
+      session: u32
+      account: str<64>
+      name: str<32>
+      addr: str<64>
+      perms: u32
+  - id: 4
+    name: Detach          # g2w: client gone; w2g: kick (gateway sends Disconnect and closes)
+    dir: both
+    fields: {session: u32, code: u16, reason: str<256>}
+  - id: 5
+    name: Data            # one client-contract message of one session
+    dir: both
+    fields:
+      session: u32
+      type: u16
+      payload: bytes<1048576>
+  - id: 6
+    name: Multicast       # w2g: the same client message to many sessions (block updates, chat)
+    dir: w2g
+    fields:
+      sessions: array<u32, 65535>
+      type: u16
+      payload: bytes<1048576>
+  - id: 7
+    name: Ping
+    dir: both
+    fields: {seq: u32, ms: f64}
+  - id: 8
+    name: Pong
+    dir: both
+    fields: {seq: u32, ms: f64}

@@ -1,0 +1,17 @@
+{
+    "caption": "leaves",
+    "texture-faces": [
+        "am_leaves",
+        "am_leaves",
+        "am_leaves_bottom",
+        "am_leaves",
+        "am_leaves",
+        "am_leaves"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "draw-group": 5,
+    "culling": "disabled",
+    "breakable": false,
+    "alphamine:id": 18
+}

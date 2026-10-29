@@ -1,0 +1,146 @@
+{
+    "caption": "doorWood",
+    "model": "custom",
+    "model-name": "amblk_door_wood_m0",
+    "texture": "am_door_wood",
+    "state-based": {
+        "offset": 0,
+        "bits": 4,
+        "variants": [
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m1",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m2",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m3",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m4",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m5",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m6",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m7",
+                "texture": "am_door_wood"
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m8",
+                "texture-faces": [
+                    "am_door_wood_side_m8",
+                    "am_door_wood_side_m8",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m9",
+                "texture-faces": [
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood_side_m8",
+                    "am_door_wood_side_m8"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m10",
+                "texture-faces": [
+                    "am_door_wood_side_m8",
+                    "am_door_wood_side_m8",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m11",
+                "texture-faces": [
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood_side_m8",
+                    "am_door_wood_side_m8"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m12",
+                "texture-faces": [
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood_side_m8",
+                    "am_door_wood_side_m8"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m13",
+                "texture-faces": [
+                    "am_door_wood_side_m8",
+                    "am_door_wood_side_m8",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood"
+                ]
+            },
+            {
+                "model": "custom",
+                "model-name": "amblk_door_wood_m14",
+                "texture-faces": [
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood",
+                    "am_door_wood_side_m8",
+                    "am_door_wood_side_m8"
+                ]
+            },
+            {
+                "model": "none"
+            }
+        ]
+    },
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 64
+}

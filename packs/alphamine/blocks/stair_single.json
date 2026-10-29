@@ -1,0 +1,24 @@
+{
+    "caption": "stairSingle",
+    "hitbox": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.5,
+        1.0
+    ],
+    "model": "aabb",
+    "texture-faces": [
+        "am_stair_double_side",
+        "am_stair_double_side",
+        "am_stair_double_end_bottom",
+        "am_stair_double_end",
+        "am_stair_double_side",
+        "am_stair_double_side"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 44
+}

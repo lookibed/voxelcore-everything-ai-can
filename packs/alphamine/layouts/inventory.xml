@@ -1,0 +1,5 @@
+<!-- GuiInventory альфы: содержимое строит modules/inventory_gui.lua (фон drawDefaultBackground, gui/inventory.png,
+     слоты с предметами, подсветка, стак у курсора, «Crafting», превью игрока). -->
+<container id="root" pos="0,0" size="854,480" color="#00000000" interactive="false">
+    <container id="am_screen" pos="0,0" size="4000,4000" color="#00000000" interactive="false"/>
+</container>

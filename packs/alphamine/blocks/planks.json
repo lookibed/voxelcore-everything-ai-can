@@ -1,0 +1,15 @@
+{
+    "caption": "planks",
+    "texture-faces": [
+        "am_planks",
+        "am_planks",
+        "am_planks_bottom",
+        "am_planks",
+        "am_planks",
+        "am_planks"
+    ],
+    "light-passing": true,
+    "sky-light-passing": true,
+    "breakable": false,
+    "alphamine:id": 5
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Демо пака smollm_gpu: вся модель Ru-Small-Instruct считается на GPU (фреймы GUI в текстуру + ui.glslf).
+     Логика демо — modules/llm.lua (M.demo), запускает её app-скрипт (scripts/app/smollm_gpu.lua или
+     tools/scenarios/smollm_gpu_demo.lua); страница только показывает строки. -->
+<container id="root" color="#101418FF" size-func="unpack(gui.get_viewport())" interactive="true">
+    <panel id="toolbar" orientation="horizontal" interval="6" padding="6,6,6,6" color="#1C2430FF"
+           size-func="gui.get_viewport()[1],44">
+        <button id="back_btn" size="100,32" color="#5050ff60" hover-color="#5050ffa0" onclick="leave()">Назад</button>
+        <label id="title" size="520,32" valign="center" color="#E6EAF0">Ru-Small-Instruct на GPU (Q8, фреймы GUI + ui.glslf)</label>
+    </panel>
+    <container id="log_box" pos="8,52" size-func="gui.get_viewport()[1]-16, gui.get_viewport()[2]-60" color="#000000A0">
+        <textbox id="log" color="0" autoresize="true" margin="0" editable="false" multiline="true" text-wrap="true"
+                 size-func="-1,40" gravity="top-left" padding="6"></textbox>
+    </container>
+</container>

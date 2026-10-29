@@ -1,0 +1,97 @@
+{
+ "description": "Wave 4b: tariffs live. World + REAL olife-sandboxd + 1 bot; orbit x2 for owner 9101 and owner 9102. A tariff `limits.owner.9101.*` (fuel_per_tick/tick_cap 20000, bucket 0) is written to the supervisor DB and delivered like `lab olife tariff set` (set_limits on the sandbox control port, merge) -> owner 9101 throttled from the next TickResult (fuel per tick capped: its orbit scripts finish a tick only every few ticks), owner 9102 never; keys deleted -> 9101 back to ok.",
+ "setup": {
+  "session": {
+   "clients": 1,
+   "client_kind": "bot",
+   "sandbox": true,
+   "scripted": 0
+  }
+ },
+ "steps": [
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_spawn",
+   "args": {
+    "spawns": [
+     [
+      "orbit",
+      9101,
+      2,
+      1
+     ],
+     [
+      "orbit",
+      9102,
+      2,
+      1
+     ]
+    ],
+    "wait_entities": 4
+   }
+  },
+  {
+   "cmd": "olife_run",
+   "args": {
+    "seconds": 3
+   }
+  },
+  {
+   "cmd": "olife_tariff_set",
+   "args": {
+    "set": {
+     "limits.owner.9101.fuel_per_tick": 20000,
+     "limits.owner.9101.tick_cap": 20000,
+     "limits.owner.9101.bucket_max": 0
+    }
+   }
+  },
+  {
+   "cmd": "olife_tariff_check",
+   "args": {
+    "owner": 9101,
+    "want": "throttled",
+    "others": [
+     9102
+    ],
+    "within": 1,
+    "wait_s": 3,
+    "min_share": 0.25
+   }
+  },
+  {
+   "cmd": "olife_tariff_set",
+   "args": {
+    "set": {
+     "limits.owner.9101.fuel_per_tick": "delete",
+     "limits.owner.9101.tick_cap": "delete",
+     "limits.owner.9101.bucket_max": "delete"
+    }
+   }
+  },
+  {
+   "cmd": "olife_tariff_check",
+   "args": {
+    "owner": 9101,
+    "want": "ok",
+    "others": [
+     9102
+    ],
+    "within": 2,
+    "wait_s": 3
+   }
+  },
+  {
+   "cmd": "olife_status",
+   "args": {}
+  },
+  {
+   "cmd": "olife_metrics"
+  }
+ ]
+}

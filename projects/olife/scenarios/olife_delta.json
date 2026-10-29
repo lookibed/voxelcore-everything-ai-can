@@ -1,0 +1,14 @@
+{
+ "description": "Wave 4c: entity snapshot deltas, before/after on the olife_load composition (6 bots with predicted movement, blocks every 20 ticks, real sandbox with scripted entities, mobs). Phase 1: old EntitySnapshot (f32 positions of every changed entity every tick); phase 2: EntityDelta (per-session baseline, 1/256-block quantised deltas, u16 slots, no resend when unchanged, keyframe every 100 ticks, distance priority + 1200 B/tick/session budget). Bytes per tick: entity snapshots (world) and all downstream traffic (gateway); phase 3: the same delta with a tight budget (60 B/tick/session) and decimation from 4 blocks — moves are deferred/decimated (priority by distance and age), the baseline keeps hashes exact; per-tick replica hash consistency over all phases (the mode switch despawns/respawns every view).",
+ "setup": {"session": {"clients": 6, "client_kind": "bot", "sandbox": true, "blocks": 20,
+                       "world_opts": "snap=full,inv=1", "bot_opts": "move=predict,radius=10"}},
+ "steps": [
+  {"cmd": "olife_run", "args": {"seconds": 3}},
+  {"cmd": "olife_snap_phase", "args": {"mode": "full", "seconds": 15, "label": "full"}},
+  {"cmd": "olife_snap_phase", "args": {"mode": "delta", "seconds": 15, "label": "delta"}},
+  {"cmd": "olife_snap_phase", "args": {"mode": "delta", "seconds": 10, "label": "delta_budget", "budget": 60, "near": 4}},
+  {"cmd": "olife_status", "args": {}},
+  {"cmd": "olife_consistency", "args": {"max_divergences": 0, "min_ticks": 500}},
+  {"cmd": "olife_metrics"}
+ ]
+}
