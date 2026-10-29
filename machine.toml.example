@@ -16,3 +16,6 @@ powershell   = 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
 # [engines.v031]
 # root = 'D:\old\voxelcore-0.31'
 # f2f  = 'D:\builds\VoxelCoreF2F.exe'
+# Для `lab f2f build <id>` (f2f/README.md): worktree ветки F2F и каталог vcpkg нужного коммита
+# f2f_src = 'D:\src\voxelcore-0327'
+# vcpkg   = 'D:\src\vcpkg-0327'

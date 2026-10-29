@@ -5,6 +5,6 @@ __pycache__/
 *.pyc
 .pytest_cache/
 *.egg-info/
-build/
+/build/
 dist/
 WAVE5_PROGRESS.md
