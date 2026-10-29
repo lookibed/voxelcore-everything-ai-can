@@ -20,6 +20,7 @@ def tmpdir_win():
 
 
 FAKE = os.path.join(HERE, "fake_f2f.py")
+ECHO = os.path.join(HERE, "fake_echo.py")
 
 
 def toml_str(s):
@@ -27,7 +28,7 @@ def toml_str(s):
 
 
 def write_dummy_project(tmpdir_win):
-    """Временный проект dummy (fake F2F, дерево cmd->python, stdin-сервер, переживающий демон) -> каталог проектов."""
+    """Временный проект dummy (fake F2F, дерево cmd->python, stdin-сервер, эхо-сервер с длинным логом, переживающий демон) -> каталог проектов."""
     proj = os.path.join(tmpdir_win, "projects", "dummy")
     content = os.path.join(tmpdir_win, "content", "packx")
     os.makedirs(proj, exist_ok=True)
@@ -72,12 +73,20 @@ def write_dummy_project(tmpdir_win):
         ready = [ { log = "Done!", stream = "stderr", timeout = 20 } ]
         stop = [ { stdin = "stop\\n", wait_exit = 5 } ]
 
+        [kinds.echo]
+        exe = %(py)s
+        args = ["-u", %(echo)s]
+        stdin = true
+        default_log = "stdout"
+        ready = [ { log = "echo ready", stream = "stdout", timeout = 30 } ]
+        stop = [ { stdin = "stop\\n", wait_exit = 5 } ]
+
         [kinds.survivor]
         exe = %(py)s
         args = ["-c", "import time; time.sleep(300)"]
         kill_on_close = false
         """) % {"py": toml_str(PY), "fake": toml_str(FAKE), "content": toml_str(content), "child": toml_str(child),
-                "stdin": toml_str(stdin_srv)})
+                "stdin": toml_str(stdin_srv), "echo": toml_str(ECHO)})
     with open(os.path.join(proj, "plugin.py"), "w", encoding="utf-8") as f:
         f.write("PLUGIN_VERSION = 1\ndef register(api):\n"
                 "    api.feature('hello2', lambda ctx, a: ctx.call(a['lease'], 'hello'), 'hello via plugin')\n")

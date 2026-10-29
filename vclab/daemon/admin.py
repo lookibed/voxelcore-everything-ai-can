@@ -30,6 +30,7 @@ import time
 import traceback
 
 from vclab import config
+from vclab.scenario.decode import write_json_atomic
 
 VCLAB = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # ...\vclab
 # модули из чистых функций: importlib.reload на живом демоне безопасен (состояние — в БД/файлах; экземпляры
@@ -464,10 +465,7 @@ class DaemonControl:
     def _write_version(self, upd):
         v = self._read_version()
         v.update(upd)
-        tmp = self.version_path + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(v, f, ensure_ascii=False, indent=1)
-        os.replace(tmp, self.version_path)
+        write_json_atomic(self.version_path, v, indent=1)
 
     def _record_start(self):
         v = self._read_version()
@@ -481,10 +479,7 @@ class DaemonControl:
         v.pop("pending", None)
         try:
             os.makedirs(os.path.dirname(self.version_path), exist_ok=True)
-            tmp = self.version_path + ".tmp"
-            with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(v, f, ensure_ascii=False, indent=1)
-            os.replace(tmp, self.version_path)
+            write_json_atomic(self.version_path, v, indent=1)
         except OSError:
             pass
         self.audit.write({"port": self.port, "pid": os.getpid(), "action": "daemon.start", "owner": rec["by"],

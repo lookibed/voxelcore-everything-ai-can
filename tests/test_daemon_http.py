@@ -42,7 +42,7 @@ def test_http_api(daemon):
     assert h["service"] == "labd" and h["projects"] == ["dummy", "vc"] and h["ports"] == [25670, 25679]
     print("daemon cold start via WMI: %.2f s" % started["started_s"])
     p = c.get("/projects")["projects"]
-    assert set(p["dummy"]["kinds"]) == {"fake", "tree", "stdin", "survivor"} and "dummy.hello2" in p["dummy"]["features"]
+    assert set(p["dummy"]["kinds"]) == {"fake", "tree", "stdin", "echo", "survivor"} and "dummy.hello2" in p["dummy"]["features"]
     assert p["vc"]["kinds"]["engine"]["f2f"] == "f2f" and p["vc"]["plugin_error"] is None
     r = c.post("/leases", {"project": "dummy", "kind": "fake", "ttl": 120, "start": True})
     name = r["lease"]["name"]

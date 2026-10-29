@@ -7,6 +7,8 @@ import os
 import threading
 import time
 
+from vclab.scenario.decode import write_json_atomic
+
 
 class LogMirror:
     def __init__(self, name, path, data_dir, on_new=None, every=1.0):
@@ -33,10 +35,7 @@ class LogMirror:
 
     def _save(self):
         os.makedirs(os.path.dirname(self.state_path), exist_ok=True)
-        tmp = self.state_path + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(self.st, f)
-        os.replace(tmp, self.state_path)
+        write_json_atomic(self.state_path, self.st, ensure_ascii=True)
 
     def poll(self):
         try:

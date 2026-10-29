@@ -7,6 +7,7 @@ Job Object, процесс(ы), TTL. Чужую аренду менять нел
 import contextlib
 import hashlib
 import json
+import logging
 import os
 import shutil
 import threading
@@ -17,7 +18,7 @@ from vclab import VERSION
 from vclab import config
 from vclab import policy
 from vclab.leases import procs
-from vclab.scenario.decode import read_tail
+from vclab.scenario.decode import read_since, read_tail, write_json_atomic
 from vclab.f2f import F2FPool
 from vclab.scenario.journal import Journal
 from vclab.leases.logwatch import LogMirror
@@ -159,6 +160,8 @@ class Lab:
         self.lock = threading.RLock()
         self._exe_cache = {}
         self.state_path = os.path.join(self.data, "state", "leases.json")
+        self._state_lock = threading.Lock()       # запись leases.json: один писатель за раз (WinError 32, LESSONS §1)
+        self._state_seq = self._state_saved_seq = 0
         self.projects = Projects(self.cfg["project_dirs"], on_event=self._project_event)
         self._sync_stock()
         self._core_features()
@@ -340,10 +343,7 @@ class Lab:
                          "build": (hello.get("build") or {}).get("commit"),
                          "gl": (hello.get("gl") or {}).get("renderer"), "src": ex.get("src"), "lease": l.name,
                          "engine": l.engine, "t": time.time()}
-            tmp = path + ".tmp"
-            with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(data, f, ensure_ascii=False, indent=1)
-            os.replace(tmp, path)
+            write_json_atomic(path, data, indent=1)
         except Exception:
             pass
 
@@ -397,12 +397,27 @@ class Lab:
 
     # ------------------------------------------------------------------ состояние
     def _save_state(self):
+        """leases.json: снимок под self.lock, запись под своим замком через уникальный tmp и os.replace с повтором
+        (файл бывает занят антивирусом/читателем — WinError 32). Снимок старше уже записанного не пишется. Не вышло
+        после всех повторов — ошибка в лог демона и журнал, обработчик запроса продолжает работу (-> False)."""
         with self.lock:
             data = [l.to_dict() for l in self.leases.values()]
-        tmp = self.state_path + ".tmp"
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump({"saved": time.time(), "leases": data}, f, ensure_ascii=False, indent=1, default=str)
-        os.replace(tmp, self.state_path)
+            self._state_seq += 1
+            seq = self._state_seq
+        with self._state_lock:
+            if seq < self._state_saved_seq:
+                return True
+            try:
+                write_json_atomic(self.state_path, {"saved": time.time(), "leases": data}, indent=1, default=str)
+                self._state_saved_seq = seq
+                return True
+            except Exception as exc:
+                logging.error("state save failed (%s): %r", self.state_path, exc)
+                try:
+                    self.journal.event("lab.state_save_failed", repr(exc), error=True)
+                except Exception:
+                    pass
+                return False
 
     def _load_state(self):
         try:
@@ -1062,7 +1077,10 @@ class Lab:
             stream = stream or spec.get("default_log") or "stdout"
             if stream not in paths:
                 raise LabError("bad-request", "stream %r: have %s" % (stream, ", ".join(paths)))
-            before = len(read_tail(paths[stream], 0))
+            try:
+                offset = os.path.getsize(paths[stream])    # ответ — только то, что допишется после этой точки
+            except OSError:
+                offset = 0
             line = text if text.endswith("\n") else text + "\n"
             l.proc.write_stdin(line)
             want_poke, poke = poke, None
@@ -1074,8 +1092,7 @@ class Lab:
             end = time.time() + float(wait or 0)
             new = []
             while True:
-                lines = read_tail(paths[stream], 0)
-                new = lines[before:]
+                new = read_since(paths[stream], offset)[0]
                 if rx is not None and any(rx.search(x) for x in new):
                     break
                 if time.time() >= end or not l.proc.alive():
