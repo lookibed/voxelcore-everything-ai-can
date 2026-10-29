@@ -1,0 +1,54 @@
+# Шаблон проекта лаборатории. Скопируйте каталог в projects/<имя>/ (имя без «_» в начале — иначе демон его не грузит)
+# и поправьте: name, виды [kinds.*], сценарии. Демон подхватывает правки без рестарта (опрос раз в 1 с).
+# Подстановки: {vc_root} {work_root} {repo_root} {lab_data} {lab_dir} {project_dir} {dir} {lease} {owner} {kind}
+# {project} {exe} {size} {size_w} {size_h} {port.<имя>} {param.<имя>} {engine.id|version|root|res|exe|stock}
+# {engine.builds.f2f|stock|vctest} {machine.<ключ machine.toml>} {python}; {ключ|умолчание}.
+[project]
+name = "template"
+description = "template project: F2F test build of the default engine, menu shot scenario"
+runs_dir = "{lab_data}\\runs"
+scenarios_dir = "{project_dir}\\scenarios"
+golden_dir = "{lab_data}\\golden\\{project}"
+plugin = "plugin.py"
+
+[scenario]
+impls = { vc = "engine" }
+default_size = "854x480"        # стандарт кадра тестов (f2f/PROTOCOL.md §8)
+
+[compare]
+size = "854x480"
+tol = 0
+
+# Тестовая сборка движка аренды (по умолчанию — [engines] default реестра; --param engine=v0327): ввод ОС изолирован,
+# окно hidden, часы virtual (кадры только по step). Стоковый exe здесь запрещён политикой (только role = "headless").
+[kinds.engine]
+description = "F2F test build: menu, --dir = lease dir, 854x480, hidden, clock virtual"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "virtual"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}", "{param.extra}"]
+params = { extra = [] }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "latest"
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# Тест движка под --test (0.32+): стоковый exe без окна (role = "headless"); vcproject — проект движка с write-to-user.
+[kinds.vctest]
+description = "stock VoxelCore --headless --test <file.lua> (exit code = verdict)"
+role = "headless"
+engine = "v0327"
+exe = "{engine.stock}"
+copy_exe = false
+cwd = "{dir}"
+args = ["--headless", "--test", "{param.test}", "--res", "{engine.res}", "--project", "{project_dir}\\vcproject", "--dir", "{dir}", "--log", "{dir}\\test.log"]
+params = { test = "" }
+logs = { log = "{dir}\\test.log" }
+default_log = "stdout"
+prepare = [ { action = "mkdir", path = "shots" } ]
+ready = []
+stop = []

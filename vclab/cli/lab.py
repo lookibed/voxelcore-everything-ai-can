@@ -484,5 +484,10 @@ def main(argv):
     return 0 if r.get("ok", True) else 1
 
 
+def _entry():
+    """console_script `lab` (pip install -e .): то же, что bin/lab.py."""
+    sys.exit(main(sys.argv))
+
+
 if __name__ == "__main__":
     sys.exit(main(sys.argv))

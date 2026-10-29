@@ -535,10 +535,15 @@ class DaemonControl:
 
 
 # ------------------------------------------------------------------------------------------------ reload
+def _source_path(name):
+    """Исходник модуля безопасного набора (тест подменяет функцию, раньше — переменную LABCORE)."""
+    return os.path.join(os.path.dirname(VCLAB), *MODULES[name].split(".")) + ".py"
+
+
 def _validate(name):
     """Исполнить исходник модуля в отдельном объекте (не в sys.modules): синтаксис и импорт до настоящего reload."""
     full = MODULES[name]
-    path = os.path.join(os.path.dirname(VCLAB), *full.split(".")) + ".py"
+    path = _source_path(name)
     spec = importlib.util.spec_from_file_location(full, path)
     mod = importlib.util.module_from_spec(spec)
     mod.__package__ = full.rsplit(".", 1)[0]

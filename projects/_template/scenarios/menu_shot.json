@@ -1,0 +1,9 @@
+{
+  "description": "template: menu of the test build after 40 frames with a fixed seed (f2f mode/step/shot)",
+  "size": "854x480",
+  "steps": [
+    {"cmd": "mode", "args": {"fixed": true, "seed": 12345}},
+    {"cmd": "step", "args": {"ticks": 40, "frames": 40}},
+    {"cmd": "shot", "name": "menu"}
+  ]
+}

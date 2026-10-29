@@ -179,7 +179,7 @@ def test_reload_core(lab, tmpdir_win, monkeypatch):
     os.makedirs(bad)
     with open(os.path.join(bad, "gate.py"), "w") as f:
         f.write("def broken(:\n")
-    monkeypatch.setattr(admin, "LABCORE", bad)
+    monkeypatch.setattr(admin, "_source_path", lambda n: os.path.join(bad, n + ".py"))   # было: admin.LABCORE
     rr = admin.reload_modules(["gate"], lab)
     assert not rr["ok"] and rr["error"].startswith("validate gate: SyntaxError") and rr["reloaded"] == []
     e = [x for x in audit_of(lab) if x["action"] == "daemon.reload-core"]

@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vclab"
+version = "1.0.0"
+description = "VoxelCore for AI agents: lab daemon (leases, F2F pool, scenarios, golden, gates), CLI `lab`, MCP bridges"
+readme = "README.md"
+requires-python = ">=3.11"            # демон и CLI — Windows-Python; MCP voxelcore в WSL работает и на 3.10 (без tomllib)
+license = { text = "Proprietary" }
+dependencies = [
+  "pywin32; sys_platform == 'win32'",
+  "psutil",
+  "fastapi",
+  "uvicorn",
+  "numpy",
+  "Pillow",
+  "jinja2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+plots = ["matplotlib"]
+
+[project.scripts]
+lab = "vclab.cli.lab:_entry"
+
+[tool.setuptools.packages.find]
+include = ["vclab*"]
+
+[tool.setuptools.package-data]
+vclab = ["cli/schedule/*.xml", "mcp/ps/*.ps1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+
+[tool.ruff]
+line-length = 130
+target-version = "py311"
+extend-exclude = ["projects/_parked", "projects/olife"]
+
+[tool.ruff.lint]
+# перенос как есть: только ошибки, которые ломают исполнение (стиль кода рабочего каталога не правим в волне 1)
+select = ["E9", "F63", "F7", "F82"]

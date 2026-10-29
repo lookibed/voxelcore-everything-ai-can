@@ -109,7 +109,11 @@ def check_engines(rep, m, only=None, hellos=None):
             want = e.get("stock_sha256")
             st = OK if not want or sha == want else WARN
             code, out = _run([stock, "--version"], 15)
-            ver = (out.splitlines() or [""])[0][:40] if code == 0 else "--version failed (%s): %s" % (code, out[:80])
+            lines = [x.strip() for x in out.splitlines()]
+            plain = [x for x in lines if x and not x.startswith("[")]              # строки лога движка — с «[I] ...»
+            build = [x.split("build:", 1)[1].strip() for x in lines if "build:" in x]
+            ver = ("%s%s" % (plain[-1] if plain else "?", (" (build %s)" % build[0]) if build and build[0] else "")
+                   if code == 0 else "--version failed (%s): %s" % (code, out[:80]))
             if code != 0:
                 st = FAIL
             rep.add(g, "stock", st, "%s  sha %s%s  version %s" % (
@@ -223,9 +227,12 @@ def check_daemon(rep, port=None):
     c = LabClient(port)
     h = c.alive(1.0)
     if h:
-        same = os.path.normcase(h.get("data") or "") == os.path.normcase(cfg["daemon"]["data"])
-        rep.add("daemon", ":%d" % port, OK if same else WARN, "labd pid %s, data %s%s" % (
-            h.get("pid"), h.get("data"), "" if same else " (another installation's daemon on this port)"), "daemon")
+        from vclab.daemon import admin
+        want = admin.isolated_data(port) if h.get("isolated") else cfg["daemon"]["data"]
+        same = os.path.normcase(h.get("data") or "") == os.path.normcase(want)
+        rep.add("daemon", ":%d" % port, OK if same else WARN, "labd pid %s%s, data %s%s" % (
+            h.get("pid"), " ISOLATED (starter %s)" % h.get("starter") if h.get("isolated") else "", h.get("data"),
+            "" if same else " (another installation's daemon on this port)"), "daemon")
         return h
     s = socket.socket()
     try:

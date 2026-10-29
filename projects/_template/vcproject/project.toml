@@ -1,0 +1,11 @@
+# VoxelCore 0.32 project of the lab (--project <this dir>): like res/project.toml of 0.32 ("default": network,
+# sub-instances) plus "write-to-user" — test and pack scripts write user:shots/, user:export/ (state files, Canvas
+# snapshots). Without it file.write("user:...") in app/test scripts is "access denied" (EnginePaths::isWriteable).
+name = "lab"
+title = "VoxelCore lab instance"
+base_packs = ["base"]
+permissions = [
+    "network",
+    "sub-instances",
+    "write-to-user",
+]
