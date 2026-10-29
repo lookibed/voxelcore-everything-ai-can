@@ -141,7 +141,7 @@ def check_engines(rep, m, only=None, hellos=None):
         g = "engine " + eid
         if e.get("legacy") and eid != default and not only:
             # легаси-версия (снимок машины-источника): есть — проверяем как обычно, нет — info
-            have = [x for x in (e.get("root"), (e.get("builds") or {}).get("f2f")) if x and os.path.exists(x)]
+            have = [x for x in (e.get("stock"), (e.get("builds") or {}).get("f2f")) if x and os.path.isfile(x)]
             if not have:
                 rep.add(g, "legacy", INFO, "not installed (legacy = true in registry: only the source machine "
                         "snapshot needs it)", "legacy")
