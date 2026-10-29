@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "lab": {
+      "type": "stdio",
+      "command": "/mnt/c/Python313/python.exe",
+      "args": ["-X", "utf8", "-u", "-B", "C:\\path\\to\\voxelcore-everything-ai-can\\bin\\mcp_bridge.py"],
+      "env": { "LAB_OWNER": "claude", "WSLENV": "LAB_OWNER" }
+    },
+    "voxelcore": {
+      "type": "stdio",
+      "command": "python3",
+      "args": ["/mnt/c/path/to/voxelcore-everything-ai-can/bin/voxelcore_mcp.py"],
+      "env": { "LAB_OWNER": "claude" }
+    }
+  }
+}

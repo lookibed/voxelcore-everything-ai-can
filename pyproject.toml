@@ -39,7 +39,7 @@ addopts = "-p no:cacheprovider"
 [tool.ruff]
 line-length = 130
 target-version = "py311"
-extend-exclude = ["projects/_parked", "projects/olife"]
+extend-exclude = ["projects"]
 
 [tool.ruff.lint]
 # перенос как есть: только ошибки, которые ломают исполнение (стиль кода рабочего каталога не правим в волне 1)

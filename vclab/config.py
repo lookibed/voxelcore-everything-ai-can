@@ -30,7 +30,7 @@ WORK_ROOT = os.environ.get("LAB_WORK_ROOT") or MACHINE.get("work_root") or os.pa
 
 
 def wsl_to_win(path):
-    """/mnt/d/x/y -> D:\\x\\y (чистая функция, без wslpath)."""
+    """/mnt/<диск>/x/y -> <ДИСК>:\\x\\y (чистая функция, без wslpath)."""
     if isinstance(path, str):
         m = re.match(r"^/mnt/([a-zA-Z])(?:/(.*))?$", path)
         if m:
