@@ -161,7 +161,7 @@ bzip2/MultiEmulator/pwd заглушки, `platform.h` с `XASH_VC`, сокет�
 `patches/xash3d-fwgs.patch` (`filesystem/sys.c`: без `dup` на WASI; `ref/soft/r_glblit.c`: альфа и путь rgb16;
 `ref/soft/r_scan.c`: спаны, вызов ядер `vc.hl_spans`; `r_studio.c`/`r_triapi.c`/`r_local.h`: studio в два прохода,
 `TriTexCoord2f` без `fmodf`). Размеры: wasm 3.07 МБ, Lua 34.1 МБ (`--f32 number --memory-helpers notail
---yield-every 20000`, затем `tools/f32_inline.py`). Раскладка: `/root/Spider/Hosts/VoxelCore/pipeline/deploy.sh halflife`. Вне движка:
+--yield-every 20000`, затем `tools/f32_inline.py`). Раскладка: `<Spider>/Hosts/VoxelCore/pipeline/deploy.sh halflife`. Вне движка:
 `luajit run_luajit.lua N` (хэши кадров; `HL_DUMP=x.ppm`, `HL_REALTIME=1`, `HL_PROF=from,to,file`,
 `HL_PROF_MODE=vF` — доля интерпретатора; JIT как `JIT_TUNED` wasmrt, `HL_JIT=default` — стоковый, `HL_JIT=opt,..` —
 добавить; `HL_JITSTAT=1` — счётчики трасс; ядра спанов берутся из пака, `HL_PACK=<каталог пака>`). Без `JIT_TUNED`

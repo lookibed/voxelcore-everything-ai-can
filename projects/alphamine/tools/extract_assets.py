@@ -5,7 +5,7 @@ Sources (RetroMCP workspace copy, read-only):
   <ref>/jars/minecraft.jar                 textures, font, splashes (all non-class resources)
   <ref>/jars/assets/indexes/a1.0.14.json   sound index -> <ref>/jars/assets/objects/<hh>/<hash>
 
-Output <out> (default D:\\Prog\\AlphaMine\\assets, regenerated, not tracked by git):
+Output <out> (default <repo>\\projects\\alphamine\\external\\assets, regenerated, not tracked by git):
   <path from jar>                  e.g. terrain.png, gui/items.png, title/splashes.txt
   sound/<index name>               e.g. sound/newsound/step/grass1.ogg
   tiles/terrain/<i>.png            terrain.png 16x16 tiles, i = row*16 + col (0..255)
@@ -27,7 +27,7 @@ import zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pngio  # noqa: E402
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 RES_EXT = (".png", ".txt", ".gif")
 
 

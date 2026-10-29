@@ -22,7 +22,7 @@ function M.read_config(path)
     path = path or CONFIG
     local ok, text = pcall(file.read, path)
     if not ok or type(text) ~= "string" then
-        return nil, "no " .. path .. " (start the server: D:\\Prog\\Olife\\play.bat server, or play.bat)"
+        return nil, "no " .. path .. " (start the server: <repo>\\projects\\olife\\external\\play.bat server, or play.bat)"
     end
     local c = {}
     for line in text:gmatch("[^\r\n]+") do

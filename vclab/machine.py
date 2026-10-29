@@ -19,8 +19,6 @@ KEYS = {
     "python_win": (True, "python.exe Windows (3.11+, pywin32, psutil, fastapi, uvicorn, numpy, Pillow, jinja2)"),
     "python_wsl": (False, "python3 в WSL (MCP-сервер voxelcore, тонкие клиенты)"),
     "msys2": (False, "корень MSYS2 (CLANG64) — только для сборки F2F-патчей (f2f/build)"),
-    "vc_root": (False, "рабочий рантайм для запусков паков ({vc_root}: content, res, latest.log); "
-                       "по умолчанию — root движка по умолчанию из registry"),
     "wsl_mount": (False, "префикс дисков Windows в WSL (по умолчанию /mnt)"),
     "powershell": (False, "powershell.exe (MCP voxelcore: запасные снимки окна)"),
     "cargo": (False, "cargo (проекты с Rust-службами; ядру не нужен)"),

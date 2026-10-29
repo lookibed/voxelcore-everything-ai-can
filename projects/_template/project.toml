@@ -1,6 +1,6 @@
 # Шаблон проекта лаборатории. Скопируйте каталог в projects/<имя>/ (имя без «_» в начале — иначе демон его не грузит)
 # и поправьте: name, виды [kinds.*], сценарии. Демон подхватывает правки без рестарта (опрос раз в 1 с).
-# Подстановки: {vc_root} {work_root} {repo_root} {lab_data} {lab_dir} {project_dir} {dir} {lease} {owner} {kind}
+# Подстановки: {work_root} {repo_root} (= {repo}) {packs} {engine.<поле>} {lab_data} {lab_dir} {project_dir} {dir} {lease} {owner} {kind}
 # {project} {exe} {size} {size_w} {size_h} {port.<имя>} {param.<имя>} {engine.id|version|root|res|exe|stock}
 # {engine.builds.f2f|stock|vctest} {machine.<ключ machine.toml>} {python}; {ключ|умолчание}.
 [project]

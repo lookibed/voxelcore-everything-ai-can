@@ -5,7 +5,7 @@ use olife_gateway::ticket::{self, NonceCache, Verdict, Verifier};
 use serde_json::Value;
 
 fn vectors() -> Value {
-    let vc = "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini/tools/olife/protocol/vectors/tickets.json";
+    let vc = "<repo>/tools/olife/protocol/vectors/tickets.json";
     let p = std::env::var("OLIFE_TICKET_VECTORS").ok()
         .or_else(|| std::path::Path::new(vc).exists().then(|| vc.to_string()))
         .unwrap_or_else(|| concat!(env!("CARGO_MANIFEST_DIR"), "/tests/vectors/tickets.json").to_string());

@@ -802,7 +802,7 @@ function PC:start_eaglercraft(prog)
                 ("Сервер Eaglercraft не запущен: %s:%d не отвечает (%s)."):format(host, port, result),
                 "Одиночной игре нужен внешний Node-сервер (оригинальный classes_server.js).",
                 "Запустите его в WSL:",
-                "  node /root/Spider/tests/manual/real-world-eaglercraft/native_server/launcher.js",
+                "  node <Spider>/tests/manual/real-world-eaglercraft/native_server/launcher.js",
                 "и откройте ярлык снова.",
             })
         end

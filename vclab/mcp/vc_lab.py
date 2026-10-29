@@ -30,8 +30,8 @@ def _win_py():
 
 
 class LabPipe:
-    def __init__(self, vc_root):
-        self.vc_root = vc_root
+    def __init__(self, dev_dir):
+        self.dev_dir = dev_dir
         self.proc = None
         self.lock = threading.Lock()
         self.seq = 0
@@ -87,13 +87,13 @@ class Dev:
 
     PROJECT = "vc"
 
-    def __init__(self, vc_root, to_win):
-        self.vc_root = vc_root
+    def __init__(self, dev_dir, to_win):
+        self.dev_dir = dev_dir
         self.to_win = to_win
-        self.lab = LabPipe(vc_root)
+        self.lab = LabPipe(dev_dir)
         self.lease = None          # имя аренды
         self.play = None           # id сеанса final-check
-        self.log_path = os.path.join(vc_root, "latest.log")
+        self.log_path = os.path.join(dev_dir, "latest.log")
         self.info_cache = (0.0, None)
 
     # ------------------------------------------------------------------ состояние
@@ -163,7 +163,7 @@ class Dev:
             out.append(extra[i])
             i += 1
         extra = out
-        d_wsl = _wsl(d) if d else self.vc_root
+        d_wsl = _wsl(d) if d else self.dev_dir
         d_win = d if d and not d.startswith("/") else self.to_win(d_wsl)
         autorun = os.path.join(d_wsl, "autorun_app_script.txt")
         if script is not None:

@@ -249,7 +249,7 @@ def main():
     ap.add_argument("--exe", default="VoxelCoreF2F-e.exe")
     ap.add_argument("--vc-port", type=int, default=25575)
     ap.add_argument("--java-port", type=int, default=25582)
-    ap.add_argument("--dir", default="/mnt/d/Prog/AlphaMine/engine/userdir_e")
+    ap.add_argument("--dir", default=os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "external")), "engine", "userdir_e"))
     ap.add_argument("--server-port", type=int, default=25570)
     ap.add_argument("--server-name", default="e")
     ap.add_argument("--compare", action="store_true", help="after the run: e2e_compare.py golden/<name> <run>")

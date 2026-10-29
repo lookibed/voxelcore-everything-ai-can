@@ -16,7 +16,7 @@ N строк fps (`[wasmrt] <манифест>: X fps`, раз в 5 с) -> ка�
 """
 import json, os, re, statistics, subprocess, sys, time
 
-VC = "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini"
+VC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # TODO(переезд): был рабочий каталог движка (content, tools, worlds) — теперь корень репозитория
 LAB = os.path.join(VC, "tools/lab/lab")
 OWNER = os.environ.get("LAB_OWNER", "halflife_check")
 FAILS, ROWS = [], []
@@ -101,7 +101,7 @@ def main():
         lease = r["lease"]["name"]
         # каталог экземпляра переживает аренды: выбор кнопки «Рендер» прошлых прогонов убрать (иначе он
         # перекрывает разрешение манифеста)
-        inst = r["lease"]["dir"].replace("D:\\", "/mnt/d/").replace("\\", "/")
+        inst = re.sub(r"^([A-Za-z]):", lambda m: "/mnt/" + m.group(1).lower(), r["lease"]["dir"]).replace("\\", "/")
         stale = os.path.join(inst, "config/halflife/resolution.txt")
         if os.path.isfile(stale):
             os.remove(stale)

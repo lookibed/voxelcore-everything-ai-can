@@ -1,10 +1,9 @@
-# vc — запуски движка для разработки паков (MCP vc_start в vclab/mcp/voxelcore_mcp.py: любые паки рабочего рантайма
-# {vc_root}) и тесты движка (vctests). Этап 3а: вместо стокового VoxelCore.exe — тестовая сборка F2F с
-# `--f2f <порт> --f2f-clock realtime` (время идёт само, step не нужен; ввод ОС изолирован, окно без фокуса).
-# Семантика --dir как у прежнего vc_start: по умолчанию --dir {vc_root} (latest.log, autorun_app_script.txt, export\ —
-# там же, где раньше); --res — res движка аренды ({engine.res}: res 0.31 под сборкой 0.32.7 — 0xC0000409, волна 7);
-# --dir/--res из args vc_start перекрывают. Без machine.toml `vc_root` виды dev (без --param dir) и runtime недоступны
-# (kind-unavailable); движок без рантайма паков — вид engine и сценарии vctest ({engine.*}).
+# vc — запуски движка для разработки паков (MCP vc_start в vclab/mcp/voxelcore_mcp.py) и тесты движка (vctests).
+# Этап 3а: вместо стокового VoxelCore.exe — тестовая сборка F2F с `--f2f <порт> --f2f-clock realtime` (время идёт само,
+# step не нужен; ввод ОС изолирован, окно без фокуса). --dir по умолчанию — <work_root>\vc_dev (latest.log,
+# autorun_app_script.txt, export\); паки — `--param packs=a,b`: junction {repo_root}\packs\<пак> -> <dir>\content\<пак>
+# (снимаются при release); --res — res движка аренды ({engine.res}: res 0.31 под сборкой 0.32.7 — 0xC0000409, волна 7).
+# --dir/--res из args vc_start перекрывают. Репозиторий самодостаточен: путей к другим установкам здесь нет.
 # Стоковый рантайм (вид runtime) — только `lab play vc --user` (пользователь) или vc_start(play=true, reason) =
 # `--final-check` главной сессии (claude), запись runtime_session в истории.
 [project]
@@ -18,7 +17,7 @@ scenarios_dir = "{project_dir}\\vctests"
 vctest = { headless = "vctest", window = "vctest_window" }
 
 [kinds.dev]
-description = "VoxelCoreF2F.exe --f2f <port> --f2f-clock realtime, --dir as the old vc_start (default VC_ROOT; needs vc_root), --res of the engine"
+description = "F2F build --f2f <port> --f2f-clock realtime, --dir <work_root>\\vc_dev (vc_start), packs from {repo_root}\\packs (--param packs=a,b), --res of the engine"
 exe = "{param.engine_exe}"
 copy_exe = true
 ports = ["f2f"]
@@ -27,7 +26,8 @@ clock = "realtime"
 window = "normal"          # видимое окно без фокуса: vc_screenshot (PrintWindow) работает, ввод ОС — нет
 cwd = "{param.dir}"
 args = ["--f2f", "{port.f2f}", "--res", "{param.res}", "--dir", "{param.dir}", "{param.extra}"]
-params = { engine_exe = "{engine.builds.f2f}", dir = "{vc_root}", res = "{engine.res}", extra = [] }
+params = { engine_exe = "{engine.builds.f2f}", dir = "{work_root}\\vc_dev", res = "{engine.res}", packs = [], extra = [] }
+prepare = [ { action = "mkdir", path = "{param.dir}" }, { action = "packs", packs = "{param.packs}", into = "{param.dir}\\content" } ]
 logs = { latest = "{param.dir}\\latest.log" }
 default_log = "latest"
 ready = [ { f2f = "hello", timeout = 90 } ]
@@ -59,14 +59,15 @@ stop = [ { f2f = "quit", wait_exit = 8 } ]
 
 # ---------------------------------------------------------------- стоковый рантайм: только lab play / final-check
 [kinds.runtime]
-description = "stock VC_ROOT\\VoxelCore.exe, normal mode (the user's settings and input): play/final-check only"
+description = "stock VoxelCore.exe of the engine, normal mode (the user's settings and input) in <work_root>\\vc_runtime: play/final-check only"
 role = "runtime"
-exe = "{vc_root}\\VoxelCore.exe"
+exe = "{engine.stock}"
 copy_exe = false
 kill_on_close = false
-cwd = "{vc_root}"
+cwd = "{param.dir}"
 args = ["--dir", "{param.dir}", "{param.extra}"]
-params = { dir = "{vc_root}", extra = [] }
+params = { dir = "{work_root}\\vc_runtime", packs = [], extra = [] }
+prepare = [ { action = "mkdir", path = "{param.dir}" }, { action = "packs", packs = "{param.packs}", into = "{param.dir}\\content" } ]
 logs = { latest = "{param.dir}\\latest.log" }
 default_log = "latest"
 ready = []
@@ -77,7 +78,7 @@ description = "stock runtime VoxelCore.exe (start script via autorun_app_script.
 order = ["runtime"]
 engine = "runtime"
 names = { runtime = "vc-main" }
-exclusive_exe = "{vc_root}\\VoxelCore.exe"
+exclusive_exe = "{engine.stock}"
 ttl = 3600
 [play.report]
 log_stream = "latest"

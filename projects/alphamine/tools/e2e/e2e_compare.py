@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compare two E2E series (agents/F2F.md 8): A = reference (golden), B = run.
 
-  python3 tools/alphamine/e2e/e2e_compare.py D:/Prog/AlphaMine/golden/e2e_walk1 D:/Prog/AlphaMine/runs/<run>/e2e_walk1
+  python3 tools/alphamine/e2e/e2e_compare.py <repo>/projects/alphamine/external/golden/e2e_walk1 <repo>/projects/alphamine/external/runs/<run>/e2e_walk1
       [--out DIR (default B/vs_<A>)] [--tol 3] [--clear 0,0,0]
 
 Keyframes (kf_NNNN.png present on both sides): identical % / within tol % / coverage A,B (tools/reference/compare.py
@@ -21,8 +21,8 @@ import sys
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
-sys.path.insert(0, os.path.join(VC_ROOT, "tools", "reference"))
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+sys.path.insert(0, os.path.join(REPO, "projects", "vc", "reference"))
 import compare as cmp  # noqa: E402
 
 WINPY = "/mnt/c/Python313/python.exe"

@@ -21,8 +21,8 @@ import subprocess
 import sys
 import time
 
-VC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-LAB = os.path.join(VC_ROOT, "tools", "lab", "lab")
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+LAB = os.path.join(REPO, "bin", "lab")
 
 
 def lab(*args, timeout=600):

@@ -2,7 +2,7 @@
 
 Публичный режим стека игрока (`lab play olife --user --public`, `lab olife play-up --public`, `play.bat public`):
 шлюз (Rust `--public --packs-public`), сервис билетов (`--public 1`) и раздача паков слушают 0.0.0.0 на ФИКСИРОВАННЫХ
-портах `[play.public]` проекта (перекрытие — `D:\\Prog\\Olife\\play\\server.toml`, секция `[public]`); admin/f2f-порты
+портах `[play.public]` проекта (перекрытие — `<repo>\\projects\\olife\\external\\play\\server.toml`, секция `[public]`); admin/f2f-порты
 шлюза, сервиса билетов, мира, песочницы и демон — только 127.0.0.1. Друг знает одну строку `ip:port` (+ необязательный
 отпечаток ключа `#xxxx`): клиент спрашивает шлюз `InfoRequest` -> `ServerInfo` (порты билетов/паков, ключ запечатывания,
 id шлюза) — файл `server_info.json` пишет play_up, шлюз перечитывает его на каждый запрос.
@@ -24,9 +24,9 @@ import zipfile
 
 P = {}
 
-PLAY_DIR = r"D:\Prog\Olife\play"
+PLAY_DIR = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")), "projects", "olife", "external", "play")
 SERVER_TOML = os.path.join(PLAY_DIR, "server.toml")
-DIST = r"D:\Prog\Olife\dist"
+DIST = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")), "projects", "olife", "external", "dist")
 DEFAULTS = {"gateway": 27750, "auth": 27751, "packs": 27752, "whitelist": True, "name": "Olife", "motd": ""}
 ECHO = ("https://api.ipify.org", "https://ifconfig.me/ip", "https://icanhazip.com")
 PS = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
@@ -48,7 +48,7 @@ def _menu():
 
 # ============================================================================================== порты
 def public_cfg(lab):
-    """[play.public] проекта, поверх — [public] из D:\\Prog\\Olife\\play\\server.toml (если есть)"""
+    """[play.public] проекта, поверх — [public] из <repo>\\projects\\olife\\external\\play\\server.toml (если есть)"""
     c = dict(DEFAULTS)
     proj = lab.projects.get("olife")
     c.update(((proj.raw or {}).get("play") or {}).get("public") or {})
@@ -236,7 +236,7 @@ def external_ip(timeout=4.0):
 
 
 def play_pub_key(base=PLAY_DIR):
-    """ключ запечатывания постоянного сервера (D:\\Prog\\Olife\\play\\keys) -> b64url | None (сервер ещё не поднимался)"""
+    """ключ запечатывания постоянного сервера (<repo>\\projects\\olife\\external\\play\\keys) -> b64url | None (сервер ещё не поднимался)"""
     p = os.path.join(base, "keys", "auth_seal_x25519.key")
     if not os.path.exists(p):
         return None
@@ -396,14 +396,14 @@ def bundle(lab, out=None, invite=None, keep_stage=False):
         shutil.copyfile(os.path.join(root, "ORIGIN.txt"), os.path.join(top, "ORIGIN.txt"))
     nres = _copytree(eng["res"], os.path.join(top, "res"))
     packs = P["CLIENT_PACKS"]
-    npk = {pk: _copytree(os.path.join(config.VC_ROOT, "content", pk), os.path.join(top, "content", pk)) for pk in packs}
+    npk = {pk: _copytree(os.path.join(config.PACKS_DIR, pk), os.path.join(top, "content", pk)) for pk in packs}
     font = os.path.join(top, "content", "olife_client", "fonts", "olife_mono.ttf")
     with open(os.path.join(top, "settings.toml"), "w", encoding="utf-8", newline="\r\n") as f:
         f.write(SETTINGS)
     with open(os.path.join(top, "OLIFE.bat"), "w", encoding="cp866", newline="\r\n") as f:
         f.write(BAT)
     mine = supervise.pack_manifest(os.path.join(top, "content"), packs)
-    server = supervise.pack_manifest(os.path.join(config.VC_ROOT, "content"), packs)
+    server = supervise.pack_manifest(config.PACKS_DIR, packs)
     origin = ""
     try:
         with open(os.path.join(root, "ORIGIN.txt"), encoding="utf-8") as f:
@@ -919,7 +919,7 @@ def st_bundle(sx, args, step):
     _ck(sx, "zip: no vctest.exe", not os.path.exists(os.path.join(top, "vctest.exe")))
     from labcore import config, supervise
     mine = supervise.pack_manifest(os.path.join(top, "content"), P["CLIENT_PACKS"])
-    srv = supervise.pack_manifest(os.path.join(config.VC_ROOT, "content"), P["CLIENT_PACKS"])
+    srv = supervise.pack_manifest(config.PACKS_DIR, P["CLIENT_PACKS"])
     _ck(sx, "unpacked packs: sha256 manifest == server distribution", mine["version"] == srv["version"] and
         mine["files"] == srv["files"], mine=mine["version"][:16], server=srv["version"][:16], files=mine["files"])
     try:

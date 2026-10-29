@@ -1,4 +1,4 @@
--- olife_world:sandbox — bridge world <-> sandbox service (OLIFE_SANDBOX.md §7; /root/olife/sandboxd).
+-- olife_world:sandbox — bridge world <-> sandbox service (OLIFE_SANDBOX.md §7; <olife-src>/sandboxd).
 -- Pipeline per tick: phase 2 apply(TickResult of tick N-1, validated) ... phase 4 send_input(TickInput N).
 -- The world never blocks on the service: a result is applied when it arrives (late ones are counted); more than
 -- `max_behind` ticks in flight -> inputs are skipped (backpressure). Service down -> scripted entities freeze,

@@ -29,16 +29,21 @@
 
 ## За час с нуля
 Подробно — [docs/ONBOARDING.md](docs/ONBOARDING.md); что делать, если `lab doctor` не «ok», — [install/doctor.md](install/doctor.md).
-1. Windows: Python 3.11+ и `pip install pywin32 psutil fastapi uvicorn numpy Pillow jinja2 pytest`; WSL: `python3`.
-2. Стоковые релизы VoxelCore — в `engines_root` (`engines/<id>/ORIGIN.md`: откуда, sha256); тестовые сборки F2F — в
-   `builds_root` (приватный `lookibed/voxelcore-f2f` или `f2f/README.md` — сборка).
-3. `cp machine.toml.example machine.toml`, поправить корни. `bin/lab doctor` — всё «ok» (что нет — `install/doctor.md`).
-4. `export LAB_OWNER=<имя>`; `bin/lab daemon start --isolated` → порт `P`.
-5. `bin/lab --daemon P doctor --probe` — `hello.version` каждой F2F-сборки арендой (ввод изолирован, окно hidden).
-6. `bin/lab --daemon P run vc canvas_shot --engine v0327` (headless) и `--window` (F2F) — кадр `927b36b5…` в обоих.
-7. `cd /mnt/c && <python_win> -X utf8 -B -m pytest -q <repo>\tests` — тесты ядра.
-8. MCP: `install/mcp.json.example` → `.mcp.json`. Новый проект: `cp -r projects/_template projects/<имя>`.
-9. В конце: `bin/lab --daemon P daemon stop`.
+Старый рабочий каталог, сборка F2F и легаси-версии движка (`v031`, `v032`) не нужны: только Windows + WSL, интернет и
+`gh auth login` с доступом к этому репозиторию.
+1. `git clone` на диск Windows (`/mnt/c/...`); `install/bootstrap.sh` (из WSL) или `install\bootstrap.ps1` — Python 3.13 и
+   модули, `machine.toml` с корнями в репозитории, сток 0.32.7 с GitHub Releases upstream в `engines\v0327\`, F2F из
+   релиза `f2f-v0327-767234c5` в `builds\0327\` (sha256 из `engines/registry.toml`), `lab doctor` — 0 FAIL.
+2. `export LAB_OWNER=<имя>`; `bin/lab daemon start --isolated` → порт `P`.
+3. `bin/lab --daemon P lease vc engine --param engine=v0327 --start`, `bin/lab --daemon P f2f vc-engine-1 hello` —
+   `0.32.7-f2f`, ввод `isolated`; `release vc-engine-1`.
+4. `bin/lab --daemon P run vc canvas_shot` (headless) и `--window` (F2F) — кадр `927b36b5…` в обоих.
+5. `cd /mnt/c && <python_win> -X utf8 -B -m pytest -q <repo>\tests` — тесты ядра.
+6. MCP: `install/mcp.json.example` → `.mcp.json`. Новый проект: `cp -r projects/_template projects/<имя>`.
+7. В конце: `bin/lab --daemon P daemon stop`.
+
+Exe тестовых сборок F2F — в [GitHub Releases](https://github.com/lookibed/voxelcore-everything-ai-can/releases) этого
+репозитория (`f2f-<версия>-<коммит>`: exe, патч, отчёт сверки со стоком; `lab f2f release <id>`).
 
 ## Документы
 | документ | о чём |
@@ -67,7 +72,7 @@
 | `packs/` | паки, композиции и паки проектов — каталог `docs/PACKS.md`, `catalog/packs.toml` |
 | `catalog/` | `packs.toml` — машинно-читаемый каталог паков |
 | `tests/` | pytest ядра (Windows-Python; `LAB_SKIP_ENGINE=1` — без движка) |
-| `install/` | `doctor.md`, `mcp.json.example`, bootstrap (каркас) |
+| `install/` | `bootstrap.ps1` / `bootstrap.sh` (машина с нуля), `doctor.md`, `mcp.json.example` |
 
 ## Монолитный каталог
 С 29.10 агент заходит в один каталог и видит всё: `engines/<id>/` (установленные стоковые движки; `v031`, `v032` — ссылки
@@ -90,10 +95,10 @@
 | волна | что | состояние |
 |---|---|---|
 | 1 | ядро `vclab`, `machine.toml`, реестр движков, `projects/vc` и `_template`, `lab doctor`, CI | готово (29.10.2026) |
-| 4 | рецепт сборки F2F, чистка путей машины в F2F | идёт |
-| 5 | документы с нуля (`docs/`, этот README) | идёт |
-| 6 | перенос проектов: wasmrt → olife → alphamine (по проекту на волну) | впереди |
-| 7 | exe F2F в GitHub Releases, bootstrap, исходники служб (Rust-шлюз, песочница) | впереди |
+| 4 | рецепт сборки F2F, чистка путей машины в F2F | готово (29.10.2026) |
+| 5 | документы с нуля (`docs/`, этот README) | готово (29.10.2026) |
+| 6 | перенос проектов: wasmrt → olife → alphamine, монолитный каталог | готово (29.10.2026) |
+| 7 | exe F2F в GitHub Releases, рабочий bootstrap, легаси-версии необязательны, проверка «чистый ПК» | готово (29.10.2026) |
 
 ## Откуда что
 Репозиторий вырос из рабочего каталога движка; его полный снимок — приватный
@@ -111,4 +116,5 @@
 | `lab/lab.toml` (пути, `[engines.*]`) | `lab.toml` (без путей) + `machine.toml` + `engines/registry.toml` |
 | `lab/projects/vc` | `projects/vc` |
 | `labcore/cli_sup.py` (`lab olife`), панель olife в `supervise.py`, тесты olife | `projects/olife/{cli.py,sup_panel.js,tests/}` |
-| `mcp/{eagler_tools,alpha_tools,alpha_vc}.py`, `lab/projects/{alphamine,olife,wasmrt}` | не перенесены (волна 6) |
+| `lab/projects/{alphamine,olife,wasmrt}` | `projects/{alphamine,olife,wasmrt}` (волна 6; с волны 7 — пути внутри репозитория: `{project_dir}`, `{repo_root}\packs`, `external\`) |
+| `mcp/{eagler_tools,alpha_tools,alpha_vc}.py` | не перенесены |

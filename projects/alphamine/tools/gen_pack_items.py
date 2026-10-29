@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """AlphaMine phase 3: engine items for the Alpha items (content/alphamine/items/*.json + textures/items/am_*.png).
 
-From D:\\Prog\\AlphaMine\\tables\\items.json (Item.java executed by minijava) and assets\\named\\items\\<name>.png:
+From <repo>\\projects\\alphamine\\external\\tables\\items.json (Item.java executed by minijava) and assets\\named\\items\\<name>.png:
   items/item_<name_snake>.json  {"icon-type": "sprite", "icon": "items:am_<name>", "stack-size": maxStackSize,
                             "caption": <Alpha item name>}
 Block items (ItemBlock, id < 256) are not generated: the engine creates `alphamine:<block>.item` for every block
@@ -16,9 +16,9 @@ import os
 import shutil
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
-PACK = os.path.join(VC_ROOT, "content", "alphamine")
-ALPHA = "/mnt/d/Prog/AlphaMine"
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+PACK = os.path.join(REPO, "packs", "alphamine")
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 
 
 def main():

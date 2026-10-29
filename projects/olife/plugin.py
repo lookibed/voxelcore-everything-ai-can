@@ -117,9 +117,9 @@ def build_session(mk, info, args, log=None):
 def session_manifest(sid):
     """UX A4: manifest of the live client packs for one session (artifacts\\lab\\olife\\manifests\\<sid>.json)"""
     from labcore import config, supervise
-    out = os.path.join(config.VC_ROOT, "artifacts", "lab", "olife", "manifests", "%s.json" % sid)
+    out = os.path.join(config.WORK_ROOT, "lab", "olife", "manifests", "%s.json" % sid)
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    supervise.pack_manifest(os.path.join(config.VC_ROOT, "content"), CLIENT_PACKS, out)
+    supervise.pack_manifest(config.PACKS_DIR, CLIENT_PACKS, out)
     return out
 
 
@@ -645,7 +645,7 @@ CLIENT_PACKS = {"olife_client": "client", "olife_proto": "both"}
 
 def _tools_olife(lab):
     from labcore import config
-    return os.path.join(config.VC_ROOT, "tools", "olife")
+    return os.path.join(config.REPO_ROOT, "projects", "olife", "tools")
 
 
 def seed_db(sup, bots=0):
@@ -687,7 +687,7 @@ def manifest_path(lab):
 
 def make_manifest(lab):
     from labcore import config, supervise
-    return supervise.pack_manifest(os.path.join(config.VC_ROOT, "content"), CLIENT_PACKS, manifest_path(lab))
+    return supervise.pack_manifest(config.PACKS_DIR, CLIENT_PACKS, manifest_path(lab))
 
 
 def read_world_state(wdir):

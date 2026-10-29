@@ -1,6 +1,6 @@
 @echo off
 rem Olife: игра пользователя без WSL. Подробно - README-play.md рядом.
-rem   play.bat            сервер Olife (мир D:\Prog\Olife\play\worlds) + окно VoxelCore 0.32, вход автоматически;
+rem   play.bat            сервер Olife (мир projects\olife\external\play\worlds) + окно VoxelCore 0.32, вход автоматически;
 rem                       закрыли окно игры -> сервер сохраняет мир и останавливается, отчёт play_report.md
 rem   play.bat public     то же, но сервер открыт друзьям по сети: порты 27750/27751/27752 на всех адресах,
 rem                       вайтлист включён (README-play.md, "Игра с друзьями по сети")
@@ -13,11 +13,11 @@ rem   play.bat dry        проверка без окна игры (тестовый клиент, копия мира)
 rem   play.bat token      показать токен аккаунта user
 rem   play.bat friend НИК пустить друга: ник в вайтлист + строка для друга (ip:27750#отпечаток)
 rem   play.bat ip         адреса этого ПК (LAN, VPN, внешний IP) и строки для друзей
-rem   play.bat bundle     собрать архив клиента для друга в D:\Prog\Olife\dist
+rem   play.bat bundle     собрать архив клиента для друга в projects\olife\external\dist
 rem   play.bat friend-token ИМЯ   старый способ: аккаунт с токеном (токен - секрет, передавать лично)
 setlocal
 set PY=C:\Python313\python.exe
-set LAB=D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini\tools\lab\lab.py
+set LAB=%~dp0..\..\..\bin\lab.py
 set LAB_OWNER=user
 set LAB_ROLE=
 set CMD=%1
@@ -50,7 +50,7 @@ goto end
 :server
 if /I "%2"=="public" goto serverpublic
 "%PY%" -X utf8 -B "%LAB%" olife play-up
-echo Сервер запущен. Игра: D:\Prog\VoxelCore\voxelcore-0.32.0_dc62ccfb\VoxelCore.exe -^> Сценарии -^> olife. Остановить: play.bat down
+echo Сервер запущен. Игра: engines\v0327\VoxelCore.exe -^> Сценарии -^> olife. Остановить: play.bat down
 goto end
 
 :serverpublic

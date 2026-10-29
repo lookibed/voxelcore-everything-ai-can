@@ -6,7 +6,7 @@ payload}`, `Multicast` fan-out), per-session counters, admin endpoints, graceful
 `Disconnect` codes follow the reference `tools/olife/gateway_dev.py` (VC_ROOT); the codecs are **generated** from the
 same schema as the Lua and Python ones (`tools/olife/protocol/*.yaml`, `gen_codecs.py --lang rust`).
 
-Sources: `/root/olife/gateway` (local git repo, nothing committed). Binary: `D:\Prog\Olife\gateway\olife-gateway.exe`
+Sources: `<olife-src>/gateway` (local git repo, nothing committed). Binary: `<repo>\projects\olife\external\gateway\olife-gateway.exe`
 (native MSVC build, `tools/win_build.sh`). Lab: project `olife`, kind `gateway_rs`, `lab run olife <scenario> --impl rs`.
 
 ## Run
@@ -114,11 +114,11 @@ World link: one TCP connection, `GatewayHello{secret}`, reconnect every 1 s; los
 | `tests/packs.rs` | manifest load/change/broken file, client|both filter, PacksChanged fields |
 | `tools/ticket_packs_check.py` | end to end vs a gateway build + `world_fake.py`: ticket codes 0/14/15/16/17/4/5, static tokens, tickets-only mode, PacksChanged after Welcome and on change (latency), packs HTTP 200/404/409, metrics. `--gw "python3 <VC>/tools/olife/gateway_dev.py"` runs the same against the reference |
 | `tools/fuzz_parity.py` | Python vs Rust codecs on the same 30 000 mutated bodies: same accept/reject, same re-encoding |
-| `tools/win_build.sh` | sync to `D:\Prog\Olife\gateway\build`, native `cargo build --release` (MSVC), copy the exe |
+| `tools/win_build.sh` | sync to `<repo>\projects\olife\external\gateway\build`, native `cargo build --release` (MSVC), copy the exe |
 
 ## Build and test
 ```bash
-python3 /mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini/tools/olife/gen_codecs.py --lang rust   # after a schema change
+python3 <repo>/tools/olife/gen_codecs.py --lang rust   # after a schema change
 cargo test --release            # Linux (WSL): 7 codec + 6 gateway + 8 ticket + 1 packs tests
 python3 tools/fuzz_parity.py 30000
 python3 tools/ticket_packs_check.py            # 23 end-to-end cases (tickets + packs), temp files in $TMPDIR

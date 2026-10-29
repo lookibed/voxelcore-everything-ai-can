@@ -5,7 +5,7 @@
                                                         content/alphamine/sounds/am/... + preload.json "sounds"
 
 Sources:
-  * D:\\Prog\\AlphaMine\\tables\\blocks.json / items.json (tools/alphamine/gen_tables.py: values by executing the
+  * <repo>\\projects\\alphamine\\external\\tables\\blocks.json / items.json (tools/alphamine/gen_tables.py: values by executing the
     Java registrations): hardness, block bounds (doubles as Java keeps them), material, step sounds, render type,
     tool efficiency (`str_vs_block`), harvest lists (`can_harvest`), max damage/stack, food heal, armour type;
   * the crafting recipes: CraftingManager.getInstance().recipes is dumped by RUNNING the reference client classes
@@ -22,9 +22,9 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
-PACK = os.path.join(VC_ROOT, "content", "alphamine")
-ALPHA = "/mnt/d/Prog/AlphaMine"
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+PACK = os.path.join(REPO, "packs", "alphamine")
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 TABLES = os.path.join(ALPHA, "tables")
 REF = os.path.join(ALPHA, "ref")
 WORK = os.path.join(ALPHA, "run", "gen_interact")
@@ -33,7 +33,7 @@ PS = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
 
 
 def win(p):
-    return "D:\\" + p[len("/mnt/d/"):].replace("/", "\\") if p.startswith("/mnt/d/") else p
+    return "%s:\\%s" % (p[5].upper(), p[7:].replace("/", "\\")) if re.match(r"^/mnt/[a-z]/", p) else p
 
 
 JAVA = r"""

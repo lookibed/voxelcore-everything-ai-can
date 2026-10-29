@@ -3,8 +3,8 @@
   lab doctor [--json] [--probe] [--daemon P] [--engine ID ...]
 
 Печатает таблицу «ок / чего не хватает / как починить» (ссылки — install/doctor.md#<якорь>). Код выхода 0 — нет FAIL.
-Статус `info` — не ошибка: необязательное отсутствует (версии реестра с `legacy = true`, `vc_root` не задан, битые
-ссылки снимка машины-источника в engines/ и builds/). Обязательны версия движка по умолчанию и версии без legacy.
+Статус `info` — не ошибка: необязательное отсутствует (версии реестра с `legacy = true`, лишние ключи
+machine.toml, symlink'и в engines/ и builds/ — репозиторий самодостаточен, ссылок наружу в нём нет). Обязательны версия движка по умолчанию и версии без legacy.
 Без --probe движок не запускается вовсе: стоковый exe проверяется ключом `--version` (без окна: CREATE_NO_WINDOW,
 движок печатает версию и выходит до создания окна), F2F — образом (какие ключи F2F знает сборка) и последним
 `hello` этой сборки из данных демона (state\\engine_hello.json, по sha256). `--probe` — настоящий `hello.version`:
@@ -80,10 +80,6 @@ def check_machine(rep, m):
             continue
         if key in ("engines_root", "builds_root"):
             rep.add("machine", key, OK if os.path.isdir(v) else FAIL, v, "roots")
-        elif key == "vc_root":
-            rep.add("machine", key, OK if os.path.isdir(v) else WARN,
-                    v if os.path.isdir(v) else "%s: missing (projects vc dev/runtime, olife, alphamine are unavailable)" % v,
-                    "vc-root")
         elif key == "work_root":
             if os.path.isdir(v):
                 rep.add("machine", key, OK, v)
@@ -92,9 +88,10 @@ def check_machine(rep, m):
                 rep.add("machine", key, WARN if os.path.isdir(parent) else FAIL,
                         "%s (absent; the daemon creates it)" % v if os.path.isdir(parent) else "%s: parent missing" % v,
                         "roots")
-    if not m.get("vc_root") and not os.environ.get("LAB_VC_ROOT"):
-        rep.add("machine", "vc_root", INFO, "not set: kinds that use {vc_root} (vc dev/runtime, olife, alphamine) are "
-                "unavailable; vc engine, lab run vc canvas_shot/world work through {engine.*}", "vc-root")
+    extra = sorted(k for k, v in m.items() if not k.startswith("_") and k not in machine.KEYS and k != "engines")
+    if extra:
+        rep.add("machine", "unknown keys", INFO, "ignored: %s (not in vclab/machine.py KEYS)" % ", ".join(extra),
+                "machine-toml")
 
 
 def check_links(rep):
@@ -127,7 +124,7 @@ def check_links(rep):
                 except OSError:
                     broken.append(os.path.relpath(c, config.REPO_ROOT))
     if broken:
-        rep.add("repo", "links", INFO, "broken links of the source machine snapshot (not needed): %s" % ", ".join(
+        rep.add("repo", "links", WARN, "symlinks/broken links (the repository must not point outside; copy instead): %s" % ", ".join(
             sorted(broken)), "links")
 
 

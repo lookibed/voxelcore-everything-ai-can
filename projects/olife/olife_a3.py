@@ -3,7 +3,7 @@ memory, ответы на запросы через такт, тарификац
 
 Подключается из plugin.py (`_a3()`, перезагрузка по mtime этого файла), получает его глобалы (_roles, _kv, _w4a, ...).
 Мир — content/olife_world/modules/mobapi.lua (+ мост sandbox.lua: Ext/Answers/LoadKeep), песочница —
-/root/olife/sandboxd (prelude.lua, service.rs: LoadKeep, --state-dir), клиент — content/olife_client/modules/mobview.lua
+<olife-src>/sandboxd (prelude.lua, service.rs: LoadKeep, --state-dir), клиент — content/olife_client/modules/mobview.lua
 (F2F `mobview`: то, что видит движок клиента: transform size/rot, текстуры/модели/матрицы костей, анимация, звуки, текст).
 Скрипты теста — content/olife_world/sandbox/a3_api_test.lua (все вызовы, результаты — в memory моба: `mob_api <eid>`),
 a3_cost_probe.lua (по одному вызову раз в 10 тактов: цена из строк export/sandbox_ticks.jsonl, поле api).

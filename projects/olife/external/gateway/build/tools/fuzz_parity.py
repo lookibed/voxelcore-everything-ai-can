@@ -3,7 +3,7 @@
 bodies must re-encode to the same bytes in both. Needs the VC_ROOT Python codecs (tools/olife/olife_proto).
   python3 tools/fuzz_parity.py [N]      (builds/runs `cargo run --release --example decode_corpus`)"""
 import json, os, random, subprocess, sys
-VC = os.environ.get("VC_ROOT", "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini")
+VC = os.environ.get("VC_ROOT", os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "..", "..", "..")))  # корень репозитория
 sys.path.insert(0, os.path.join(VC, "tools", "olife"))
 from olife_proto import client, internal, sandbox  # noqa: E402
 from olife_proto.wire import ProtoError  # noqa: E402

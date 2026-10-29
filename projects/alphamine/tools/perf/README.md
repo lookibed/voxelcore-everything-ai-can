@@ -1,6 +1,6 @@
 # AlphaMine perf suite
 
-Numbers, causes and history: `agents/ALPHAMINE.md` §9 and §9.1. All runs write to `D:\Prog\AlphaMine\runs\<stamp>_...`.
+Numbers, causes and history: `agents/ALPHAMINE.md` §9 and §9.1. All runs write to `<repo>\projects\alphamine\external\runs\<stamp>_...`.
 
 | script | what |
 |---|---|

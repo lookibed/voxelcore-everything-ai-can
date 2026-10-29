@@ -22,7 +22,7 @@ import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 a = {sys.argv[i][2:]: sys.argv[i + 1] for i in range(1, len(sys.argv) - 1) if sys.argv[i].startswith("--")}
-VC = a.get("vc", "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini")
+VC = a.get("vc", os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "..", "..", "..")))  # корень репозитория
 OL = os.path.join(VC, "tools", "olife")
 sys.path.insert(0, OL)
 import olife_ticket as T  # noqa: E402

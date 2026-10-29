@@ -2,7 +2,7 @@
  "group": "olife-play-s140105383",
  "session": "s140105383",
  "mode": "play",
- "base": "D:\\Prog\\Olife\\play",
+ "base": "<repo>\\projects\\olife\\external\\play",
  "leases": {
   "sandbox": "olife-sandbox-1",
   "world": "olife-world_play-1",
@@ -18,15 +18,15 @@
  "public": false,
  "gw_id": "gw-olife-play",
  "packs": {
-  "content": "D:\\Prog\\VoxelCore\\voxelcore-0.32.0_dc62ccfb\\content",
+  "content": "<repo>\\engines\\v032\\content",
   "packs": {
    "olife_client": "ok",
    "olife_proto": "ok"
   },
-  "target": "D:\\Prog\\VoxelCore\\voxelcore-0.31.0_pre_gemini\\content"
+  "target": "<repo>\\content"
  },
- "token_file": "D:\\Prog\\Olife\\play\\user_token.txt",
- "worlds": "D:\\Prog\\Olife\\play\\worlds",
+ "token_file": "<repo>\\projects\\olife\\external\\play\\user_token.txt",
+ "worlds": "<repo>\\projects\\olife\\external\\play\\worlds",
  "worlds_source": "persistent",
  "benches": [
   {
@@ -74,9 +74,9 @@
  "auth_port": 25603,
  "auth_pub": "gwX0vADMVqv8env93Q1aRhhhIJ5hnXhcstftYglrbgI",
  "game_port": 25602,
- "config": "D:\\Prog\\Olife\\play\\olife_server.txt",
- "client_config": "D:\\Prog\\VoxelCore\\voxelcore-0.32.0_dc62ccfb\\export\\olife_server.txt",
- "panel": "D:\\Prog\\VoxelCore\\voxelcore-0.31.0_pre_gemini\\artifacts\\lab\\dashboard\\olife.html",
+ "config": "<repo>\\projects\\olife\\external\\play\\olife_server.txt",
+ "client_config": "<repo>\\engines\\v032\\export\\olife_server.txt",
+ "panel": "<work_root>\\lab\\dashboard\\olife.html",
  "panel_url": "http://127.0.0.1:25700/sup/panel?prefix=olife-&title=Olife",
  "up_s": 4.39
 }

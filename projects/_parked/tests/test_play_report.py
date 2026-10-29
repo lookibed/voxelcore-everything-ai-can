@@ -1,5 +1,5 @@
 """Отчёт игровой сессии: строки статуса сессии пользователя 01.10 00:51–00:56 (сохранены в
-D:\\Prog\\AlphaMine\\runs\\20261001_0051_user_session\\status_lines.txt) и сырые строки latest.log с шаблонами
+<repo>\\projects\\alphamine\\external\\runs\\20261001_0051_user_session\\status_lines.txt) и сырые строки latest.log с шаблонами
 дескриптора alphamine ([play.report])."""
 import os
 import tomllib
@@ -8,7 +8,7 @@ import pytest
 
 from vclab import play as P
 
-STATUS = r"D:\Prog\AlphaMine\runs\20261001_0051_user_session\status_lines.txt"
+STATUS = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "projects", "alphamine", "external", "runs", "20261001_0051_user_session", "status_lines.txt")
 DESC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "projects", "alphamine",
                     "project.toml")
 

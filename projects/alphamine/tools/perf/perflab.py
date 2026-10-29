@@ -11,8 +11,8 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
-LAB = os.path.join(VC_ROOT, "tools", "lab", "lab")
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+LAB = os.path.join(REPO, "bin", "lab")
 
 
 def win(p):

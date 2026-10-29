@@ -1,16 +1,16 @@
 # Olife: как играть (VoxelCore 0.32)
 
-> **22.10: VoxelCore 0.32.7.** Olife проверен на релизе 0.32.7 (`D:\Prog\VoxelCore\voxelcore-0.32.7_win64`): регресс лаборатории зелёный
+> **22.10: VoxelCore 0.32.7.** Olife проверен на релизе 0.32.7 (`<repo>\engines\v0327`): регресс лаборатории зелёный
 > (кроме `olife_mobs`, красного и на 0.32.0). Игра и `play.bat bundle` переключатся на 0.32.7, когда главная сессия применит правку
 > лаборатории; до этого `play.bat` по-прежнему запускает 0.32.0 (`voxelcore-0.32.0_dc62ccfb`) — пути ниже верны для 0.32.0.
 
 Olife — «Garry's Mod для VoxelCore»: сервер мира (headless VoxelCore 0.32), шлюз с входом по одноразовым билетам,
 программируемые сущности-«бенчи», код которых исполняется в отдельной песочнице (`olife-sandboxd`) с лимитами и тарифами.
-Вы играете в обычном окне **стокового VoxelCore 0.32** (`D:\Prog\VoxelCore\voxelcore-0.32.0_dc62ccfb\VoxelCore.exe`).
+Вы играете в обычном окне **стокового VoxelCore 0.32** (`<repo>\engines\v032\VoxelCore.exe`).
 
 ## Запуск и остановка
 
-**Одним щелчком:** `D:\Prog\Olife\play.bat` (WSL не нужен). Консоль поднимает сервер, через ~5 с открывается окно игры
+**Одним щелчком:** `<repo>\projects\olife\external\play.bat` (WSL не нужен). Консоль поднимает сервер, через ~5 с открывается окно игры
 с **меню клиента Olife** (16.10): слева 3D-сценка, справа поля «Шлюз (ip:port)» и «Ник» — уже заполнены (аккаунт `user`),
 нажмите **«Войти»**. Дальше экран статуса показывает каждый шаг входа (билет, шлюз, Welcome, паки, sha256, мир, чанки);
 ошибка — там же, с кодом и причиной, и кнопками «Повторить» / «Назад». Консоль не закрывайте до конца игры: после выхода
@@ -19,7 +19,7 @@ Olife — «Garry's Mod для VoxelCore»: сервер мира (headless Voxe
 Из WSL то же самое:
 
 ```
-/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini/tools/lab/lab play olife --user --wait
+<repo>/tools/lab/lab play olife --user --wait
 ```
 
 (запускать из своего терминала: `lab play --user` принимается только из интерактивной консоли пользователя).
@@ -37,7 +37,7 @@ Olife — «Garry's Mod для VoxelCore»: сервер мира (headless Voxe
 2. Запустите `VoxelCore.exe` 0.32 сами → «Сценарии» → `olife [olife_client]`.
 3. Когда закончите: `play.bat down` (или `lab olife play-down`).
 
-Адрес сервера и токен клиент берёт из `D:\Prog\VoxelCore\voxelcore-0.32.0_dc62ccfb\export\olife_server.txt`. Этот файл
+Адрес сервера и токен клиент берёт из `<repo>\engines\v032\export\olife_server.txt`. Этот файл
 пишет сервер при каждом запуске (порты каждый раз новые) и удаляет при остановке; меню берёт из него только автозаполнение
 полей, а последние серверы помнит само (`config\olife_client\menu.json`). Вход по нику без токена (друзья) — если сервер
 разрешает: `lab olife whitelist on|add <ник>|remove <ник>|list` (или `/whitelist ...` в чате админа). Если файла нет, поля
@@ -71,7 +71,7 @@ Olife — «Garry's Mod для VoxelCore»: сервер мира (headless Voxe
 
 ## Что в мире
 
-Мир постоянный: `D:\Prog\Olife\play\worlds\olife`. Бенчи, их код и статус, инвентарь и ваша позиция переживают
+Мир постоянный: `<repo>\projects\olife\external\play\worlds\olife`. Бенчи, их код и статус, инвентарь и ваша позиция переживают
 перезапуск. При первом запуске появляются три примера, все принадлежат `user` и уже запущены:
 
 | бенч | что делает | код |
@@ -80,7 +80,7 @@ Olife — «Garry's Mod для VoxelCore»: сервер мира (headless Voxe
 | `demo_follow` | идёт за ближайшим игроком, если тот ближе 6 блоков, и останавливается в 2 блоках от него | `.../demo_follow.lua` |
 | `demo_blink` | раз в полсекунды подпрыгивает на блок и возвращается | `.../demo_blink.lua` |
 
-Пути выше даны от `D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini\`. Если пример есть в мире, повторно он не создаётся.
+Пути выше даны от `<repo>\`. Если пример есть в мире, повторно он не создаётся.
 Монета `olife_proto:coin` убрана из паков (02.10). Мир, который её уже видел, 0.32 без неё не открывает, поэтому сервер при
 первом запуске после обновления убирает её из `worlds\olife\indices.json` (она там последняя — номера других предметов не
 меняются; копия прежнего файла — `indices.json.ux1.bak`). Монеты из вашего инвентаря пропадут, остальное останется.
@@ -100,7 +100,7 @@ API скрипта: `on_tick(dt)` вызывается 20 раз в секунд
 | `demo_block_painter` | раз в 5 с заливает квадрат 4×4 под собой новым блоком и проверяет результат чтением области |
 | `demo_memory_counter` | считает секунды в памяти моба: счёт продолжается после перезапуска сервера |
 
-Полный список вызовов — `/root/olife/sandboxd/README.md`, раздел «UX A3» (копия — `D:\Prog\Olife\sandboxd\README.md`
+Полный список вызовов — `<olife-src>/sandboxd/README.md`, раздел «UX A3» (копия — `<repo>\projects\olife\external\sandboxd\README.md`
 после выкладки), коротко: `block.get/get_area/set/fill_area/raycast/is_replaceable/find`, `self:set_scale/set_rot/
 set_texture/set_model/set_visible/play_anim/stop_anim/play_sound/text3d/nearby/look_at`, `self.skeleton:bones/set_bone/
 set_bone_model/reset`, `memory.get/set/keys`. Запросы к миру (чтение блоков, поиск, соседи) отвечают через такт — вызов
@@ -138,12 +138,12 @@ set_bone_model/reset`, `memory.get/set/keys`. Запросы к миру (чте
 
 | что | где |
 |---|---|
-| отчёт сеанса (fps по 5-секундным окнам, кривая `play_fps.svg`, ошибки и предупреждения движка, вход и разрыв, хвост лога сервера) | `D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini\artifacts\lab\runs\<время>_olife_play\play_report.md`. Путь печатает консоль `play.bat` в конце |
+| отчёт сеанса (fps по 5-секундным окнам, кривая `play_fps.svg`, ошибки и предупреждения движка, вход и разрыв, хвост лога сервера) | `<work_root>\lab\runs\<время>_olife_play\play_report.md`. Путь печатает консоль `play.bat` в конце |
 | сводка сервера за сеанс (службы, перезапуски, инциденты, бенчи, песочница по владельцам: топливо, кредиты, действия; счётчики учёта) | там же, `olife_session.md` и `.json` |
-| лог игры | там же, `engine_latest.log` (полный журнал движка 0.32 — `D:\Prog\VoxelCore\voxelcore-0.32.0_dc62ccfb\latest.log`) |
-| панель сервера (службы, игроки, такт мира, шлюз, учёт, инциденты, тарифы) | `D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini\artifacts\lab\dashboard\olife.html` (файл), живая — `http://127.0.0.1:25700/sup/panel?prefix=olife-&title=Olife` |
+| лог игры | там же, `engine_latest.log` (полный журнал движка 0.32 — `<repo>\engines\v032\latest.log`) |
+| панель сервера (службы, игроки, такт мира, шлюз, учёт, инциденты, тарифы) | `<work_root>\lab\dashboard\olife.html` (файл), живая — `http://127.0.0.1:25700/sup/panel?prefix=olife-&title=Olife` |
 | инциденты (падение службы: почему, последние кадры мира, хвосты логов) | `...\artifacts\lab\incidents\<время>_olife-play-...\`, список — `lab olife incidents` |
-| мир, ключи, токен | `D:\Prog\Olife\play\worlds`, `D:\Prog\Olife\play\keys`, `D:\Prog\Olife\play\user_token.txt` |
+| мир, ключи, токен | `<repo>\projects\olife\external\play\worlds`, `<repo>\projects\olife\external\play\keys`, `<repo>\projects\olife\external\play\user_token.txt` |
 
 Команды сервера во время игры (WSL: `tools/lab/lab ...`; Windows: `C:\Python313\python.exe -X utf8 <...>\tools\lab\lab.py ...`):
 - `lab olife play-status`;
@@ -180,7 +180,7 @@ set_bone_model/reset`, `memory.get/set/keys`. Запросы к миру (чте
    `203.0.113.7:27750#gwX0vADMVqv8` (через интернет), `192.168.1.5:27750#gwX0vADMVqv8` (в вашей сети). Часть после `#` —
    отпечаток ключа сервера: клиент друга сверит его и не пойдёт на подменённый сервер (можно и без неё — тогда ключ
    запоминается при первом входе). Ник: 2..24 символа, латиница, цифры, `_ . -`. Убрать: `lab olife whitelist remove НИК`.
-4. **Клиент для друга:** `play.bat bundle` -> `D:\Prog\Olife\dist\olife_client_<дата>.zip` (VoxelCore 0.32 + паки Olife,
+4. **Клиент для друга:** `play.bat bundle` -> `<repo>\projects\olife\external\dist\olife_client_<дата>.zip` (VoxelCore 0.32 + паки Olife,
    ~10 МБ). Друг распаковывает, запускает `OLIFE.bat`, вводит вашу строку и свой ник, «Войти» (внутри — `ПРОЧТИ.txt`).
    Паки, которые вы поменяли потом, клиент друга скачает сам при входе (сверка sha256). Собирать заново нужно, только если
    обновился сам VoxelCore.
@@ -195,7 +195,7 @@ set_bone_model/reset`, `memory.get/set/keys`. Запросы к миру (чте
    `lab olife fraud events`.
 
 Друзья за одним роутером приходят с одного внешнего адреса: больше трёх сессий с адреса антифрод не пустит («антифрод: лимит
-sessions_ip»). Поднять: `lab olife fraud set sessions_per_ip 6`. Порты меняются в `D:\Prog\Olife\play\server.toml`:
+sessions_ip»). Поднять: `lab olife fraud set sessions_per_ip 6`. Порты меняются в `<repo>\projects\olife\external\play\server.toml`:
 ```
 [public]
 gateway = 27750

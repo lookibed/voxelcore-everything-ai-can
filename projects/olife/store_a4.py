@@ -47,9 +47,9 @@ def _lazy(n):
 
 
 # ---------------------------------------------------------------------------------------------- общее
-def _vc_root():
-    from labcore import config
-    return config.VC_ROOT
+def _packs_root():
+    from vclab import config
+    return config.PACKS_DIR
 
 
 def _w4a():
@@ -176,7 +176,7 @@ def st_kv(sx, args, step):
     # A3 memory.* поверх хранилища: demo_memory_counter на своём бенче (код — протоколом, аккаунт без окна)
     if args.get("script_bench"):
         se = eid_of(sx, args, "script_bench")
-        code = open(os.path.join(_vc_root(), "content", "olife_world", "sandbox", "samples",
+        code = open(os.path.join(_packs_root(), "olife_world", "sandbox", "samples",
                                  "demo_memory_counter.lua"), encoding="utf-8").read()
         r = _w4a().st_bench_code(sx, {"bench": se, "code": code, "run": True, "token": args.get("token", "olife-carol"),
                                       "name": args.get("name", "carol")}, step)
@@ -208,7 +208,7 @@ def st_canvas(sx, args, step):
     roles = P["_roles"](sx)
     B = roles[args.get("viewer", "client2")]
     eid = eid_of(sx, args, default="carol")
-    code = open(os.path.join(_vc_root(), "content", "olife_world", "sandbox", "samples", "demo_paint.lua"),
+    code = open(os.path.join(_packs_root(), "olife_world", "sandbox", "samples", "demo_paint.lua"),
                 encoding="utf-8").read()
     rep, bad = {"eid": eid}, []
     r = _w4a().st_bench_code(sx, {"bench": eid, "code": code, "run": True, "token": args.get("token", "olife-carol"),
@@ -325,7 +325,7 @@ def st_upload(sx, args, step):
     rm = up(A, vcm, kind=2, e=eid, slot="model:rody", name="tower")
     snd = {}
     for name, kind in (("ok.ogg", 3), ("fx_save.wav", 4)):
-        with open(os.path.join(_vc_root(), "content", "olife_client", "sounds", "olife", name), "rb") as f:
+        with open(os.path.join(_packs_root(), "olife_client", "sounds", "olife", name), "rb") as f:
             data = f.read()
         r = up(A, data, kind=kind, e=eid, slot="sound:" + name.split(".")[0], name=name)
         snd[name] = {"code": r.get("code"), "sha": hashlib.sha256(data).hexdigest(), "bytes": len(data)}

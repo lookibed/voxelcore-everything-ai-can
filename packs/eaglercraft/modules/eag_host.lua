@@ -288,7 +288,7 @@ return function(ctx)
                     server_notice_shown = true
                     pcall(require("wasmrt:app").show_notice, ctx.document, {
                         ("Сервер Eaglercraft не отвечает: %s:%d (%s)."):format(SERVER_HOST, SERVER_PORT, tostring(err)),
-                        "Запустите в WSL: node /root/Spider/tests/manual/real-world-eaglercraft/native_server/launcher.js",
+                        "Запустите в WSL: node <Spider>/tests/manual/real-world-eaglercraft/native_server/launcher.js",
                     }, "eag_server_notice")
                 end
             end)

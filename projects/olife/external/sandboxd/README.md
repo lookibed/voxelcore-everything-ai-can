@@ -1,6 +1,6 @@
-# olife-sandboxd — Windows-сборка (D:\Prog\Olife\sandboxd)
+# olife-sandboxd — Windows-сборка (<repo>\projects\olife\external\sandboxd)
 
-Каталог раскладки `scripts/deploy_windows.sh` (кросс-сборка x86_64-pc-windows-gnu из WSL, исходники `/root/olife/sandboxd`):
+Каталог раскладки `scripts/deploy_windows.sh` (кросс-сборка x86_64-pc-windows-gnu из WSL, исходники `<olife-src>/sandboxd`):
 `olife-sandboxd.exe` (сервис), `bench.exe`, `calibrate.exe`, `bench_codec.exe`, `olife_lua.wasm` (Lua 5.1 + prelude),
 `tests\sandbox_tests.exe`, `tests\binary_tests.exe`, `driver.py`, `workload_typical.lua`. Кэш `*.cwasm` сервис создаёт сам
 рядом с wasm. Лаборатория запускает копию exe (вид `olife.sandbox`, `OLIFE_LUA_WASM` = этот `olife_lua.wasm`).
@@ -15,11 +15,11 @@ wasi-sdk 30 в `wasm32-wasip1`. Есть топливо, вытеснение, �
 на сущность, снимки линейной памяти и пакетный мост `TickInput → TickResult`. Запасной рантайм Luau
 (mlua 0.12.1) реализует тот же трейт `ScriptRuntime`/`OwnerVm` и использует тот же протокол.
 
-Репозиторий только локальный (`/root/olife/sandboxd`). Это не рантайм движка, поэтому он лежит вне VC_ROOT.
+Репозиторий только локальный (`<olife-src>/sandboxd`). Это не рантайм движка, поэтому он лежит вне VC_ROOT.
 
 ## Сборка
 ```bash
-# 1. Lua -> wasm (wasi-sdk для Linux: /root/olife/toolchain/wasi-sdk-30.0-x86_64-linux, или WASI_SDK=...)
+# 1. Lua -> wasm (wasi-sdk для Linux: <olife-src>/toolchain/wasi-sdk-30.0-x86_64-linux, или WASI_SDK=...)
 lua-wasm/build.sh                 # -> lua-wasm/out/olife_lua.wasm (~221 КБ), OPT=-O3 при желании
 # 2. сервис, бенчмарки, тесты (toolchain stable задан в rust-toolchain.toml, jobs=4 в .cargo/config.toml)
 cargo build --release                       # только wasm-Lua
@@ -28,7 +28,7 @@ cargo test --release [--features luau]      # 15 тестов wasm-Lua + 6 би�
 cargo run --release --bin bench_codec        # JSON против бинарного контракта, 500 сущностей
 python3 tests/driver.py all [--runtime luau] # проверки на уровне протокола (мир со стороны драйвера)
 # 3. Windows (02.10): кросс-сборка x86_64-pc-windows-gnu (apt gcc-mingw-w64-x86-64, rustup target add) в тот же
-#    target/ -> D:\Prog\Olife\sandboxd (exe со strip, wasm, тесты, driver.py, README там)
+#    target/ -> <repo>\projects\olife\external\sandboxd (exe со strip, wasm, тесты, driver.py, README там)
 scripts/deploy_windows.sh
 ```
 Windows-сборка статическая: из DLL нужны только системные (kernel32, ws2_32, userenv, bcryptprimitives, msvcrt).
@@ -143,7 +143,7 @@ API скрипта: `self.pos/rot/vel/id/state/fields`, `self:move_to(v)`, `self
 Тип соединения определяется по первому байту. `{` (или пробельный символ) означает JSON-строки, как раньше, без изменений.
 Любой другой байт означает бинарный контракт `sandbox` v1 (`tools/olife/protocol/sandbox.yaml`). Кадр: магия `0x4F53` «OS»,
 версия 1, тип u16, длина u32, big-endian, тело до 4 МиБ. Кодеки генерируются из той же схемы, что у мира и заглушки:
-`python3 tools/olife/gen_codecs.py --lang rust --rust-out /root/olife/sandboxd/src/proto`. Руками их не правят, проверка —
+`python3 tools/olife/gen_codecs.py --lang rust --rust-out <olife-src>/sandboxd/src/proto`. Руками их не правят, проверка —
 `--check`. Код транспорта: `src/binproto.rs`. Оба транспорта работают одновременно, на разных соединениях, в один `Service`.
 
 | мир → сервис | ответ |
@@ -362,7 +362,7 @@ wasm-Lua, AMD Ryzen 7 7435HS, WSL2:
   (без хука). Это только для замеров, не для работы.
 
 ## Волна 3a: в сессии Olife (02.10.2026, агент olife_w3s)
-Настоящий сервис заменил Python-заглушку в лаборатории: вид `olife.sandbox` = `D:\Prog\Olife\sandboxd\olife-sandboxd.exe
+Настоящий сервис заменил Python-заглушку в лаборатории: вид `olife.sandbox` = `<repo>\projects\olife\external\sandboxd\olife-sandboxd.exe
 --tcp 127.0.0.1:<sb> --ctl <f2f> --threads 4`, мир говорит с ним по JSON-строкам. Бинарный контракт пока остаётся за
 заглушкой (`sandbox_stub`). Сценарии `olife_sandbox_real`, `olife_negative`, `olife_sandbox_load`, перф
 `lab perf olife sandbox_load`. Цифры и таблица негативных тестов — в `agents/OLIFE.md`, раздел «Волна 3a».

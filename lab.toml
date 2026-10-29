@@ -1,5 +1,5 @@
 # labd — настройки демона (vclab, README «Лаборатория»). Путей машины здесь нет: они в machine.toml
-# ({work_root}, {vc_root}, {machine.<ключ>}); версии движка — engines/registry.toml.
+# ({work_root}, {repo_root}, {machine.<ключ>}); версии движка — engines/registry.toml.
 [daemon]
 host = "127.0.0.1"          # только loopback: без окон брандмауэра, без доступа из LAN (assert в коде)
 port = 25700                # 25600–25699 — пул портов аренд; 25800–25849 — изолированные демоны
@@ -16,7 +16,7 @@ reap_every = 5
 
 [watch]
 # логи, которые перезаписываются при каждом старте чужим процессом: демон зеркалит их в data\logs\<имя>\<время>.log
-vc_root = "{vc_root}\\latest.log"
+vc_dev = "{work_root}\\vc_dev\\latest.log"     # каталог vc_start (MCP voxelcore, вид vc.dev)
 
 [isolation]
 # этап 3а (vclab/policy.py): экземпляр с exe движка без hello.flags.input == "isolated" убивается.

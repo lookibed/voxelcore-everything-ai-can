@@ -2,7 +2,7 @@
 """Private Java Alpha server for the VoxelCore side (AlphaMine phase 2): port 25566, own world copy.
 
 Does not touch other java processes (the Java-side agent runs its server on 25565 via am_server): the PID of
-the server started here is kept in D:\\Prog\\AlphaMine\\run\\server_v.pid and only that PID is stopped.
+the server started here is kept in <repo>\\projects\\alphamine\\external\\run\\server_v.pid and only that PID is stopped.
 
   python3 tools/alphamine/server_v.py start [--world world_a] [--port 25566]   # fresh copy of golden/<world>
   python3 tools/alphamine/server_v.py stop
@@ -12,7 +12,7 @@ the server started here is kept in D:\\Prog\\AlphaMine\\run\\server_v.pid and on
   --name p --port 25567: a second private server (run\\server_p, run\\world_p, server_p.pid, logs\\server_p.*) for a
   parallel agent; the default name "v" keeps the paths above.
 
-Layout: D:\\Prog\\AlphaMine\\run\\world_v (copy of golden\\world_a), run\\server_v (server.properties with
+Layout: <repo>\\projects\\alphamine\\external\\run\\world_v (copy of golden\\world_a), run\\server_v (server.properties with
 server-port and level-name=../world_v, ops.txt), logs\\server_v.log/.err (cp866). Start: ref\\start_server.ps1 (WMI,
 detached). Ready when the log says "Done!" (~3-15 s).
 """
@@ -23,7 +23,7 @@ import subprocess
 import sys
 import time
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 RUN = os.path.join(ALPHA, "run")
 SDIR = os.path.join(RUN, "server_v")
 WORLD = os.path.join(RUN, "world_v")

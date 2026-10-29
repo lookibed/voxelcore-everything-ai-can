@@ -24,8 +24,8 @@ import sys
 import threading
 import time
 
-VC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-LAB = os.path.join(VC_ROOT, "tools", "lab", "lab")
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+LAB = os.path.join(REPO, "bin", "lab")
 
 
 def lab(*args, timeout=600):
@@ -132,7 +132,7 @@ def main():
                     out["shots"][name] = (r.get("result") or r)
                     out["shots"][name]["shot_s"] = round(time.time() - tshot, 2)
                     # квитанция сценарию: кадр снят, можно двигать камеру дальше
-                    ack = os.path.join(VC_ROOT, "artifacts", "lab", "inst", lease, "export", "bh_ack_" + name)
+                    ack = os.path.join(REPO, "work", "lab", "inst", lease, "export", "bh_ack_" + name)
                     try:
                         os.makedirs(os.path.dirname(ack), exist_ok=True)
                         open(ack, "w").write("1")

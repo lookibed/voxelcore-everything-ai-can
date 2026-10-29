@@ -522,8 +522,7 @@ def _perf_run(px, a, size):
     import os
     import sys
     lab = px.lab
-    vc_root = lab.base_ctx()["vc_root"]
-    perf_dir = os.path.join(vc_root, "tools", "alphamine", "perf")
+    perf_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools", "perf")
     if perf_dir not in sys.path:
         sys.path.insert(0, perf_dir)
     import perflib
@@ -534,7 +533,7 @@ def _perf_run(px, a, size):
     px.progress("server %s on :%d (world %s)" % (srv, port, a.get("world", "world_b")))
     ep = {"server": "127.0.0.1:%d" % port, "size": a.get("size") or size}
     if a.get("pack"):
-        ep["pack"] = a["pack"]          # вариант пака (Windows-путь), напр. D:\\Prog\\AlphaMine\\run\\alphamine_lp
+        ep["pack"] = a["pack"]          # вариант пака (Windows-путь), напр. <repo>\\projects\\alphamine\\external\\run\\alphamine_lp
     eng = px.lease("rt", params=ep, start=False)
     l = lab.leases[eng]
     exp = os.path.join(l.dir, "export")

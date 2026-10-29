@@ -105,7 +105,7 @@ end
 
 -- ------------------------------------------------------------------ LuaJIT trace events (jit.attach)
 -- traceerr / bcnames: lj_traceerr.h / lj_bc.h of the engine's own LuaJIT 2.1.1788856981 (vcpkg c6ffc141,
--- D:\Prog\AlphaMine\engine\vcpkg-032\buildtrees\luajit); bytecodes after JMP (BNOT..) are not named here
+-- <repo>\builds\vcpkg-032\buildtrees\luajit); bytecodes after JMP (BNOT..) are not named here
 local TRACEERR = {[0] = "error thrown or hook called during recording", "trace too short", "trace too long",
     "trace too deep", "too many snapshots", "blacklisted", "retry recording", "NYI: bytecode %s",
     "leaving loop in root trace", "inner loop in root trace", "loop unroll limit reached", "bad argument type",

@@ -12,7 +12,7 @@
 """
 import json, os, re, shutil, subprocess, sys, time
 
-VC = "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini"
+VC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # TODO(переезд): был рабочий каталог движка (content, tools, worlds) — теперь корень репозитория
 LAB = os.path.join(VC, "tools/lab/lab")
 OWNER = os.environ.get("LAB_OWNER", "llm_gpu")
 
@@ -28,7 +28,7 @@ def lab(*args, timeout=300):
 
 
 def win2wsl(p):
-    return p.replace("D:\\", "/mnt/d/").replace("\\", "/")
+    return re.sub(r"^([A-Za-z]):", lambda m: "/mnt/" + m.group(1).lower(), p).replace("\\", "/")
 
 
 def sg_lines(inst):

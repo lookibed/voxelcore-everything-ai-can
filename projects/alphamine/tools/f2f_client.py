@@ -4,7 +4,7 @@
 Usable without MCP:
     from f2f_client import F2F
     c = F2F(25570)                       # Java client started with --f2f 25570
-    c.hello(); c.step(ticks=20, frames=1); c.shot(r"D:\\Prog\\AlphaMine\\shots\\x.png")
+    c.hello(); c.step(ticks=20, frames=1); c.shot(r"<repo>\\projects\\alphamine\\external\\shots\\x.png")
 Command line:
     python3 tools/alphamine/f2f_client.py 25570 hello
     python3 tools/alphamine/f2f_client.py 25570 step '{"ticks": 20}'

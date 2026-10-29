@@ -21,7 +21,7 @@ def main():
     if engine == "v032": p += ["--param", "engine=v032"]
     r = lab("lease", "wasmrt", "engine_rt", "--ttl", "1800", *p)
     assert r.get("ok"), r
-    lease = r["lease"]["name"]; inst = r["lease"]["dir"].replace("D:\\", "/mnt/d/").replace("\\", "/")
+    lease = r["lease"]["name"]; inst = re.sub(r"^([A-Za-z]):", lambda m: "/mnt/" + m.group(1).lower(), r["lease"]["dir"]).replace("\\", "/")
     os.makedirs(os.path.join(inst, "export"), exist_ok=True)
     for stale in ("smollm_kprof.txt", "smollm_manifest.txt", "smollm_prompt.txt", "smollm_kernels.txt", "smollm_batch.txt",
                   "smollm_remember.txt", "smollm_params.txt", "smollm_dump_logits.txt"):

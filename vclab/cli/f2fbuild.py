@@ -61,13 +61,13 @@ def msys_path(p):
 
 
 def win_path(p):
-    """/mnt/d/a или /d/a -> D:\\a (на Windows-Python пути приходят как есть)."""
+    """/mnt/<диск>/a или /<диск>/a -> <ДИСК>:\\a (на Windows-Python пути приходят как есть)."""
     m = re.match(r"^/(?:mnt/)?([a-zA-Z])/(.*)$", p or "")
     return (m.group(1).upper() + ":\\" + m.group(2).replace("/", "\\")) if m else p
 
 
 def _git(src, *args):
-    """git в worktree, созданном из WSL: .git указывает на /mnt/d/... — переводим в D:/... для Windows-git."""
+    """git в worktree, созданном из WSL: .git указывает на /mnt/<диск>/... — переводим в <ДИСК>:/... для Windows-git."""
     gd = None
     dotgit = os.path.join(src, ".git")
     if os.path.isfile(dotgit):

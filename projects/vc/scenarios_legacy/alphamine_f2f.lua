@@ -1,4 +1,4 @@
--- Старт пака alphamine в F2F-сборке движка (D:\Prog\AlphaMine\engine\VoxelCoreF2F.exe --f2f 25571 ...):
+-- Старт пака alphamine в F2F-сборке движка (<repo>\builds\031\VoxelCoreF2F-031.exe --f2f 25571 ...):
 -- харнесс (tools/mcp/alpha_vc.py, am_client impl="vc") копирует этот файл в свой --dir как user:alphamine_f2f.lua
 -- и пишет user:autorun_app_script.txt; project_client.lua (res) запускает его при старте меню. Сценарий идёт
 -- только в кадрах F2F (step), открывает свежий мир AlphaMine (генератор alphamine:void) и регистрирует

@@ -23,9 +23,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import pngio  # noqa: E402
 
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
-ALPHA = "/mnt/d/Prog/AlphaMine"
-OUT = os.path.join(VC_ROOT, "content", "alphamine", "shaders", "lib", "am_sky.glsl")
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
+OUT = os.path.join(REPO, "packs", "alphamine", "shaders", "lib", "am_sky.glsl")
 f = np.float32
 SIN = np.array([math.sin(i * math.pi * 2.0 / 65536.0) for i in range(65536)], dtype=np.float32)
 

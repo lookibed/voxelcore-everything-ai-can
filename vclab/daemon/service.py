@@ -23,7 +23,7 @@ from vclab.f2f import F2FPool
 from vclab.scenario.journal import Journal
 from vclab.leases.logwatch import LogMirror
 from vclab.leases.ports import PortPool
-from vclab.projects import Feature, Projects, expand, prepare, uses_vc_root
+from vclab.projects import Feature, Projects, expand, prepare
 from vclab.scenario.runs import Runs
 from vclab.scenario.scenario import ScenarioError, ScenarioService
 
@@ -49,7 +49,7 @@ class LabError(Exception):
               "instance-dead": 409, "f2f-timeout": 504, "f2f-unreachable": 502, "start-failed": 500,
               "feature-error": 500, "policy": 403, "isolation-failed": 500, "no-stdin": 409,
               "engine-mismatch": 500, "admin-required": 403, "foreign-leases": 409, "live-leases": 409,
-              "draining": 503, "kind-unavailable": 409}
+              "draining": 503}
 
     def __init__(self, code, message, **extra):
         super().__init__(message)
@@ -261,14 +261,17 @@ class Lab:
                 "isolated": bool(self.cfg["daemon"].get("isolated")), "starter": self.cfg["daemon"].get("starter"),
                 "state": ctl.state if ctl else None, "code_hash": ctl.summary()["code_hash"] if ctl else None,
                 "uptime_s": round(time.time() - self.started, 1), "generation": self.projects.generation,
-                "leases": len(self.leases), "data": self.data, "vc_root": config.VC_ROOT,
+                "leases": len(self.leases), "data": self.data, "repo_root": config.REPO_ROOT,
                 "port": self.cfg["daemon"]["port"], "ports": [self.ports.first, self.ports.last],
                 "projects": sorted(self.projects.projects), "watch": [m.info() for m in self.mirrors]}
 
     def base_ctx(self):
-        # machine.<ключ> — корни машины (machine.toml), work_root/repo_root — новые подстановки репозитория
-        return {"vc_root": config.VC_ROOT, "lab_dir": config.LAB_DIR, "lab_data": self.data,
-                "python": self.python_exe(), "work_root": config.WORK_ROOT, "repo_root": config.REPO_ROOT,
+        # machine.<ключ> — корни машины (machine.toml); repo_root (= repo) — корень репозитория, packs — его паки;
+        # engine — движок по умолчанию (в аренде его заменяет движок аренды)
+        engs = self.cfg.get("engines") or {}
+        return {"lab_dir": config.LAB_DIR, "lab_data": self.data, "python": self.python_exe(),
+                "work_root": config.WORK_ROOT, "repo_root": config.REPO_ROOT, "repo": config.REPO_ROOT,
+                "packs": config.PACKS_DIR, "engine": engs.get(self.default_engine()) or {},
                 "machine": config.machine_ctx()}
 
     @staticmethod
@@ -281,7 +284,7 @@ class Lab:
 
     # ------------------------------------------------------------------ движки (этап 4: версия — измерение)
     def engines(self, proj=None):
-        """{id: описание} — [engines.*] lab.toml, поверх — проекта; подстановки {vc_root} и т.п. раскрыты."""
+        """{id: описание} — [engines.*] lab.toml, поверх — проекта; подстановки {repo_root} и т.п. раскрыты."""
         base = self.base_ctx()
         if proj is not None:
             base["project_dir"] = proj.dir
@@ -533,12 +536,6 @@ class Lab:
                 raise LabError("not-found", "project %s has no kind %r (have: %s)" % (
                     project, kind, ", ".join(proj.kinds)))
             spec = self.kind_spec(proj, kind, params)
-            if not config.VC_ROOT_SET and uses_vc_root(spec, params):
-                raise LabError("kind-unavailable", "%s.%s uses {vc_root} (the pack runtime of a working catalog), but "
-                               "machine.toml has no vc_root: set vc_root = '<catalog with content\\ and res\\>' "
-                               "(install/doctor.md#vc-root) or pass the params it needs; engine runs without it: "
-                               "`lab lease vc engine`, `lab run vc canvas_shot`" % (project, kind),
-                               project=project, kind=kind)
             self.ctl.check_new_work()          # этап 5: drain — новые аренды не выдаются (503 draining)
             if spec.get("role") == "runtime":
                 # стоковый рантайм: только lab play --user / --final-check (vclab/policy.py)

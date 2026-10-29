@@ -5,7 +5,7 @@
 [project]
 name = "wasmrt"
 description = "wasmrt programs (wasm -> Lua) on the menu page of a VoxelCore F2F engine instance"
-scenarios_dir = "{vc_root}\\tools\\scenarios"
+scenarios_dir = "{repo_root}\\projects\\vc\\scenarios_legacy"
 runs_dir = "{lab_data}\\runs"
 plugin = "plugin.py"
 
@@ -16,7 +16,7 @@ impls = { vc = "engine" }
 default_size = "854x480"
 
 [compare]
-tool = "{vc_root}\\tools\\reference\\compare.py"
+tool = "{repo_root}\\projects\\vc\\reference\\compare.py"
 size = "854x480"
 tol = 0
 clear = [0, 0, 0]
@@ -28,14 +28,14 @@ copy_exe = true
 ports = ["f2f"]
 f2f = "f2f"
 size = "854x480"
-args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{vc_root}\\res", "--dir", "{dir}"]
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}"]
 logs = { latest = "{dir}\\latest.log" }
 default_log = "latest"
-params = { engine_exe = "D:\\Prog\\AlphaMine\\engine\\VoxelCoreF2F.exe", manifest = "wasmdemo:wasm.json", packs = ["wasmrt", "wasmdemo"], script = "wasmrt_page.lua", ready_marker = "\\[wasmrt_page\\] ready", max_frames = 600 }
+params = { engine_exe = "{engine.builds.f2f}", manifest = "wasmdemo:wasm.json", packs = ["wasmrt", "wasmdemo"], script = "wasmrt_page.lua", ready_marker = "\\[wasmrt_page\\] ready", max_frames = 600 }
 prepare = [
   { action = "template", src = "engine_settings.toml", dst = "settings.toml" },
   { action = "packs", packs = "{param.packs}" },
-  { action = "copy", src = "{vc_root}\\tools\\scenarios\\{param.script}", dst = "{param.script}" },
+  { action = "copy", src = "{repo_root}\\projects\\vc\\scenarios_legacy\\{param.script}", dst = "{param.script}" },
   { action = "write", path = "autorun_app_script.txt", text = "user:{param.script}" },
   { action = "write", path = "export\\wasmrt_manifest.txt", text = "{param.manifest}" },
 ]
@@ -47,16 +47,10 @@ ready = [
 stop = [ { f2f = "quit", wait_exit = 8 } ]
 
 # ---------------------------------------------------------------- порт на 0.32.1 (06.10, port032)
-# Движок v032 проекта: res/stock/vctest — стоковый релиз 0.32.1 (D:\Prog\VoxelCore\voxelcore-0.32.1_win64), тестовая
-# сборка F2F — та же VoxelCoreF2F-032.exe (dc62ccfb + патч F2F; разница dc62ccfb → v0.32.1 — только res/modules/animation*,
-# formats/vca.lua, components/animator.lua и два шейдера, см. agents/research/VC032_ADAPTATION.md «0.32.1»). Перекрытие
-# нужно ещё и потому, что lab.toml указывает на D:\Prog\VoxelCore\voxelcore-0.32_dc62ccfb, которого на диске нет
-# (каталог называется voxelcore-0.32.0_dc62ccfb) — lab.toml агентам менять нельзя.
-[engines.v032]
-root = "D:\\Prog\\VoxelCore\\voxelcore-0.32.1_win64"
-res = "D:\\Prog\\VoxelCore\\voxelcore-0.32.1_win64\\res"
-stock = "D:\\Prog\\VoxelCore\\voxelcore-0.32.1_win64\\VoxelCore.exe"
-builds = { f2f = "D:\\Prog\\AlphaMine\\engine\\032\\VoxelCoreF2F-032.exe", stock = "D:\\Prog\\VoxelCore\\voxelcore-0.32.1_win64\\VoxelCore.exe", vctest = "D:\\Prog\\VoxelCore\\voxelcore-0.32.1_win64\\vctest.exe" }
+# Раньше здесь было перекрытие [engines.v032] на стоковый 0.32.1 рабочего ПК и F2F 032 из каталога AlphaMine. С волны 7
+# репозиторий самодостаточен: v032 — реестр (engines\v032 = копия 0.32.0 dc62ccfb, builds\032\VoxelCoreF2F-032.exe).
+# TODO(переезд): res 0.32.1 отличался от dc62ccfb (res/modules/animation*, formats/vca.lua, components/animator.lua, два
+# шейдера) — если пакам wasmrt это нужно, положить сток 0.32.1 копией в engines\ и вернуть перекрытие на него.
 
 # `lab lease wasmrt engine --param engine=v032 ...`: стартовый сценарий — штатный `--script` 0.32 (autorun_app_script.txt
 # читает только наш project_client.lua в res 0.31); res — 0.32.1. Часы — `--param clock=realtime` для замеров fps.
@@ -78,12 +72,12 @@ clock = "realtime"
 args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}"]
 logs = { latest = "{dir}\\latest.log" }
 default_log = "latest"
-params = { world = "fineltest", world_src = "{vc_root}\\worlds\\fineltest", packs = ["wasmrt", "pc_wasmrt", "videoplayer", "doom", "eaglercraft", "quake", "html"], script = "pc_world.lua", enter = "1", launch = "", ready_marker = "\\[pc_world\\] ready", ready_timeout = 180 }
+params = { world = "fineltest", world_src = "{repo_root}\\projects\\wasmrt\\external\\worlds\\fineltest", packs = ["wasmrt", "pc_wasmrt", "videoplayer", "doom", "eaglercraft", "quake", "html"], script = "pc_world.lua", enter = "1", launch = "", ready_marker = "\\[pc_world\\] ready", ready_timeout = 180 }
 prepare = [
   { action = "template", src = "engine_settings.toml", dst = "settings.toml" },
   { action = "packs", packs = "{param.packs}" },
   { action = "copytree", src = "{param.world_src}", dst = "worlds\\{param.world}" },
-  { action = "copy", src = "{vc_root}\\tools\\scenarios\\{param.script}", dst = "{param.script}" },
+  { action = "copy", src = "{repo_root}\\projects\\vc\\scenarios_legacy\\{param.script}", dst = "{param.script}" },
   { action = "write", path = "autorun_app_script.txt", text = "user:{param.script}" },
   { action = "write", path = "export\\pc_world.txt", text = "{param.world}" },
   { action = "write", path = "export\\pc_enter.txt", text = "{param.enter}" },
@@ -108,14 +102,14 @@ ports = ["f2f"]
 f2f = "f2f"
 size = "854x480"
 clock = "realtime"
-args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{vc_root}\\res", "--dir", "{dir}"]
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}"]
 logs = { latest = "{dir}\\latest.log" }
 default_log = "latest"
-params = { engine_exe = "D:\\Prog\\AlphaMine\\engine\\VoxelCoreF2F.exe", manifest = "wasmdemo:wasm.json", packs = ["wasmrt", "wasmdemo"], script = "wasmrt_page.lua", ready_marker = "\\[wasmrt_page\\] ready", ready_timeout = 120 }
+params = { engine_exe = "{engine.builds.f2f}", manifest = "wasmdemo:wasm.json", packs = ["wasmrt", "wasmdemo"], script = "wasmrt_page.lua", ready_marker = "\\[wasmrt_page\\] ready", ready_timeout = 120 }
 prepare = [
   { action = "template", src = "engine_settings.toml", dst = "settings.toml" },
   { action = "packs", packs = "{param.packs}" },
-  { action = "copy", src = "{vc_root}\\tools\\scenarios\\{param.script}", dst = "{param.script}" },
+  { action = "copy", src = "{repo_root}\\projects\\vc\\scenarios_legacy\\{param.script}", dst = "{param.script}" },
   { action = "write", path = "autorun_app_script.txt", text = "user:{param.script}" },
   { action = "write", path = "export\\wasmrt_manifest.txt", text = "{param.manifest}" },
 ]

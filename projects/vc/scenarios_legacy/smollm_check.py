@@ -14,9 +14,9 @@
 """
 import json, os, re, subprocess, sys, time
 
-VC = "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini"
+VC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # TODO(переезд): был рабочий каталог движка (content, tools, worlds) — теперь корень репозитория
 LAB = os.path.join(VC, "tools/lab/lab")
-SPIDER_REF = "/root/Spider/tests/manual/real-world-smollm"
+SPIDER_REF = os.environ.get("SPIDER_ROOT", "Spider") + "/tests/manual/real-world-smollm"
 OWNER = os.environ.get("LAB_OWNER", "smollm_check")
 FAILS, ROWS = [], []
 
@@ -112,7 +112,7 @@ def main():
         if not r.get("ok"):
             raise RuntimeError(r)
         lease = r["lease"]["name"]
-        inst = r["lease"]["dir"].replace("D:\\", "/mnt/d/").replace("\\", "/")
+        inst = re.sub(r"^([A-Za-z]):", lambda m: "/mnt/" + m.group(1).lower(), r["lease"]["dir"]).replace("\\", "/")
         os.makedirs(os.path.join(inst, "export"), exist_ok=True)
         with open(os.path.join(inst, "export/smollm_dump_logits.txt"), "w") as f:
             f.write("1")

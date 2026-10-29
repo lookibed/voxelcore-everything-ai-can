@@ -20,9 +20,9 @@ F2F `input` (клик в поле, chars, Enter), ответ ждём по lates
 Код выхода — число провалов."""
 import json, os, re, subprocess, sys, time
 
-VC = "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini"
+VC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # TODO(переезд): был рабочий каталог движка (content, tools, worlds) — теперь корень репозитория
 LAB = os.path.join(VC, "tools/lab/lab")
-SPIDER_REF = "/root/Spider/tests/manual/real-world-smollm"
+SPIDER_REF = os.environ.get("SPIDER_ROOT", "Spider") + "/tests/manual/real-world-smollm"
 OWNER = os.environ.get("LAB_OWNER", "smollm_gpu_check")
 FAILS, ROWS = [], []
 FLAGS = ("smollm_gpu_params.txt", "smollm_gpu_remember.txt", "smollm_gpu_prompt.txt", "smollm_gpu_dump_logits.txt",
@@ -55,7 +55,7 @@ def mouse_click(lease, x, y, pause=0.12):
 
 
 def win2wsl(p):
-    return p.replace("D:\\", "/mnt/d/").replace("\\", "/")
+    return re.sub(r"^([A-Za-z]):", lambda m: "/mnt/" + m.group(1).lower(), p).replace("\\", "/")
 
 
 def log_lines(inst, pattern):

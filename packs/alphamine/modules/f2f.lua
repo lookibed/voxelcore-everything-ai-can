@@ -1,4 +1,4 @@
--- F2F (agents/F2F.md) on the VoxelCore side: the Lua handler of D:\Prog\AlphaMine\engine\VoxelCoreF2F.exe.
+-- F2F (agents/F2F.md) on the VoxelCore side: the Lua handler of <repo>\builds\031\VoxelCoreF2F-031.exe.
 -- The engine (C++) serves hello/mode/step/input/shot/quit and hands every other command to
 -- f2f.set_handler(fn(cmd, args)); `mode` is forwarded too (result under "lua").
 -- Commands here: connect, chat, state, wait / wait_check, render, status (+ mode).

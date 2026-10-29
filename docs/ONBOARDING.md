@@ -2,6 +2,8 @@
 
 Для нового агента (Claude Code или другого) на новом ПК. Цель первого часа — машина проходит `lab doctor`, изолированный
 демон выдаёт аренду тестовой сборки движка, сценарий `vc canvas_shot` даёт известный кадр, MCP подключён.
+Коротко: `install/bootstrap.sh` → `bin/lab doctor` → `bin/lab daemon start --isolated` → `lease vc engine --start` →
+`f2f hello` → `lab run vc canvas_shot` (`927b36b5…`) → `daemon stop` (§2).
 
 ## 0. Что прочитать (в таком порядке)
 1. `docs/RULES.md` — обязательные правила пользователя. Нарушение части из них демон сам отклонит; остальное — на тебе.
@@ -22,27 +24,53 @@
 5. Кто ещё работает (список агентов), занят ли ПК (`bin/lab sysload`), если собираешься мерить.
 
 ## 2. Первые 15 минут на новом ПК
-### 2.1. Установить
-- Windows: Python 3.11+ и `python -m pip install pywin32 psutil fastapi uvicorn numpy Pillow jinja2 pytest`. Демон, CLI и
-  тесты работают на нём (ему нужен Job Object и `127.0.0.1` Windows).
-- WSL: `python3` (3.10 хватает: MCP `voxelcore`, `bin/run_tool.py`), `git` с `core.autocrlf=input`, `gh` (приватные
-  репозитории и релизы под аккаунтом пользователя).
-- `install/bootstrap.sh` и `install/bootstrap.ps1` — пока каркасы (шаги в комментариях), их не запускать.
+Нужно только: Windows 10/11, WSL, интернет, аккаунт GitHub с доступом к этому (приватному) репозиторию. Старый рабочий
+каталог (`voxelcore-0.31.0_pre_gemini`), `D:\Prog\AlphaMine`, сборка F2F и легаси-версии `v031`/`v032` **не нужны**.
+Проверено имитацией чистого ПК 29.10 (волна 7): от клона до кадра `canvas_shot` — около минуты, bootstrap — 13–45 с.
+
+### 2.1. Клон и bootstrap
+```bash
+cd /mnt/c/<каталог>                       # диск Windows: демон и движок — Windows-процессы (bootstrap.sh вне /mnt/<диск> откажет)
+git clone https://github.com/lookibed/voxelcore-everything-ai-can.git && cd voxelcore-everything-ai-can
+#   паки (packs/, ~110 МБ) не нужны лаборатории: git clone --no-checkout ... && git sparse-checkout set --no-cone '/*' '!/packs/' && git checkout main
+install/bootstrap.sh                      # из WSL; на Windows: powershell -ExecutionPolicy Bypass -File install\bootstrap.ps1
+```
+Что делает (`install/bootstrap.ps1`, `bootstrap.sh` — обёртка; повторный запуск идемпотентен, готовое сверяется по sha256):
+1. Находит Windows-Python 3.13 (`--python`/`-Python`, `py -3.13`, `C:\Python313`, `%LOCALAPPDATA%\Programs\Python\Python313`;
+   нет — `winget install Python.Python.3.13`), ставит недостающие `pywin32 psutil fastapi uvicorn numpy Pillow jinja2 pytest`.
+2. Проверяет `gh` (WSL и/или Windows; `gh auth login` — релизы приватного репозитория) и `python3` в WSL.
+3. Создаёт `machine.toml` из `machine.toml.example`, если его нет: `engines_root = <repo>\engines`,
+   `builds_root = <repo>\builds`, `work_root = <repo>\work`, `python_win` — найденный. Есть — не трогает.
+4. Скачивает сток версии по умолчанию с GitHub Releases upstream (`engines/registry.toml`: `release_url`, `zip_sha256`;
+   0.32.7 — zip `23ec6612…`) в `engines\v0327\`, сверяет `VoxelCore.exe` (`51851a0b…`), пишет `ORIGIN.txt`.
+5. Скачивает тестовую сборку F2F из нашего релиза: `gh release download f2f-v0327-767234c5 --repo
+   lookibed/voxelcore-everything-ai-can` -> `builds\0327\VoxelCoreF2F-0327-767234c5.exe`, сверяет `4ce9fde3…`.
+6. Запускает `lab doctor`.
+
+Пути шагов 4–5 bootstrap берёт из реестра через `vclab.engines.resolve` — ровно там их будет искать демон. Сток уже лежит
+в другом месте — до bootstrap создать `machine.toml` с `[engines.v0327] root = '...'`, и он скачивать не будет.
+WSL: `python3` (3.10 хватает: MCP `voxelcore`, `bin/run_tool.py`), `git` с `core.autocrlf=input` (bootstrap ставит в репозитории).
 
 ### 2.2. Движки
-- Стоковые релизы — в `engines_root`: `engines/registry.toml` (`release_url`, `zip_sha256`, `install_dir`) и
-  `engines/<id>/ORIGIN.md`. У `v031` и `v032` стоки — CI-артефакты без публичной ссылки: архив даёт пользователь.
-- Тестовые сборки F2F — в `builds_root\<f2f_exe>` (`031\VoxelCoreF2F-031.exe` и т. д.): из приватного
-  `lookibed/voxelcore-f2f` или сборкой по `f2f/README.md`. sha256 — в реестре.
+- Версия по умолчанию — `[engines] default` реестра (`v0327`): сток в `{engines_root}\<install_dir>` (`engines\v0327`),
+  F2F в `{builds_root}\<f2f_exe>` (`builds\0327\…`). Её ставит bootstrap; обязательна только она.
+- `v031`, `v032` — `legacy = true`: сток — CI-артефакты без публичной ссылки, exe F2F не опубликованы. Нужны только
+  снимку машины-источника; `lab doctor` пишет о них `info`. Если понадобятся — архив у пользователя, пути —
+  `[engines.<id>] root/f2f` в `machine.toml`.
+- Новая версия движка — `f2f/README.md` «Перенос патча на новый релиз», `docs/PORTING.md`.
 
 ### 2.3. `machine.toml`
-`cp machine.toml.example machine.toml` и поправить корни: `engines_root`, `builds_root`, `work_root`, `python_win`
-(обязательные), `python_wsl`, `vc_root`, `msys2`, `powershell` — по необходимости. Строки — в одинарных кавычках (литералы
-TOML, `\` без экранирования). Ключи и смысл — `vclab/machine.py` (`KEYS`). Файл в `.gitignore`: путей машины в git нет.
+Создаёт bootstrap (2.1, шаг 3). Ключи и смысл — `vclab/machine.py` (`KEYS`), образец — `machine.toml.example`; строки —
+в одинарных кавычках (литералы TOML). Файл в `.gitignore`: путей машины в git нет.
+Репозиторий **самодостаточен**: ни symlink'ов, ни путей к другим установкам (`tests/test_self_contained.py`). Паки —
+`{repo_root}\packs`, данные проектов — `projects/<p>/external/`, движки — `{engine.*}`. MCP `vc_start` (вид `vc dev`)
+работает в `<work_root>\vc_dev`, паки подключаются `--param packs=a,b` (junction из `packs\`, снимаются при release);
+стоковый `vc runtime` (`lab play vc --user`) — в `<work_root>\vc_runtime` (`install/doctor.md#self-contained`).
 
 ### 2.4. `lab doctor`
-`bin/lab doctor` — таблица «ok / warn / FAIL» с подсказкой; `FAIL` — дальше нельзя. Что делать по каждой строке —
-`install/doctor.md`. Без `--probe` движок не запускается вовсе (сток — `--version` без окна, F2F — по образу exe).
+`bin/lab doctor` — таблица «ok / warn / FAIL / info» с подсказкой; `FAIL` — дальше нельзя, `info` — необязательного нет (это
+нормально). Ожидаемый вывод на чистом ПК и что делать по каждой строке — `install/doctor.md`. Без `--probe` движок не
+запускается вовсе (сток — `--version` без окна, F2F — по образу exe).
 
 ### 2.5. Свой изолированный демон
 ```bash
@@ -71,8 +99,8 @@ bin/lab --daemon P release vc-engine-1                                # quit -> 
 
 ### 2.7. Первый сценарий
 ```bash
-bin/lab --daemon P run vc canvas_shot --engine v0327            # стоковый 0.32.7 --headless --test (без окна)
-bin/lab --daemon P run vc canvas_shot --engine v0327 --window   # тестовая сборка F2F, часы virtual
+bin/lab --daemon P run vc canvas_shot            # движок по умолчанию (v0327): стоковый 0.32.7 --headless --test (без окна)
+bin/lab --daemon P run vc canvas_shot --window   # тестовая сборка F2F, часы virtual; другая версия — --engine <id>
 ```
 В обоих — `cross.png` 64×32 с sha256 `927b36b5…` (`f2f/README.md`, приёмка волны 1). Вывод печатает каталог прогона,
 вердикт, версию движка, код выхода, логи и снимки.

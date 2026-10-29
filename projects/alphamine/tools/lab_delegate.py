@@ -1,6 +1,6 @@
 """Старые раннеры AlphaMine -> лаборатория (этап 2а): run_vc_scenario.py, run_u.py, e2e/e2e_run.py и MCP am_scenario /
 am_layers по умолчанию не запускают процессы сами, а отдают прогон интерпретатору демона labd (tools/lab): аренды
-(порты 25600–25699, Job Object), каталог прогона D:\\Prog\\AlphaMine\\lab\\runs\\<id>, журнал демона.
+(порты 25600–25699, Job Object), каталог прогона <repo>\\projects\\alphamine\\external\\lab\\runs\\<id>, журнал демона.
 Старый путь (свои exe/порты/серверы, lockstep через f2f_server.py, --collision, --attach, окна) — только с --legacy
 (или автоматически там, где у лаборатории пока нет нужного: lockstep-сервер, collision, quick-префикс, attach).
 
@@ -14,8 +14,8 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
-LAB = os.path.join(VC_ROOT, "tools", "lab", "lab")
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+LAB = os.path.join(REPO, "bin", "lab")
 
 
 def note(runner, why=None):

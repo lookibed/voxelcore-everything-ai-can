@@ -2,9 +2,9 @@
 `lab olife play-up|play-down|play-status|sync`. Подключается из plugin.py (`_play()`, перезагрузка по mtime).
 
 Состав (стек под supervisor, группа `olife-play-<сессия>`): мир (вид `world_play`: стоковый 0.32 headless, `worlds\\` —
-junction на постоянный мир пользователя `D:\\Prog\\Olife\\play\\worlds`; в сухом прогоне — на копию), настоящая песочница
-(`sandbox`), сервис билетов (`auth`, ключи постоянные в `D:\\Prog\\Olife\\play\\keys`), Rust-шлюз (`gateway_rs`, только
-билеты, раздача паков по манифесту), тарифы по умолчанию. Аккаунт `user` (токен — `D:\\Prog\\Olife\\play\\user_token.txt`,
+junction на постоянный мир пользователя `<repo>\\projects\\olife\\external\\play\\worlds`; в сухом прогоне — на копию), настоящая песочница
+(`sandbox`), сервис билетов (`auth`, ключи постоянные в `<repo>\\projects\\olife\\external\\play\\keys`), Rust-шлюз (`gateway_rs`, только
+билеты, раздача паков по манифесту), тарифы по умолчанию. Аккаунт `user` (токен — `<repo>\\projects\\olife\\external\\play\\user_token.txt`,
 роль admin в БД; в мире — `olife.admins user`), примеры бенчей `demo_orbit`/`demo_follow`/`demo_blink` (код
 `content/olife_world/sandbox/samples/*.lua`, владелец user, запущены; спавнятся только если их ещё нет в мире).
 Клиент читает `export:olife_server.txt` (адрес шлюза, сервис билетов, ключ запечатывания, токен) — файл пишется в
@@ -26,7 +26,7 @@ import time
 
 P = {}                                      # глобалы plugin.py (bind)
 
-PLAY_DIR = r"D:\Prog\Olife\play"
+PLAY_DIR = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")), "projects", "olife", "external", "play")
 GW_ID = "gw-olife-play"
 USER = "user"
 SAMPLES = (("demo_orbit", "demo_orbit"), ("demo_follow", "demo_follow"), ("demo_blink", "demo_blink"))
@@ -47,7 +47,7 @@ def bind(g):
 
 def _tools():
     from labcore import config
-    t = os.path.join(config.VC_ROOT, "tools", "olife")
+    t = os.path.join(config.REPO_ROOT, "projects", "olife", "tools")
     if t not in sys.path:
         sys.path.insert(0, t)
     return t
@@ -70,7 +70,7 @@ def sync_packs(lab):
     os.makedirs(content, exist_ok=True)
     out = {}
     for pk in P["CLIENT_PACKS"]:
-        src = os.path.join(config.VC_ROOT, "content", pk)
+        src = os.path.join(config.PACKS_DIR, pk)
         link = os.path.join(content, pk)
         if os.path.lexists(link):
             if os.path.isjunction(link) or os.path.islink(link):
@@ -82,7 +82,7 @@ def sync_packs(lab):
                 raise RuntimeError("%s is a real directory, not a junction to %s: move it away and repeat" % (link, src))
         _winapi.CreateJunction(src, link)
         out[pk] = "created"
-    return {"content": content, "packs": out, "target": os.path.join(config.VC_ROOT, "content")}
+    return {"content": content, "packs": out, "target": config.PACKS_DIR}
 
 
 def user_token(base=PLAY_DIR):
@@ -525,7 +525,7 @@ def _lazy(name):
 
 def register(api):
     obj = {"type": "object"}
-    api.feature("play_up", _lazy("f_play_up"), "player stack under supervisor (world on the persistent world D:\\Prog\\Olife\\play "
+    api.feature("play_up", _lazy("f_play_up"), "player stack under supervisor (world on the persistent world <repo>\\projects\\olife\\external\\play "
                 "or a dry-run copy, real sandbox, auth tickets, Rust gateway, account user, sample benches, client "
                 "config export\\olife_server.txt) {mode=play|dry, public=0|1 (friends: fixed ports [play.public] on "
                 "0.0.0.0, whitelist on, ServerInfo), sidecar?, session?}", obj)

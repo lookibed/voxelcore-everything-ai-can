@@ -1,0 +1,65 @@
+[audio]
+enabled = true
+volume-master = 0.26
+volume-regular = 1
+volume-ui = 1
+volume-ambient = 1
+volume-music = 1
+input-device = "OpenAL Soft on \u041d\u0430\u0431\u043e\u0440 \u043c\u0438\u043a\u0440\u043e\u0444\u043e\u043d\u043e\u0432 (Realtek(R) Audio)"
+acoustic-effects = false
+
+[display]
+width = 1390
+height = 855
+samples = 0
+framerate = 120
+limit-fps-iconified = false
+window-mode = 0
+adaptive-menu-fps = false
+
+[camera]
+sensitivity = 2
+fov = 90
+fov-effects = true
+shaking = true
+inertia = true
+
+[chunks]
+load-distance = 16
+load-speed = 4
+padding = 2
+
+[graphics]
+fog-curve = 6
+backlight = true
+dense-render = false
+gamma = 1
+frustum-culling = true
+skybox-resolution = 96
+chunk-max-vertices = 200000
+chunk-max-vertices-dense = 800000
+chunk-max-renderers = 6
+particles-batch-vertices = 4096
+advanced-render = false
+ssao = 0
+shadows-quality = 0
+dense-render-distance = 56
+soft-lighting = true
+clouds-quality = 0
+
+[ui]
+language = "ru_RU"
+world-preview-size = 64
+
+[pathfinding]
+steps-per-async-agent = 128
+
+[debug]
+generator-test-mode = false
+do-write-lights = true
+do-trace-shaders = false
+enable-experimental = false
+
+[system]
+max-bg-asset-loaders = 3
+

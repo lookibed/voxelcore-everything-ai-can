@@ -1,4 +1,4 @@
--- Network: TCP client of the Alpha SMP protocol 14 (server Alpha 0.1.1, D:\Prog\AlphaMine\ref\minecraft_server).
+-- Network: TCP client of the Alpha SMP protocol 14 (server Alpha 0.1.1, <repo>\projects\alphamine\external\ref\minecraft_server).
 -- Frame: [u8 id][payload], big-endian, no length prefix (Packet.java) -> stream parser over a receive buffer.
 -- Strings: Java writeUTF (u16 length + modified UTF-8). Doubles/floats: IEEE big-endian.
 -- Transport: network.tcp_connect + recv(available()) once per alpha tick (engine receives in its own thread;

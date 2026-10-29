@@ -1,7 +1,7 @@
 """F2F probe for VoxelCoreF2F.exe (AlphaMine item 5). Stdlib only.
 
 Run with WINDOWS Python (WSL NAT cannot reach Windows 127.0.0.1):
-  C:\\Python313\\python.exe tools\\alphamine\\f2f_probe_vc.py [--dir D:\\...] [--shots D:\\Prog\\AlphaMine\\shots]
+  C:\\Python313\\python.exe tools\\alphamine\\f2f_probe_vc.py [--dir D:\\...] [--shots <repo>\\projects\\alphamine\\external\\shots]
 
 What it does (each case starts its own engine process and kills only that PID):
   normal    : window as created
@@ -17,7 +17,7 @@ What it does (each case starts its own engine process and kills only that PID):
     vinput_world : virtual clock, f2fworld: input{mouse dx} + step turns the player
     hidden    : --f2f-window hidden vs normal (virtual): step{40,40} + shot sha equal, no visible window
   layers_menu / layers_world : F2F.md §7 `render` layers (clear colour %, per-layer diffs;
-    layers_world uses the project D:\\Prog\\AlphaMine\\engine\\tests\\f2fworld, world base:demo)
+    layers_world uses the project <repo>\\builds\\tests\\f2fworld, world base:demo)
   In each case: hello, mode{seed}, step{ticks:40, frames:40}, shot -> sha256 must be equal.
   Same-process check: shot, minimize, step{ticks:0, frames:1}, shot -> equal.
   Input check: click on a menu button via input{mouse} -> different image.
@@ -26,9 +26,9 @@ Also usable as a tiny client:  F2F(port).call("hello")
 
 Engine version / instance (02.10, VoxelCore 0.32 port): --exe <exe> (alias of --engine), --res <res dir>,
 --dir <user dir>, --port N, --tests <dir with f2fproj/f2fworld/f2fperf>. Example for 0.32:
-  python.exe -X utf8 f2f_probe_vc.py --exe D:\\Prog\\AlphaMine\\engine\\032\\VoxelCoreF2F-032.exe
-    --res D:\\Prog\\VoxelCore\\voxelcore-0.32_dc62ccfb\\res --dir D:\\Prog\\AlphaMine\\engine\\032\\userdir_probe
-    --port 25578 --shots D:\\Prog\\AlphaMine\\engine\\032\\shots --cases normal,minimized,hidden
+  python.exe -X utf8 f2f_probe_vc.py --exe <repo>\\builds\\032\\VoxelCoreF2F-032.exe
+    --res <repo>\\engines\\v032\\res --dir <repo>\\builds\\032\\userdir_probe
+    --port 25578 --shots <repo>\\builds\\032\\shots --cases normal,minimized,hidden
 The `covered` case raises a topmost Tk window with focus_force (takes the user's focus): do not use it
 while the user works on the PC.
 """
@@ -43,9 +43,9 @@ import subprocess
 import sys
 import time
 
-ENGINE = r"D:\Prog\AlphaMine\engine\VoxelCoreF2F.exe"
-VC_ROOT = r"D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini"
-TESTS = r"D:\Prog\AlphaMine\engine\tests"  # --tests: f2fproj, f2fworld, f2fperf
+ENGINE = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "builds", "031", "VoxelCoreF2F-031.exe")
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
+TESTS = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "builds", "tests")  # --tests: f2fproj, f2fworld, f2fperf
 
 
 class F2F:
@@ -855,10 +855,10 @@ def main():
     ap.add_argument("--engine", "--exe", dest="engine", default=ENGINE)
     ap.add_argument("--tests", default=TESTS, help="dir with the test projects f2fproj/f2fworld/f2fperf")
     ap.add_argument("--size", default="854x480")
-    ap.add_argument("--dir", default=r"D:\Prog\AlphaMine\engine\userdir",
-                    help="user dir (VC_ROOT only when the runtime engine is not running)")
-    ap.add_argument("--res", default=VC_ROOT + r"\res")
-    ap.add_argument("--shots", default=r"D:\Prog\AlphaMine\shots")
+    ap.add_argument("--dir", default=os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "builds", "userdir"),
+                    help="user dir (REPO only when the runtime engine is not running)")
+    ap.add_argument("--res", default=os.path.join(REPO, "engines", "v031", "res"))
+    ap.add_argument("--shots", default=os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "projects", "alphamine", "external", "shots"))
     ap.add_argument("--click", default="427,240", help="x,y of a menu button in frame coords")
     ap.add_argument("--cases", default="normal,covered,minimized,normal2,lua")
     ap.add_argument("--baseline-only", action="store_true",

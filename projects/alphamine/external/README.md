@@ -3,7 +3,7 @@
 Native client of **Minecraft Alpha 1.0.16** written as a VoxelCore 0.31 content pack, talking to the
 original Java server (Alpha SMP 0.1.1, protocol 14), with a frame-to-frame (F2F) harness that compares
 screenshots of the Java client and the VoxelCore port pixel by pixel. The plan and status live in the
-VoxelCore directory: `D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini\agents\ALPHAMINE.md` and `agents\F2F.md`.
+VoxelCore directory: `<repo>\projects\_snapshot_agents_docs\ALPHAMINE.md` and `agents\F2F.md`.
 
 ## Layout
 
@@ -25,7 +25,7 @@ A clone has only sources. The full working copy (jars, libraries, builds, worlds
 
 1. Copy the ignored parts from the backup into `ref\` (PowerShell):
    ```
-   $b = 'D:\Backups\alphamine_dec'; $r = 'D:\Prog\AlphaMine\ref'
+   $b = 'D:\Backups\alphamine_dec'; $r = '<repo>\projects\alphamine\external\ref'
    robocopy "$b\jars" "$r\jars" /E
    robocopy "$b\libraries" "$r\libraries" /E
    copy "$b\RetroMCP-Java-CLI.jar" $r
@@ -36,10 +36,10 @@ A clone has only sources. The full working copy (jars, libraries, builds, worlds
    (choose `a1.0.16`; it downloads the client/server jars, libraries and the asset index into `jars\`
    and `libraries\`), then restore `minecraft\src` and `minecraft_server\src` from git (setup + decompile
    would overwrite them with the clean decompilation).
-2. Check `ref\options.cfg`: `workingDir=D:\Prog\AlphaMine\ref`.
+2. Check `ref\options.cfg`: `workingDir=<repo>\projects\alphamine\external\ref`.
 3. Build and run with JDK 8 (`C:\Program Files\Java\jdk1.8.0_481`), from PowerShell:
    ```
-   cd D:\Prog\AlphaMine\ref
+   cd <repo>\projects\alphamine\external\ref
    java -jar RetroMCP-Java-CLI.jar recompile      # client + server, ~1 min, "Finished successfully"
    java -jar RetroMCP-Java-CLI.jar start server   # port 25565, offline mode
    java -jar RetroMCP-Java-CLI.jar start client   # 854x480, connects to localhost:25565 (patched GuiMainMenu)
@@ -56,7 +56,7 @@ A clone has only sources. The full working copy (jars, libraries, builds, worlds
 The scripts live in the VoxelCore directory (`tools\alphamine\`, Python 3 stdlib only) and run from WSL:
 
 ```
-VC=/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini
+VC=<repo>
 python3 $VC/tools/alphamine/gen_tables.py       # ref/minecraft/src -> tables/{blocks,items,textures_by_block}.json, NOTES.md
 python3 $VC/tools/alphamine/extract_assets.py   # jar + asset index -> assets/ (+ named tiles from tables/)
 ```
@@ -77,8 +77,8 @@ options.txt as before).
 **Start** (from WSL or PowerShell; both scripts start Java detached through WMI and print the java PID;
 logs go to `logs\<LogName>.log/.err`, cp866):
 ```
-powershell -File D:\Prog\AlphaMine\ref\start_server.ps1 -Dir D:\Prog\AlphaMine\run\server   # nogui; dir holds server.properties, ops.txt, world\
-powershell -File D:\Prog\AlphaMine\ref\start_client.ps1 -F2F 25570 [-Size 854x480] [-Server localhost:25565] [-AssetIndex a1.0.14-local]
+powershell -File <repo>\projects\alphamine\external\ref\start_server.ps1 -Dir <repo>\projects\alphamine\external\run\server   # nogui; dir holds server.properties, ops.txt, world\
+powershell -File <repo>\projects\alphamine\external\ref\start_client.ps1 -F2F 25570 [-Size 854x480] [-Server localhost:25565] [-AssetIndex a1.0.14-local]
 ```
 `-AssetIndex a1.0.14-local` (the harness default, created by `am_client`): a copy of the asset index whose 13 `custom`
 entries point to local `file:` copies of what their https URLs return (a 536-byte "301 Moved" page), so launchwrapper
@@ -154,3 +154,10 @@ differing pixels, one more tick 9 968 (water/lava texture animation).
 **E2E series** (01.10, `agents\F2F.md` §8.1 in the VoxelCore directory): `tools/alphamine/e2e/e2e_run.py <e2e_name>
 --impl java|vc [--golden] [--compare]` — a tick timeline of F2F input/chat/gui with keyframe shots and `state` dumps;
 golden in `golden\e2e_<name>\` (`kf_NNNN.png`, `states.jsonl`, `run.json`, `reference_noise.json` = Java vs Java).
+
+## History of runs (wave 7)
+`lab/` (lab runs, golden store) and `runs/` (old runners), ~1.1 GB, were **not copied** into this repository: the
+repository is self-contained and has no links outside. The history stays where it was made — on the source machine in
+the AlphaMine catalog (`lab\runs`, `lab\store`, `runs\`) and in the snapshot `lookibed/voxelcore-workbench-snapshot-2026-10`.
+`project.toml` points `runs_dir`/`golden_store` to `external\lab\...` here, so a new run history starts empty.
+`external\vc\settings.toml`, `controls.toml` are copies of the 0.31 runtime settings used by the `world`/`runtime` kinds.

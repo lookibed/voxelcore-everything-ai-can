@@ -2,7 +2,7 @@
 """Эталон Eaglercraft в headless Edge (Windows) — обёртка из WSL.
 
   edge_ref.py serve      — раздать upstream/javascript на :8765 (фон)
-  edge_ref.py start      — запустить headless Edge с CDP на 127.0.0.1:9222 (профиль D:\\Prog\\VoxelCore\\edge_ref_profile)
+  edge_ref.py start      — запустить headless Edge с CDP на 127.0.0.1:9222 (профиль <work_root>\\edge_ref_profile)
   edge_ref.py run <сценарий.json>  — выполнить сценарий Windows-node (tools/reference/edge_ref.js)
   edge_ref.py stop       — закрыть Edge headless
 
@@ -10,11 +10,11 @@
 """
 import os, subprocess, sys, time
 
-VC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-JS_DIR = "/root/Spider/tests/manual/real-world-eaglercraft/upstream/javascript"
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+JS_DIR = os.environ.get("SPIDER_ROOT", "Spider") + "/tests/manual/real-world-eaglercraft/upstream/javascript"
 PS = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
 EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-PROFILE = r"D:\Prog\VoxelCore\edge_ref_profile"
+PROFILE = os.path.join(os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "work"), "edge_ref_profile")
 NODE = r"C:\Program Files\nodejs\node.exe"
 
 
@@ -27,7 +27,7 @@ def win_path(p):
 
 def ps(cmd, timeout=120):
     r = subprocess.run([PS, "-NoProfile", "-Command", cmd], capture_output=True, text=True, errors="replace", timeout=timeout,
-                       cwd=VC_ROOT)
+                       cwd=REPO)
     return (r.stdout + r.stderr).replace("\r", "")
 
 
@@ -56,7 +56,7 @@ def start(fresh=False):
 
 
 def run(script):
-    js = win_path(os.path.join(VC_ROOT, "tools", "reference", "edge_ref.js"))
+    js = win_path(os.path.join(REPO, "projects", "vc", "reference", "edge_ref.js"))
     out = ps(f"& '{NODE}' '{js}' '{win_path(script)}'", timeout=600)
     print(out)
 

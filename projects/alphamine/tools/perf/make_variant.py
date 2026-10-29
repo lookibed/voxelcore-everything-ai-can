@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Variant pack `alphamine` for performance experiments, without touching the shared pack (other agents run their
-F2F clients with a junction to VC_ROOT/content/alphamine):
+F2F clients with a junction to REPO/content/alphamine):
 
   python3 tools/alphamine/perf/make_variant.py [--engine-light off]
 
-D:\\Prog\\AlphaMine\\run\\alphamine_lp: every subdir of content/alphamine is a junction (modules, shaders, ... edits
+<repo>\\projects\\alphamine\\external\\run\\alphamine_lp: every subdir of content/alphamine is a junction (modules, shaders, ... edits
 show up at once) except blocks/, which gen_pack_blocks.py --blocks-only --engine-light off writes; top-level files
 are copied. Engine user dirs that use it: run\\vc_rt_lp (runtime VoxelCore.exe --dir, perf_normal.py --userdir)
 and run\\vc_f2f_lp (F2F client, perf_walk.py --dir / am_client dir) get a content\\alphamine junction to it.
@@ -16,9 +16,9 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
-PACK = os.path.join(VC_ROOT, "content", "alphamine")
-ALPHA = "/mnt/d/Prog/AlphaMine"
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+PACK = os.path.join(REPO, "packs", "alphamine")
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "external"))  # было внешний каталог AlphaMine
 OUT = os.path.join(ALPHA, "run", "alphamine_lp")
 DIRS = [os.path.join(ALPHA, "run", "vc_rt_lp"), os.path.join(ALPHA, "run", "vc_f2f_lp")]
 PS = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
@@ -56,7 +56,7 @@ def main():
     bl = os.path.join(OUT, "blocks")
     if os.path.lexists(bl) and not os.path.isdir(bl):
         os.remove(bl)
-    r = subprocess.run([sys.executable, os.path.join(VC_ROOT, "tools", "alphamine", "gen_pack_blocks.py"), "--out", OUT,
+    r = subprocess.run([sys.executable, os.path.join(REPO, "projects", "alphamine", "tools", "gen_pack_blocks.py"), "--out", OUT,
                         "--blocks-only", "--engine-light", o.engine_light], capture_output=True, text=True)
     print(r.stdout.strip(), r.stderr.strip())
     if r.returncode:

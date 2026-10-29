@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "reference"))
 import compare as cmp  # noqa: E402
 import gen_devworld as gd  # noqa: E402
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 WORLD = os.path.join(ALPHA, "golden", "devworld")
 PASS1 = {8, 9, 79}
 

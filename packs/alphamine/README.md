@@ -1,7 +1,7 @@
 # alphamine — клиент Minecraft Alpha 1.0.16 для VoxelCore 0.31 (фаза 2: мир сервера виден)
 
 План, протокол, результаты проб и числа паритета — `agents/ALPHAMINE.md`, F2F — `agents/F2F.md` (корень VoxelCore).
-Сервер — оригинальный Java Alpha SMP 0.1.1 (протокол 14, `D:\Prog\AlphaMine\ref\minecraft_server`).
+Сервер — оригинальный Java Alpha SMP 0.1.1 (протокол 14, `<repo>\projects\alphamine\external\ref\minecraft_server`).
 
 ## Запуск
 - **Разработка (прямо при старте, без меню):** свой сервер `python3 tools/alphamine/server_v.py start` (порт 25566, свежая
@@ -24,7 +24,7 @@
 ## Устройство
 | Файл | Что |
 |---|---|
-| `blocks/*.json`, `textures/blocks/am_*.png`, `modules/blocks_table.lua`, `modules/items_table.lua`, `BLOCKS_TODO.md` | **генерируются** `tools/alphamine/gen_pack_blocks.py` из `D:\Prog\AlphaMine\tables` и `assets\tiles\terrain`: 69 блоков `alphamine:<name_snake>`, 131 текстура (префикс `am_` — атлас `blocks` общий, у `base` есть `leaves`/`leaves_opaque`, `grass`, `dirt`...; нижняя грань — отражённая по вертикали копия), варианты по meta (`state-based`) |
+| `blocks/*.json`, `textures/blocks/am_*.png`, `modules/blocks_table.lua`, `modules/items_table.lua`, `BLOCKS_TODO.md` | **генерируются** `tools/alphamine/gen_pack_blocks.py` из `<repo>\projects\alphamine\external\tables` и `assets\tiles\terrain`: 69 блоков `alphamine:<name_snake>`, 131 текстура (префикс `am_` — атлас `blocks` общий, у `base` есть `leaves`/`leaves_opaque`, `grass`, `dirt`...; нижняя грань — отражённая по вертикали копия), варианты по meta (`state-based`) |
 | `modules/blocks.lua` | альфа id ↔ индекс блока VoxelCore; meta альфы = userbits состояния (`state = meta << 8`) у всех блоков → обратное отображение точное |
 | `modules/net.lua` | TCP протокола 14: буфер приёма, разбор по индексу (размеры пакетов из `Packet*.java`), double/float BE вручную, отправка через `byteutil.pack` |
 | `modules/chunks.lua` | хранилище чанков альфы (81920 байт в раскладке `Chunk`: блоки `x<<11|z<<7|y`, полубайты meta/свет), MapChunk целиком и частями (`World/Chunk.setChunkData`), PreChunk, BlockChange/MultiBlockChange (в загруженный чанк — `block.set`), перекодирование в `world.set_chunk_data` для присутствующих чанков (`on_chunk_present`) |
@@ -74,7 +74,7 @@
 
 ## Фаза 3: игрок, сущности, предметы (агент P)
 `python3 tools/alphamine/run_vc_scenario.py alpha_spawn layer_entities --exe VoxelCoreF2F-p.exe --f2f-port 25572 --dir
-/mnt/d/Prog/AlphaMine/engine/userdir_p --server-port 25567 --server-name p` (и `layer_entities_player` — со вторым Java-клиентом;
+<repo>/builds/userdir_p --server-port 25567 --server-name p` (и `layer_entities_player` — со вторым Java-клиентом;
 `--impl java --golden` — эталон). Числа: entities 99.88 % (tol 1: 100 %), entities_player 98.33 % (tol 3: 99.993 %);
 столкновения Lua = Java бит в бит, движок — нет (таблица — `agents/ALPHAMINE.md` §7). F2F: `collision {mode}`, `eval {code}`
 (отладка), `state.player.exact`, `state.world.entities`.
@@ -101,7 +101,7 @@
 Набор `tools/alphamine/perf/` (подробно, числа, причины просадок — `agents/ALPHAMINE.md` §9):
 - `python3 tools/alphamine/perf/perf_normal.py --tag X` — обычный запуск рантайма (окно пользователя 1390×855, реальное
   время): пак сам проходит маршрут (`modules/autowalk.lua`) и пишет профиль (`modules/perf.lua`) → CSV, график,
-  `perf_report.md` в `D:\Prog\AlphaMine\runs\<время>_perf_normal_X\`; `--end disconnect|lost` — проверка выхода в меню.
+  `perf_report.md` в `<repo>\projects\alphamine\external\runs\<время>_perf_normal_X\`; `--end disconnect|lost` — проверка выхода в меню.
 - `python3 tools/alphamine/perf/perf_walk.py --tag X` — то же в F2F (`VoxelCoreF2F-v.exe`, 854×480, F2F-команда `perf`).
 - `perf_compare.py A B` — таблицы «до/после», `perf_report.py <run>` — пересобрать отчёт.
 - Вручную в обычном запуске: файл `export:alphamine_perf.txt` (`run=<имя>`) включает профиль (части CSV каждые 5 с в

@@ -2,7 +2,7 @@
 # Сессия = мир (headless стоковый 0.32) + шлюз + песочница + N клиентов (тестовая сборка F2F 0.32) или ботов (headless 0.32).
 # Паки — настоящие (волна 2, 02.10): content/olife_proto (сгенерированные кодеки), content/olife_world (авторитетный
 # мир), content/olife_client (клиент/бот); шлюз — tools/olife/gateway_dev.py; песочница — tools/olife/sandbox_stub.py
-# (протокол sandboxd; настоящий sandboxd — Linux, /root/olife/sandboxd). Протокол — tools/olife/protocol/*.yaml.
+# (протокол sandboxd; настоящий sandboxd — Linux, <olife-src>/sandboxd). Протокол — tools/olife/protocol/*.yaml.
 # Проверки — согласованность состояния по тактам (мир против каждого клиента), задержки, байты, негативные попытки.
 [project]
 name = "olife"
@@ -11,8 +11,8 @@ scenarios_dir = "{project_dir}\\scenarios"
 runs_dir = "{lab_data}\\runs"
 plugin = "plugin.py"
 # 22.10 (v0327): golden меню/статуса — отдельная база на версию движка (старая не затирается); CAS общий
-golden_dir = "D:\\Prog\\Olife\\golden\\v0327"
-golden_store = "D:\\Prog\\Olife\\golden\\store"
+golden_dir = "{repo_root}\\projects\\olife\\external\\golden\\v0327"
+golden_store = "{repo_root}\\projects\\olife\\external\\golden\\store"
 
 [engines]
 # 22.10 (v0327): умолчание — релиз 0.32.7 (lab.toml [engines.v0327]); v032 (0.32.0 dc62ccfb) — легаси, через
@@ -52,7 +52,7 @@ logs = { log = "{dir}\\world.log" }
 default_log = "stdout"
 prepare = [
   { action = "packs", packs = "{param.packs}" },
-  { action = "copy", src = "{vc_root}\\content\\olife_world\\{param.script}", dst = "{param.script}" },
+  { action = "copy", src = "{repo_root}\\packs\\olife_world\\{param.script}", dst = "{param.script}" },
   { action = "mkdir", path = "export" },
 ]
 ready = [ { log = "\\[olife_world\\] ready", stream = "stdout", timeout = 90 } ]
@@ -68,7 +68,7 @@ f2f = "f2f"
 cwd = "{dir}"
 # этап 6: auth_url — токены/баны из БД supervisor (http://127.0.0.1:<демон>/sup), пусто — файлы; http — раздача паков
 # по манифесту packs_manifest (lab olife packs manifest)
-args = ["-u", "-B", "{vc_root}\\tools\\olife\\gateway_dev.py", "--listen", "{port.gw}", "--upstream", "127.0.0.1:{param.upstream}",
+args = ["-u", "-B", "{project_dir}\\tools\\gateway_dev.py", "--listen", "{port.gw}", "--upstream", "127.0.0.1:{param.upstream}",
         "--f2f", "{port.f2f}", "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}",
         "--bans", "{dir}\\bans.json", "--name", "{lease}", "--auth-url", "{param.auth_url}",
         "--packs-http", "{port.http}", "--packs-manifest", "{param.packs_manifest}",
@@ -80,13 +80,13 @@ args = ["-u", "-B", "{vc_root}\\tools\\olife\\gateway_dev.py", "--listen", "{por
 # волна 4b: ticket_key — файл ключа шлюза (билеты), gw_id — аудитория билета, auth_mode tokens|tickets|both (пусто — по ключу)
 params = { upstream = 0, secret = "olife-dev-secret", auth_url = "", packs_manifest = "", ticket_key = "", gw_id = "", auth_mode = "", assets_dir = "", packs_url = "" }
 default_log = "stdout"
-prepare = [ { action = "copy", src = "{vc_root}\\tools\\olife\\gateway_bans.json", dst = "bans.json" } ]
+prepare = [ { action = "copy", src = "{project_dir}\\tools\\gateway_bans.json", dst = "bans.json" } ]
 ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_gateway\\] ready", stream = "stdout", timeout = 20 } ]
 stop = [ { f2f = "quit", wait_exit = 3 } ]
 
 # ------------------------------------------------------------------ песочница: НАСТОЯЩИЙ olife-sandboxd (волна 3a, 02.10)
-# Rust + wasmtime 49 + PUC Lua 5.1 в wasm (исходники /root/olife/sandboxd, Windows-сборка x86_64-pc-windows-gnu ->
-# D:\Prog\Olife\sandboxd, scripts/deploy_windows.sh). Данные — JSON-строки по TCP (порт sb; мир говорит jsonl, бинарный
+# Rust + wasmtime 49 + PUC Lua 5.1 в wasm (исходники <olife-src>/sandboxd, Windows-сборка x86_64-pc-windows-gnu ->
+# projects\olife\external\sandboxd, scripts/deploy_windows.sh). Данные — JSON-строки по TCP (порт sb; мир говорит jsonl, бинарный
 # контракт sandboxd пока не умеет); управление — протокол F2F лаборатории на порту f2f (--ctl): hello (здоровье),
 # meters {owner?, entities?} (накопленные счётчики по владельцам/сущностям + время такта сервиса), stats, quit.
 # Окна и ввода нет (hello.flags.input = "none"). wasm — по OLIFE_LUA_WASM (exe запускается копией из builds\), кэш
@@ -94,12 +94,12 @@ stop = [ { f2f = "quit", wait_exit = 3 } ]
 [kinds.sandbox]
 description = "sandbox: REAL olife-sandboxd.exe (wasmtime + Lua 5.1 in wasm, fuel/preemption/memory limits, VM per owner) — jsonl over TCP port sb, lab control port f2f (hello/meters/stats/quit)"
 engine = "none"
-exe = "D:\\Prog\\Olife\\sandboxd\\olife-sandboxd.exe"
+exe = "{repo_root}\\projects\\olife\\external\\sandboxd\\olife-sandboxd.exe"
 copy_exe = true                     # копия по содержимому в builds\: пересборка (deploy_windows.sh) не упирается в запущенный exe
 ports = ["sb", "f2f"]
 f2f = "f2f"
 cwd = "{dir}"
-env = { OLIFE_LUA_WASM = "D:\\Prog\\Olife\\sandboxd\\olife_lua.wasm" }
+env = { OLIFE_LUA_WASM = "{repo_root}\\projects\\olife\\external\\sandboxd\\olife_lua.wasm" }
 # UX A3: --state-dir — owner VM images on disk (restored when the service restarts in the same lease dir: Lua variables
 # survive a sandbox restart); persist_every N ticks (0 = only at ctl `persist`/`quit`; olife_script_api uses 20)
 args = ["--runtime", "wasm", "--threads", "{param.threads}", "--tcp", "127.0.0.1:{port.sb}", "--ctl", "{port.f2f}",
@@ -118,26 +118,26 @@ exe = "{python}"
 ports = ["sb", "f2f"]
 f2f = "f2f"
 cwd = "{dir}"
-args = ["-u", "-B", "{vc_root}\\tools\\olife\\sandbox_stub.py", "--listen", "{port.sb}", "--f2f", "{port.f2f}", "--dir", "{dir}"]
+args = ["-u", "-B", "{project_dir}\\tools\\sandbox_stub.py", "--listen", "{port.sb}", "--f2f", "{port.f2f}", "--dir", "{dir}"]
 default_log = "stdout"
 ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_sandbox\\] ready", stream = "stdout", timeout = 20 } ]
 stop = [ { f2f = "quit", wait_exit = 3 } ]
 
 # ------------------------------------------------------------------ шлюз прод: Rust olife-gateway (волна 3c, olife_w3g)
-# Исходники /root/olife/gateway (кодеки — gen_codecs.py --lang rust), бинарник D:\Prog\Olife\gateway\olife-gateway.exe
+# Исходники <olife-src>/gateway (кодеки — gen_codecs.py --lang rust), бинарник projects\olife\external\gateway\olife-gateway.exe
 # (README рядом). Поведение и коды Disconnect — как gateway_dev.py; плюс админ HTTP (порт admin: /status /sessions /kick
 # /ban /drain), журнал JSONL, лимиты соединений на IP, drain. Копия exe по содержимому (copy_exe): пересборка не мешает.
 # auth_url (этап 6) — токены/баны из БД supervisor, файл токенов — запасной; пусто — только файл.
 [kinds.gateway_rs]
-description = "gateway (Rust, production sockets_auth): D:\\Prog\\Olife\\gateway\\olife-gateway.exe — same protocol/codes as gateway_dev.py + admin HTTP, JSONL log, per-IP limits, drain"
+description = "gateway (Rust, production sockets_auth): {repo_root}\\projects\\olife\\external\\gateway\\olife-gateway.exe — same protocol/codes as gateway_dev.py + admin HTTP, JSONL log, per-IP limits, drain"
 engine = "none"
-exe = "D:\\Prog\\Olife\\gateway\\olife-gateway.exe"
+exe = "{repo_root}\\projects\\olife\\external\\gateway\\olife-gateway.exe"
 copy_exe = true
 ports = ["gw", "f2f", "admin", "http"]
 f2f = "f2f"
 cwd = "{dir}"
 args = ["--listen", "{port.gw}", "--upstream", "127.0.0.1:{param.upstream}", "--f2f", "{port.f2f}", "--admin", "{port.admin}",
-        "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}", "--tokens", "{vc_root}\\tools\\olife\\gateway_tokens.json",
+        "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}", "--tokens", "{project_dir}\\tools\\gateway_tokens.json",
         "--bans", "{dir}\\bans.json", "--name", "{lease}", "--log", "{dir}\\gateway.jsonl", "--threads", "{param.threads}",
         "--auth-url", "{param.auth_url}", "--max-conns-per-ip", "{param.max_conns_per_ip}", "--conn-rate-ip", "{param.conn_rate_ip}",
         "--conn-burst-ip", "{param.conn_burst_ip}", "--ticket-key", "{param.ticket_key}", "--gw-id", "{param.gw_id}",
@@ -148,7 +148,7 @@ args = ["--listen", "{port.gw}", "--upstream", "127.0.0.1:{param.upstream}", "--
 params = { upstream = 0, secret = "olife-dev-secret", threads = 4, auth_url = "", max_conns_per_ip = 64, conn_rate_ip = 20, conn_burst_ip = 60, ticket_key = "", gw_id = "", auth_mode = "", packs_manifest = "", assets_dir = "" }
 logs = { log = "{dir}\\gateway.jsonl" }
 default_log = "stdout"
-prepare = [ { action = "copy", src = "{vc_root}\\tools\\olife\\gateway_bans.json", dst = "bans.json" } ]
+prepare = [ { action = "copy", src = "{project_dir}\\tools\\gateway_bans.json", dst = "bans.json" } ]
 ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_gateway\\] ready", stream = "stdout", timeout = 20 } ]
 stop = [ { f2f = "quit", wait_exit = 3 } ]
 
@@ -160,13 +160,13 @@ stop = [ { f2f = "quit", wait_exit = 3 } ]
 [kinds.gateway_rs_public]
 description = "gateway (Rust) of the PUBLIC play stack: client port {param.listen} and packs HTTP {param.packs_port} on 0.0.0.0 (fixed, [play.public]); admin/f2f from the pool on 127.0.0.1; ServerInfo from {param.info}"
 engine = "none"
-exe = "D:\\Prog\\Olife\\gateway\\olife-gateway.exe"
+exe = "{repo_root}\\projects\\olife\\external\\gateway\\olife-gateway.exe"
 copy_exe = true
 ports = ["f2f", "admin"]
 f2f = "f2f"
 cwd = "{dir}"
 args = ["--listen", "{param.listen}", "--public", "1", "--upstream", "127.0.0.1:{param.upstream}", "--f2f", "{port.f2f}", "--admin", "{port.admin}",
-        "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}", "--tokens", "{vc_root}\\tools\\olife\\gateway_tokens.json",
+        "--metrics", "{dir}\\gateway_metrics.json", "--secret", "{param.secret}", "--tokens", "{project_dir}\\tools\\gateway_tokens.json",
         "--bans", "{dir}\\bans.json", "--name", "{lease}", "--log", "{dir}\\gateway.jsonl", "--threads", "{param.threads}",
         "--auth-url", "{param.auth_url}", "--max-conns-per-ip", "{param.max_conns_per_ip}", "--conn-rate-ip", "{param.conn_rate_ip}",
         "--conn-burst-ip", "{param.conn_burst_ip}", "--ticket-key", "{param.ticket_key}", "--gw-id", "{param.gw_id}",
@@ -175,7 +175,7 @@ args = ["--listen", "{param.listen}", "--public", "1", "--upstream", "127.0.0.1:
 params = { listen = 0, packs_port = 0, info = "", upstream = 0, secret = "olife-dev-secret", threads = 4, auth_url = "", max_conns_per_ip = 64, conn_rate_ip = 20, conn_burst_ip = 60, ticket_key = "", gw_id = "", auth_mode = "", packs_manifest = "", assets_dir = "" }
 logs = { log = "{dir}\\gateway.jsonl" }
 default_log = "stdout"
-prepare = [ { action = "copy", src = "{vc_root}\\tools\\olife\\gateway_bans.json", dst = "bans.json" } ]
+prepare = [ { action = "copy", src = "{project_dir}\\tools\\gateway_bans.json", dst = "bans.json" } ]
 ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_gateway\\] ready", stream = "stdout", timeout = 20 } ]
 stop = [ { f2f = "quit", wait_exit = 3 } ]
 
@@ -186,7 +186,7 @@ exe = "{python}"
 ports = ["f2f"]
 f2f = "f2f"
 cwd = "{dir}"
-args = ["-u", "-B", "{vc_root}\\tools\\olife\\auth_service.py", "--listen", "{param.listen}", "--public", "1", "--f2f", "{port.f2f}", "--dir", "{dir}",
+args = ["-u", "-B", "{project_dir}\\tools\\auth_service.py", "--listen", "{param.listen}", "--public", "1", "--f2f", "{port.f2f}", "--dir", "{dir}",
         "--master", "{param.master}", "--ttl", "{param.ttl}", "--gateways", "{param.gateways}", "--auth-url", "{param.auth_url}",
         "--require-sealed", "{param.require_sealed}", "--tls", "{param.tls}", "--seal-key", "{param.seal_key}"]
 params = { listen = 0, master = "", ttl = 30, gateways = "", auth_url = "", require_sealed = 1, tls = 1, seal_key = "" }
@@ -204,7 +204,7 @@ exe = "{python}"
 ports = ["game", "f2f"]
 f2f = "f2f"
 cwd = "{dir}"
-args = ["-u", "-B", "{vc_root}\\tools\\olife\\world_fake.py", "--port", "{port.game}", "--f2f", "{port.f2f}", "--secret", "{param.secret}",
+args = ["-u", "-B", "{project_dir}\\tools\\world_fake.py", "--port", "{port.game}", "--f2f", "{port.f2f}", "--secret", "{param.secret}",
         "--tps", "{param.tps}", "--stats", "{dir}\\world_stats.json"]
 params = { secret = "olife-dev-secret", tps = 20 }
 default_log = "stdout"
@@ -218,7 +218,7 @@ description = "gateway load: tools/olife/gw_load.py — N protocol bots (Hello, 
 engine = "none"
 exe = "{python}"
 cwd = "{dir}"
-args = ["-u", "-B", "{vc_root}\\tools\\olife\\gw_load.py", "--gateway", "{param.gateway}", "--bots", "{param.bots}", "--rate", "{param.rate}",
+args = ["-u", "-B", "{project_dir}\\tools\\gw_load.py", "--gateway", "{param.gateway}", "--bots", "{param.bots}", "--rate", "{param.rate}",
         "--seconds", "{param.seconds}", "--chat-every", "{param.chat_every}", "--chat-len", "{param.chat_len}", "--prefix", "{param.prefix}",
         "--progress", "{param.progress}", "--out", "{dir}\\gw_load.json"]
 params = { gateway = 0, bots = 20, rate = 55, seconds = 30, chat_every = 0, chat_len = 200, prefix = "load", progress = 10 }
@@ -247,7 +247,7 @@ default_log = "stdout"
 prepare = [
   { action = "write", path = "settings.toml", text = "# lab: F2F test instance, silent (22.10): backend on, master gain 0\n[audio]\nenabled = true\nvolume-master = 0\n" },
   { action = "packs", packs = "{param.packs}" },
-  { action = "copy", src = "{vc_root}\\content\\olife_client\\client_start.lua", dst = "client_start.lua" },
+  { action = "copy", src = "{repo_root}\\packs\\olife_client\\client_start.lua", dst = "client_start.lua" },
   { action = "mkdir", path = "export" },
 ]
 ready = [ { f2f = "hello", timeout = 90 }, { log = "\\[olife_client\\] connected", stream = "stdout", timeout = 90 } ]
@@ -271,7 +271,7 @@ logs = { log = "{dir}\\client.log" }
 default_log = "stdout"
 prepare = [
   { action = "packs", packs = "{param.packs}" },
-  { action = "copy", src = "{vc_root}\\content\\olife_client\\client_start.lua", dst = "client_start.lua" },
+  { action = "copy", src = "{repo_root}\\packs\\olife_client\\client_start.lua", dst = "client_start.lua" },
   { action = "mkdir", path = "export" },
 ]
 stdin = true
@@ -293,7 +293,7 @@ default_log = "stdout"
 # паки olife и векторы кодеков (tools/olife/tests/codec_vectors.lua читает user:export/vectors/*.json)
 prepare = [ { action = "mkdir", path = "shots" },
             { action = "packs", packs = "{param.packs}" },
-            { action = "copytree", src = "{vc_root}\\tools\\olife\\protocol\\vectors", dst = "export\\vectors" } ]
+            { action = "copytree", src = "{project_dir}\\tools\\protocol\\vectors", dst = "export\\vectors" } ]
 ready = []
 stop = []
 
@@ -356,7 +356,7 @@ exe = "{python}"
 ports = ["https", "f2f"]
 f2f = "f2f"
 cwd = "{dir}"
-args = ["-u", "-B", "{vc_root}\\tools\\olife\\auth_service.py", "--listen", "{port.https}", "--f2f", "{port.f2f}", "--dir", "{dir}",
+args = ["-u", "-B", "{project_dir}\\tools\\auth_service.py", "--listen", "{port.https}", "--f2f", "{port.f2f}", "--dir", "{dir}",
         "--master", "{param.master}", "--ttl", "{param.ttl}", "--gateways", "{param.gateways}", "--auth-url", "{param.auth_url}",
         "--require-sealed", "{param.require_sealed}", "--tls", "{param.tls}", "--seal-key", "{param.seal_key}"]
 params = { master = "", ttl = 30, gateways = "", auth_url = "", require_sealed = 0, tls = 1, seal_key = "" }
@@ -365,16 +365,16 @@ ready = [ { f2f = "hello", timeout = 20 }, { log = "\\[olife_auth\\] ready", str
 stop = [ { f2f = "quit", wait_exit = 3 } ]
 
 # ================================================================== путь игрока (02.10, olife_play): lab play olife
-# `lab play olife --user` (пользователь, свой терминал или D:\Prog\Olife\play.bat) / `--final-check --reason` (главная
+# `lab play olife --user` (пользователь, свой терминал или projects\olife\external\play.bat) / `--final-check --reason` (главная
 # сессия): [play].order — сначала «коляска» play_stack (поднимает стек под supervisor: olife.play_up в olife_play.py), затем
 # СТОКОВЫЙ рантайм 0.32 (окно пользователя) со скриптом content/olife_client/scripts/app/olife.lua (он же — пункт меню
 # «Сценарии» -> olife). Выход рантайма = конец сеанса: play.py гасит коляску (stdin stop -> olife.play_down: сводка
 # olife_session.md в прогон, сохранение мира, снятие группы) и пишет play_report.md. Сухой прогон (без стокового движка) —
 # `lab play olife --dry-run` = сценарий olife_play_dry (тот же стек + клиент F2F 0.32 с тем же скриптом).
 
-# мир игры: как world, но worlds\ — junction на постоянный каталог миров (D:\Prog\Olife\play\worlds) или копию (сухой прогон)
+# мир игры: как world, но worlds\ — junction на постоянный каталог миров (projects\olife\external\play\worlds) или копию (сухой прогон)
 [kinds.world_play]
-description = "world for the player: stock VoxelCore 0.32 --headless server_start.lua (content/olife_world); worlds\\ = junction to {param.worlds} (persistent D:\\Prog\\Olife\\play\\worlds or a dry-run copy)"
+description = "world for the player: stock VoxelCore 0.32 --headless server_start.lua (content/olife_world); worlds\\ = junction to {param.worlds} (persistent {repo_root}\\projects\\olife\\external\\play\\worlds or a dry-run copy)"
 role = "headless"
 exe = "{engine.stock}"
 copy_exe = false
@@ -393,7 +393,7 @@ logs = { log = "{dir}\\world.log" }
 default_log = "stdout"
 prepare = [
   { action = "packs", packs = "{param.packs}" },
-  { action = "copy", src = "{vc_root}\\content\\olife_world\\{param.script}", dst = "{param.script}" },
+  { action = "copy", src = "{repo_root}\\packs\\olife_world\\{param.script}", dst = "{param.script}" },
   { action = "mkdir", path = "export" },
   { action = "junction", link = "worlds", target = "{param.worlds}" },
 ]
@@ -457,17 +457,17 @@ ready = [ { f2f = "hello", timeout = 90 }, { log = "\\[olife_play\\] connected",
 stop = [ { f2f = "quit", wait_exit = 8 } ]
 
 [play]
-description = "Olife: supervised stack (world on D:\\Prog\\Olife\\play, real sandbox, auth tickets, Rust gateway, account user, sample benches) via the play_stack sidecar + STOCK 0.32 runtime auto-connecting by ticket"
+description = "Olife: supervised stack (world on {repo_root}\\projects\\olife\\external\\play, real sandbox, auth tickets, Rust gateway, account user, sample benches) via the play_stack sidecar + STOCK 0.32 runtime auto-connecting by ticket"
 order = ["play_stack", "runtime"]      # коляска (стек готов) -> рантайм; стоп обратный: рантайм уже вышел -> play_stack stop
 engine = "runtime"                     # выход окна = конец сеанса
 names = { runtime = "vc032-main" }     # рантайм один на машину
-exclusive_exe = "D:\\Prog\\VoxelCore\\voxelcore-0.32.7_win64\\VoxelCore.exe"   # уже запущен вне лаборатории -> отказ
+exclusive_exe = "{engine.stock}"   # уже запущен вне лаборатории -> отказ
 ttl = 3600
 [play.params.play_stack]
 mode = "play"
 # публичный режим (olife_friends 16.10): фиксированные порты (TCP; проброс на роутере один раз). Не пересекаются с демоном
 # (25700), пулом аренд (25600–25699), тестовыми демонами (25791–25793), изолированными демонами и их арендами (25800–26349),
-# лаунчером Eaglercraft (25599). Перекрыть — D:\Prog\Olife\play\server.toml, секция [public] с теми же ключами.
+# лаунчером Eaglercraft (25599). Перекрыть — projects\olife\external\play\server.toml, секция [public] с теми же ключами.
 [play.public]
 gateway = 27750          # шлюз: единственное, что знает друг (ip:27750)
 auth = 27751             # сервис билетов (HTTPS, самоподписанный + запечатанный запрос к ключу из ServerInfo)
@@ -544,7 +544,7 @@ clock = "realtime"
 cwd = "{dir}"
 args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}",
         "--script", "{dir}\\{param.script_name}", "--", "--autologin", "{param.autologin}"]
-params = { app = "olife", autologin = 0, script = "{vc_root}\\content\\olife_client\\scripts\\app\\olife.lua", script_name = "olife_app.lua", config = "{project_dir}\\scripts\\olife_server_empty.txt", packs = ["olife_proto", "olife_client"] }
+params = { app = "olife", autologin = 0, script = "{repo_root}\\packs\\olife_client\\scripts\\app\\olife.lua", script_name = "olife_app.lua", config = "{project_dir}\\scripts\\olife_server_empty.txt", packs = ["olife_proto", "olife_client"] }
 logs = { latest = "{dir}\\latest.log" }
 default_log = "stdout"
 prepare = [

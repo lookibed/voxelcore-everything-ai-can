@@ -22,14 +22,14 @@
   lab olife packs manifest                           манифест content/olife_client + olife_proto (path, sha256, size, side)
   lab olife restart <role> [--group G]  |  lab olife kill <role> [--how proc|tree] [--group G]   (тест: «падение»)
   lab olife panel                                    путь файла панели и URL живой панели демона
-  lab olife play-up [--dry]                         стек игрока без окна (мир D:/Prog/Olife/play, песочница, билеты, Rust-шлюз,
+  lab olife play-up [--dry]                         стек игрока без окна (мир <repo>/projects/olife/external/play, песочница, билеты, Rust-шлюз,
                                                    аккаунт user, примеры бенчей) + export/olife_server.txt клиента 0.32:
                                                    дальше VoxelCore 0.32 -> «Сценарии» -> olife
   lab olife play-up --public                        то же для друзей (16.10, olife_friends): шлюз/билеты/паки на 0.0.0.0, порты
                                                    [play.public] 27750/27751/27752, вайтлист включён (OLIFE_PUBLIC_PLAY.md)
   lab olife ip [--no-external]                      адреса ПК (LAN, VPN, внешний IP через echo-сервис) и строки приглашения
   lab olife invite [<ник>]                          ник -> вайтлист сервера игры + строка для друга ip:27750#отпечаток
-  lab olife bundle [--out D:\\Prog\\Olife\\dist] [--invite ip:port#fp]   zip клиента другу (стоковый 0.32 + копии паков)
+  lab olife bundle [--out <repo>\\projects\\olife\\external\\dist] [--invite ip:port#fp]   zip клиента другу (стоковый 0.32 + копии паков)
   lab olife play-down [--group G] | play-status [--group G] | sync     снять стек игрока | статус | паки в 0.32/content
   lab olife friend list [<account>] | friend add|remove|request|cancel <a> <b> [--session S] | friend sync [--session S]
                                                    друзья в БД supervisor (UX A1): правка уходит в миры ваших групп/сессии

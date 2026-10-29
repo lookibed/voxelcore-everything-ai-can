@@ -12,7 +12,7 @@
 | `protocol/vectors/*.json` | кросс-языковые векторы (Python кодирует → Lua декодирует/кодирует побайтно) |
 | `gateway_dev.py` | dev-шлюз `sockets_auth`: рукопожатие, токены, баны, лимиты, keepalive, мультиплекс в мир |
 | `gateway_tokens.json`, `gateway_bans.json` | статические токены (token → account) и баны dev-шлюза |
-| `sandbox_stub.py` | заглушка песочницы с протоколом `sandboxd` (jsonl) и бинарным контрактом `sandbox`; код не исполняет. С волны 3a в лаборатории это вид `sandbox_stub` (сценарий `olife_sandbox_bin`), а вид `sandbox` — настоящий `olife-sandboxd` (`D:\Prog\Olife\sandboxd`) |
+| `sandbox_stub.py` | заглушка песочницы с протоколом `sandboxd` (jsonl) и бинарным контрактом `sandbox`; код не исполняет. С волны 3a в лаборатории это вид `sandbox_stub` (сценарий `olife_sandbox_bin`), а вид `sandbox` — настоящий `olife-sandboxd` (`<repo>\projects\olife\external\sandboxd`) |
 | `negative.py` | негативные тесты протокола шлюза и мира (25 случаев) |
 | `editor_neg.py` | волна 4a: протокольный клиент слоя редактора (Hello, KeepAlive, PlayerInput 10/с, запросы `Script*`/`ToolUse`): `run` — 14 негативных случаев чужого аккаунта (коды `RequestReply`), `flood` — флуд консоли (границы `ConsoleDelta`), `set_code` — владелец ставит код (рестарт-тест) |
 | `world_fake.py` | мир-заглушка контракта `internal` без движка (Welcome, TickSync 20 Гц на сессию, Multicast чата, `burst:N`) — замеры шлюза (вид лаборатории `world_fake`) |
@@ -21,7 +21,7 @@
 | `tests/codec_vectors.lua` | Lua в движке 0.32: векторы Python, побайтное перекодирование, ошибки, float-края, замер |
 | `probes/probe_api.lua` | проба API 0.32 (Bytearray, view, byteutil, игроки/чанки, сущности) |
 | `tests/bench_tickinput.lua` | замер в движке: TickInput на 500 сущностей — `json.tostring` 20–21 мс против ручной склейки 2.95 мс; `json.parse` TickResult 139 КБ — 3.1 мс |
-| `olife_ticket.py` | волна 4b: билеты для `Hello.token` — спецификация, чеканка, проверка (подпись/срок/аудитория/повтор), векторы `protocol/vectors/tickets.json` (Rust-близнец `/root/olife/gateway/src/ticket.rs`) |
+| `olife_ticket.py` | волна 4b: билеты для `Hello.token` — спецификация, чеканка, проверка (подпись/срок/аудитория/повтор), векторы `protocol/vectors/tickets.json` (Rust-близнец `<olife-src>/gateway/src/ticket.rs`) |
 | `auth_service.py` | волна 4b: сервис билетов (HTTPS с самоподписанным сертификатом или HTTP, запечатанные запросы x25519+ChaCha20-Poly1305, аккаунты/баны из БД supervisor; вид лаборатории `auth`) + `client_ticket()` для тестов |
 | `ticket_check.py` | волна 4b: 11 случаев билетов против живого шлюза (good/replayed/expired/wrong_gateway/bad_signature/malformed/static/banned/bad token) — шаг `olife_ticket_auth` |
 | `tests/test_tickets.py` | волна 4b: векторы билетов + сквозной прогон world_fake + gateway_dev + auth_service без движка (4 теста) |
@@ -76,14 +76,14 @@ messages:
 ```bash
 python3 tools/olife/gen_codecs.py           # перегенерировать Lua + Python + векторы (нужен PyYAML, WSL)
 python3 tools/olife/gen_codecs.py --check   # 1, если сгенерированное устарело
-python3 tools/olife/gen_codecs.py --lang rust [--check]   # Rust-кодеки шлюза -> /root/olife/gateway/src/proto (+ копия векторов)
+python3 tools/olife/gen_codecs.py --lang rust [--check]   # Rust-кодеки шлюза -> <olife-src>/gateway/src/proto (+ копия векторов)
 python3 tools/olife/gen_codecs.py --lang all              # всё сразу
 ```
 Rust (`--lang rust`, волна 3c): `wire.rs` (Reader/writers/Framer — заголовок проверяется до тела) + модуль на контракт:
 структура на тип/сообщение (serde — для JSON-векторов; `bytes` как `{"$bytes": hex}`), `enum` на union (`kind`), `enum Msg`
 с `id/name/dir/encode_body/body/frame/decode_body/from_json`, `ids::*`, `frame_raw`, `framer(max)`. Тесты Rust проходят
 все 132 вектора побайтно (кодирование из JSON, разбор, перекодирование); фазз-паритет Python↔Rust
-(`/root/olife/gateway/tools/fuzz_parity.py`): 30 000 мутированных тел — одинаково приняты/отвергнуты, 0 расхождений.
+(`<olife-src>/gateway/tools/fuzz_parity.py`): 30 000 мутированных тел — одинаково приняты/отвергнуты, 0 расхождений.
 Lua-кодек (`require "olife_proto:client"`): `C.append_frame(buf, "ChatSend", msg)` — кадр в Bytearray отправки
 (при ошибке типа буфер не меняется), `C.body(name, msg)` → Bytearray тела, `C.decode_body(id, bytes, s, e)`,
 `C.framer()` + `fr:feed(data)` + `C.read(fr)` → `name, msg, id` | `nil` (ждать) | `false, причина` (рвать соединение),
@@ -100,7 +100,7 @@ Lua-кодек (`require "olife_proto:client"`): `C.append_frame(buf, "ChatSend"
 ```bash
 python3 tools/olife/tests/test_codecs.py                              # WSL python 3.10
 /mnt/c/Python313/python.exe -B 'D:\...\tools\olife\tests\test_codecs.py'   # Windows python (им работает шлюз)
-LAB_OWNER=<имя> tools/lab/lab run olife 'D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini\tools\olife\tests\codec_vectors.lua'
+LAB_OWNER=<имя> tools/lab/lab run olife '<repo>\tools\olife\tests\codec_vectors.lua'
 ```
 Итог 02.10: Python 7/7 (132 вектора, фазз 3000 мутаций без падений), Lua в движке — 815 проверок, 0 отказов
 (132 вектора: декодирование, побайтное перекодирование, кодирование из JSON, усечение/хвост отвергнуты; ошибки кадров;
@@ -126,8 +126,8 @@ LAB_OWNER=<имя> tools/lab/lab run olife 'D:\Prog\VoxelCore\voxelcore-0.31.0_p
 стороны client/both, sha256 сверяется), смена манифеста → `packs.version` в `metrics` (клиентам сообщить нечем — шаг протокола).
 
 ## Прод-шлюз `olife-gateway` (Rust, волна 3c)
-Исходники `/root/olife/gateway` (локальный git, без коммитов), бинарник `D:\Prog\Olife\gateway\olife-gateway.exe`
-(нативная сборка MSVC: `/root/olife/gateway/tools/win_build.sh`), README там же. Те же флаги, что у `gateway_dev.py`
+Исходники `<olife-src>/gateway` (локальный git, без коммитов), бинарник `<repo>\projects\olife\external\gateway\olife-gateway.exe`
+(нативная сборка MSVC: `<olife-src>/gateway/tools/win_build.sh`), README там же. Те же флаги, что у `gateway_dev.py`
 (`--listen --upstream --f2f --metrics --tokens --bans --secret --name --auth-url`) + `--admin <порт>` (HTTP 127.0.0.1:
 `GET /status /sessions /health`, `POST /kick /ban /drain`, `--admin-token`), `--log <jsonl>`, `--public` (иначе 127.0.0.1),
 лимиты (`--max-sessions --max-conns --max-conns-per-ip --conn-rate-ip --conn-burst-ip --rate-msgs ...`), `--hash-token`.
@@ -141,12 +141,12 @@ LAB_OWNER=<имя> tools/lab/lab run olife 'D:\Prog\VoxelCore\voxelcore-0.31.0_p
 
 ## Заглушка песочницы `sandbox_stub.py`
 `python sandbox_stub.py --listen <порт> [--f2f <порт>] [--dir <каталог>]`. Один порт, транспорт по первому байту:
-`{` — JSON-строки ровно как `/root/olife/sandboxd` сегодня (`hello`, `set_limits`, `load`, `unload`, `tick`, `meters`,
+`{` — JSON-строки ровно как `<olife-src>/sandboxd` сегодня (`hello`, `set_limits`, `load`, `unload`, `tick`, `meters`,
 `quit`), иначе — бинарный контракт `sandbox`. Пользовательский код **не исполняется**: каждой загруженной сущности —
 встроенное «orbit» (set_pos по окружности через текущую точку, set_rot, print раз в 100 тактов). Первые 200 строк
 jsonl-запросов пишутся в `<dir>/requests.jsonl` — их можно подать в настоящий `sandboxd`:
 ```bash
-(cat requests.jsonl; echo '{"type":"quit"}') | /root/olife/sandboxd/target/release/olife-sandboxd --runtime wasm --threads 1
+(cat requests.jsonl; echo '{"type":"quit"}') | <olife-src>/sandboxd/target/release/olife-sandboxd --runtime wasm --threads 1
 ```
 Проверено 02.10: 128 запросов мира → 2/2 `load_result ok`, 125 `tick_result`, 250 сущность-тактов `ok`, set_pos шаг
 ≤ 0.2 (проходит валидацию мира), топливо ≈ 63 тыс. на сущность за такт. Порт управления: `hello`, `stats`, `exec` (всегда
@@ -200,7 +200,7 @@ olife.session '{"clients":2,"client_kind":"bot"}'` → `lab stdin olife-world-1 
 имя/модель/текстура/op); s2c `EntityLook{eid, model, texture}` (93) — вид всем, кто видит сущность; `ScriptProfile{eid, tick,
 ticks, errors, text_dropped, rejected_total, vm_heap, vm_peak, vm_state}` (94) — раз в секунду открывшим редактор (память VM
 владельца — когда песочница её сообщает, иначе −1). Кодеки Lua/Python/Rust перегенерированы, `--check` зелёный; Rust-шлюз
-пересобран (`/root/olife/gateway/tools/win_build.sh test`: тесты 7+6+1+8 ok; в `tests/codecs.rs` 39 сообщений, 220 векторов).
+пересобран (`<olife-src>/gateway/tools/win_build.sh test`: тесты 7+6+1+8 ok; в `tests/codecs.rs` 39 сообщений, 220 векторов).
 `editor_neg.py`: +8 случаев (`delete/rename/look_not_owner` → 3, `look_bad_model/texture`, `rename_bad_name`, `edit_bad_op` → 15,
 `delete_unknown_eid` → 1) — 22/22; `Client.edit()` (поле `name` сообщения конфликтует с первым аргументом `req`).
 Векторы в движке: `tests/codec_vectors.lua` — 1343 проверки / 0. `tests/movement_test.lua` проверяет, что монеты больше нет.
@@ -239,7 +239,7 @@ ticks, errors, text_dropped, rejected_total, vm_heap, vm_peak, vm_state}` (94) �
 `Answers{tick, items}` (id 9, мир → сервис перед TickInput) и `LoadKeep` (id 10). Сервис с ними отвечает `Hello.proto = 2`;
 заглушка `sandbox_stub.py` остаётся proto 1 (мир шлёт ей прежние Load). `client.yaml` s2c 130 `EntityAppearance`
 (типы `MobBone`, `MobTexture`), 131 `EntityAnim`, 132 `EntitySound`; c2s 50–54 зарезервированы, не используются.
-Справочник вызовов и цен — `/root/olife/sandboxd/README.md` «UX A3», мир — `content/olife_world/README.md` «UX A3».
+Справочник вызовов и цен — `<olife-src>/sandboxd/README.md` «UX A3», мир — `content/olife_world/README.md` «UX A3».
 
 ## Антифрод и бан по IP (16.10, olife_antifraud) — `agents/research/OLIFE_ANTIFRAUD.md`
 - **Сервис билетов** (`auth_service.py`): вход по токену — `POST <демон>/call/olife.ip_check {ip, gateway}`, по нику — то же

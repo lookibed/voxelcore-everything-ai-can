@@ -7,10 +7,10 @@ import pytest
 from vclab.quality import history as H
 from vclab import play as P
 
-ALPHA_RUNS = r"D:\Prog\AlphaMine\runs"
+ALPHA_RUNS = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "projects", "alphamine", "external", "runs")
 
 
-@pytest.mark.skipif(not os.path.isdir(ALPHA_RUNS), reason="no D:\\Prog\\AlphaMine\\runs")
+@pytest.mark.skipif(not os.path.isdir(ALPHA_RUNS), reason="no <repo>\\projects\\alphamine\\external\\runs")
 def test_import_real_alphamine_runs(tmpdir_win):
     """Существующие каталоги импортируются как есть; числа сверены с записями ALPHAMINE §9."""
     h = H.History(os.path.join(tmpdir_win, "h.sqlite"))

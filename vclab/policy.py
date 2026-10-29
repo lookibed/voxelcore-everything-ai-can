@@ -4,7 +4,7 @@
     не реагирует на фокус. Значит: вид экземпляра с exe движка (`voxelcore*`) запускается только тестовой сборкой с
     `--f2f` (ввод изолирован безусловно), после старта `hello.flags.input == "isolated"` (и `flags.clock` — запрошенные
     часы) — иначе экземпляр убивается (TerminateJobObject) и аренда получает ошибку `isolation-failed`. Стоковый
-    рантайм `VC_ROOT\\VoxelCore.exe` (путь или та же sha256) — только вид `role = "runtime"`, а такой вид создаётся
+    рантайм (сток движка по умолчанию) (путь или та же sha256) — только вид `role = "runtime"`, а такой вид создаётся
     только из `lab play` (`--user`: владелец user, интерактивный CLI) или `--final-check` (владелец claude/user,
     обязательная причина). Любая другая аренда стокового exe — отказ `policy` (403).
 (C) Этап 4: headless (`role = "headless"`): экземпляр без окна и без ввода (`--headless`, консоль без окна, stdin —
@@ -38,7 +38,17 @@ class PolicyError(Exception):
 
 
 def stock_exe():
-    return os.path.join(config.VC_ROOT, "VoxelCore.exe")
+    """Стоковый exe движка по умолчанию (реестр + machine.toml); стоки остальных версий — EXTRA_STOCK."""
+    if "default" not in _stock_cache:
+        try:
+            engs = config.load()["engines"]
+            _stock_cache["default"] = (engs.get(engs.get("default") or "") or {}).get("stock") or ""
+        except Exception:
+            return ""
+    return _stock_cache["default"]
+
+
+_stock_cache = {}
 
 
 _sha_cache = {}
@@ -65,7 +75,7 @@ def is_engine_exe(path):
 
 
 def is_stock(path, sha=None):
-    """Стоковый рантайм: тот же путь или та же sha256, что у VC_ROOT\\VoxelCore.exe (копия под другим именем)."""
+    """Стоковый рантайм: тот же путь или та же sha256, что у стока движка по умолчанию (копия под другим именем)."""
     if not path:
         return False
     stocks = [stock_exe()] + [x for x in EXTRA_STOCK if x]

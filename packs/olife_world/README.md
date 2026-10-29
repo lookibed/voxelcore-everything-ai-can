@@ -269,7 +269,7 @@ hotexit=200, maxside=400, maxsnap=1000` — со стоковыми 1000 тра�
 
 ## UX A3: API скриптов моба (03.10, агент olife_a3)
 `modules/mobapi.lua` — мировая сторона API (`block.*`, вид/скелет/анимация/звук/3D-текст `self:*`, `memory.*`; справочник
-вызовов с ценами — `/root/olife/sandboxd/README.md` «UX A3»). Мост `modules/sandbox.lua`: действия не из ядра
+вызовов с ценами — `<olife-src>/sandboxd/README.md` «UX A3»). Мост `modules/sandbox.lua`: действия не из ядра
 (`Ext{op,json}` бинарного контракта) → `mobapi.apply` (nil = применено, иначе причина → событие `rejected` скрипту);
 запросы результата (`queries`/`queries_json`) → `mobapi.queries` → ответы `{ok,v|err}` уходят со следующим TickInput
 (бинарно — кадр `Answers` перед ним, JSON-строки — `answers`); `self.fields` (scale/visible/model/anim) — когда менялись;

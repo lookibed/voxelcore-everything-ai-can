@@ -2,7 +2,7 @@
 
 Ядро ничего не знает о конкретной игре: экземпляр — это процесс, описанный в дескрипторе (exe, шаблон аргументов,
 подготовка каталога, порты, готовность, остановка, логи). Подстановки в строках — {ключ} или {ключ|по умолчанию}:
-  vc_root, lab_data, lab_dir, work_root, repo_root, machine.<ключ>, project_dir, dir (каталог экземпляра), lease, owner, exe, exe_dir, size, size_w, size_h,
+  lab_data, lab_dir, work_root, repo_root (= repo), packs ({repo_root}\\packs), engine.<поле>, machine.<ключ>, project_dir, dir (каталог экземпляра), lease, owner, exe, exe_dir, size, size_w, size_h,
   port.<имя>, param.<имя>, run_dir.
 Строка, целиком равная одной подстановке, получает значение как есть (список, число).
 Плагин: register(api) -> api.feature("имя", fn, description=..., schema=..., mcp=False); fn(ctx, args) -> dict.
@@ -36,25 +36,6 @@ ROLES = ("test", "runtime", "headless")
 
 class TemplateError(KeyError):
     pass
-
-
-def _mentions(v, token):
-    if isinstance(v, str):
-        return token in v
-    if isinstance(v, dict):
-        return any(_mentions(x, token) for x in v.values())
-    if isinstance(v, (list, tuple)):
-        return any(_mentions(x, token) for x in v)
-    return False
-
-
-def uses_vc_root(spec, params=None):
-    """Вид ссылается на {vc_root} (рабочий рантайм паков машины-источника): exe, cwd, args, env, prepare, logs, а из
-    params — только умолчания, не перекрытые параметрами аренды. Без machine.toml `vc_root` такой вид недоступен."""
-    params = params or {}
-    if any(_mentions(spec.get(k), "{vc_root}") for k in ("exe", "cwd", "args", "env", "prepare", "logs")):
-        return True
-    return any(_mentions(v, "{vc_root}") for k, v in (spec.get("params") or {}).items() if k not in params)
 
 
 def lookup(ctx, key, default=None):
@@ -172,9 +153,9 @@ def prepare(steps, ctx, inst_dir, project_dir, log=None):
             packs = expand(st.get("packs", []), ctx)
             if isinstance(packs, str):
                 packs = [p for p in re.split(r"[,\s]+", packs) if p]
-            content = src_of(st.get("content", "{vc_root}\\content"))
+            content = src_of(st.get("content", "{repo_root}\\packs"))
             for p in packs:
-                junction(os.path.join(inst_dir, st.get("into", "content"), p), os.path.join(content, p))
+                junction(os.path.join(dst_of(st.get("into", "content")), p), os.path.join(content, p))
         elif act == "append":
             # дописать строки в файл (например, ops.txt сервера: оператор второго клиента)
             path = dst_of(st["path"])
@@ -333,7 +314,7 @@ class Project:
         d = {"name": self.name, "description": self.description, "descriptor": self.path,
              "kinds": {k: {"description": v.get("description", ""), "ports": v.get("ports", []),
                            "params": v.get("params", {}), "f2f": v.get("f2f"), "role": v.get("role", "test"),
-                           "engine": v.get("engine"), "needs_vc_root": uses_vc_root(v)}
+                           "engine": v.get("engine")}
                        for k, v in self.kinds.items()},
              "engines": sorted(self.engines), "default_engine": self.default_engine,
              "compare": self.compare, "scenario": self.scenario, "golden": self.golden,

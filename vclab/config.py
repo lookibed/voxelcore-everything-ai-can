@@ -1,7 +1,9 @@
 """Пути и настройки лаборатории. Демон и тесты работают на Windows-Python; пути — Windows.
 
 Корни машины — machine.toml (vclab/machine.py), версии движка — engines/registry.toml (vclab/engines.py), настройки
-демона — lab.toml в корне репозитория (без путей машины: подстановки {work_root}, {vc_root}, {machine.<ключ>})."""
+демона — lab.toml в корне репозитория (без путей машины: подстановки {work_root}, {repo_root}, {machine.<ключ>}).
+Репозиторий самодостаточен (волна 7): паки — {repo_root}\\packs, проекты — {repo_root}\\projects, движки — корни
+machine.toml; мостов к рабочим каталогам других установок нет."""
 import os
 import re
 
@@ -15,19 +17,7 @@ PROJECTS_DIR = os.path.join(REPO_ROOT, "projects")
 MACHINE = _machine.load()
 
 
-def _default_engine_root():
-    try:
-        engs = _engines.resolve(m=MACHINE)
-        return (engs.get(engs.get("default") or _engines.default_id()) or {}).get("root") or None
-    except Exception:
-        return None
-
-
-# {vc_root}: рабочий рантайм запусков паков (content, res, latest.log). machine.toml `vc_root`, иначе корень движка
-# по умолчанию из реестра; LAB_VC_ROOT — перекрытие для тестов.
-# VC_ROOT_SET — задан ли он явно: без него виды, ссылающиеся на {vc_root}, недоступны (service.create_lease).
-VC_ROOT_SET = bool(os.environ.get("LAB_VC_ROOT") or MACHINE.get("vc_root"))
-VC_ROOT = os.environ.get("LAB_VC_ROOT") or MACHINE.get("vc_root") or _default_engine_root() or REPO_ROOT
+PACKS_DIR = os.path.join(REPO_ROOT, "packs")   # {repo_root}\\packs: паки и композиции (действие prepare "packs")
 WORK_ROOT = os.environ.get("LAB_WORK_ROOT") or MACHINE.get("work_root") or os.path.join(REPO_ROOT, "work")
 
 
@@ -49,10 +39,10 @@ def win_to_wsl(path):
 
 
 def subst_root(s):
-    """{vc_root} {work_root} {repo_root} {machine.<ключ>} в строке lab.toml."""
+    """{work_root} {repo_root} {repo} {machine.<ключ>} в строке lab.toml."""
     if not isinstance(s, str):
         return s
-    s = s.replace("{vc_root}", VC_ROOT).replace("{work_root}", WORK_ROOT).replace("{repo_root}", REPO_ROOT)
+    s = s.replace("{work_root}", WORK_ROOT).replace("{repo_root}", REPO_ROOT).replace("{repo}", REPO_ROOT)
     return _machine.subst(s, MACHINE)
 
 

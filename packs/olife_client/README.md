@@ -135,7 +135,7 @@ sha256 каждого файла client/both против своей текущ�
   через `debug.log` (с меткой времени — их читает отчёт `lab play`): `world open`, `connected`, `disconnected`, `status fps …`
   раз в 5 с, `leaving after`. Файл пишет лаборатория (`olife.play_up`). `client.lua`: `opts.host` — хост шлюза (по умолчанию
   127.0.0.1).
-- Руководство пользователя — `D:\Prog\Olife\README-play.md`; лаборатория — `tools/lab/README.md` «Olife: путь игрока».
+- Руководство пользователя — `<repo>\projects\olife\external\README-play.md`; лаборатория — `tools/lab/README.md` «Olife: путь игрока».
 
 ## Шрифт редактора и каретка (16.10, olife_caret)
 Каретка, выделение и клик мышью в `<textbox>` 0.32 считаются как **число символов × `size/2`** (`FontMetrics::calcWidth`,

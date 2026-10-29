@@ -963,7 +963,7 @@ def render():
 
 
 def render_rust(out):
-    """Rust codecs for the production gateway (/root/olife/gateway): <out>/{mod,wire,client,internal,sandbox}.rs +
+    """Rust codecs for the production gateway (<olife-src>/gateway): <out>/{mod,wire,client,internal,sandbox}.rs +
     a copy of the cross-language vectors (<out>/vectors/*.json) for the Rust tests (byte-for-byte)."""
     files = {}
     with open(os.path.join(TEMPLATES, "wire.rs"), encoding="utf-8") as f:
@@ -1001,7 +1001,7 @@ def write_files(files, check):
     return stale
 
 
-RUST_OUT = os.environ.get("OLIFE_RUST_OUT", "/root/olife/gateway/src/proto")
+RUST_OUT = os.environ.get("OLIFE_RUST_OUT", "<olife-src>/gateway/src/proto")
 
 
 def main():

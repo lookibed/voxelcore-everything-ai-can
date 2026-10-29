@@ -11,7 +11,7 @@ import argparse, json, os, queue, socket, subprocess, sys, threading, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-# source tree (WSL) or the deployed Windows layout (D:\Prog\Olife\sandboxd: driver.py next to olife-sandboxd.exe)
+# source tree (WSL) or the deployed Windows layout (<repo>\projects\olife\external\sandboxd: driver.py next to olife-sandboxd.exe)
 DEFAULT_BIN = next((p for p in (os.path.join(ROOT, "target", "release", "olife-sandboxd"),
                                 os.path.join(HERE, "olife-sandboxd.exe"), os.path.join(ROOT, "olife-sandboxd.exe"))
                     if os.path.isfile(p)), os.path.join(ROOT, "target", "release", "olife-sandboxd"))

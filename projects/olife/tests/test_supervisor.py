@@ -350,7 +350,7 @@ def test_http_auth_state_panel_and_gateway_fallback(lab):
     import threading
     import http.server
     import urllib.parse
-    sys.path.insert(0, os.path.join(config.VC_ROOT, "tools", "olife"))
+    sys.path.insert(0, os.path.join(config.REPO_ROOT, "projects", "olife", "tools"))
     import gateway_dev
     db = lab.sup.db
 

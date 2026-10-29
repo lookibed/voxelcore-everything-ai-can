@@ -16,7 +16,7 @@ limit, load-distance 16 as alphamine_world.lua sets it). --f2f: perf_walk.py on 
 2 frames per tick paced at 50 ms (costs = pack Lua + world pass).
 --variant lp: the pack with block JSONs from `gen_pack_blocks.py --engine-light off` (every block light-passing
 and sky-light-passing, no emission: the engine light is trivially 15 everywhere), in a separate user dir with a
-content/alphamine junction to D:\\Prog\\AlphaMine\\run\\alphamine_lp (the shared pack is not touched; see
+content/alphamine junction to <repo>\\projects\\alphamine\\external\\run\\alphamine_lp (the shared pack is not touched; see
 make_variant.py).
 Report adds (perflib.stream_stats): MapChunk/s per 5 s window, fps by rate bucket (< 8, 8-20, 20-35, >= 35),
 appearance delay MapChunk -> world.set_chunk_data p50/p95 (samples.csv of perf.lua).
@@ -28,7 +28,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "external"))  # было внешний каталог AlphaMine
 LP_PACK = os.path.join(ALPHA, "run", "alphamine_lp")
 LP_RT_DIR = os.path.join(ALPHA, "run", "vc_rt_lp")
 LP_F2F_DIR = os.path.join(ALPHA, "run", "vc_f2f_lp")

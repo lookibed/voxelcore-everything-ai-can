@@ -19,7 +19,7 @@ Verification order and results (gateway, offline — no call to anything):
   bad tag   -> "bad_signature" (16)           now > exp + skew or exp > now + ttl_max + skew -> "expired" (14)
   nonce already used -> "replayed" (15)       ok -> account
 Stdlib only (hmac, hashlib, base64) — used by gateway_dev.py, auth_service.py, tests; Rust twin in
-/root/olife/gateway/src/ticket.rs is checked against protocol/vectors/tickets.json."""
+<olife-src>/gateway/src/ticket.rs is checked against protocol/vectors/tickets.json."""
 import base64
 import collections
 import hashlib

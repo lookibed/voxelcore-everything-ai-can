@@ -1,4 +1,4 @@
-"""Olife sandbox STUB service — stands in for /root/olife/sandboxd (Rust + wasmtime, Linux) on the Windows dev box.
+"""Olife sandbox STUB service — stands in for <olife-src>/sandboxd (Rust + wasmtime, Linux) on the Windows dev box.
 
   python sandbox_stub.py --listen <port> [--f2f <control port>] [--dir <instance dir>]
 

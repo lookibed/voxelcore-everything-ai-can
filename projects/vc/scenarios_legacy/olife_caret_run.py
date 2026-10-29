@@ -7,7 +7,7 @@ line -> the caret the engine chose (calcIndexAt), want = start + 21.
 
 1) lease (one F2F client, no server; size 854x480 or the full window 1920x1080):
    LAB_OWNER=olife_caret tools/lab/lab lease olife menu_app --ttl 2400 --name olife-caret-1 --param size=854x480 \
-     --param 'script=D:\Prog\VoxelCore\voxelcore-0.31.0_pre_gemini\tools\scenarios\olife_caret_probe.lua' \
+     --param 'script=<repo>\projects\vc\scenarios_legacy\olife_caret_probe.lua' \
      --param script_name=olife_caret_probe.lua --param 'packs=["olife_proto","olife_client","olife_caret_probe"]' --start
 2) python3 tools/scenarios/olife_caret_run.py <out dir under artifacts/olife_caret> [variants 1..11] [lines 1,2,3]
 3) tools/lab/lab release olife-caret-1
@@ -17,8 +17,8 @@ Variants: see VARIANTS in the probe (1/2 = the editor's olife_mono with/without 
 import json, os, re, subprocess, sys, time
 import numpy as np
 from PIL import Image
-VC = "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini"
-WIN = "D:\\Prog\\VoxelCore\\voxelcore-0.31.0_pre_gemini"
+VC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # TODO(переезд): был рабочий каталог движка (content, tools, worlds) — теперь корень репозитория
+WIN = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # TODO(переезд): Windows-путь корня
 LEASE = os.environ.get("CARET_LEASE", "olife-caret-1")
 # 22.10 (v0327): CARET_INST — каталог экземпляров демона (изолированный: artifacts/lab/isolated/<порт>/inst),
 # CARET_PEN=0327 — перо draw_text 0.32.3+ (каждый символ, и пробел, = advance шрифта; glyphInterval = advance '0')

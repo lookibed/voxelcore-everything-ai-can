@@ -5,7 +5,7 @@
 -- не запустить. Сначала пробуем порт: не отвечает — страница с сообщением вместо игры
 -- (иначе мир «висел» бы на Connecting). Маркеры: [eaglercraft_app] server ok|server down, ready.
 local HOST, PORT = "127.0.0.1", 25599
-local LAUNCHER = "/root/Spider/tests/manual/real-world-eaglercraft/native_server/launcher.js"
+local LAUNCHER = "<Spider>/tests/manual/real-world-eaglercraft/native_server/launcher.js"
 
 app.config_packs({ "wasmrt", "eaglercraft" })
 app.load_content()

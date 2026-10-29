@@ -3,9 +3,9 @@
 
 Mirrors run_vc_scenario.py + server_v.py + alpha_vc.am_client with its own values so that nothing is shared with
 the other agents (their engine copies, F2F ports, servers, user dirs):
-  engine   D:\\Prog\\AlphaMine\\engine\\VoxelCoreF2F-u.exe (copy of VoxelCoreF2F.exe, refreshed when the original is newer)
+  engine   <repo>\\builds\\VoxelCoreF2F-u.exe (copy of VoxelCoreF2F.exe, refreshed when the original is newer)
   F2F      127.0.0.1:25573 (through tools/alphamine/f2f_relay.ps1 from WSL)
-  --dir    D:\\Prog\\AlphaMine\\engine\\userdir_u (settings of run\\vc_f2f, junction content\\alphamine -> pack)
+  --dir    <repo>\\builds\\userdir_u (settings of run\\vc_f2f, junction content\\alphamine -> pack)
   server   Java Alpha server on :25568, run\\server_u + run\\world_u (fresh copy of golden\\<world>), PID run\\server_u.pid
 Only processes started here (PIDs in files) are ever stopped.
 
@@ -14,7 +14,7 @@ Only processes started here (PIDs in files) are ever stopped.
 
 --prefix quick: connect + world + a few ticks (enough for HUD/GUI, not for the golden hand light / particles).
 --keep: leave engine + server running; --attach: reuse them (skip server/engine start and the prefix).
-Shots -> D:\\Prog\\AlphaMine\\runs\\<stamp>_vc_u\\<scenario>\\ + report.json, *_diff.png, *_heat.png.
+Shots -> <repo>\\projects\\alphamine\\external\\runs\\<stamp>_vc_u\\<scenario>\\ + report.json, *_diff.png, *_heat.png.
 """
 import argparse
 import json
@@ -27,13 +27,13 @@ import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
 sys.path.insert(0, HERE)
-sys.path.insert(0, os.path.join(VC_ROOT, "tools", "reference"))
+sys.path.insert(0, os.path.join(REPO, "projects", "vc", "reference"))
 from f2f_client import F2F  # noqa: E402
 import compare as cmp  # noqa: E402
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 ENGINE_DIR = os.path.join(ALPHA, "engine")
 ENGINE_SRC = os.path.join(ENGINE_DIR, "VoxelCoreF2F.exe")
 ENGINE_COPY = os.path.join(ENGINE_DIR, "VoxelCoreF2F-u.exe")
@@ -46,7 +46,7 @@ WORLD = os.path.join(RUN, "world_u")
 SERVER_PIDF = os.path.join(RUN, "server_u.pid")
 SERVER_PORT = 25568
 SERVER_LOG = os.path.join(ALPHA, "logs", "server_u.err")
-SCEN = os.path.join(VC_ROOT, "tools", "scenarios", "alpha")
+SCEN = os.path.join(REPO, "projects", "vc", "scenarios_legacy", "alpha")
 PS = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"
 LWJGL_DIGITS = {str(c): str((c - 1) % 10) for c in range(2, 12)}   # KEY_1 = 2 ... KEY_0 = 11 (as run_vc_scenario.py)
 
@@ -163,11 +163,11 @@ def prepare_dir(server):
     if not os.path.exists(os.path.join(link, "package.json")):
         if os.path.lexists(link):
             ps("cmd /c rmdir '%s'" % win(link))
-        pack = os.path.join(VC_ROOT, "content", "alphamine")
+        pack = os.path.join(REPO, "packs", "alphamine")
         ps("cmd /c mklink /J '%s' '%s' | Out-Null" % (win(link), win(pack)))
         if not os.path.exists(os.path.join(link, "package.json")):
             raise SystemExit("junction %s -> %s failed" % (link, pack))
-    shutil.copy(os.path.join(VC_ROOT, "tools", "scenarios", "alphamine_f2f.lua"),
+    shutil.copy(os.path.join(REPO, "projects", "vc", "scenarios_legacy", "alphamine_f2f.lua"),
                 os.path.join(USER_DIR, "alphamine_f2f.lua"))
     with open(os.path.join(USER_DIR, "autorun_app_script.txt"), "w", encoding="utf-8") as f:
         f.write("user:alphamine_f2f.lua")
@@ -233,7 +233,7 @@ def engine_start(server="127.0.0.1:%d" % SERVER_PORT, size="854x480"):
     t0 = time.time()
     note = refresh_copy()
     prepare_dir(server)
-    argv = ["--f2f", str(F2F_PORT), "--f2f-size", size, "--res", win(os.path.join(VC_ROOT, "res")), "--dir", win(USER_DIR)]
+    argv = ["--f2f", str(F2F_PORT), "--f2f-size", size, "--res", win(os.path.join(REPO, "engines", "v031", "res")), "--dir", win(USER_DIR)]
     out = ps("(Start-Process -FilePath '%s' -WorkingDirectory '%s' -ArgumentList %s -PassThru).Id" % (
         win(ENGINE_COPY), win(ENGINE_DIR), ",".join("'%s'" % a for a in argv)), timeout=60)
     pid = int(out.split()[-1])

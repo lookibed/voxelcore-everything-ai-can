@@ -8,11 +8,11 @@ session would restart the server on the scenario's port (25565 = the Java agent'
 
 One session: fresh server world, VoxelCoreF2F-v.exe (am_client impl=vc), the common prefix (alpha_spawn steps up
 to `mode`) once, then the body of every scenario (alpha_spawn body = mode + 4 shots; layer_* = look, mode,
-render, 4 shots). Shots -> D:\\Prog\\AlphaMine\\runs\\<stamp>_vc_p2\\<scenario>\\, report.json, *_diff.png,
+render, 4 shots). Shots -> <repo>\\projects\\alphamine\\external\\runs\\<stamp>_vc_p2\\<scenario>\\, report.json, *_diff.png,
 *_heat.png. All F2F calls go through voxelcore_mcp.call_tool (journaled).
 
 Parameters for a parallel agent (defaults = the values above, so existing callers are unchanged):
-  --exe VoxelCoreF2F-p.exe --f2f-port 25572 --dir /mnt/d/Prog/AlphaMine/engine/userdir_p
+  --exe VoxelCoreF2F-p.exe --f2f-port 25572 --dir <repo>/builds/userdir_p
   --server-port 25567 --server-name p          (own exe copy, F2F port, --dir, Java server + world copy)
   --impl java [--golden]                       the same session on the Java F2F client (golden: write
                                                golden/<scenario>/ instead of runs/)
@@ -29,19 +29,20 @@ other player for layer_entities_player. F2F `input.keys` names that are digit st
 import argparse
 import json
 import os
+import re
 import subprocess
 import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
-sys.path.insert(0, os.path.join(VC_ROOT, "tools", "mcp"))
-sys.path.insert(0, os.path.join(VC_ROOT, "tools", "reference"))
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+sys.path.insert(0, os.path.join(REPO, "vclab", "mcp"))
+sys.path.insert(0, os.path.join(REPO, "projects", "vc", "reference"))
 import voxelcore_mcp as V  # noqa: E402
 import compare as cmp  # noqa: E402
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
-SCEN = os.path.join(VC_ROOT, "tools", "scenarios", "alpha")
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
+SCEN = os.path.join(REPO, "projects", "vc", "scenarios_legacy", "alpha")
 # session parameters (main() sets them from the command line)
 CFG = {"impl": "vc", "port": None, "ls": None}
 # commands that advance the game: in lockstep mode they go through f2f_server.Lockstep (client + server ticks)
@@ -50,7 +51,7 @@ LWJGL_DIGITS = {str(c): str((c - 1) % 10) for c in range(2, 12)}   # KEY_1 = 2 .
 
 
 def win(p):
-    return "D:\\" + p[len("/mnt/d/"):].replace("/", "\\") if p.startswith("/mnt/d/") else p
+    return "%s:\\%s" % (p[5].upper(), p[7:].replace("/", "\\")) if re.match(r"^/mnt/[a-z]/", p) else p
 
 
 def load(name):

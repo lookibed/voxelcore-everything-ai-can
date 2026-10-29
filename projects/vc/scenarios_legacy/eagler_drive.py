@@ -88,7 +88,7 @@ def shot(name):
     return path
 
 
-LAUNCHER = "/root/Spider/tests/manual/real-world-eaglercraft/native_server/launcher.js"
+LAUNCHER = os.environ.get("SPIDER_ROOT", "Spider") + "/tests/manual/real-world-eaglercraft/native_server/launcher.js"
 
 
 def ensure_server():

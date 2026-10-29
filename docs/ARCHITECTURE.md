@@ -81,7 +81,7 @@
 | модуль | назначение |
 |---|---|
 | `__init__.py` | версия пакета (`VERSION`) |
-| `config.py` | загрузка `lab.toml` + реестра + `machine.toml`, переопределения окружения (`LAB_PORT`, `LAB_DATA`, `LAB_ISOLATED`...), `{vc_root}`/`{work_root}`, проект по умолчанию |
+| `config.py` | загрузка `lab.toml` + реестра + `machine.toml`, переопределения окружения (`LAB_PORT`, `LAB_DATA`, `LAB_ISOLATED`...), `{work_root}`/`{repo_root}` (= `{repo}`), `PACKS_DIR`, проект по умолчанию |
 | `machine.py` | `machine.toml`: ключи (`KEYS`), чтение без `tomllib` (WSL-Python 3.10), `{machine.<ключ>}` |
 | `engines.py` | реестр версий движка → раскладка файлов под корнями машины, перекрытия `[engines.<id>]` |
 | `policy.py` | принуждение: сток только `runtime`/`headless`, `--f2f` для exe движка, проверка `hello`, окна headless, сторож `foreign` |

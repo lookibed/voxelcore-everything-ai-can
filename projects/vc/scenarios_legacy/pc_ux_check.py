@@ -15,7 +15,7 @@ Paint (штрихи мышью, цвет, сохранение PNG в export:pc_
 """
 import json, os, shutil, subprocess, sys, time
 
-VC = "/mnt/d/Prog/VoxelCore/voxelcore-0.31.0_pre_gemini"
+VC = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # TODO(переезд): был рабочий каталог движка (content, tools, worlds) — теперь корень репозитория
 LAB = os.path.join(VC, "tools/lab/lab")
 OWNER = os.environ.get("LAB_OWNER", "pc_ux")
 W, H = 1024, 724

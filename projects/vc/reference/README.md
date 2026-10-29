@@ -1,13 +1,13 @@
 # Эталон Eaglercraft: браузерный оригинал в headless Edge
 
-Оригинал (`/root/Spider/tests/manual/real-world-eaglercraft/upstream/javascript`: `index.html`,
+Оригинал (`<Spider>/tests/manual/real-world-eaglercraft/upstream/javascript`: `index.html`,
 `classes.js`, `classes_server.js`, `assets.epk`) запускается в Windows-Edge без окна (`--headless=new`,
 WebGL 2 через ANGLE) и управляется по CDP. Порт CDP 9222 закрыт для WSL брандмауэром, поэтому клиент —
 Windows-`node.exe` (`C:\Program Files\nodejs`), а обёртка из WSL зовёт его через PowerShell.
 
 ```bash
 python3 tools/reference/edge_ref.py serve        # раздать upstream/javascript на :8765 (Edge видит localhost WSL)
-python3 tools/reference/edge_ref.py start        # Edge headless 854×480, dpr 1, профиль D:\Prog\VoxelCore\edge_ref_profile (--fresh — чистый)
+python3 tools/reference/edge_ref.py start        # Edge headless 854×480, dpr 1, профиль <work_root>\edge_ref_profile (--fresh — чистый)
 python3 tools/reference/edge_ref.py run artifacts/ref_menu.json   # сценарий шагов (см. edge_ref.js)
 python3 tools/reference/edge_ref.py stop
 python3 tools/reference/compare.py artifacts/screens/<наш>.png artifacts/screens/<эталон>.png --rect x,y,w,h --out diff.png

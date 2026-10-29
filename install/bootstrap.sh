@@ -4,7 +4,7 @@
 # 1. WSL: python3 >= 3.10 (MCP voxelcore), git core.autocrlf=input, gh (вошедший: релизы репозитория приватные).
 # 2. Тестовая сборка F2F движка по умолчанию — `gh release download` из WSL (если её ещё нет или sha другой): на Windows
 #    gh может не стоять; bootstrap.ps1 увидит готовый exe по sha256 и пропустит шаг.
-# 3. Windows: powershell.exe -File install\bootstrap.ps1 — Python 3.13, machine.toml (корни в репозитории, без vc_root),
+# 3. Windows: powershell.exe -File install\bootstrap.ps1 — Python 3.13, machine.toml (корни в репозитории),
 #    сток с GitHub Releases upstream (sha256 из реестра), lab doctor.
 # Репозиторий должен лежать на диске Windows (/mnt/<диск>/...): демон и движок — Windows-процессы.
 set -eu
@@ -35,7 +35,7 @@ fi
 GH=""
 if command -v gh >/dev/null 2>&1; then
   if gh auth status >/dev/null 2>&1; then GH=gh; say "gh $(gh --version | head -1 | cut -d' ' -f3) logged in"
-  else say "gh is not logged in: gh auth login (the F2F release is in a private repository)"; fi
+  else say "gh auth status failed (not logged in or GitHub unreachable): gh auth login; bootstrap.ps1 will try Windows gh"; fi
 else
   say "gh is missing in WSL (https://cli.github.com); bootstrap.ps1 will try Windows gh"
 fi

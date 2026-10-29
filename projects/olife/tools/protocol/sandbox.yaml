@@ -1,4 +1,4 @@
-# Olife protocol, contract "sandbox": world <-> sandbox service (OLIFE_SANDBOX.md §7, /root/olife/sandboxd).
+# Olife protocol, contract "sandbox": world <-> sandbox service (OLIFE_SANDBOX.md §7, <olife-src>/sandboxd).
 # Shapes mirror sandboxd src/protocol.rs (TickInput/TickResult, Load/LoadResult). The prototype service speaks
 # JSON lines today ({"type":"tick",...}); the world bridge (olife_world:sandbox) has both transports — "jsonl"
 # (sandboxd as is) and "bin" (this contract). Free-form JSON values (fields, events, view, answers, queries) are

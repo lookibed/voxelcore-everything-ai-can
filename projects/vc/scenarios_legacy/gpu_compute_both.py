@@ -31,7 +31,7 @@ def lab(*args, timeout=600):
 
 
 def win2wsl(p):
-    return p.replace("D:\\", "/mnt/d/").replace("\\", "/")
+    return re.sub(r"^([A-Za-z]):", lambda m: "/mnt/" + m.group(1).lower(), p).replace("\\", "/")
 
 
 def host_load():

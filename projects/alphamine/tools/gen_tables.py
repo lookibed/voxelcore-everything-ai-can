@@ -8,7 +8,7 @@ that need the world (neighbour blocks) are evaluated against a mock world
 (meta 0..15, every neighbour = air) and marked; anything the interpreter
 cannot execute is listed in NOTES.md, never guessed.
 
-Output (<out>, default D:\\Prog\\AlphaMine\\tables):
+Output (<out>, default <repo>\\projects\\alphamine\\external\\tables):
   blocks.json            one entry per registered block id
   items.json             Item.java items (+ ItemBlock entries for blocks)
   textures_by_block.json terrain tile index -> {name, uses:[{block, id, face, meta?, via}]}
@@ -25,7 +25,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from minijava import VM, JObject, Unsupported, JavaThrow  # noqa: E402
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 # side index as used by getBlockTexture*/shouldSideBeRendered and the face
 # function RenderBlocks.renderStandardBlock draws for it (MCP names of Alpha).
 SIDES = [

@@ -15,9 +15,9 @@ import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
 WIN_PY = "/mnt/c/Python313/python.exe"
-PIDF = "/mnt/d/Prog/AlphaMine/run/server_v.pid"
+PIDF = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "external")), "run", "server_v.pid")
 
 
 def win(p):
@@ -45,7 +45,7 @@ def check(own_names=(), seconds=2.0, th=None):
         pids = [int(open(PIDF).read().strip())]
     except (OSError, ValueError):
         pass
-    code = CODE % (win(os.path.join(VC_ROOT, "tools", "lab")), [n.lower() for n in own_names], pids, seconds, th)
+    code = CODE % (win(os.path.join(REPO, "bin")), [n.lower() for n in own_names], pids, seconds, th)
     try:
         out = subprocess.run([WIN_PY, "-X", "utf8", "-c", code], capture_output=True, text=True, timeout=60,
                              cwd="/mnt/c").stdout.strip().splitlines()

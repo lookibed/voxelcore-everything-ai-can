@@ -1,5 +1,5 @@
 -- Olife scripted entity (runs in the SANDBOX service, not in VoxelCore): circles around its home point,
--- turns, and prints every 100 ticks. Script API of /root/olife/sandboxd (self, world, on_tick, print).
+-- turns, and prints every 100 ticks. Script API of <olife-src>/sandboxd (self, world, on_tick, print).
 local t = 0
 local home = nil
 function on_tick(dt)

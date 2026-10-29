@@ -9,7 +9,7 @@
 #     pywin32 psutil fastapi uvicorn numpy Pillow jinja2 pytest (pip — только если чего-то нет; -NoPip — не ставить).
 #  2. gh (GitHub CLI, вошедший в аккаунт с доступом к релизам репозитория) — нужен для exe F2F из нашего релиза.
 #  3. machine.toml — если его нет: из machine.toml.example, корни внутри репозитория (engines_root = <repo>\engines,
-#     builds_root = <repo>\builds, work_root = <repo>\work), python_win — найденный, без vc_root. Есть — не трогается.
+#     builds_root = <repo>\builds, work_root = <repo>\work), python_win — найденный. Есть — не трогается.
 #  4. Сток версии по умолчанию (engines/registry.toml: release_url, zip_sha256) -> {engines_root}\<install_dir>,
 #     сверка zip и VoxelCore.exe (stock_sha256), ORIGIN.txt. Версии с legacy = true не ставятся.
 #  5. Тестовая сборка F2F: gh release download <f2f_release> (наш репозиторий) -> {builds_root}\<f2f_exe>, сверка f2f_sha256.
@@ -27,7 +27,7 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 $Repo = (Resolve-Path $Repo).Path
 $t0 = Get-Date
-function Step($msg) { Write-Host ("[bootstrap {0,5:N1}s] {1}" -f ((Get-Date) - $t0).TotalSeconds, $msg) }
+function Step($msg) { Write-Host ([string]::Format([Globalization.CultureInfo]::InvariantCulture, "[bootstrap {0,6:F1}s] {1}", ((Get-Date) - $t0).TotalSeconds, $msg)) }
 function Fail($msg) { Write-Host "bootstrap: FAIL: $msg" -ForegroundColor Red; exit 1 }
 function Sha($path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLower() }
 function WriteUtf8($path, $text) { [IO.File]::WriteAllText($path, $text, (New-Object Text.UTF8Encoding($false))) }
@@ -107,7 +107,7 @@ if (Test-Path $machine) {
     if (-not (Test-Path "C:\msys64\usr\bin\bash.exe")) {
         $text = [regex]::Replace($text, "(?m)^msys2(\s*=)", "# msys2`$1")          # нужен только для сборки F2F
     }
-    $text = "# created by install/bootstrap.ps1 $(Get-Date -Format 'yyyy-MM-dd HH:mm') - roots inside the repository, no vc_root`r`n" + $text
+    $text = "# created by install/bootstrap.ps1 $(Get-Date -Format 'yyyy-MM-dd HH:mm') - roots inside the repository`r`n" + $text
     WriteUtf8 $machine $text
     Step "machine.toml created: $machine"
 }
@@ -120,7 +120,7 @@ sys.path.insert(0, sys.argv[1])
 from vclab import engines, machine
 reg = engines.load_registry()
 res = engines.resolve(reg, machine.load())
-eid = sys.argv[2] or res.get("default")
+eid = (sys.argv[2] if len(sys.argv) > 2 else "") or res.get("default")   # PowerShell 5.1 не передаёт пустой аргумент
 e = res.get(eid)
 if not e:
     sys.exit("engine %r is not in engines/registry.toml" % eid)
@@ -132,7 +132,7 @@ print(json.dumps({"id": eid, "root": e["root"], "stock": e["stock"], "f2f": (e.g
 '@
 $tmpPy = Join-Path $env:TEMP "vc_bootstrap_resolve.py"
 WriteUtf8 $tmpPy $resolve
-$json = & $py -X utf8 -B $tmpPy $Repo $Engine
+$json = if ($Engine) { & $py -X utf8 -B $tmpPy $Repo $Engine } else { & $py -X utf8 -B $tmpPy $Repo }
 if ($LASTEXITCODE -ne 0) { Fail "registry: $json" }
 $e = $json | ConvertFrom-Json
 Step "engine $($e.id) $($e.version): root $($e.root); f2f $($e.f2f)"
@@ -161,6 +161,7 @@ if ((Test-Path $e.stock) -and ((Sha $e.stock) -eq $e.stock_sha256)) {
     New-Item -ItemType Directory -Force -Path $e.root | Out-Null
     Get-ChildItem -LiteralPath $src -Force | ForEach-Object { Copy-Item -Recurse -Force -LiteralPath $_.FullName -Destination $e.root }
     Remove-Item -Recurse -Force $ex
+    Remove-Item -Force $zip                         # сток распакован и сверен ниже; повторный запуск скачает заново только при порче
     if (-not (Test-Path $e.stock)) { Fail "no $($e.stock) after unpacking $zip" }
     $ss = Sha $e.stock
     if ($e.stock_sha256 -and $ss -ne $e.stock_sha256) { Fail "stock sha256 $ss != registry $($e.stock_sha256)" }

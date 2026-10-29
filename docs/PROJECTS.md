@@ -60,7 +60,7 @@
 
 Шаги `prepare` (`action`): `mkdir {path}`, `write {path, text|json}`, `template {src, dst}` (подстановки в файле), `copy {src,
 dst}`, `copytree {src, dst, exclude, fresh}` (robocopy /MT:16; только внутрь каталога экземпляра), `junction {link,
-target}`, `packs {packs, content, into}` (junction паков из `{vc_root}\content`), `append {path, lines}`, `properties {src,
+target}`, `packs {packs, content, into}` (junction паков из `{repo_root}\packs`; `into` — путь, можно абсолютный), `append {path, lines}`, `properties {src,
 dst, set}`. Относительные `dst/path` — от каталога экземпляра, `src` — от каталога проекта.
 
 `ready`: `{f2f = "hello", timeout}` (подключиться и проверить изоляцию), `{log = "RX", stream, timeout}`, `{pump_log = "RX",
@@ -68,7 +68,7 @@ stream, max_frames}` (шагать кадры F2F до строки — толь
 `stop`: `{f2f = "quit", wait_exit}`, `{stdin = "stop\n", wait_exit}`, `if_param` — шаг только при непустом параметре.
 
 Подстановки (`{ключ}` или `{ключ|умолчание}`; строка, целиком равная подстановке, получает значение как есть — список,
-число): `{vc_root} {work_root} {repo_root} {lab_data} {lab_dir} {project_dir} {dir} {lease} {owner} {kind} {project} {exe}
+число): `{work_root} {repo_root} {repo} {packs} {engine.<поле>} {lab_data} {lab_dir} {project_dir} {dir} {lease} {owner} {kind} {project} {exe}
 {size} {size_w} {size_h} {port.<имя>} {param.<имя>} {run_dir} {python}`, `{engine.id|version|root|res|exe|stock}`,
 `{engine.builds.f2f|stock|vctest}`, `{machine.<ключ machine.toml>}`. **Путей машины в дескрипторе нет** — только
 подстановки.
@@ -165,7 +165,7 @@ Health: `{stdin, pattern}`, `{f2f: "hello"}`, `{port: "<имя порта аре
 
 ## 7. Примеры в репозитории
 - `projects/vc` — запуски паков и тесты движка: `dev` (MCP `vc_start`: F2F-сборка, часы `realtime`, окно `normal`, по
-  умолчанию `--dir {vc_root}`; `by_engine.v032` — каталог аренды), `engine` (голая тестовая сборка: меню, `virtual`,
+  умолчанию `--dir <work_root>\vc_dev`, паки `--param packs=`; `by_engine.v032` — каталог аренды), `engine` (голая тестовая сборка: меню, `virtual`,
   `hidden`), `runtime` (стоковое окно — только `lab play vc`), `vctest`/`vctest_window` (тесты 0.32+ под `--test`: headless
   сток или F2F). Сценарии — `vctests/*.lua` (`canvas_shot`, `world`, `world_window`, `fail_assert`).
 - `projects/_template` — виды `engine` и `vctest`, плагин с возможностью `status` и шагом `frames`, сценарий
@@ -188,7 +188,7 @@ Health: `{stdin, pattern}`, `{f2f: "hello"}`, `{port: "<имя порта аре
    (`gpu_compute` — и `wasmrt`, и сценарии `gpu_compute_both`).
 
 Что параметризовать:
-- каждый `D:\…`, `C:\…`, `/root/…` → `{machine.<ключ>}`, `{vc_root}`, `{work_root}`, `{project_dir}`, `{engine.*}`;
+- каждый `D:\…`, `C:\…`, `/root/…` → `{machine.<ключ>}`, `{repo_root}`, `{work_root}`, `{project_dir}`, `{engine.*}`;
   новый корень — ключ в `machine.toml.example` и `vclab/machine.py KEYS` (правка ядра — изолированный демон);
 - `[engines.v032] root = …` проекта → реестр + `[engines.<id>]` в `machine.toml`; exe F2F → `{engine.builds.f2f}`;
 - `golden_dir`, `runs_dir`, `golden_store` → под `{lab_data}` или `{machine.…}`; по версии движка;

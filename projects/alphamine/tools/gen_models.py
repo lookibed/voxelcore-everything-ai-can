@@ -17,7 +17,7 @@ Also generated (texture "entities/am_terrain" = terrain.png; texel-exact UV like
   * am_sp_<id>.vcm   flat sprites of the other items (RenderItem quad 1x1 at (-0.5,-0.25), texture am_items /
                      am_terrain), shading off (Alpha: normal (0,1,0) under the two lights = full brightness);
   * am_shadow.vcm    unit quad for Render.renderShadow (texture am_shadow).
-Textures copied from D:\\Prog\\AlphaMine\\assets: char.png, item/cart.png, item/boat.png, terrain.png,
+Textures copied from <repo>\\projects\\alphamine\\external\\assets: char.png, item/cart.png, item/boat.png, terrain.png,
 gui/items.png, misc/shadow.png -> textures/entities/am_*.png.
 
 VCM tri: uv are texture fractions; the engine's v = 0 is the bottom row of the PNG (checked by running), Alpha's
@@ -35,9 +35,9 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
-PACK = os.path.join(VC_ROOT, "content", "alphamine")
-ALPHA = "/mnt/d/Prog/AlphaMine"
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+PACK = os.path.join(REPO, "packs", "alphamine")
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 SRC = os.path.join(ALPHA, "ref", "minecraft", "src", "net", "minecraft", "src")
 sys.path.insert(0, HERE)
 from minijava import VM  # noqa: E402

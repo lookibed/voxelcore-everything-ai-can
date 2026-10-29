@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""AlphaMine phase 3: UI assets of the pack (HUD, GUI screens, font, hand, particles) from D:\\Prog\\AlphaMine\\assets.
+"""AlphaMine phase 3: UI assets of the pack (HUD, GUI screens, font, hand, particles) from <repo>\\projects\\alphamine\\external\\assets.
 
   python3 tools/alphamine/gen_ui_assets.py        # writes into content/alphamine
 
@@ -27,10 +27,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import pngio  # noqa: E402
 
-VC_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
-PACK = os.path.join(VC_ROOT, "content", "alphamine")
-ASSETS = "/mnt/d/Prog/AlphaMine/assets"
-TABLES = "/mnt/d/Prog/AlphaMine/tables"
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))  # корень репозитория (было: рабочий каталог движка)
+PACK = os.path.join(REPO, "packs", "alphamine")
+ASSETS = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external")), "assets")
+TABLES = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external")), "tables")
 
 
 def read(path):

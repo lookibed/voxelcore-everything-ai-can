@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Compare the shots of a run directory with golden (per scenario): identical %, within tol, coverage, max|d|.
-  python3 tools/alphamine/am_cmp_run.py D:/Prog/AlphaMine/runs/<run> p4_dig p4_place [--tol 3] [--clear 0,0,0]
+  python3 tools/alphamine/am_cmp_run.py <repo>/projects/alphamine/external/runs/<run> p4_dig p4_place [--tol 3] [--clear 0,0,0]
 Writes <shot>_diff.png / _heat.png next to the run shots (tools/reference/compare.py metrics)."""
 import argparse
 import os
@@ -10,12 +10,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "reference"))
 import compare as cmp  # noqa: E402
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 
 
 def wsl(p):
     p = p.replace("\\", "/")
-    return "/mnt/d/" + p[3:] if p[1:3] == ":/" else p
+    return "/mnt/%s/%s" % (p[0].lower(), p[3:]) if p[1:3] == ":/" else p
 
 
 def main():

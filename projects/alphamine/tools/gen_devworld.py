@@ -25,8 +25,8 @@ to dirt), cactus/reeds 3 high (no growth), leaves next to logs with the settled 
 a torch 76 under its block, spawner EntityId "None" (spawns nothing), no fire, no glowing redstone ore (74 reverts).
 Fluids are written as sources/flowing blocks and settled by the server once (`settle` below).
 
-  gen_devworld.py gen [--out D:/Prog/AlphaMine/golden/devworld]       generate
-  gen_devworld.py finalize --from /mnt/d/Prog/AlphaMine/run/world_d    copy a server-saved (settled) world back into
+  gen_devworld.py gen [--out <repo>/projects/alphamine/external/golden/devworld]       generate
+  gen_devworld.py finalize --from <repo>/projects/alphamine/external/run/world_d    copy a server-saved (settled) world back into
                                                                        golden/devworld, Time reset, layout kept
   gen_devworld.py diff A B                                             blocks/meta/light differences of two saves
   gen_devworld.py dump X Y Z [--world W]                               id/meta/sky/block around a cell
@@ -41,7 +41,7 @@ import struct
 import sys
 import time
 
-ALPHA = "/mnt/d/Prog/AlphaMine"
+ALPHA = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external"))  # было внешний каталог AlphaMine
 OUT = os.path.join(ALPHA, "golden", "devworld")
 CMIN, CMAX = -12, 14            # saved chunk range (both axes, inclusive): spawn (0,0) +-10 blocks random, +-10 chunks sent
 GROUND = 64                     # grass / plaza top block

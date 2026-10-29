@@ -20,7 +20,7 @@ def main():
     ap.add_argument("--clear", default="0,0,0")
     o = ap.parse_args()
     layer = os.path.basename(os.path.normpath(o.run))
-    gdir = o.golden or os.path.join("/mnt/d/Prog/AlphaMine/golden", layer)
+    gdir = o.golden or os.path.join(os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "external")), "golden"), layer)
     clear = np.array([int(v) for v in o.clear.split(",")])
     for fn in sorted(os.listdir(gdir)):
         if not fn.endswith(".png") or not os.path.exists(os.path.join(o.run, fn)):

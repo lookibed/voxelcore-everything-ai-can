@@ -11,7 +11,7 @@ from vclab.cli import labctl as labctl
 from vclab.daemon.client import LabClient
 
 PORT = 25792
-EXE = r"D:\Prog\AlphaMine\engine\VoxelCoreF2F.exe"
+EXE = os.path.join(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")), "builds", "031", "VoxelCoreF2F-031.exe")
 pytestmark = pytest.mark.skipif(bool(os.environ.get("LAB_SKIP_ENGINE")) or not os.path.exists(EXE),
                                 reason="engine smoke disabled (LAB_SKIP_ENGINE) or no F2F build")
 

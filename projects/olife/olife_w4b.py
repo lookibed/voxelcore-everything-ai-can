@@ -26,7 +26,7 @@ LIMIT_FIELDS = ("fuel_per_tick", "bucket_max", "tick_cap", "entity_budget", "max
                 "mem_max", "hard_cap_ticks", "hard_cap_fuel")
 DEFAULT_LIMITS = {"fuel_per_tick": 2_000_000, "bucket_max": 40_000_000, "tick_cap": 10_000_000, "entity_budget": None,
                   "max_actions": 64, "max_text_bytes": 4096, "mem_max": 64 << 20, "hard_cap_ticks": 10,
-                  "hard_cap_fuel": 200_000_000}          # = Limits::default() в /root/olife/sandboxd/src/protocol.rs
+                  "hard_cap_fuel": 200_000_000}          # = Limits::default() в <olife-src>/sandboxd/src/protocol.rs
 _PUSHED = {}    # аренда песочницы -> {цель ("*" | "<owner>"): {поле: значение}} последнее отправленное
 
 
@@ -36,7 +36,7 @@ def bind(plugin_globals):
 
 def _tools():
     from labcore import config
-    return os.path.join(config.VC_ROOT, "tools", "olife")
+    return os.path.join(config.REPO_ROOT, "projects", "olife", "tools")
 
 
 def _import_tools():
@@ -82,7 +82,7 @@ def make_packs(lab, sid):
         dst = os.path.join(root, pk)
         if os.path.isdir(dst):
             shutil.rmtree(dst)
-        shutil.copytree(os.path.join(config.VC_ROOT, "content", pk), dst,
+        shutil.copytree(os.path.join(config.PACKS_DIR, pk), dst,
                         ignore=shutil.ignore_patterns("__pycache__", ".git"))
     out = os.path.join(w4b_dir(lab, sid), "packs_manifest.json")
     m = supervise.pack_manifest(root, P["CLIENT_PACKS"], out)

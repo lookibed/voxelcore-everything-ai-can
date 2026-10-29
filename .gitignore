@@ -39,3 +39,4 @@ WAVE7_PROGRESS.md
 *.epk
 *.bak
 __pycache__/
+/projects/wasmrt/external/worlds/

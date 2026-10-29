@@ -1,5 +1,5 @@
 -- olife_world:mobapi — UX A3 (03.10, agent olife_a3): the world side of the mob script API (sandbox prelude
--- /root/olife/sandboxd/lua-wasm/prelude.lua: block.*, self:set_scale/set_texture/set_model/skeleton/play_anim/
+-- <olife-src>/sandboxd/lua-wasm/prelude.lua: block.*, self:set_scale/set_texture/set_model/skeleton/play_anim/
 -- play_sound/text3d/set_visible/nearby/look_at, memory.*).
 -- * Actions arrive in the TickResult (op beyond set_pos/rot/vel, block.set, say/print): validated here (shape,
 --   bounds, whitelists or owner assets, reach, rates), permission-checked (A1 rights when the module is there, else
