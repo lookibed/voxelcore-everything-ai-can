@@ -14,7 +14,7 @@
 # menu_shot_sha256 (кадр меню F2F 854x480 после mode{fixed, seed 12345} + step{40,40}; "" — эталона нет).
 # Где на ЭТОЙ машине лежат worktree и vcpkg — machine.toml `[engines.<id>] f2f_src = '...'`, `vcpkg = '...'`.
 [engines]
-default = "v031"
+default = "v0327"
 
 [engines.v031]
 version = "0.31"
