@@ -12,5 +12,10 @@
   `0220606e` (`hello.version` = `0.32.7-f2f` через `F2F_ENGINE_RELEASE`). Один конфликт — `LevelScreen::draw`.
   Патч `f2f/patches/f2f-0327.patch` (`git diff v0.32.7 f2f-0327`, 35 файлов, +2686/−40). Сборка `VoxelCoreF2F-0327.exe`
   sha256 `e3b6592f…`, `hello.build.commit` = `0220606e65`.
+- **29.10 (волна 4)**: ветка `f2f-0327` → `767234c5` (только комментарии: ссылки на `f2f/README.md`/`PROTOCOL.md` вместо
+  путей машины). Собрана рецептом `lab f2f build v0327` (инкрементально 25 с): `VoxelCoreF2F-0327-767234c5.exe` sha256
+  `4ce9fde3…`, `hello.build.commit` `767234c57a`; от `e3b6592f…` отличается 34 байтами (строка коммита), размер и секции те
+  же; сверка со стоком `51851a0b…` — `f2f/reports/v0327-2026-10-29.md` (всё равно; меню `02a16804…`). Реестр пока указывает
+  на `VoxelCoreF2F-0327.exe` (`e3b6592f…`).
 - Эталоны: меню F2F `02a16804b3c0dae9…` (= 0.32.0), Canvas `canvas_shot` `927b36b5…` (= 0.32.0); upstream `dev/tests` 16/17 ok
   (`filesystem` падает из-за `write-to-user` проекта лаборатории — так же на v032).

@@ -9,4 +9,6 @@
 - **F2F**: ветка `f2f-032` = `dc62ccfb` + `a5031869` (перенос F2F) + `11909814` (ориентация shot: без flipY).
   Патч `f2f/patches/f2f-032.patch` (`git diff dc62ccfb f2f-032`, 35 файлов, +2680/−40). Сборка `VoxelCoreF2F-032.exe`
   sha256 `e110f91b…`, `hello.version` = `0.32-f2f`, `hello.build.commit` = `1190981496`.
+- **29.10 (волна 4)**: ветка `f2f-032` → `6c3a39c6` (только комментарии). Рецепт — `lab f2f build v032` (`build_*` в реестре);
+  не собрана: vcpkg `ee6a47da` на диске нет (новый checkout ≈2.3 ГБ + первая конфигурация ≈40 мин).
 - Эталоны: меню F2F 854×480 `mode{fixed, seed 12345}` + `step{40,40}` → `02a16804b3c0dae9…`; Canvas `canvas_shot` → `927b36b5…`.

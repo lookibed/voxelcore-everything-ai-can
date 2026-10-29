@@ -23,7 +23,7 @@
 | `vclab/` | ядро: `daemon/` (labd, service, admin, api, client), `leases/` (procs, ports, logwatch), `scenario/` (интерпретатор, journal, runs, decode), `quality/` (golden, compare, metrics, gate, history, perf, sysload), `policy.py`, `engines.py`, `machine.py`, `f2f.py`, `play.py`, `supervise.py`, `projects.py`, `dashboard.py`, `cli/` (lab, labctl, labpipe, cli2b, cli_sup, doctor), `mcp/` (мост `lab`, сервер `voxelcore`, журнал, run_tool) |
 | `bin/` | точки входа: `lab` (sh-обёртка из WSL), `lab.py`, `labd.py`, `labctl.py`, `labpipe.py`, `mcp_bridge.py` (Windows-Python), `voxelcore_mcp.py`, `run_tool.py` (WSL-Python) |
 | `engines/` | `registry.toml` (происхождение, sha256, F2F-патч и `f2f_version` каждой версии) + `<id>/ORIGIN.md` |
-| `f2f/` | протокол (`PROTOCOL.md`), патчи тестовой сборки, рецепт сборки (каркас), Lua-пробы |
+| `f2f/` | протокол (`PROTOCOL.md`), патчи тестовой сборки, рецепт сборки (`bin/lab f2f build <id>`: сборка по рецепту релиза + сверка со стоком, `f2f/README.md`), Lua-пробы |
 | `projects/` | `vc` (тесты движка и запуски паков), `_template` (новый проект), `olife` и `_parked` (вынесенное из ядра, ждёт волны 6) |
 | `tests/` | pytest ядра (Windows-Python; `LAB_SKIP_ENGINE=1` — без движка) |
 | `docs/`, `install/` | документы (каркас), `doctor.md`, bootstrap (каркас) |

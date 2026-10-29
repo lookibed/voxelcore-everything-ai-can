@@ -7,6 +7,7 @@
   lab release <lease> [--force] [--keep-dir]        |  lab release --all --force  (= «стоп»: снять всё)
   lab start <lease> [--restart] [--param k=v ...]   |  lab stop <lease>
   lab f2f <lease> <cmd> ['{"json": "args"}'] [--timeout S] [--repeat N]
+  lab f2f recipe|build|verify|release <engine> [...]   сборка F2F по рецепту релиза и сверка со стоком (f2f/README.md)
   lab logs <lease> [--stream latest|stdout|stderr] [--tail N] [--grep RX]
   lab stdin <lease> "<cmd>" [--wait S] [--pattern RX] [--stream S]   строка в stdin (VoxelCore --stdin-cmd) -> новые строки лога
   lab engines [--project P] [--table]                версии движка ([engines.*]): файлы, sha256, ключи F2F, последний hello
@@ -224,6 +225,9 @@ def main(argv):
         from vclab.cli import doctor                    # `lab doctor ...` и `lab --daemon P doctor ...`
         i = argv.index("doctor")
         return doctor.main(argv[:i] + argv[i + 1:])
+    if len(argv) >= 2 and argv[0] == "f2f" and argv[1] in ("recipe", "build", "verify", "release"):
+        from vclab.cli import f2fbuild                  # без демона: сборка/сверка F2F (vclab/cli/f2fbuild.py)
+        return f2fbuild.main(argv[1:])
     table = opt(argv, "--table", flag=True)
     owner = opt(argv, "--owner")
     daemon = opt(argv, "--daemon")                      # этап 5: какой демон (изолированный — 25800–25849)

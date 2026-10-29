@@ -7,12 +7,18 @@
 # release_url / zip_sha256 (стоковый zip), ci_run (если не релиз), install_dir, stock_exe, vctest_exe, stock_sha256,
 # f2f_exe, f2f_sha256, f2f_patch, f2f_branch, f2f_commit, f2f_version (hello.version тестовой сборки: другая —
 # engine-mismatch), f2f_repo (приватный репозиторий веток F2F).
+# Сборка F2F (`lab f2f build <id>`, f2f/README.md): build_upstream (репозиторий upstream), build_base (тег/коммит, от которого
+# снят патч: `git diff <build_base> <f2f_branch>`), build_vcpkg_commit / build_vcpkg_since (vcpkg рецепта релиза и глубина
+# shallow clone), build_name (-DVC_BUILD_NAME: "" у CI-артефактов, версия у релизов), build_recipe_note (строка рецепта в
+# hello.build), build_output (имя exe в build-mingw), build_env_dump (Lua-дамп окружения для сверки со стоком),
+# menu_shot_sha256 (кадр меню F2F 854x480 после mode{fixed, seed 12345} + step{40,40}; "" — эталона нет).
+# Где на ЭТОЙ машине лежат worktree и vcpkg — machine.toml `[engines.<id>] f2f_src = '...'`, `vcpkg = '...'`.
 [engines]
 default = "v031"
 
 [engines.v031]
 version = "0.31"
-description = "VoxelCore 0.31 (CI build of main @ 454aa205, 2026-02-26) + F2F test build f2f-454aa205 @ 527e3084"
+description = "VoxelCore 0.31 (CI build of main @ 454aa205, 2026-02-26) + F2F test build f2f-454aa205 @ a57c8df3"
 commit = "454aa205"
 source_commit = "454aa205"
 release_url = ""
@@ -26,13 +32,22 @@ f2f_exe = "031\\VoxelCoreF2F-031.exe"
 f2f_sha256 = "1c03a0c39b3957424681fa18b386ecd3a861c4de9dcdf5ac9d9062e348214586"
 f2f_patch = "f2f/patches/f2f-454aa205.patch"
 f2f_branch = "f2f-454aa205"
-f2f_commit = "527e3084"
+f2f_commit = "a57c8df3"           # голова ветки (29.10: правка комментариев); f2f_exe собран из 527e3084d1 — тот же код
 f2f_version = "0.31-f2f"
 f2f_repo = "https://github.com/lookibed/voxelcore-f2f"
+build_upstream = "https://github.com/MihailRis/voxelcore.git"
+build_base = "454aa205462cd97d1443dc086c4dce9369b98a75"
+build_vcpkg_commit = "29f10019c26142cc4689b53b8c91da519db09e5c"
+build_vcpkg_since = ""
+build_name = ""
+build_recipe_note = "vcpkg 29f10019"
+build_output = "VoxelEngine.exe"
+build_env_dump = "f2f/tests/env_dump_031.lua"
+menu_shot_sha256 = ""
 
 [engines.v032]
 version = "0.32"
-description = "VoxelCore 0.32 release-0.32 @ dc62ccfb (CI artifact, stock) + F2F test build 032 (branch f2f-032 @ 11909814)"
+description = "VoxelCore 0.32 release-0.32 @ dc62ccfb (CI artifact, stock) + F2F test build 032 (branch f2f-032 @ 6c3a39c6)"
 commit = "dc62ccfb"
 source_commit = "dc62ccfb"
 release_url = ""
@@ -46,13 +61,22 @@ f2f_exe = "032\\VoxelCoreF2F-032.exe"
 f2f_sha256 = "e110f91b07403dca852a46baceaa65d9a68385e452705482181c297a445fb63b"
 f2f_patch = "f2f/patches/f2f-032.patch"
 f2f_branch = "f2f-032"
-f2f_commit = "11909814"
+f2f_commit = "6c3a39c6"           # голова ветки (29.10: правка комментариев); f2f_exe собран из 1190981496 — тот же код
 f2f_version = "0.32-f2f"
 f2f_repo = "https://github.com/lookibed/voxelcore-f2f"
+build_upstream = "https://github.com/MihailRis/voxelcore.git"
+build_base = "dc62ccfbc1f2538ed2f943112604e3eea4e0101b"
+build_vcpkg_commit = "ee6a47dac031930715bea2e6dfb9ad60caaa5d83"
+build_vcpkg_since = ""
+build_name = ""
+build_recipe_note = "vcpkg ee6a47da"
+build_output = "VoxelEngine.exe"
+build_env_dump = "f2f/tests/env_dump.lua"
+menu_shot_sha256 = "02a16804b3c0dae9ec0b76932f674ed9e7b004e92bc9e4a87ad3e7a48cf3e045"
 
 [engines.v0327]
 version = "0.32.7"
-description = "VoxelCore 0.32.7 release (stock) + F2F test build 0327 (branch f2f-0327 @ 0220606e)"
+description = "VoxelCore 0.32.7 release (stock) + F2F test build 0327 (branch f2f-0327 @ 767234c5)"
 commit = "aa2d13f0"          # объект тега v0.32.7 (как в lab.toml рабочего каталога); коммит — source_commit
 source_commit = "8eff080f"
 release_url = "https://github.com/MihailRis/VoxelCore/releases/download/v0.32.7/voxelcore-0.32.7_win64.zip"
@@ -66,6 +90,15 @@ f2f_exe = "0327\\VoxelCoreF2F-0327.exe"
 f2f_sha256 = "e3b6592f5f8c055c15b75f9424009f3a71736bb122e7d2e12d55d543ffa3e776"
 f2f_patch = "f2f/patches/f2f-0327.patch"
 f2f_branch = "f2f-0327"
-f2f_commit = "0220606e"
+f2f_commit = "767234c5"           # голова ветки (29.10: правка комментариев); f2f_exe собран из 0220606e65 — тот же код
 f2f_version = "0.32.7-f2f"
 f2f_repo = "https://github.com/lookibed/voxelcore-f2f"
+build_upstream = "https://github.com/MihailRis/voxelcore.git"
+build_base = "v0.32.7"
+build_vcpkg_commit = "a2f9862da6d88040a8537fb9b8cb24deaa9a196b"
+build_vcpkg_since = "2026-09-01"
+build_name = "0.32.7"
+build_recipe_note = "vcpkg a2f9862d (baseline 802d61d7)"
+build_output = "VoxelCore.exe"
+build_env_dump = "f2f/tests/env_dump.lua"
+menu_shot_sha256 = "02a16804b3c0dae9ec0b76932f674ed9e7b004e92bc9e4a87ad3e7a48cf3e045"
