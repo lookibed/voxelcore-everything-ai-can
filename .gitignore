@@ -9,6 +9,7 @@ __pycache__/
 dist/
 WAVE5_PROGRESS.md
 WAVEFIX_PROGRESS.md
+WAVE7_PROGRESS.md
 
 # --- монолитный каталог (29.10): на диске всё, в git — код, паки, документы
 /engines/v*/

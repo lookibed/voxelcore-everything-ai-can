@@ -144,6 +144,8 @@ def lab(tmpdir_win, monkeypatch):
     monkeypatch.setattr(policy, "stock_exe", lambda: exes["stock"])
     cfg = config.load()
     cfg["watchdog"] = {"enabled": False}
+    # умолчание движка — явно (fake_engine отвечает 0.31-f2f), а не из engines/registry.toml репозитория (там v0327)
+    cfg["engines"]["default"] = "v031"
     lb = Lab(cfg, watch=False, background=True)
     lb.exes = exes
     yield lb
@@ -567,3 +569,22 @@ def test_daemon_stop_refused_with_live_leases(monkeypatch, tmpdir_win):
         ("someone@cli", "refused", "admin-required"), ("claude", "refused", "admin-required"),
         ("claude", "refused", "live-leases"), ("claude", "ok", None)]
     assert au[-1]["legacy_daemon"] and len(au[-1]["leases"]) == 2
+
+
+def test_vc_root_optional(lab, monkeypatch):
+    """Волна 7: без machine.toml vc_root виды, ссылающиеся на {vc_root}, недоступны (kind-unavailable с подсказкой);
+    vc.engine и vc.dev с явным --param dir работают; /projects помечает такие виды."""
+    from vclab.projects import uses_vc_root
+    monkeypatch.setattr(config, "VC_ROOT_SET", False)
+    for kind in ("dev", "runtime"):
+        with pytest.raises(LabError) as e:
+            lab.create_lease("vc", kind, "agent_X")
+        assert e.value.code == "kind-unavailable" and e.value.status == 409 and "vc_root" in e.value.message
+    vc = lab.projects.get("vc")
+    assert not uses_vc_root(lab.kind_spec(vc, "dev", {"dir": "C:\\x"}), {"dir": "C:\\x"})
+    assert not uses_vc_root(vc.kinds["engine"]) and not uses_vc_root(vc.kinds["vctest"])
+    for kind, params in (("engine", None), ("dev", {"dir": os.path.join(lab.exes["eng"], "..", "d")})):
+        r = lab.create_lease("vc", kind, "agent_X", params=params)
+        lab.release(r["lease"]["name"], owner="agent_X")
+    info = vc.info()["kinds"]
+    assert info["dev"]["needs_vc_root"] and info["runtime"]["needs_vc_root"] and not info["engine"]["needs_vc_root"]

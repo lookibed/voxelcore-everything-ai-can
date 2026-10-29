@@ -1,9 +1,9 @@
-"""Этап 4 на настоящем движке: стоковый VoxelCore 0.32 headless (без окна и ввода — role=headless) под арендами.
+"""Этап 4 на настоящем движке: стоковый VoxelCore 0.32+ (движок по умолчанию реестра, с волны 7 — v0327) headless (без окна и ввода — role=headless) под арендами.
 Демон в процессе, временные data, настоящий проект vc, порты 25605–25609.
 - vctest: upstream dev/tests/world.lua -> ok, exit 0, версия 0.32, окон нет; провальный assert -> failed с кодом выхода;
   Canvas, сохранённый скриптом в user:shots/ -> PNG в прогоне;
 (сессия проекта-сервера с миром, шлюзом и ботом — в тестах этого проекта, projects/<проект>/tests, волна 6.)
-Пропуск: LAB_SKIP_ENGINE=1 (из WSL — с WSLENV=LAB_SKIP_ENGINE) или нет стокового 0.32."""
+Пропуск: LAB_SKIP_ENGINE=1 (из WSL — с WSLENV=LAB_SKIP_ENGINE) или нет стока движка по умолчанию."""
 import os
 import struct
 import time
@@ -16,9 +16,11 @@ from vclab.daemon.service import Lab
 
 from vclab import config as _cfg_for_paths
 _ENGS = _cfg_for_paths.load()["engines"]
-STOCK032 = (_ENGS.get("v032") or {}).get("stock") or ""
-pytestmark = pytest.mark.skipif(bool(os.environ.get("LAB_SKIP_ENGINE")) or not os.path.exists(STOCK032),
-                                reason="engine tests disabled (LAB_SKIP_ENGINE) or no stock 0.32")
+DEFAULT = _ENGS.get(_ENGS.get("default") or "v0327") or {}
+STOCK = DEFAULT.get("stock") or ""
+VERSION = str(DEFAULT.get("version") or "")
+pytestmark = pytest.mark.skipif(bool(os.environ.get("LAB_SKIP_ENGINE")) or not os.path.exists(STOCK),
+                                reason="engine tests disabled (LAB_SKIP_ENGINE) or no stock of the default engine")
 
 
 @pytest.fixture(scope="module")
@@ -52,7 +54,7 @@ def vctest(lab, name):
 def test_vctest_world(lab):
     j, res = vctest(lab, "world")
     assert j["verdict"] == "ok", j["progress"]
-    assert res["exit_code"] == 0 and res["engine_version"] == "0.32" and res["mode"] == "headless"
+    assert res["exit_code"] == 0 and res["engine_version"] == VERSION and res["mode"] == "headless"
     iso = res["start"]["isolation"]
     assert iso["role"] == "headless" and iso["stock"] and iso["verified"] and iso["windows"] == []
     log = os.path.join(lab.runs.get(j["id"])["dir"], res["logs"]["stdout"]["file"])

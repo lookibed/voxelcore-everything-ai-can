@@ -13,11 +13,17 @@
 # hello.build), build_output (имя exe в build-mingw), build_env_dump (Lua-дамп окружения для сверки со стоком),
 # menu_shot_sha256 (кадр меню F2F 854x480 после mode{fixed, seed 12345} + step{40,40}; "" — эталона нет).
 # Где на ЭТОЙ машине лежат worktree и vcpkg — machine.toml `[engines.<id>] f2f_src = '...'`, `vcpkg = '...'`.
+# legacy = true — версия нужна только снимку машины-источника (сток — CI-артефакт без публичной ссылки, exe F2F не
+# опубликован): install/bootstrap её не ставит, `lab doctor` при отсутствии файлов пишет info, а не FAIL/warn.
+# Обязательны версия по умолчанию и все версии без legacy.
+# Раскладка «с нуля» (install/bootstrap): engines_root = <repo>\engines, builds_root = <repo>\builds; у v0327
+# install_dir = "v0327" -> <repo>\engines\v0327\VoxelCore.exe, F2F -> <repo>\builds\0327\VoxelCoreF2F-0327-767234c5.exe.
 [engines]
 default = "v0327"
 
 [engines.v031]
 version = "0.31"
+legacy = true
 description = "VoxelCore 0.31 (CI build of main @ 454aa205, 2026-02-26) + F2F test build f2f-454aa205 @ a57c8df3"
 commit = "454aa205"
 source_commit = "454aa205"
@@ -47,6 +53,7 @@ menu_shot_sha256 = ""
 
 [engines.v032]
 version = "0.32"
+legacy = true
 description = "VoxelCore 0.32 release-0.32 @ dc62ccfb (CI artifact, stock) + F2F test build 032 (branch f2f-032 @ 6c3a39c6)"
 commit = "dc62ccfb"
 source_commit = "dc62ccfb"
@@ -80,9 +87,10 @@ description = "VoxelCore 0.32.7 release (stock) + F2F test build 0327 (branch f2
 commit = "aa2d13f0"          # объект тега v0.32.7 (как в lab.toml рабочего каталога); коммит — source_commit
 source_commit = "8eff080f"
 release_url = "https://github.com/MihailRis/VoxelCore/releases/download/v0.32.7/voxelcore-0.32.7_win64.zip"
+f2f_release = "f2f-v0327-767234c5"   # GitHub Release нашего репозитория с exe F2F (install/bootstrap: gh release download)
 zip_sha256 = "23ec6612b6cc1b23376b9c05439c5d24384bf5d936020a1abb4da33077bf3cba"
 ci_run = "Release 39632239452 (workflow_dispatch on release-0.32)"
-install_dir = "voxelcore-0.32.7_win64"
+install_dir = "v0327"            # распакованный voxelcore-0.32.7_win64.zip (bootstrap); на ПК пользователя — [engines.v0327] root
 stock_exe = "VoxelCore.exe"
 vctest_exe = "vctest.exe"
 stock_sha256 = "51851a0b2e434e8db9059e1101b810b1250c44352da382c9700e22ae9537bea4"

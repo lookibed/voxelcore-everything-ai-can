@@ -15,7 +15,8 @@ journal_*, scenario_* (journal.py: журнал вызовов и сценари
 PowerShell (PSWorker): запуск powershell.exe стоит ~0.9 с, вызов в живом процессе — единицы мс.
 
 Окружение:
-  VC_ROOT  — каталог VoxelCore в WSL (там лежат VoxelCore.exe и latest.log); по умолчанию machine.toml vc_root.
+  VC_ROOT  — каталог VoxelCore в WSL (там лежат VoxelCore.exe и latest.log); по умолчанию machine.toml vc_root, без него —
+             <work_root>/vc_dev (вид vc.dev с этим --dir: меню движка без паков рабочего каталога).
   LAB_MCP_PROJECTS — через «:» имена проектов, чьи mcp_tools.py грузить (по умолчанию — все, у кого он есть).
 """
 
@@ -36,8 +37,11 @@ from vclab import machine as _machine  # noqa: E402
 from vclab.config import win_to_wsl as _wsl_path  # noqa: E402
 
 _M = _machine.load()
-VC_ROOT = os.environ.get("VC_ROOT") or _wsl_path(_M.get("vc_root") or "") or REPO
 WORK_ROOT = _wsl_path(_M.get("work_root") or "") or os.path.join(REPO, "work")
+# без vc_root (чистый ПК, install/bootstrap) — свой каталог в work: vc_start пишет туда latest.log/settings, а не в репозиторий
+VC_ROOT = os.environ.get("VC_ROOT") or _wsl_path(_M.get("vc_root") or "") or os.path.join(WORK_ROOT, "vc_dev")
+if VC_ROOT.startswith(WORK_ROOT) and not os.path.isdir(VC_ROOT):
+    os.makedirs(VC_ROOT, exist_ok=True)
 POWERSHELL = _wsl_path(_M.get("powershell") or r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
 PS_DIR = os.path.join(SERVER_DIR, "ps")
 EXE_NAME = "VoxelCore.exe"

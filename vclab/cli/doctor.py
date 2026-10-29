@@ -3,6 +3,8 @@
   lab doctor [--json] [--probe] [--daemon P] [--engine ID ...]
 
 Печатает таблицу «ок / чего не хватает / как починить» (ссылки — install/doctor.md#<якорь>). Код выхода 0 — нет FAIL.
+Статус `info` — не ошибка: необязательное отсутствует (версии реестра с `legacy = true`, `vc_root` не задан, битые
+ссылки снимка машины-источника в engines/ и builds/). Обязательны версия движка по умолчанию и версии без legacy.
 Без --probe движок не запускается вовсе: стоковый exe проверяется ключом `--version` (без окна: CREATE_NO_WINDOW,
 движок печатает версию и выходит до создания окна), F2F — образом (какие ключи F2F знает сборка) и последним
 `hello` этой сборки из данных демона (state\\engine_hello.json, по sha256). `--probe` — настоящий `hello.version`:
@@ -19,7 +21,7 @@ import time
 from vclab import config, engines, machine, policy
 
 DOC = "install/doctor.md"
-OK, WARN, FAIL = "ok", "warn", "FAIL"
+OK, WARN, FAIL, INFO = "ok", "warn", "FAIL", "info"
 PY_MODULES = ("win32api", "win32job", "psutil", "fastapi", "uvicorn", "numpy", "PIL", "jinja2")
 NO_WINDOW = 0x08000000
 
@@ -41,12 +43,12 @@ class Report:
         out = ["%-*s  %-4s  %s" % (w, "check", "st", "detail / fix")]
         for r in self.rows:
             line = "%-*s  %-4s  %s" % (w, r["group"] + " " + r["check"], r["status"], r["detail"])
-            if r["status"] != OK and r["fix"]:
+            if r["status"] not in (OK, INFO) and r["fix"]:
                 line += "  -> " + r["fix"]
             out.append(line)
-        n = {s: sum(1 for r in self.rows if r["status"] == s) for s in (OK, WARN, FAIL)}
-        out.append("total: %d ok, %d warn, %d FAIL (machine.toml: %s)" % (n[OK], n[WARN], n[FAIL],
-                                                                          machine.load().get("_path")))
+        n = {s: sum(1 for r in self.rows if r["status"] == s) for s in (OK, WARN, FAIL, INFO)}
+        out.append("total: %d ok, %d warn, %d FAIL, %d info (machine.toml: %s)" % (
+            n[OK], n[WARN], n[FAIL], n[INFO], machine.load().get("_path")))
         return "\n".join(out)
 
 
@@ -76,8 +78,12 @@ def check_machine(rep, m):
             if required:
                 rep.add("machine", key, FAIL, "missing: " + desc, "machine-toml")
             continue
-        if key in ("engines_root", "builds_root", "vc_root"):
+        if key in ("engines_root", "builds_root"):
             rep.add("machine", key, OK if os.path.isdir(v) else FAIL, v, "roots")
+        elif key == "vc_root":
+            rep.add("machine", key, OK if os.path.isdir(v) else WARN,
+                    v if os.path.isdir(v) else "%s: missing (projects vc dev/runtime, olife, alphamine are unavailable)" % v,
+                    "vc-root")
         elif key == "work_root":
             if os.path.isdir(v):
                 rep.add("machine", key, OK, v)
@@ -86,6 +92,43 @@ def check_machine(rep, m):
                 rep.add("machine", key, WARN if os.path.isdir(parent) else FAIL,
                         "%s (absent; the daemon creates it)" % v if os.path.isdir(parent) else "%s: parent missing" % v,
                         "roots")
+    if not m.get("vc_root") and not os.environ.get("LAB_VC_ROOT"):
+        rep.add("machine", "vc_root", INFO, "not set: kinds that use {vc_root} (vc dev/runtime, olife, alphamine) are "
+                "unavailable; vc engine, lab run vc canvas_shot/world work through {engine.*}", "vc-root")
+
+
+def check_links(rep):
+    """Битые ссылки в engines/ и builds/ репозитория — снимок машины-источника (WSL-symlink на её каталоги): info."""
+    broken = []
+    for base in ("engines", "builds"):
+        top = os.path.join(config.REPO_ROOT, base)
+        try:
+            names = os.listdir(top)
+        except OSError:
+            continue
+        cands = [os.path.join(top, n) for n in names]
+        for c in list(cands):
+            if os.path.isdir(c) and not os.path.islink(c):
+                try:
+                    cands += [os.path.join(c, n) for n in os.listdir(c)]
+                except OSError:
+                    pass
+        for c in cands:
+            try:
+                st = os.lstat(c)
+            except OSError:
+                continue
+            if os.path.islink(c) or getattr(st, "st_reparse_tag", 0):
+                if not os.path.exists(c) or not os.access(c, os.R_OK):
+                    broken.append(os.path.relpath(c, config.REPO_ROOT))
+                    continue
+                try:
+                    os.listdir(c) if os.path.isdir(c) else open(c, "rb").close()
+                except OSError:
+                    broken.append(os.path.relpath(c, config.REPO_ROOT))
+    if broken:
+        rep.add("repo", "links", INFO, "broken links of the source machine snapshot (not needed): %s" % ", ".join(
+            sorted(broken)), "links")
 
 
 def check_engines(rep, m, only=None, hellos=None):
@@ -99,58 +142,76 @@ def check_engines(rep, m, only=None, hellos=None):
         if eid == "default" or (only and eid not in only):
             continue
         g = "engine " + eid
-        if not e.get("root") or not os.path.isdir(e["root"]):
-            rep.add(g, "root", FAIL, e.get("root") or "engines_root not set", "engine-stock")
-        else:
-            rep.add(g, "root", OK, e["root"])
-        stock = e.get("stock")
-        if stock and os.path.isfile(stock):
-            sha = policy.file_sha(stock)
-            want = e.get("stock_sha256")
-            st = OK if not want or sha == want else WARN
-            code, out = _run([stock, "--version"], 15)
-            lines = [x.strip() for x in out.splitlines()]
-            plain = [x for x in lines if x and not x.startswith("[")]              # строки лога движка — с «[I] ...»
-            build = [x.split("build:", 1)[1].strip() for x in lines if "build:" in x]
-            ver = ("%s%s" % (plain[-1] if plain else "?", (" (build %s)" % build[0]) if build and build[0] else "")
-                   if code == 0 else "--version failed (%s): %s" % (code, out[:80]))
-            if code != 0:
-                st = FAIL
-            rep.add(g, "stock", st, "%s  sha %s%s  version %s" % (
-                stock, _short(sha), "" if not want or sha == want else " (registry %s)" % _short(want), ver),
-                "engine-stock")
-        else:
-            rep.add(g, "stock", FAIL, "missing: %s" % (stock or "-"), "engine-stock")
-        vct = (e.get("builds") or {}).get("vctest")
-        if e.get("vctest_exe"):
-            rep.add(g, "vctest", OK if vct and os.path.isfile(vct) else WARN, vct or "-", "engine-stock")
-        f2f = (e.get("builds") or {}).get("f2f")
-        if f2f and os.path.isfile(f2f):
-            sha = policy.file_sha(f2f)
-            want = e.get("f2f_sha256")
-            caps = policy.exe_caps(f2f)
-            keys = ",".join(k.replace("--f2f", "f2f") or "f2f" for k, v in caps.items() if v) or "no f2f keys"
-            h = (hellos or {}).get(sha) or {}
-            hv = h.get("version")
-            st = OK
-            notes = []
-            if want and sha != want:
-                st = WARN
-                notes.append("registry sha %s" % _short(want))
-            if not caps.get("--f2f"):
-                st = FAIL
-                notes.append("not an F2F build")
-            if hv and hv != e.get("f2f_version"):
-                st = FAIL
-                notes.append("hello.version %s != %s" % (hv, e.get("f2f_version")))
-            hello = ("last hello %s %s" % (hv, h.get("build") or "")) if hv else "hello: not seen (lab doctor --probe)"
-            rep.add(g, "f2f", st, "%s  sha %s  keys %s  want %s; %s%s" % (
-                f2f, _short(sha), keys, e.get("f2f_version"), hello, ("; " + "; ".join(notes)) if notes else ""),
-                "engine-f2f")
-        else:
-            rep.add(g, "f2f", FAIL, "missing: %s (patch %s)" % (f2f or "builds_root not set", e.get("f2f_patch")),
-                    "engine-f2f")
+        if e.get("legacy") and eid != default and not only:
+            # легаси-версия (снимок машины-источника): есть — проверяем как обычно, нет — info
+            have = [x for x in (e.get("root"), (e.get("builds") or {}).get("f2f")) if x and os.path.exists(x)]
+            if not have:
+                rep.add(g, "legacy", INFO, "not installed (legacy = true in registry: only the source machine "
+                        "snapshot needs it)", "legacy")
+                continue
+            sub = Report()
+            _check_engine(sub, g, e, hellos)
+            for r in sub.rows:
+                if r["status"] != OK:
+                    r["status"], r["detail"] = INFO, "legacy: " + r["detail"]
+            rep.rows += sub.rows
+            continue
+        _check_engine(rep, g, e, hellos)
     return res
+
+
+def _check_engine(rep, g, e, hellos):
+    if not e.get("root") or not os.path.isdir(e["root"]):
+        rep.add(g, "root", FAIL, e.get("root") or "engines_root not set", "engine-stock")
+    else:
+        rep.add(g, "root", OK, e["root"])
+    stock = e.get("stock")
+    if stock and os.path.isfile(stock):
+        sha = policy.file_sha(stock)
+        want = e.get("stock_sha256")
+        st = OK if not want or sha == want else WARN
+        code, out = _run([stock, "--version"], 15)
+        lines = [x.strip() for x in out.splitlines()]
+        plain = [x for x in lines if x and not x.startswith("[")]              # строки лога движка — с «[I] ...»
+        build = [x.split("build:", 1)[1].strip() for x in lines if "build:" in x]
+        ver = ("%s%s" % (plain[-1] if plain else "?", (" (build %s)" % build[0]) if build and build[0] else "")
+               if code == 0 else "--version failed (%s): %s" % (code, out[:80]))
+        if code != 0:
+            st = FAIL
+        rep.add(g, "stock", st, "%s  sha %s%s  version %s" % (
+            stock, _short(sha), "" if not want or sha == want else " (registry %s)" % _short(want), ver),
+            "engine-stock")
+    else:
+        rep.add(g, "stock", FAIL, "missing: %s" % (stock or "-"), "engine-stock")
+    vct = (e.get("builds") or {}).get("vctest")
+    if e.get("vctest_exe"):
+        rep.add(g, "vctest", OK if vct and os.path.isfile(vct) else WARN, vct or "-", "engine-stock")
+    f2f = (e.get("builds") or {}).get("f2f")
+    if f2f and os.path.isfile(f2f):
+        sha = policy.file_sha(f2f)
+        want = e.get("f2f_sha256")
+        caps = policy.exe_caps(f2f)
+        keys = ",".join(k.replace("--f2f", "f2f") or "f2f" for k, v in caps.items() if v) or "no f2f keys"
+        h = (hellos or {}).get(sha) or {}
+        hv = h.get("version")
+        st = OK
+        notes = []
+        if want and sha != want:
+            st = WARN
+            notes.append("registry sha %s" % _short(want))
+        if not caps.get("--f2f"):
+            st = FAIL
+            notes.append("not an F2F build")
+        if hv and hv != e.get("f2f_version"):
+            st = FAIL
+            notes.append("hello.version %s != %s" % (hv, e.get("f2f_version")))
+        hello = ("last hello %s %s" % (hv, h.get("build") or "")) if hv else "hello: not seen (lab doctor --probe)"
+        rep.add(g, "f2f", st, "%s  sha %s  keys %s  want %s; %s%s" % (
+            f2f, _short(sha), keys, e.get("f2f_version"), hello, ("; " + "; ".join(notes)) if notes else ""),
+            "engine-f2f")
+    else:
+        rep.add(g, "f2f", FAIL, "missing: %s (patch %s)" % (f2f or "builds_root not set", e.get("f2f_patch")),
+                "engine-f2f")
 
 
 def check_python(rep, m):
@@ -295,11 +356,13 @@ def main(argv):
     check_machine(rep, m)
     h = check_daemon(rep, port)
     engs = check_engines(rep, m, only, engine_hellos(h))
+    check_links(rep)
     check_python(rep, m)
     check_tools(rep, m)
     check_disk(rep, m)
     if do_probe:
-        ids = only or [k for k in engs if k != "default"]
+        ids = only or [k for k, e in engs.items() if k != "default" and (
+            not e.get("legacy") or k == engs.get("default") or os.path.isfile((e.get("builds") or {}).get("f2f") or ""))]
         probe(rep, int(port or config.load()["daemon"]["port"]), ids)
     if as_json:
         print(json.dumps({"ok": rep.worst() != FAIL, "worst": rep.worst(), "rows": rep.rows}, ensure_ascii=False,

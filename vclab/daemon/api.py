@@ -5,6 +5,7 @@ from typing import Any, Optional
 from fastapi import Body, FastAPI, Header, Request
 from fastapi.responses import JSONResponse
 
+from vclab import config
 from vclab.scenario.scenario import ScenarioError
 from vclab.daemon.service import LabError
 
@@ -44,8 +45,14 @@ def create_app(lab):
     @app.get("/projects")
     def projects():
         base = lab.base_ctx()
+        out = {n: p.info(dict(base, project_dir=p.dir)) for n, p in lab.projects.projects.items()}
+        if not config.VC_ROOT_SET:          # machine.toml без vc_root: виды с {vc_root} недоступны (create_lease)
+            for info in out.values():
+                for k in info["kinds"].values():
+                    if k.get("needs_vc_root"):
+                        k["unavailable"] = "needs vc_root in machine.toml (install/doctor.md#vc-root)"
         return {"ok": True, "generation": lab.projects.generation, "errors": lab.projects.errors,
-                "projects": {n: p.info(dict(base, project_dir=p.dir)) for n, p in lab.projects.projects.items()}}
+                "vc_root_set": config.VC_ROOT_SET, "projects": out}
 
     @app.get("/leases")
     def leases():

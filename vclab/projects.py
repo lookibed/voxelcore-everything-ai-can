@@ -38,6 +38,25 @@ class TemplateError(KeyError):
     pass
 
 
+def _mentions(v, token):
+    if isinstance(v, str):
+        return token in v
+    if isinstance(v, dict):
+        return any(_mentions(x, token) for x in v.values())
+    if isinstance(v, (list, tuple)):
+        return any(_mentions(x, token) for x in v)
+    return False
+
+
+def uses_vc_root(spec, params=None):
+    """Вид ссылается на {vc_root} (рабочий рантайм паков машины-источника): exe, cwd, args, env, prepare, logs, а из
+    params — только умолчания, не перекрытые параметрами аренды. Без machine.toml `vc_root` такой вид недоступен."""
+    params = params or {}
+    if any(_mentions(spec.get(k), "{vc_root}") for k in ("exe", "cwd", "args", "env", "prepare", "logs")):
+        return True
+    return any(_mentions(v, "{vc_root}") for k, v in (spec.get("params") or {}).items() if k not in params)
+
+
 def lookup(ctx, key, default=None):
     cur = ctx
     for part in key.split("."):
@@ -314,7 +333,8 @@ class Project:
         d = {"name": self.name, "description": self.description, "descriptor": self.path,
              "kinds": {k: {"description": v.get("description", ""), "ports": v.get("ports", []),
                            "params": v.get("params", {}), "f2f": v.get("f2f"), "role": v.get("role", "test"),
-                           "engine": v.get("engine")} for k, v in self.kinds.items()},
+                           "engine": v.get("engine"), "needs_vc_root": uses_vc_root(v)}
+                       for k, v in self.kinds.items()},
              "engines": sorted(self.engines), "default_engine": self.default_engine,
              "compare": self.compare, "scenario": self.scenario, "golden": self.golden,
              "scenario_hooks": sorted(self.scenario_hooks), "step_handlers": sorted(self.step_handlers),

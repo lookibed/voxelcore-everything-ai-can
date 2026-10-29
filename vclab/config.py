@@ -25,6 +25,8 @@ def _default_engine_root():
 
 # {vc_root}: рабочий рантайм запусков паков (content, res, latest.log). machine.toml `vc_root`, иначе корень движка
 # по умолчанию из реестра; LAB_VC_ROOT — перекрытие для тестов.
+# VC_ROOT_SET — задан ли он явно: без него виды, ссылающиеся на {vc_root}, недоступны (service.create_lease).
+VC_ROOT_SET = bool(os.environ.get("LAB_VC_ROOT") or MACHINE.get("vc_root"))
 VC_ROOT = os.environ.get("LAB_VC_ROOT") or MACHINE.get("vc_root") or _default_engine_root() or REPO_ROOT
 WORK_ROOT = os.environ.get("LAB_WORK_ROOT") or MACHINE.get("work_root") or os.path.join(REPO_ROOT, "work")
 

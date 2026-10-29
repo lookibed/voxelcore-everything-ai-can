@@ -39,7 +39,8 @@ def daemon(tmpdir_win):
 def test_http_api(daemon):
     c, started = daemon
     h = c.get("/health")
-    assert h["service"] == "labd" and h["projects"] == ["dummy", "vc"] and h["ports"] == [25670, 25679]
+    # проекты репозитория (vc, wasmrt, olife, alphamine с волны 6) + dummy из --projects
+    assert h["service"] == "labd" and {"dummy", "vc"} <= set(h["projects"]) and h["ports"] == [25670, 25679]
     print("daemon cold start via WMI: %.2f s" % started["started_s"])
     p = c.get("/projects")["projects"]
     assert set(p["dummy"]["kinds"]) == {"fake", "tree", "stdin", "echo", "survivor"} and "dummy.hello2" in p["dummy"]["features"]

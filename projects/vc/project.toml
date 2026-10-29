@@ -1,8 +1,10 @@
 # vc — запуски движка для разработки паков (MCP vc_start в vclab/mcp/voxelcore_mcp.py: любые паки рабочего рантайма
 # {vc_root}) и тесты движка (vctests). Этап 3а: вместо стокового VoxelCore.exe — тестовая сборка F2F с
 # `--f2f <порт> --f2f-clock realtime` (время идёт само, step не нужен; ввод ОС изолирован, окно без фокуса).
-# Семантика --res/--dir как у прежнего vc_start: по умолчанию --res {vc_root}\res, --dir {vc_root} (latest.log,
-# autorun_app_script.txt, export\ — там же, где раньше); --dir/--res из args vc_start перекрывают.
+# Семантика --dir как у прежнего vc_start: по умолчанию --dir {vc_root} (latest.log, autorun_app_script.txt, export\ —
+# там же, где раньше); --res — res движка аренды ({engine.res}: res 0.31 под сборкой 0.32.7 — 0xC0000409, волна 7);
+# --dir/--res из args vc_start перекрывают. Без machine.toml `vc_root` виды dev (без --param dir) и runtime недоступны
+# (kind-unavailable); движок без рантайма паков — вид engine и сценарии vctest ({engine.*}).
 # Стоковый рантайм (вид runtime) — только `lab play vc --user` (пользователь) или vc_start(play=true, reason) =
 # `--final-check` главной сессии (claude), запись runtime_session в истории.
 [project]
@@ -16,7 +18,7 @@ scenarios_dir = "{project_dir}\\vctests"
 vctest = { headless = "vctest", window = "vctest_window" }
 
 [kinds.dev]
-description = "VoxelCoreF2F.exe --f2f <port> --f2f-clock realtime, --res/--dir as the old vc_start (default VC_ROOT)"
+description = "VoxelCoreF2F.exe --f2f <port> --f2f-clock realtime, --dir as the old vc_start (default VC_ROOT; needs vc_root), --res of the engine"
 exe = "{param.engine_exe}"
 copy_exe = true
 ports = ["f2f"]
@@ -25,7 +27,7 @@ clock = "realtime"
 window = "normal"          # видимое окно без фокуса: vc_screenshot (PrintWindow) работает, ввод ОС — нет
 cwd = "{param.dir}"
 args = ["--f2f", "{port.f2f}", "--res", "{param.res}", "--dir", "{param.dir}", "{param.extra}"]
-params = { engine_exe = "{engine.builds.f2f}", dir = "{vc_root}", res = "{vc_root}\\res", extra = [] }   # было: путь F2F 0.31 этой машины
+params = { engine_exe = "{engine.builds.f2f}", dir = "{vc_root}", res = "{engine.res}", extra = [] }
 logs = { latest = "{param.dir}\\latest.log" }
 default_log = "latest"
 ready = [ { f2f = "hello", timeout = 90 } ]
@@ -40,7 +42,7 @@ params = { engine_exe = "{engine.builds.f2f}", dir = "{dir}", res = "{engine.res
 
 # ---------------------------------------------------------------- этап 4a: голая тестовая сборка (меню, пробы, F2F-протокол)
 [kinds.engine]
-description = "F2F test build of the lease's engine (default v031; --param engine=v032): menu, --dir = lease dir, 854x480, hidden, clock virtual (--param clock=realtime)"
+description = "F2F test build of the lease's engine (registry default v0327; --param engine=<id>): menu, --dir = lease dir, 854x480, hidden, clock virtual (--param clock=realtime)"
 exe = "{engine.builds.f2f}"
 copy_exe = true
 ports = ["f2f"]
@@ -82,9 +84,8 @@ log_stream = "latest"
 
 # ---------------------------------------------------------------- этап 4: тесты движка 0.32 (`--test`, вид сценария vctest)
 [kinds.vctest]
-description = "native 0.32 test: stock VoxelCore --headless --test <file.lua> --log (exit code = verdict)"
+description = "native 0.32+ test: stock VoxelCore --headless --test <file.lua> --log (exit code = verdict); engine — registry default or --engine"
 role = "headless"
-engine = "v032"
 exe = "{engine.stock}"
 copy_exe = false
 cwd = "{dir}"
@@ -97,8 +98,7 @@ ready = []
 stop = []
 
 [kinds.vctest_window]
-description = "native 0.32 test in a window: VoxelCoreF2F-032 --f2f (input isolated, hidden) --test <file.lua>; clock virtual (runner steps) or realtime"
-engine = "v032"
+description = "native 0.32+ test in a window: F2F build --f2f (input isolated, hidden) --test <file.lua>; clock virtual (runner steps) or realtime"
 exe = "{engine.builds.f2f}"
 copy_exe = true
 ports = ["f2f"]
