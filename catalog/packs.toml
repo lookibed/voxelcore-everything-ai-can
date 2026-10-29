@@ -63,10 +63,10 @@ origin = ["SNAP:content/doom", "github:lookibed/voxelcore-pack-doom"]
 version = "0.1.0"
 depends_packs = ["wasmrt"]
 depends_external = ["Spider + doomgeneric (Spider/tests/manual)", "wads/doom1.wad (shareware, вне git)"]
-last_green_engine = "v031"
+last_green_engine = "v032"
 tests = ["projects/wasmrt (lab)", "scenarios_legacy: doom_*", "wasm_timedemo.json"]
 size_mb = 17
-notes = "C→wasm→Lua. 70 fps реального времени на wasmrt (35 тиков × 2 кадра); 120 fps старого пака — виртуальные часы, не сравнивать (OPTIMIZATION.md)."
+notes = "C→wasm→Lua. 69–70 fps реального времени (35 тиков × 2 кадра) на 0.31 и 0.32.1; timedemo 0.31 221–224 fps, 0.32.1 201.7 (contended); 120 fps старого пака — виртуальные часы (OPTIMIZATION.md, STATUS port032)."
 
 [packs.quake]
 layer = "pack"
@@ -87,7 +87,7 @@ origin = ["SNAP:content/gameboy", "github:lookibed/voxelcore-pack-gameboy"]
 version = "0.1.0"
 depends_packs = []
 depends_external = ["Spider + binjgb", "roms/ (вне git, кроме свободных)"]
-last_green_engine = "v031"
+last_green_engine = "v032"
 tests = ["scenarios_legacy: gameboy_*"]
 size_mb = 2
 notes = "Эмулятор GB/GBC binjgb, C→wasm→Lua, без wasmrt (свой загрузчик, старый формат). Замеры — OPTIMIZATION.md."
@@ -99,7 +99,7 @@ origin = ["SNAP:content/videoplayer", "github:lookibed/voxelcore-pack-videoplaye
 version = "0.3.0"
 depends_packs = []
 depends_external = ["Spider + h264bsd + minimp4", "videos/*.mp4"]
-last_green_engine = "v031"
+last_green_engine = "v032"
 tests = ["scenarios_legacy: video_*"]
 size_mb = 3
 notes = "MP4/H.264 декодер в Lua. h264 ~120 → ~31 мс/кадр с большим кешем, 1280×720 ~224 мс/кадр (OPTIMIZATION.md)."
@@ -111,7 +111,7 @@ origin = ["SNAP:content/pong", "github:lookibed/voxelcore-pack-pong"]
 version = "0.2.0"
 depends_packs = ["wasmrt"]
 depends_external = ["Spider + исходник pong (Spider/tests/manual)"]
-last_green_engine = "v031"
+last_green_engine = "v032"
 tests = ["projects/wasmrt (lab)", "smoke_all.py"]
 size_mb = 1
 notes = "Минимальный пример модели «кадр» (vc_init/vc_frame) и двух бэкендов: posteffect и canvas. Первый пак для проверки нового движка."
@@ -123,7 +123,7 @@ origin = ["SNAP:content/wasmdemo", "github:lookibed/voxelcore-pack-wasmdemo"]
 version = "0.1.0"
 depends_packs = ["wasmrt"]
 depends_external = ["Spider/tests/manual/wasmrt-demo"]
-last_green_engine = "v031"
+last_green_engine = "v032"
 tests = ["projects/wasmrt (lab)"]
 size_mb = 1
 notes = "Обычная main()+libc: плазма 160×100, fopen из data/, printf в лог. Смоук WASI."
@@ -135,10 +135,10 @@ origin = ["SNAP:content/eaglercraft", "github:lookibed/voxelcore-pack-eaglercraf
 version = "0.1.0"
 depends_packs = ["wasmrt"]
 depends_external = ["Spider/tests/manual/real-world-eaglercraft (только локально, .gitignore)", "TeaVM, Java"]
-last_green_engine = "v031"
+last_green_engine = "v032"
 tests = ["scenarios_legacy: eag_world, smoke_all.py eagler", "MCP eag_*"]
 size_mb = 113
-notes = "Minecraft 1.8 (Eaglercraft) Java→TeaVM→wasm→Lua. Самый тяжёлый путь; вход в мир ≈ 60–70 с."
+notes = "Minecraft 1.8 (Eaglercraft) Java→TeaVM→wasm→Lua. Вход в мир ≈ 60–70 с; мир 0.32.1 9.3–10.7 fps (0.31: 7.5–9.2), STATUS port032. В новой лаборатории проекта нет."
 
 [packs.halflife]
 layer = "pack"
@@ -147,10 +147,10 @@ origin = ["SNAP:content/halflife"]
 version = "0.1.0"
 depends_packs = ["wasmrt"]
 depends_external = ["Spider + Xash3D FWGS + hlsdk-portable", "data/ — демо Half-Life: Uplink (вне git)"]
-last_green_engine = "unknown"
-tests = ["wasm.json / wasm_480.json"]
+last_green_engine = "v031"
+tests = ["scenarios_legacy/halflife_check.py", "wasm.json / wasm_480.json"]
 size_mb = 142
-notes = "Half-Life 1 (Xash3D ref_soft) C/C++→wasm→Lua. Есть .bak ветки hl_gpu — незавершённый перевод на GPU; статус по источникам не установлен."
+notes = "Half-Life 1 (Xash3D ref_soft) C/C++→wasm→Lua. 854×480: 8.8 → 18.3–21.7 fps (12.10, ядра спанов на Lua, jit_opt maxtrace=40000). Копия в 0.32.1 разложена, но запуском не проверена (STATUS). .bak ветки hl_gpu."
 
 [packs.html]
 layer = "pack"
@@ -159,10 +159,10 @@ origin = ["SNAP:content/html"]
 version = "0.2.0"
 depends_packs = ["wasmrt"]
 depends_external = ["Spider + litehtml/gumbo"]
-last_green_engine = "v031"
+last_green_engine = "v032"
 tests = ["scenarios_legacy: html_*"]
 size_mb = 41
-notes = "Браузерная вёрстка: litehtml (HTML5+CSS2.1+flex) в Lua, сайт из 5 страниц site/. Прототип."
+notes = "Браузерная вёрстка: litehtml (HTML5+CSS2.1+flex) в Lua, сайт из 5 страниц site/. 0.32.1: 1.95 с до первого кадра (0.31 ≈2.3 с)."
 
 [packs.smollm]
 layer = "pack"

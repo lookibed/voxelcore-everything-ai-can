@@ -5,6 +5,8 @@
 
 Происхождение у всех: снимок `lookibed/voxelcore-workbench-snapshot-2026-10` (`content/<имя>`); у части паков есть свой
 репозиторий (`voxelcore-pack-doom|quake|gameboy|videoplayer|pong|wasmdemo|eaglercraft|minecraft2`, `voxelcore-wasmrt`).
+Порт 0.31 → 0.32.1 (06–07.10, `port032`): wasmrt, doom, quake, videoplayer, eaglercraft, html, pc_wasmrt, gameboy, pong,
+wasmdemo проверены на v032 без пересборки модулей Spider; правки — только у `pc_wasmrt` (`entity.glslf`, `vc.get_version`).
 Числа ниже — из README/OPTIMIZATION самих паков (указано), а не новые замеры. «Зелёный» — последняя версия, на которой
 пак доказанно работал по `agents/STATUS.md`, `OLIFE.md`, `ALPHAMINE.md` (копии — `projects/_snapshot_agents_docs/`).
 
@@ -21,15 +23,15 @@
 | wasmrt | библиотека | — | v032 | 1 | Spider (пересборка) |
 | gpu_compute | библиотека | — | v032 | 1 | — |
 | olife_proto | библиотека | — | v0327 | 1 | генератор `gen_codecs.py` |
-| pong | пак | wasmrt | v031 | 1 | Spider |
-| wasmdemo | пак | wasmrt | v031 | 1 | Spider |
-| doom | пак | wasmrt | v031 | 17 | `doom1.wad` |
+| pong | пак | wasmrt | v032 | 1 | Spider |
+| wasmdemo | пак | wasmrt | v032 | 1 | Spider |
+| doom | пак | wasmrt | v032 | 17 | `doom1.wad` |
 | quake | пак | wasmrt | v032 | 28 | `pak0.pak` |
-| gameboy | пак | — | v031 | 2 | ROM |
-| videoplayer | пак | — | v031 | 3 | mp4 |
-| eaglercraft | пак | wasmrt | v031 | 113 | порт TeaVM (только локально) |
-| halflife | пак | wasmrt | неизвестно | 142 | демо Uplink |
-| html | пак | wasmrt | v031 | 41 | litehtml |
+| gameboy | пак | — | v032 | 2 | ROM |
+| videoplayer | пак | — | v032 | 3 | mp4 |
+| eaglercraft | пак | wasmrt | v032 | 113 | порт TeaVM (только локально) |
+| halflife | пак | wasmrt | v031 (0.32.1 не запускался) | 142 | демо Uplink |
+| html | пак | wasmrt | v032 | 41 | litehtml |
 | smollm | пак | wasmrt | v032 | 98 | веса ~100 МБ |
 | smollm_gpu | пак | gpu_compute | v032 | 158 | веса |
 | gpu_worldgen | пак | base, gpu_compute | v032 | 1 | — |
@@ -61,8 +63,8 @@ ABI `vc.h` (модель «кадр» `vc_init/vc_frame` или обычный `
 `exit 0`. Смоук WASI.
 
 **doom** — doomgeneric C→wasm→Lua, первый эпизод shareware. Чем интересен: целая игра 1993 года в Lua движка без нативных
-библиотек. Числа: 70 fps реального времени (35 тиков × 2 кадра); 120 fps старого пака — виртуальные часы, это не
-регрессия (`packs/doom/OPTIMIZATION.md`). Портировать после pong; проверка — `wasm_timedemo.json`.
+библиотек. Числа: 69–70 fps реального времени (35 тиков × 2 кадра) на 0.31 и 0.32.1; timedemo 221–224 fps на 0.31, 201.7 на 0.32.1 при
+занятом ПК (`contended`, не регрессия); 120 fps старого пака — виртуальные часы (`packs/doom/OPTIMIZATION.md`, STATUS «port032»). Портировать после pong; проверка — `wasm_timedemo.json`.
 
 **quake** — quakegeneric (GPL-2) C→wasm→Lua; треугольники растеризует GPU в UI-шейдере. 0.32.1, 854×480, realtime:
 timedemo 37.3 fps (0.31: 35.8–37.0), на ПК `pc_wasmrt` 1408×902 — 37.6 fps (`packs/quake/README.md`). После демо
@@ -75,12 +77,12 @@ timedemo 37.3 fps (0.31: 35.8–37.0), на ПК `pc_wasmrt` 1408×902 — 37.6 
 1280×720 с RGBA ~800 → ~224 мс/кадр (`packs/videoplayer/OPTIMIZATION.md`).
 
 **eaglercraft** — Minecraft 1.8 (Eaglercraft): Java → TeaVM → wasm → Lua. Самый длинный путь «целесообразность не наш
-конёк»; вход в мир ≈ 60–70 с. Порт исходников — только локально в Spider и в приватном `voxelcore-pack-eaglercraft`.
+конёк»; вход в мир ≈ 60–70 с, мир на 0.32.1 9.3–10.7 fps (0.31: 7.5–9.2; STATUS «port032»). Порт исходников — только локально в Spider и в приватном `voxelcore-pack-eaglercraft`.
 Тестировался MCP-инструментами `eag_*`; в новой лаборатории проекта нет — его надо завести.
 
 **halflife** — Half-Life 1 на Xash3D FWGS (ref_soft) + hlsdk-portable, C/C++→wasm→Lua, демо Uplink. В паке лежат
-`.bak` ветки `hl_gpu` — незавершённый перевод рендера на GPU. Последняя зелёная версия по источникам не установлена —
-начинать с `wasm_480.json` и чтения README.
+`.bak` ветки `hl_gpu`. 854×480: 8.8 → 18.3–21.7 fps (12.10: ядра спанов на Lua, `jit_opt maxtrace=40000` — иначе через ~60 с
+сброс трасс и 12 fps; `packs/halflife/README.md`). Зелёный на 0.31; копия в 0.32.1 разложена, но запуском не проверялась.
 
 **html** — браузерная вёрстка: litehtml (gumbo, CSS 2.1 + flex + переменные) в Lua, демонстрационный сайт из 5 страниц
 `site/` (вкладки, модальные окна, тёмная тема). Прототип.
