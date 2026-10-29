@@ -46,7 +46,10 @@
 | [docs/RULES.md](docs/RULES.md) | **обязательные правила пользователя** с причинами — читать первым |
 | [docs/ONBOARDING.md](docs/ONBOARDING.md) | первые 15 минут, начало сессии, MCP, где искать при затыке |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | потоки, модули `vclab/*`, порты и роли, форматы на диске |
-| [docs/PROJECTS.md](docs/PROJECTS.md) | как устроен проект, справочник сценариев, golden/ворота, `lab play`, перенос проекта |
+| [docs/PROJECTS.md](docs/PROJECTS.md) | пак / композиция / проект / проект лаборатории; как устроен проект лаборатории, сценарии, golden/ворота, `lab play`, перенос |
+| [docs/PACKS.md](docs/PACKS.md) | каталог паков по слоям: что это, чем интересен, последняя зелёная версия, где доказательства |
+| [catalog/packs.toml](catalog/packs.toml) | тот же каталог машинно: слой, путь, происхождение, зависимости, `last_green_engine`, тесты, размер |
+| [docs/PORTING.md](docs/PORTING.md) | как перенести пак на самую свежую версию движка: шаги, изменения движка по релизам, поломки, golden |
 | [docs/LESSONS.md](docs/LESSONS.md) | грабли: симптом → причина → что делать |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | словарь |
 | [docs/ENGINE_VERSIONS.md](docs/ENGINE_VERSIONS.md) | версии движка |
@@ -60,9 +63,22 @@
 | `bin/` | точки входа: `lab` (sh из WSL), `lab.py`, `labd.py`, `labctl.py`, `labpipe.py`, `mcp_bridge.py`, `voxelcore_mcp.py`, `run_tool.py` |
 | `engines/` | `registry.toml` (происхождение, sha256, F2F-патч, `f2f_version`) + `<id>/ORIGIN.md` |
 | `f2f/` | протокол, патчи тестовой сборки, рецепт сборки, Lua-пробы |
-| `projects/` | `vc` (тесты движка, запуски паков), `_template` (новый проект), `olife` и `_parked` (ждут переноса) |
+| `projects/` | проекты лаборатории: `vc` (тесты движка, запуски паков), `wasmrt`, `olife`, `alphamine`, `_template` (новый проект), `_parked` |
+| `packs/` | паки, композиции и паки проектов — каталог `docs/PACKS.md`, `catalog/packs.toml` |
+| `catalog/` | `packs.toml` — машинно-читаемый каталог паков |
 | `tests/` | pytest ядра (Windows-Python; `LAB_SKIP_ENGINE=1` — без движка) |
 | `install/` | `doctor.md`, `mcp.json.example`, bootstrap (каркас) |
+
+## Монолитный каталог
+С 29.10 агент заходит в один каталог и видит всё: `engines/<id>/` (установленные стоковые движки; `v031`, `v032` — ссылки
+на старые каталоги), `builds/` (exe F2F 0.31/0.32/0.32.7, патчи и скрипты сборки), `packs/<имя>/` (все паки и
+композиции), `projects/<p>/` (проекты лаборатории `vc`, `wasmrt`, `olife`, `alphamine` + их `tools/` и `external/` —
+эталоны, golden, шлюз, песочница; `vc/scenarios_legacy` — старые сценарии; `_snapshot_agents_docs` — журналы агентов).
+Снаружи — только чужие репозитории (Spider, clang/wasi-sdk, vcpkg). **В git** — код (`vclab`, `bin`, проекты), паки
+(Lua, шейдеры, ассеты), документы, реестр движков, патчи F2F. **Только на диске** (`.gitignore`) — сами движки и exe
+(`engines/v*/`, `builds/`), веса моделей и большие сгенерированные модули, данные игр (`*.wad`, `*.pak`, `*.epk`),
+эталонные клиенты/серверы, golden и миры проектов (`projects/*/external/…`). Где взять недостающее — снимок
+`lookibed/voxelcore-workbench-snapshot-2026-10`, свои репозитории паков (`catalog/packs.toml` → `origin`), пересборка.
 
 ## Правила (кратко)
 Ввод ОС запрещён и не нужен: движок агентами — только арендой тестовой сборки `--f2f`; стоковое окно — только `lab play
