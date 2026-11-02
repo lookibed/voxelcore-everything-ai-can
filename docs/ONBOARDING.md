@@ -25,7 +25,7 @@
 
 ## 2. Первые 15 минут на новом ПК
 Нужно только: Windows 10/11, WSL, интернет, аккаунт GitHub с доступом к этому (приватному) репозиторию. Старый рабочий
-каталог (`voxelcore-0.31.0_pre_gemini`), `D:\Prog\AlphaMine`, сборка F2F и легаси-версии `v031`/`v032` **не нужны**.
+каталог (`voxelcore-0.31.0_pre_gemini`), сборка F2F и легаси-версии `v031`/`v032` **не нужны**.
 Проверено имитацией чистого ПК 29.10 (волна 7): от клона до кадра `canvas_shot` — около минуты, bootstrap — 13–45 с.
 
 ### 2.1. Клон и bootstrap
@@ -130,6 +130,9 @@ bin/lab --daemon P daemon stop                     # в конце — свой 
   `vc_status`, `vc_screenshot` (F2F `shot`), `vc_input` (ввод через F2F), `vc_log`, `vc_wait_log`, `vc_pixels`,
   `vc_shader_cells`, `journal_report`, `journal_set`, `scenario_save/run/list` + инструменты проектов (`mcp_tools.py`).
   `vc_keys`/`vc_click` отключены (ввод ОС).
+- Документация движка офлайн, точно по версии: `vc_docs_search` (doc/ru|en, C++-привязки Lua
+  `src/logic/scripting/lua/libs`, Lua движка `res/`), `vc_docs_read`, `vc_docs_list`. Файлы — `engines/docs/<версия>/`
+  (в git), другая версия — `python3 bin/fetch_engine_docs.py v0.32.7`. Не ходить за API в GitHub и не угадывать.
 - Мост общий для главной сессии и субагентов: субагент передаёт `owner=<имя>, as_agent=true` в каждом вызове.
 - После правки `vclab/mcp/*.py` или `mcp_tools.py` — переподключить (`/mcp`); до этого — из консоли:
   `python3 bin/run_tool.py <инструмент> '<json>'` (попадает в тот же журнал).

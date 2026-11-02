@@ -1,2 +1,0 @@
-@configure duration 2
-@rotate bone body by y func (t * 180)

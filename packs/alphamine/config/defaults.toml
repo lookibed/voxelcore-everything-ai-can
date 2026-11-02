@@ -1,3 +1,0 @@
-# скелет руки от первого лица (WorldRenderer: content defaults "hand-skeleton"): кости arm и item, модели
-# models/am_hand/*.vcm, позу и свет ставит modules/hand.lua
-hand-skeleton = "alphamine:hand"

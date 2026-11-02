@@ -48,7 +48,7 @@ function on_menu_setup()
     setup_backround()
     menu.page = "main"
     menu.visible = true
-    -- app.open_world("gameboy")
+    -- app.open_world("<world>")
 
     -- тот же путь, что и кнопка на странице меню "scripts"
     if not autorun_done then

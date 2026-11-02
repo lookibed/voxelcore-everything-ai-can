@@ -11,27 +11,13 @@ WAVE5_PROGRESS.md
 WAVEFIX_PROGRESS.md
 WAVE7_PROGRESS.md
 
-# --- монолитный каталог (29.10): на диске всё, в git — код, паки, документы
+# --- монолитный каталог: на диске всё, в git — только среда (код, документы)
 /engines/v*/
 /builds/
 /packs/*.zip
-/packs/smollm/data/
-/packs/smollm_gpu/data/
-/packs/halflife/data/
-/packs/eaglercraft/modules/eaglercraft.lua
-/packs/eaglercraft/data/
 /packs/*/.cache/
 /projects/*/external/**/*.exe
 /projects/*/external/**/target/
-/projects/olife/external/play/keys/
-/projects/olife/external/play/worlds/
-/projects/olife/external/dist/
-/projects/olife/external/golden/
-/projects/alphamine/external/ref/
-/projects/alphamine/external/golden/
-/projects/alphamine/external/lab
-/projects/alphamine/external/runs
-/projects/alphamine/external/play/
 /projects/*/tools/**/gateway_tokens.json
 /projects/*/tools/**/gateway_bans.json
 *.wad
@@ -39,4 +25,16 @@ WAVE7_PROGRESS.md
 *.epk
 *.bak
 __pycache__/
-/projects/wasmrt/external/worlds/
+
+# --- паки и проекты — отдельные репозитории, в этот репо не публикуются (на диске остаются)
+/packs/*
+!/packs/README.md
+/projects/*
+!/projects/_template/
+# vc — проект самой среды (MCP vc_start, тесты движка); его legacy-сценарии паков — контент
+!/projects/vc/
+/projects/vc/scenarios_legacy/
+/projects/vc/reference/
+# описания паков и проектов — локальные
+/catalog/
+/docs/PACKS.md
