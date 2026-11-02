@@ -1,0 +1,197 @@
+# *network* library
+
+A library for working with the network.
+
+## HTTP requests
+
+There is a configurable function `network.request` that allows performing HTTP requests with various methods (GET, POST, PUT, DELETE, etc.) and configuring headers, request body, timeout, and other parameters.
+
+> To pass binary data in the request body, use a byte array (Bytearray) or a string. In `on_response`, the `body` string can be converted to a byte array using `Bytearray(response.body)`.
+
+```lua
+network.request(
+    url: string,
+    parameters: {
+        -- Request method (GET, POST, PUT, DELETE, etc.)
+        method: string,
+        -- Request body as a string or Bytearray
+        body: table|string,
+        -- List of additional request headers
+        headers: table<string>,
+        -- Timeout in milliseconds
+        timeout: int,
+        -- Whether to verify the SSL certificate
+        verify_ssl: boolean,
+        -- Function called when a response is received
+        on_response: function(response: {
+            -- HTTP response status code
+            status: int,
+            -- Response body as a string
+            body: string,
+            -- List of response headers
+            headers: table<string>
+        }),
+    }
+)
+```
+
+### Simplified functions for GET and POST requests
+
+```lua
+-- Performs a GET request to the specified URL.
+network.get(
+    url: str,
+    -- Function to call when response is received
+    callback: function(str),
+    -- Error handler
+    [optional] onfailure: function(int, str),
+    -- List of additional request headers
+    [optional] headers: table<str>
+)
+
+-- Example:
+network.get("https://api.github.com/repos/MihailRis/voxelcore/releases/latest", function (s)
+    print(json.parse(s).name) -- will output the name of the latest engine release
+end)
+
+-- A variant for binary files, with a byte array instead of a string in the response.
+network.get_binary(
+    url: str,
+    callback: function(ByteArray),
+    [optional] onfailure: function(int, str),
+    [optional] headers: table<str>
+)
+
+-- Performs a POST request to the specified URL.
+-- Currently, only `Content-Type: application/json` is supported
+-- After receiving the response, passes the text to the callback function.
+-- In case of an error, the HTTP response code will be passed to onfailure.
+network.post(
+    url: str,
+    -- Request body as a table (will be converted to JSON) or string
+    body: table|str,
+    -- Function called when response is received
+    callback: function(str),
+    -- Error handler
+    [optional] onfailure: function(int, str),
+    -- List of additional request headers
+    [optional] headers: table<str>
+)
+```
+
+## TCP Connections
+
+```lua
+network.tcp_connect(
+    -- Address
+    address: str,
+    -- Port
+    port: int,
+    -- Function called upon successful connection
+    -- Sending will not work before connection
+    -- Socket is passed as the only argument
+    callback: function(Socket),
+    -- Function called when a connection error occurs
+    -- Arguments passed: socket and error text
+    [optional] error_callback: function(Socket, str)
+) --> Socket
+```
+
+Initiates TCP connection.
+
+The Socket class has the following methods:
+
+```lua
+-- Sends a byte array
+socket:send(table|ByteArray|str)
+
+-- Reads the received data
+socket:recv(
+    -- Maximum size of the byte array to read
+    length: int,
+    -- Use table instead of Bytearray
+    [optional] usetable: bool=false
+) -> nil|table|Bytearray
+-- Returns nil on error (socket is closed or does not exist).
+-- If there is no data yet, returns an empty byte array.
+
+-- Asynchronous version for use in coroutines.
+-- Waits for the entire specified number of bytes to be received.
+-- If socket closes, function works like socket:recv
+socket:recv_async(
+    -- Size of the byte array to read
+    length: int,
+    -- Use table instead of Bytearray
+    [optional] usetable: bool=false
+) -> nil|table|Bytearray
+
+-- `peek` and `peek_async` are analogous to the `recv` and `recv_async` methods
+-- with the exception that `peek` and `peek_async` do not advance the socket buffer position
+-- This means they do not remove bytes from the socket, so the bytes can be received after
+socket:peek(
+    length: int,
+    [optional] usetable: boolean=false
+) -> nil|table|Bytearray
+
+socket:peek_async(
+    length: int,
+    [optional] usetable: boolean=false
+) -> nil|table|Bytearray
+
+-- Closes the connection
+socket:close()
+
+-- Returns the number of data bytes available for reading
+socket:available() --> int
+
+-- Checks that the socket exists and is not closed.
+socket:is_alive() --> bool
+
+-- Checks if the connection is present (using socket:send(...) is available).
+socket:is_connected() --> bool
+
+-- Returns the address and port of the connection.
+socket:get_address() --> str, int
+```
+
+```lua
+-- Opens a TCP server.
+network.tcp_open(
+    -- Port
+    port: int,
+    -- Function called when connecting
+    -- The socket of the connected client is passed as the only argument
+    callback: function(Socket)
+) --> ServerSocket
+```
+
+The SocketServer class has the following methods:
+
+```lua
+-- Closes the server, breaking connections with clients.
+server:close()
+
+-- Checks if the TCP server exists and is open.
+server:is_open() --> bool
+
+-- Returns the server port.
+server:get_port() --> int
+```
+
+## Analytics
+
+```lua
+-- Returns the approximate amount of data sent (including connections to localhost)
+-- in bytes.
+network.get_total_upload() --> int
+-- Returns the approximate amount of data received (including connections to localhost)
+-- in bytes.
+network.get_total_download() --> int
+```
+
+## Other
+
+```lua
+-- Looks for a free port to use.
+network.find_free_port() --> int or nil
+```

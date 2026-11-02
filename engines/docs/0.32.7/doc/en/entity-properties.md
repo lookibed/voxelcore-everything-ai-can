@@ -1,0 +1,149 @@
+# Entity properties
+
+## Logic
+
+### *components*
+
+Defines components and the order in which they are initialized.
+
+```json
+"components": [
+    list of components
+]
+```
+
+Example:
+
+```json
+"components": [
+    "base:drop"
+]
+```
+
+You can pass values in ARGS from the entity configuration.
+They will be passed both when creating a new entity and when loading a saved one.
+The `args` list is used for this:
+
+```json
+"components": [
+    {
+        "name": "base:drop",
+        "args": {
+            "item": "base:stone.item",
+            "count": 1
+        }
+    }
+]
+```
+
+The components code should be in `scripts/components`.
+
+## Physics
+
+### *hitbox*
+
+An array of three numbers indicating the size of the entity's hitbox.
+
+Example:
+
+```json
+"hitbox": [0.6, 1.8, 0.6]
+```
+
+
+### *body-type*
+
+Determines how the physics engine will work with it.
+
+- *static* - static body. No physics calculation, no velocity.
+- *dynamic* - default type. The physics engine calculates movement and collisions.
+- *kinematic* - only movement is calculated, without collisions.
+
+### *blocking*
+
+If true - the entity blocks the placement of a block that intersects with the entity's hitbox.
+
+*In the future will also block other entities movement.*
+
+Default value: *true*.
+
+### *selectable* (raycast opacity)
+
+If set to `false` the cursor will ignore the entity, passing the ray.
+Applies to all uses of raycast without the include_non_selectable flag.
+
+### *sensors*
+
+A sensor is an area attached to a physical body that detects the entry of other bodies into it.
+
+- When a body enters, the *on_sensor_enter* event is triggered.
+- When a body exits, the *on_sensor_exit* event is called.
+
+Sensors are indexed in the same order as they are presented in the list, starting from 0.
+
+The following types (shapes) of sensors exist:
+- *radius* is the simplest sensor. Defines the area around the center of the hitbox. The following values are specified:
+    - radius - number.
+- *aabb* - a rectangular area that changes position depending on the rotation of the entity. **The area itself does not rotate.** The following values are specified:
+    - three numbers x, y, z of the minimal corner of the area.
+    - three numbers x, y, z of the opposite corner of the area.
+
+Example:
+
+```json
+"sensors": [
+    ["aabb", -0.2, -0.2, -0.2, 0.2, 0.2, 0.2],
+    ["radius", 1.6]
+]
+```
+
+0. A rectangular area with a width, height and length of 0.4 m, centered at 0.0.
+1. Radial area with a radius of 1.6 m.
+
+### *solid*
+
+Makes the entity's hitbox an obstacle. When enabling this property for `dynamic` body, a mass must be specified.
+
+### *mass*
+
+Defines the entity's mass. Kilograms are used as the default.
+For `kinematic` bodies, an infinite mass is used instead.
+
+### *elasticity*
+
+Defines the entity's elasticity (affects the bounce on collision).
+
+### *step-height*
+
+Defines the maximum height of an obstacle an entity can step onto without jumping.
+
+### *material*
+
+Defines the entity's material (same as for blocks).
+
+## View
+
+### *skeleton-name*
+
+The default value is the same as the entity name. Determines which skeleton will be used by the entity. See [rigging](rigging.md).
+
+### *lighting-mode*
+
+- *bone-based* - lighting is calculated for each skeletal bone separately.
+- *solid* - lighting is calculated for the entire entity.
+
+## Saving/Loading
+
+In addition to custom components, the engine automatically saves data from the built-in ones: transform, rigidbody, skeleton.
+
+There is a set of flags that allow you to specify which data will be saved and which will not.
+
+(Boolean values are specified)
+
+| Title                  | Target                                               | Default |
+| ---------------------- | ---------------------------------------------------- | ------- |
+| save                   | the entity itself                                    | true    |
+| save-skeleton-pose     | skeleton pose                                        | false   |
+| save-skeleton-textures | dynamically assigned textures                        | false   |
+| save-body-velocity     | body velocity                                        | true    |
+| save-body-settings     | changed body settings <br>(type, damping, crouching) | false   |

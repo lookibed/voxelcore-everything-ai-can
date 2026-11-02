@@ -1,0 +1,120 @@
+# Скриптинг
+
+В качестве языка сценариев используется LuaJIT
+
+Подразделы:
+- [События движка](scripting/events.md)
+- [Пользовательский ввод](scripting/user-input.md)
+- [Файловая система и сериализация](scripting/filesystem.md)
+- [Свойства и методы UI элементов](scripting/ui.md)
+- [Сущности и компоненты](scripting/ecs.md)
+- [Библиотеки](#)
+    - [animation](scripting/builtins/libanimation.md)
+    - [app](scripting/builtins/libapp.md)
+    - [assets](scripting/builtins/libassets.md)
+    - [base64](scripting/builtins/libbase64.md)
+    - [bjson, json, toml, yaml](scripting/filesystem.md)
+    - [block](scripting/builtins/libblock.md)
+    - [byteutil](scripting/builtins/libbyteutil.md)
+    - [crypto](scripting/builtins/libcrypto.md)
+    - [cameras](scripting/builtins/libcameras.md)
+    - [ctypes](scripting/builtins/libctypes.md)
+    - [entities](scripting/builtins/libentities.md)
+    - [file](scripting/builtins/libfile.md)
+    - [gfx.blockwraps](scripting/builtins/libgfx-blockwraps.md)
+    - [gfx.particles](particles.md#библиотека-gfxparticles)
+    - [gfx.posteffects](scripting/builtins/libgfx-posteffects.md)
+    - [gfx.skeletons](scripting/builtins/libgfx-skeletons.md)
+    - [gfx.text3d](3d-text.md#библиотека-gfxtext3d)
+    - [gfx.weather](scripting/builtins/libgfx-weather.md)
+    - [gui](scripting/builtins/libgui.md)
+    - [hud](scripting/builtins/libhud.md)
+    - [input](scripting/builtins/libinput.md)
+    - [inventory](scripting/builtins/libinventory.md)
+    - [item](scripting/builtins/libitem.md)
+    - [mat4](scripting/builtins/libmat4.md)
+    - [network](scripting/builtins/libnetwork.md)
+    - [pack](scripting/builtins/libpack.md)
+    - [pathfinding](scripting/builtins/libpathfinding.md)
+    - [player](scripting/builtins/libplayer.md)
+    - [quat](scripting/builtins/libquat.md)
+    - [random](scripting/builtins/librandom.md)
+    - [rules](scripting/builtins/librules.md)
+    - [session](scripting/builtins/libsession.md)
+    - [time](scripting/builtins/libtime.md)
+    - [utf8](scripting/builtins/libutf8.md)
+    - [vec2, vec3, vec4](scripting/builtins/libvecn.md)
+    - [world](scripting/builtins/libworld.md)
+- [Расширения стандартных библиотек](scripting/extensions.md)
+- [Модуль core:bit_converter](scripting/modules/core_bit_converter.md)
+- [Модуль core:data_buffer](scripting/modules/core_data_buffer.md)
+- [Модули core:vector2, core:vector3](scripting/modules/core_vector2_vector3.md)
+- [Встроенные компоненты сущностей](scripting/core_components.md)
+
+## Аннотации типов данных
+
+В документации к Lua библиотекам используются аннотации типов,
+не являющиеся частью синтаксиса Lua.
+
+- vector - массив из трех или четырех чисел
+- vec2 - массив из двух чисел
+- vec3 - массив из трех чисел
+- vec4 - массив из четырех чисел
+- quat - массив из четырех чисел - кватернион
+- matrix - массив из 16 чисел - матрица
+
+## Пространства имён
+
+В настоящее время, движок использует иерархию пространств имён, минимизирующую конфликты между отдельными модулями, скриптами, да и паками.
+
+Актуальна следующая структура:
+
+- Глобальное пространство (оно же - _G), являющееся корневым, запись в которое, вне модулей ядра движка, является крайне нежелательной для вашего же времени, что может уйти на лишние часы отладки.
+    - Пространство пака - создаётся каждый раз при загрузке контента для каждого, включённого в конфигурацию, пака. Это пространство используют модули, а также скрипты предметов и блоков.
+        - Пространство [компонента](scripting/ecs.md#пользовательские-компоненты).
+        - Пространство [UI-документа](scripting/ui.md)
+- Изолированное пространство имён генератора мира.
+
+## Модули
+
+Модуль - глобальный объект со сроком жизни, ограниченным сроком жизни контента, используемый как для взаимодействия разных паков, так и в качестве замены глобальных переменных в пределах самого пака. 
+
+Модуль должен находиться в `контентпак/modules/**` (допускаются вложенные папки, что нужно будет указывать)
+
+```lua
+local имя_модуля = require "контентпак:имя_модуля" -- импортирует модуль
+
+-- если модуль находится в том же паке, в котором импортируется, можно использовать сокращённый вариант:
+local имя_модуля = require "имя_модуля"
+
+-- при использовании вложенных папок:
+local имя_модуля = require "контентпак:путь/к/имя_модуля" -- путь не включает `modules`
+local имя_модуля = require "путь/к/имя_модуля" -- если в том же паке
+```
+
+Модуль будет иметь пространство имён того пака, в котором находится, независимо от пространства имён, из которого был выполнен первый импорт.
+
+При создании модуля следует придерживаться следующего подхода, которого и ожидает *require*:
+
+```lua
+local this = {
+    имя_переменной = ... -- публичные переменные
+}
+
+-- приватные переменные модуля
+local имя_переменной = ...
+
+-- приватные функции модуля
+local function имя_функции(...)
+    ...
+end
+
+-- публичные функции модуля
+function this.имя_функции(...)
+    ...
+end
+
+return this -- результат, который и будет возвращать и кешировать require
+```
+
+При повторном импорте модуль не будет перезагружен - вместо этого require вернёт кешированный результат.

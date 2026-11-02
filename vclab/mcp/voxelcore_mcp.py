@@ -668,6 +668,10 @@ load_project_tools()
 
 # Журнал вызовов и сценарии (journal.py): все tools/call идут через call_tool.
 from vclab.mcp import journal  # noqa: E402
+# engine docs (offline, per version): vc_docs_search / vc_docs_read / vc_docs_list
+from vclab.mcp import engine_docs as _engine_docs  # noqa: E402
+_engine_docs.register(TOOLS, text)
+
 call_tool = journal.register(TOOLS, sys.modules[__name__], text)
 
 
