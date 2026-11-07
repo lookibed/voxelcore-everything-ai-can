@@ -7,6 +7,8 @@ Lab tool (07.11.2026; MCP: vc_model_ref / vc_model_export). Typical — one .ble
   python3 -m vclab.model_ref.model_ref --blend hero.blend --export-only        # just the VoxelCore files
   python3 -m vclab.model_ref.model_ref --blend b.blend --vcm m.vcm --png t.png --anim walk=walk.vca@0   # own export
 Without --anim the exporter takes timeline markers (one animation per marker) or the scene range.
+  ... --sub 2                                        # also half frames (between the keys: curves)
+  ... --states 'idle:1, walk:2/0.25, idle:1/0.4'     # state switches with crossfades (engine = the client's blend)
 DIR defaults to <work_root>/model_ref/<name> and must be on a Windows drive (Blender is a Windows program).
 
 Blender side (blender_frames.py): the .blend rendered by the engine stand's camera, the engine's model shading
@@ -123,7 +125,7 @@ def vca_meta(path):
 
 # ------------------------------------------------------------------------------------------------- export
 def export(blend, out, name=None, anims=None, rest_frame=None, rest=None, root_y=-0.5, scale=1.0, poses=False,
-           timeout=900):
+           timeout=900, curves="auto"):
     """blender_export.py: the .blend -> out/ (VCM, PNG, VCA, export.json); returns the manifest.
     anims: [{"name", "start", "end"} | {"name", "action"}] or specs "walk=0-24" / "run=@Action"."""
     check_win_path(out, "the export dir")
@@ -142,7 +144,7 @@ def export(blend, out, name=None, anims=None, rest_frame=None, rest=None, root_y
                 raise ValueError("anim spec %r: name=START-END or name=@Action" % sp)
             specs.append({"name": nm, "start": int(m.group(1)), "end": int(m.group(2))})
     job = {"out": win(out), "name": name, "anims": specs, "rest_frame": rest_frame, "rest": rest or "identity",
-           "root_y": root_y, "scale": scale, "poses": poses}
+           "root_y": root_y, "scale": scale, "poses": poses, "curves": curves}
     jp = os.path.join(out, "export_job.json")
     json.dump(job, open(jp, "w"))
     r = subprocess.run([blender_exe(), "-b", win(blend), "--python", win(os.path.join(HERE, "blender_export.py")), "--",
@@ -155,8 +157,10 @@ def export(blend, out, name=None, anims=None, rest_frame=None, rest=None, root_y
 # ------------------------------------------------------------------------------------------------- Blender
 def blender_frames(a, frames, out):
     job = {"out": win(out), "w": W, "h": H, "cam": frames[0]["cam"], "root_y": a.root_y, "shading": a.shading,
-           "frames": [{"name": f["name"], "frame": f["bframe"], "action": f.get("action"), "cam": f["cam"]}
-                      for f in frames]}
+           "frames": [{"name": f["name"], "frame": f["bframe"], "subframe": f.get("subframe", 0.0),
+                       "action": f.get("action"), "cam": f["cam"],
+                       "blend": f.get("blend") if a.states and a.states_ref == "slerp" else None} for f in frames],
+           "nla": getattr(a, "nla", None) if a.states and a.states_ref == "nla" else None}
     jp = os.path.join(a.out, "blender_job.json")
     json.dump(job, open(jp, "w"))
     t0 = time.time()
@@ -211,9 +215,13 @@ def engine_frames(a, frames, out):
         t0 = time.time()
         pose_key = cam_key = None
         for i, fr in enumerate(frames):
-            if (fr["anim"], fr["t"]) != pose_key:
-                f2f(a.daemon, lease, "ref", {"op": "pose", "anim": fr["anim"], "t": fr["t"]})
-                pose_key = (fr["anim"], fr["t"])
+            key = json.dumps(fr.get("layers")) if fr.get("layers") else (fr["anim"], fr["t"])
+            if key != pose_key:
+                if fr.get("layers"):
+                    f2f(a.daemon, lease, "ref", {"op": "blend", "layers": fr["layers"], "bones": a.bones})
+                else:
+                    f2f(a.daemon, lease, "ref", {"op": "pose", "anim": fr["anim"], "t": fr["t"]})
+                pose_key = key
             if fr["view"] != cam_key:
                 f2f(a.daemon, lease, "ref", dict(op="cam", **fr["cam"]))
                 cam_key = fr["view"]
@@ -423,6 +431,80 @@ small. Failed frames framed in red; bones = where the bad pixels are (nearest bo
     return os.path.join(out, "report.html")
 
 
+# ------------------------------------------------------------------------------------------------- states
+def parse_states(spec):
+    """'idle:1, walk:2/0.25, idle:1/0.25' -> [(anim, seconds, fade into it, seconds)]"""
+    out = []
+    for part in [p.strip() for p in spec.split(",") if p.strip()]:
+        m = re.match(r"^([\w.-]+):([\d.]+)(?:/([\d.]+))?$", part)
+        if not m:
+            raise ValueError("state %r: anim:seconds[/fade seconds]" % part)
+        out.append((m.group(1), float(m.group(2)), float(m.group(3) or 0)))
+    return out
+
+
+def smoothstep(x):
+    x = min(1.0, max(0.0, x))
+    return x * x * (3 - 2 * x)
+
+
+def states_poses(a):
+    """the state timeline -> engine poses (one or two layers, the second with the eased weight) and the NLA job of
+    the Blender side; every state's animation loops from its own t = 0 (a script's play_anim)"""
+    st = parse_states(a.states)
+    fps = None
+    for name, _d, _f in st:
+        if name not in a.anims:
+            raise ValueError("state anim %r: have %s" % (name, list(a.anims)))
+        f_, _ = vca_meta(a.anims[name]["vca"])
+        fps = fps or f_
+    starts, f = [], 0
+    for name, d, fade in st:
+        starts.append(f)
+        f += int(round(d * fps))
+    total = f
+    nla = {"states": []}
+    for i, (name, d, fade) in enumerate(st):
+        an = a.anims[name]
+        until = (starts[i + 1] + st[i + 1][2] * fps) if i + 1 < len(st) else total
+        nla["states"].append({"anim": name, "start": starts[i], "until": until + 1, "fade": fade * fps,
+                              "action": an.get("action"), "a0": an["start"], "a1": an["end"]})
+    poses = []
+    for j in range(0, total, a.every):
+        for q in range(a.sub):
+            fr = j + q / a.sub
+            i = max(k for k in range(len(st)) if starts[k] <= fr)
+
+            def layer(k):
+                an = a.anims[st[k][0]]
+                ln = an["end"] - an["start"]
+                lf = (fr - starts[k]) % ln if ln > 0 else 0.0
+                blend.append({"frame": an["start"] + lf, "action": an.get("action")})
+                return {"anim": st[k][0], "t": round(lf / fps, 6)}, lf
+            blend = []
+            cur, lf = layer(i)
+            layers = [cur]
+            fade = st[i][2] * fps
+            if i > 0 and fade > 0 and fr - starts[i] < fade:
+                prev, lfp = layer(i - 1)
+                blend.reverse()                          # [outgoing, incoming]
+                w = smoothstep((fr - starts[i]) / fade)
+                cur["w"] = round(w, 6)
+                blend[1]["w"] = cur["w"]
+                layers = [prev, cur]
+                if w < 0.5:
+                    lf = lfp
+                    i_dom = i - 1
+                else:
+                    i_dom = i
+            else:
+                i_dom = i
+            poses.append({"pname": "st_%04d" % j + ("_%02d" % (100 * q // a.sub) if q else ""), "anim": st[i_dom][0],
+                          "k": int(lf), "t": fr / fps, "bframe": j, "subframe": q / a.sub, "fps": fps,
+                          "layers": layers, "blend": blend, "state": i})
+    return poses, nla
+
+
 # ------------------------------------------------------------------------------------------------- main
 def build_args(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -437,6 +519,15 @@ def build_args(argv=None):
     ap.add_argument("--scale", type=float, default=1.0, help="exporter: Blender metres -> blocks")
     ap.add_argument("--poses", action="store_true", help="exporter: also <name>_poses.json (bone poses per frame)")
     ap.add_argument("--export-only", action="store_true", help="only export the VoxelCore files, no compare")
+    ap.add_argument("--curves", choices=["auto", "bake", "linear"], default="auto",
+                    help="exporter: auto = Blender's keys as VCA bezier where they map 1:1 (verified), the rest baked "
+                         "per frame with smooth handles; bake = all baked (smooth); linear = baked, curve linear")
+    ap.add_argument("--states", help="states test: 'idle:1, walk:2/0.25, idle:1/0.25' = anim:seconds[/fade into it];"
+                         " engine = the client's crossfade (slerp, smoothstep), Blender = NLA strips with the same ramp")
+    ap.add_argument("--states-ref", choices=["slerp", "nla"], default="slerp",
+                    help="Blender side of --states: slerp = the client's crossfade on Blender's own poses (checks the "
+                         "engine implementation), nla = NLA strips (per channel lerp, as an animator sees it)")
+    ap.add_argument("--sub", type=int, default=1, help="poses per frame: 2 = also every half frame (between keys)")
     ap.add_argument("--vcm", help="compare an existing export instead (then --png and --anim name=file.vca@start)")
     ap.add_argument("--png", action="append", default=[], help="with --vcm: texture $0, $1, ... in order")
     ap.add_argument("--daemon", type=int, default=int(os.environ.get("MODEL_REF_DAEMON", 25802)),
@@ -484,7 +575,8 @@ def run(a):
         for sp in a.anim:
             name, rest = sp.split("=", 1)
             path, start = (rest.rsplit("@", 1) + ["0"])[:2]
-            a.anims[name] = {"vca": os.path.abspath(path), "start": int(start)}
+            fps_, dur_ = vca_meta(os.path.abspath(path))
+            a.anims[name] = {"vca": os.path.abspath(path), "start": int(start), "end": int(start) + round(dur_ * fps_)}
         bbox = [[-0.6, -0.5, -0.6], [0.6, 1.5, 0.6]]                          # unknown: a humanoid-sized box
         tj = os.path.join(os.path.dirname(os.path.abspath(a.vcm)), "track.json")  # our export next to it: framing, bones
         if os.path.isfile(tj):
@@ -493,7 +585,7 @@ def run(a):
     else:
         ed = os.path.join(a.out, "export")
         log("export: %s" % a.blend)
-        m = export(a.blend, ed, a.name, a.anim, a.rest_frame, a.rest, a.root_y, a.scale, a.poses)
+        m = export(a.blend, ed, a.name, a.anim, a.rest_frame, a.rest, a.root_y, a.scale, a.poses, curves=a.curves)
         a.manifest = m
         for w in m.get("warnings") or []:
             log("export warning: " + w)
@@ -502,20 +594,27 @@ def run(a):
         a.vcm = os.path.join(ed, m["vcm"])
         a.textures = [os.path.join(ed, t["file"]) for t in m["textures"]]
         for name, an in m["anims"].items():
-            a.anims[name] = {"vca": os.path.join(ed, an["file"]), "start": an["start"], "action": an.get("action")}
+            a.anims[name] = {"vca": os.path.join(ed, an["file"]), "start": an["start"], "end": an["end"],
+                             "action": an.get("action")}
         if a.export_only:
             log("done (export only): " + ed)
             return {"export": m, "dir": ed, "verdict": "ok"}
         track = json.load(open(os.path.join(ed, "track.json"), encoding="utf-8"))
         bbox = m["bbox"]
+    rep_states = None
     cams = {"cam": a.cam} if a.cam else auto_cams(bbox, [v.strip() for v in a.views.split(",") if v.strip()])
     poses = []
     for name, an in a.anims.items():
         fps, dur = vca_meta(an["vca"])
         n = max(1, int(round(dur * fps)))
         for k in range(0, n, a.every):
-            poses.append({"pname": "%s_%03d" % (name, k), "anim": name, "k": k, "t": k / fps,
-                          "bframe": an["start"] + k, "fps": fps, "action": an.get("action")})
+            for j in range(a.sub):                   # --sub N: N-1 poses between frames (between the keys)
+                poses.append({"pname": "%s_%03d" % (name, k) + ("_%02d" % (100 * j // a.sub) if j else ""),
+                              "anim": name, "k": k, "t": (k + j / a.sub) / fps, "bframe": an["start"] + k,
+                              "subframe": j / a.sub, "fps": fps, "action": an.get("action")})
+    if a.states:
+        poses, nla = states_poses(a)
+        rep_states = nla
     if not poses:
         poses.append({"pname": "rest", "anim": None, "k": 0, "t": 0, "bframe": a.rest_frame or 0, "fps": 1})
     frames = []
@@ -529,7 +628,11 @@ def run(a):
     rep = {"time": time.strftime("%Y-%m-%d %H:%M:%S"), "model": os.path.basename(a.vcm),
            "args": {k: v for k, v in vars(a).items() if k not in ("anims", "anim", "manifest")}, "anims": a.anims,
            "views": list(cams), "cams": cams, "frames": len(frames), "export": getattr(a, "manifest", None),
-           "thresholds": {"min_iou": a.min_iou, "max_bad_color": a.max_bad_color, "max_color_mean": a.max_color_mean}}
+           "thresholds": {"min_iou": a.min_iou, "max_bad_color": a.max_bad_color, "max_color_mean": a.max_color_mean},
+           "states": rep_states}
+    a.nla = rep_states
+    a.bones = [b["name"] for b in (getattr(a, "manifest", None) or {}).get("bones", [])] or (
+        track["bones"] if track else [])
     log("blender: %d frames (%d poses x %d views)" % (len(frames), len(poses), len(cams)))
     rep["blender_s"] = blender_frames(a, frames, dirs["blender"])
     log("blender: done in %ss; engine" % rep["blender_s"])
@@ -548,7 +651,7 @@ def run(a):
             res["bones"] = attribute(bad, fr["cam"], bones_at(track, fr))
         results[fr["name"]] = res
         loaded[fr["name"]] = (b, e, diff)
-        key = "%s@%s" % (fr["anim"] or "rest", fr["view"])
+        key = "%s@%s" % ("states" if fr.get("layers") else (fr["anim"] or "rest"), fr["view"])
         groups.setdefault(key, []).append(fr["name"])
         bb, gb = res["bbox"], boxes.get(fr["view"], [W, H, 0, 0])
         boxes[fr["view"]] = [min(gb[0], bb[0]), min(gb[1], bb[1]), max(gb[2], bb[2]), max(gb[3], bb[3])]

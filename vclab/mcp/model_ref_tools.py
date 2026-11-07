@@ -92,13 +92,15 @@ def register(TOOLS, text, journal=None):
         name = a.get("name") or os.path.splitext(os.path.basename(blend))[0]
         out = _unix(a.get("out")) or os.path.join(MR.default_out(name), "export")
         m = MR.export(blend, out, a.get("name"), a.get("anims"), a.get("rest_frame"), a.get("rest"),
-                      a.get("root_y", -0.5), a.get("scale", 1.0), a.get("poses", False))
+                      a.get("root_y", -0.5), a.get("scale", 1.0), a.get("poses", False),
+                      curves=a.get("curves", "auto"))
         lines = ["export: %s" % MR.win(out), "vcm: %s; textures: %s" % (
             m["vcm"], ", ".join("%s=%s" % (t["slot"], t["file"]) for t in m["textures"])),
             "bones (%d): %s" % (len(m["bones"]), ", ".join(
                 "%s<%s" % (b["name"], b["parent"]) if b["parent"] else b["name"] for b in m["bones"])),
-            "tris: %d; anims: %s" % (m["tris"], ", ".join(
-                "%s (%s, frames %d-%d @%g fps)" % (n, an["file"], an["start"], an["end"], an["fps"])
+            "tris: %d; rotation-order %s; anims: %s" % (m["tris"], m.get("rotation_order"), "; ".join(
+                "%s (%s, frames %d-%d @%g fps, channels %s, error between frames %s)" % (
+                    n, an["file"], an["start"], an["end"], an["fps"], an.get("channels"), an.get("err_between_frames"))
                 for n, an in m["anims"].items()) or "none")]
         lines += ["warning: " + w for w in m.get("warnings") or []]
         return text("\n".join(lines))
@@ -126,7 +128,9 @@ def register(TOOLS, text, journal=None):
                             ("scale", "--scale"), ("every", "--every"), ("ssao", "--ssao"), ("shading", "--shading"),
                             ("root_y", "--root-y"), ("daemon", "--daemon"), ("views", "--views"),
                             ("min_iou", "--min-iou"), ("max_bad_color", "--max-bad-color"),
-                            ("max_color_mean", "--max-color-mean"), ("baseline", "--baseline")):
+                            ("max_color_mean", "--max-color-mean"), ("baseline", "--baseline"),
+                            ("curves", "--curves"), ("sub", "--sub"), ("states", "--states"),
+                            ("states_ref", "--states-ref")):
                 if a.get(k) is not None:
                     cmd += [flag, str(a[k])]
             if a.get("cam"):
@@ -173,7 +177,8 @@ def register(TOOLS, text, journal=None):
             "rest": {"type": "string", "enum": ["identity", "frame"],
                      "description": "identity: у анимированных объектов поворот в покое сброшен (по умолчанию)"},
             "root_y": {"type": "number", "default": -0.5}, "scale": {"type": "number", "default": 1.0},
-            "poses": {"type": "boolean", "description": "ещё <name>_poses.json: позы костей по кадрам"}},
+            "poses": {"type": "boolean", "description": "ещё <name>_poses.json: позы костей по кадрам"},
+            "curves": {"type": "string", "enum": ["auto", "bake", "linear"]}},
             "required": ["blend"]},
     })
     TOOLS["vc_model_ref"] = (t_ref, {
@@ -197,6 +202,16 @@ def register(TOOLS, text, journal=None):
             "min_iou": {"type": "number", "default": 0.999}, "max_bad_color": {"type": "number", "default": 0.01},
             "max_color_mean": {"type": "number", "default": 3.0},
             "baseline": {"type": "string", "description": "summary.json прошлого прогона (по умолчанию — в out)"},
+            "curves": {"type": "string", "enum": ["auto", "bake", "linear"],
+                       "description": "auto: ключи Blender как VCA bezier там, где ложатся 1:1 (проверено на "
+                                      "четвертях кадра), прочее запечено с гладкими ручками"},
+            "sub": {"type": "integer", "description": "поз на кадр: 2 = ещё полукадры (между ключами)"},
+            "states": {"type": "string",
+                       "description": "тест состояний: 'idle:1, walk:2/0.25, idle:1/0.4' = анимация:секунды[/переход]; "
+                                      "движок — переход клиента (slerp, smoothstep)"},
+            "states_ref": {"type": "string", "enum": ["slerp", "nla"],
+                           "description": "эталон Blender для states: slerp (тот же алгоритм на позах Blender) или "
+                                          "nla (полосы NLA, поканальный lerp — как видит аниматор)"},
             "shading": {"type": "string", "enum": ["vc", "flat"]},
             "cam": {"type": "object", "description": "одна своя камера вместо views: {pos, target, fov}, оси VC"},
             "rest_frame": {"type": "integer"}, "rest": {"type": "string", "enum": ["identity", "frame"]},

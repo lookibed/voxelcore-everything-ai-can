@@ -416,7 +416,22 @@ def anim_specs():
     return []
 
 
+INITIAL = {o.name: o.matrix_basis.copy() for o in bpy.context.scene.objects}
+
+
+def reset_unkeyed():
+    """before another action: channels it does not key go back to the rest (pose bones) / the stored value (objects),
+    as the engine resets the pose before a track — otherwise they keep the previous action's last value"""
+    for o in bpy.context.scene.objects:
+        if o.type == "ARMATURE":
+            for pb in o.pose.bones:
+                pb.matrix_basis = Matrix.Identity(4)
+        if o.animation_data and o.name in INITIAL:
+            o.matrix_basis = INITIAL[o.name]
+
+
 def use_action(name):
+    reset_unkeyed()
     act = bpy.data.actions.get(name)
     if act is None:
         raise SystemExit("model_ref export: no action %r (have %s)" % (name, [a.name for a in bpy.data.actions]))
@@ -434,6 +449,86 @@ def safe(n):
     return re.sub(r"[^\w.-]+", "_", n) or "anim"
 
 
+# ------------------------------------------------------------------------------------------------ curves
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import curves as CV  # noqa: E402
+
+CURVES = job.get("curves", "auto")        # auto: Blender's own keys where they map 1:1, else baked; bake; linear
+CONV = {"X": "X", "Y": "Z", "Z": "Y"}     # Blender axis -> VC axis (Y <-> -Z: the sign is in MAP)
+EULER = {"XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"}
+MAP = {("move", 0): ("loc", 0, SCALE), ("move", 1): ("loc", 2, SCALE), ("move", 2): ("loc", 1, -SCALE),
+       ("rotate", 0): ("rot", 0, 180 / math.pi), ("rotate", 1): ("rot", 2, 180 / math.pi),
+       ("rotate", 2): ("rot", 1, -180 / math.pi)}
+TOL = {"move": 5e-5 * max(1.0, SCALE), "rotate": 0.01, "scale": 1e-4}
+
+
+def eng_order(mode):
+    """Blender Euler mode m1m2m3 (R = R_m3 R_m2 R_m1) -> the engine's rotation-order (R = R_e1 R_e2 R_e3), VC axes"""
+    return CONV[mode[2]] + CONV[mode[1]] + CONV[mode[0]] if mode in EULER else None
+
+
+def node_mode(n):
+    return n.obj.rotation_mode if n.kind == "obj" else n.obj.pose.bones[n.bone].rotation_mode
+
+
+def action_fcurves(idb):
+    ad = idb.animation_data
+    if not ad or not ad.action:
+        return []
+    act = ad.action
+    slot = getattr(ad, "action_slot", None)
+    if slot is not None and hasattr(act, "layers"):
+        try:
+            from bpy_extras import anim_utils
+            cb = anim_utils.action_get_channelbag_for_slot(act, slot)
+            if cb is not None:
+                return list(cb.fcurves)
+        except Exception:
+            pass
+    try:
+        return list(act.fcurves)
+    except Exception:
+        return []
+
+
+def node_fcurves(n):
+    pre = "" if n.kind == "obj" else 'pose.bones["%s"].' % n.bone
+    out = {}
+    for fc in action_fcurves(n.obj):
+        for kind, prop in (("loc", "location"), ("rot", "rotation_euler"), ("scale", "scale")):
+            if fc.data_path == pre + prop:
+                out[(kind, fc.array_index)] = fc
+    return out
+
+
+def fc_keys(fc, start, end):
+    """an F-curve as plain keys, or None when the engine cannot get it 1:1 (modifiers, easings, linear extrapolation)"""
+    if fc.mute or len(fc.modifiers) or not len(fc.keyframe_points):
+        return None
+    ks = [{"co": tuple(k.co), "hl": tuple(k.handle_left), "hr": tuple(k.handle_right), "interp": k.interpolation}
+          for k in fc.keyframe_points]
+    ks.sort(key=lambda k: k["co"][0])
+    if fc.extrapolation != "CONSTANT" and (start < ks[0]["co"][0] or end > ks[-1]["co"][0]):
+        return None
+    return ks
+
+
+modes = {}
+for n in bones:
+    m = eng_order(node_mode(n))
+    if m and CURVES == "auto" and any(k[0] == "rot" for k in node_fcurves(n)):
+        modes[m] = modes.get(m, 0) + 1
+ORDER = max(modes, key=modes.get) if modes else "XYZ"
+EUL = ORDER[::-1]                          # mathutils Euler mode in VC space: R = R_ORDER[0] R_ORDER[1] R_ORDER[2]
+
+
+def key_line(k, interp):
+    if interp == "bezier":
+        return "    @key frame %s value %s lx %s ly %s rx %s ry %s" % (
+            fmt(k["frame"]), fmt(k["value"]), fmt(k["lx"]), fmt(k["ly"]), fmt(k["rx"]), fmt(k["ry"]))
+    return "    @key frame %s value %s" % (fmt(k["frame"]), fmt(k["value"]))
+
+
 anims_out, poses, TRACK = {}, {}, {}
 for spec in anim_specs():
     name = safe(spec["name"])
@@ -442,14 +537,15 @@ for spec in anim_specs():
         start, end = spec.get("start", start), spec.get("end", end)
     else:
         start, end = int(spec["start"]), int(spec["end"])
-    chans = {n.name: {"t": [], "r": [], "s": []} for n in bones}
+    series = {n.name: {"t": [], "r": [], "s": []} for n in bones}     # (frame rel, xyz) at frames and half frames
     prev = {}
     samples = []
     pts_frames = []
     for fi in range(start, end + 1):
-        for sub in ((0.0, 0.5) if (job.get("poses") and fi < end) else (0.0,)):
+        for sub in ((0.0, 0.25, 0.5, 0.75) if fi < end else (0.0,)):     # curves are checked between frames too
             scene.frame_set(fi, subframe=sub)
             ps = pose_now()
+            fr = fi - start + sub
             if sub == 0.0:                               # where every bone is (pivot, geometry centre) + the bbox
                 D = deform_now()
                 row = []
@@ -460,41 +556,79 @@ for spec in anim_specs():
                     for c in n.corners:
                         grow(d @ c)
                 pts_frames.append(row)
-            rec = {"t": round((fi - start + sub) / FPS, 6), "bones": {}}
+            rec = {"t": round(fr / FPS, 6), "bones": {}}
             for bn, (t, q, s) in ps.items():
-                if sub == 0.0:
-                    eu = q.to_matrix().to_euler("ZYX", prev[bn]) if bn in prev else q.to_matrix().to_euler("ZYX")
-                    prev[bn] = eu
-                    chans[bn]["t"].append(tuple(t))
-                    chans[bn]["r"].append([math.degrees(x) for x in eu])
-                    chans[bn]["s"].append(tuple(s))
+                eu = q.to_matrix().to_euler(EUL, prev[bn]) if bn in prev else q.to_matrix().to_euler(EUL)
+                prev[bn] = eu
+                series[bn]["t"].append((fr, tuple(t)))
+                series[bn]["r"].append((fr, [math.degrees(x) for x in eu]))
+                series[bn]["s"].append((fr, tuple(s)))
                 rec["bones"][bn] = {"t": [round(x, 6) for x in t], "q": [round(x, 7) for x in (q.w, q.x, q.y, q.z)]}
-            samples.append(rec)
+            if sub == 0.0 or (sub == 0.5 and job.get("poses")):
+                samples.append(rec)
     dur = (end - start) / FPS
-    lines = ["@configure fps %s duration %s" % (fmt(FPS), fmt(dur)), ""]
+    lines = ["@configure fps %s duration %s%s" % (fmt(FPS), fmt(dur),
+                                                  "" if ORDER == "XYZ" else " rotation-order " + ORDER), ""]
+    stats = {"curve": 0, "bezier": 0, "bezier_half": 0, "linear": 0,
+             "err": {"move": 0.0, "rotate": 0.0, "scale": 0.0}}
     for n in bones:
-        d = chans[n.name]
-        for ch, vals, rest in (("move", d["t"], 0.0), ("rotate", d["r"], 0.0), ("scale", d["s"], 1.0)):
+        fcs = node_fcurves(n) if CURVES == "auto" else {}
+        rot_ok = eng_order(node_mode(n)) == ORDER
+        for ch, key, rest in (("move", "t", 0.0), ("rotate", "r", 0.0), ("scale", "s", 1.0)):
             for ai, ax in enumerate("xyz"):
-                col = [v[ai] for v in vals]
-                if max(abs(x - rest) for x in col) < 1e-6:
+                smp = [(f, v[ai]) for f, v in series[n.name][key]]
+                ints = [v for f, v in smp if f == int(f)]
+                if max(abs(x - rest) for x in ints) < 1e-6 and max(abs(v - rest) for f, v in smp) < 1e-6:
                     continue
                 if ch == "scale":
                     WARN.append("%s: scale animated on bone %s (engine order T*R*S assumed)" % (name, n.name))
-                lines.append("@%s bone %s by %s curve linear {" % (ch, n.name, ax))
-                lines += ["    @key frame %d value %s" % (i, fmt(x)) for i, x in enumerate(col)]
+                choice = None
+                m = MAP.get((ch, ai))
+                if m and fcs.get((m[0], m[1])) is not None and (ch != "rotate" or rot_ok):
+                    fc = fcs[(m[0], m[1])]
+                    ks = fc_keys(fc, start, end)
+                    segs = ks and CV.segments_from_keys(ks, start, end)
+                    if segs:
+                        bk = CV.keys_from_segments(segs, start, m[2], ints[0] - m[2] * fc.evaluate(start))
+                        e = CV.max_err(bk, "bezier", smp)
+                        if e <= TOL[ch]:
+                            choice = ("bezier", bk, e, "curve")
+                if choice is None:
+                    lin = CV.linear_keys(ints)
+                    e_lin = CV.max_err(lin, "linear", smp)
+                    choice = ("linear", lin, e_lin, "linear")
+                    if CURVES != "linear":
+                        halves = [v for f, v in smp if f - int(f) == 0.5]
+                        for cand in (CV.catmull_keys(ints), CV.mid_keys(ints, halves)):
+                            e_c = CV.max_err(cand, "bezier", smp)
+                            if e_c < choice[2]:
+                                choice = ("bezier", cand, e_c, "bezier")
+                        if choice[2] > TOL[ch]:                 # sharp curvature: a key every half frame
+                            hv = [v for f, v in smp if (f * 2) == int(f * 2)]
+                            qv = [v for f, v in smp if (f * 4) % 2 == 1]
+                            cand = CV.mid_keys(hv, qv, 0.5)
+                            e_c = CV.max_err(cand, "bezier", smp)
+                            if e_c < choice[2]:
+                                choice = ("bezier", cand, e_c, "bezier_half")
+                interp, keys, e, kind = choice
+                stats[kind] += 1
+                stats["err"][ch] = max(stats["err"][ch], e)
+                lines.append("@%s bone %s by %s curve %s {" % (ch, n.name, ax, interp))
+                lines += [key_line(k, interp) for k in keys]
                 lines += ["}", ""]
     fn = name + ".vca"
     with open(os.path.join(OUT, fn), "w", newline="\n") as fo:
         fo.write("\n".join(lines).rstrip() + "\n")
+    stats["err"] = {k: round(v, 5) for k, v in stats["err"].items()}
     anims_out[name] = {"file": fn, "start": start, "end": end, "fps": FPS, "duration": dur, "keys": end - start + 1,
-                       "action": spec.get("action")}
+                       "action": spec.get("action"), "channels": {"curve": stats["curve"], "baked_bezier":
+                       stats["bezier"], "baked_bezier_half": stats["bezier_half"], "baked_linear": stats["linear"]}, "err_between_frames": stats["err"]}
     poses[name] = {"duration": dur, "samples": samples}
     TRACK[name] = pts_frames
 
 if job.get("poses"):
     with open(os.path.join(OUT, NAME + "_poses.json"), "w", newline="\n") as fo:
-        json.dump({"version": 1, "fps": FPS, "units": {"move": "blocks", "rotate": "deg"}, "rotation_order": "XYZ",
+        json.dump({"version": 1, "fps": FPS, "units": {"move": "blocks", "rotate": "deg"}, "rotation_order": ORDER,
                    "bones": [n.name for n in bones], "anims": poses}, fo, indent=0)
 
 # model_ref: bone pivots / geometry centres per frame (which bone a pixel difference belongs to) and the bbox over all
@@ -509,6 +643,7 @@ manifest = {"name": NAME, "source": bpy.data.filepath, "blender": bpy.app.versio
             "bones": [{"name": n.name, "parent": n.ep.name if n.ep else None, "kind": n.kind,
                        "tris": len(n.tris), "pivot": [round(x, 5) for x in n.h]} for n in bones],
             "root_y": ROOT_Y, "scale": SCALE, "rest_frame": REST_FRAME, "rest": REST_MODE, "fps": FPS,
+            "curves": CURVES, "rotation_order": ORDER,
             "tris": sum(len(n.tris) for n in bones), "bbox": [[round(x, 4) for x in v] for v in BBOX],
             "warnings": WARN}
 with open(os.path.join(OUT, "export.json"), "w", newline="\n") as fo:

@@ -63,6 +63,38 @@ local function handler(cmd, a)
             tr.func(rig, a.t or 0)
         end
         return {anim = a.anim, t = a.t}
+    elseif op == "blend" then
+        -- a crossfade of two animation states, as the Olife client does it (mobview 08.11): the first layer's pose,
+        -- the second layer's pose, per bone rotation slerp + translation lerp with weight w (already eased)
+        local rig = S.ent.skeleton
+        S.ent.transform:set_pos(E)
+        local function apply(l)
+            rig:reset_pose()
+            local tr = animation.get_track(S.anims[l.anim] or l.anim)
+            if not tr then error("no track " .. tostring(l.anim)) end
+            tr.func(rig, l.t or 0)
+        end
+        local L = a.layers or {}
+        apply(L[1])
+        if L[2] and (L[2].w or 1) > 0 then
+            local base = {}
+            for _, bn in ipairs(a.bones or {}) do
+                local idx = rig:index(bn)
+                if idx then base[idx] = rig:get_matrix(idx) end
+            end
+            apply(L[2])
+            local w = L[2].w or 1
+            for idx, ma in pairs(base) do
+                local mb = rig:get_matrix(idx)
+                local q = quat.slerp(quat.from_mat4(ma), quat.from_mat4(mb), w)
+                local m = mat4.from_quat(q)
+                m[13] = ma[13] + (mb[13] - ma[13]) * w
+                m[14] = ma[14] + (mb[14] - ma[14]) * w
+                m[15] = ma[15] + (mb[15] - ma[15]) * w
+                rig:set_matrix(idx, m)
+            end
+        end
+        return {layers = #L}
     else
         local ent = {}
         if S.ent then

@@ -4,6 +4,7 @@
 --   {op="load", vcm, textures={path, ...} ($0, $1, ...), anims={name=path}}   paths relative to user: (lease dir)
 --   {op="cam", pos={x,y,z}, target={x,y,z}, fov}  relative to the entity
 --   {op="pose", anim=name|nil, t=seconds}        rest pose when anim is nil
+--   {op="blend", layers={{anim, t}, {anim, t, w}}, bones={names}}   crossfade of two states (slerp, as the client)
 --   {op="info"}
 -- The tool turns every render layer off except entities (F2F `render`), fullbright, a flat clear colour.
 -- options of the tool (model_ref.py writes user:ref/stand_opts.json): engine settings before the world opens;
