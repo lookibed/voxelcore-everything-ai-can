@@ -330,6 +330,27 @@ for n in bones:
     n.h = (C @ n.rest).to_translation()                 # pivot, VC axes, entity space
 if not bones:
     raise SystemExit("model_ref export: no visible mesh in the scene")
+for n in bones:                                         # rest geometry of the bone in VC entity space: bbox, centroid
+    pts = [(C @ p.to_4d()).to_3d() for tri in n.tris for p in tri[0]]
+    if pts:
+        lo = Vector((min(p.x for p in pts), min(p.y for p in pts), min(p.z for p in pts)))
+        hi = Vector((max(p.x for p in pts), max(p.y for p in pts), max(p.z for p in pts)))
+        n.cen = sum(pts, Vector((0, 0, 0))) / len(pts)
+        n.corners = [Vector((x, y, z)) for x in (lo.x, hi.x) for y in (lo.y, hi.y) for z in (lo.z, hi.z)]
+    else:
+        n.cen, n.corners = n.h.copy(), []
+BBOX = [[1e9] * 3, [-1e9] * 3]
+
+
+def grow(p):
+    for i in range(3):
+        BBOX[0][i] = min(BBOX[0][i], p[i])
+        BBOX[1][i] = max(BBOX[1][i], p[i])
+
+
+for n in bones:
+    for c in n.corners:
+        grow(c)
 
 # ------------------------------------------------------------------------------------------------ VCM
 def vc_point(p):
@@ -365,11 +386,14 @@ for a in arms:
 
 
 # ------------------------------------------------------------------------------------------------ animations
+def deform_now():
+    """per bone: its world transform now relative to the rest, VC entity space"""
+    return {n.name: C @ world(n) @ n.rest.inverted() @ CI for n in bones}
+
+
 def pose_now():
     """per bone: (translation, 3x3 rotation, scale) of the engine pose, VC axes"""
-    D = {}
-    for n in bones:
-        D[n.name] = C @ world(n) @ n.rest.inverted() @ CI
+    D = deform_now()
     out = {}
     for n in bones:
         rel = D[n.ep.name].inverted() @ D[n.name] if n.ep else D[n.name]
@@ -410,7 +434,7 @@ def safe(n):
     return re.sub(r"[^\w.-]+", "_", n) or "anim"
 
 
-anims_out, poses = {}, {}
+anims_out, poses, TRACK = {}, {}, {}
 for spec in anim_specs():
     name = safe(spec["name"])
     if spec.get("action"):
@@ -421,10 +445,21 @@ for spec in anim_specs():
     chans = {n.name: {"t": [], "r": [], "s": []} for n in bones}
     prev = {}
     samples = []
+    pts_frames = []
     for fi in range(start, end + 1):
         for sub in ((0.0, 0.5) if (job.get("poses") and fi < end) else (0.0,)):
             scene.frame_set(fi, subframe=sub)
             ps = pose_now()
+            if sub == 0.0:                               # where every bone is (pivot, geometry centre) + the bbox
+                D = deform_now()
+                row = []
+                for n in bones:
+                    d = D[n.name]
+                    pv, cn = d @ n.h, d @ n.cen
+                    row.append([round(x, 4) for x in tuple(pv) + tuple(cn)])
+                    for c in n.corners:
+                        grow(d @ c)
+                pts_frames.append(row)
             rec = {"t": round((fi - start + sub) / FPS, 6), "bones": {}}
             for bn, (t, q, s) in ps.items():
                 if sub == 0.0:
@@ -455,18 +490,27 @@ for spec in anim_specs():
     anims_out[name] = {"file": fn, "start": start, "end": end, "fps": FPS, "duration": dur, "keys": end - start + 1,
                        "action": spec.get("action")}
     poses[name] = {"duration": dur, "samples": samples}
+    TRACK[name] = pts_frames
 
 if job.get("poses"):
     with open(os.path.join(OUT, NAME + "_poses.json"), "w", newline="\n") as fo:
         json.dump({"version": 1, "fps": FPS, "units": {"move": "blocks", "rotate": "deg"}, "rotation_order": "XYZ",
                    "bones": [n.name for n in bones], "anims": poses}, fo, indent=0)
 
+# model_ref: bone pivots / geometry centres per frame (which bone a pixel difference belongs to) and the bbox over all
+# frames (the camera framing), VC entity space
+TRACK["_rest"] = [[[round(x, 4) for x in tuple(n.h) + tuple(n.cen)] for n in bones]]
+with open(os.path.join(OUT, "track.json"), "w", newline="\n") as fo:
+    json.dump({"bones": [n.name for n in bones], "points": "pivot xyz, geometry centre xyz", "anims": TRACK,
+               "bbox": BBOX}, fo)
+
 manifest = {"name": NAME, "source": bpy.data.filepath, "blender": bpy.app.version_string, "vcm": vcm_name,
             "textures": [dict(t, slot="$%d" % i) for i, t in enumerate(TEXTURES)], "anims": anims_out,
             "bones": [{"name": n.name, "parent": n.ep.name if n.ep else None, "kind": n.kind,
                        "tris": len(n.tris), "pivot": [round(x, 5) for x in n.h]} for n in bones],
             "root_y": ROOT_Y, "scale": SCALE, "rest_frame": REST_FRAME, "rest": REST_MODE, "fps": FPS,
-            "tris": sum(len(n.tris) for n in bones), "warnings": WARN}
+            "tris": sum(len(n.tris) for n in bones), "bbox": [[round(x, 4) for x in v] for v in BBOX],
+            "warnings": WARN}
 with open(os.path.join(OUT, "export.json"), "w", newline="\n") as fo:
     json.dump(manifest, fo, indent=1)
 print("model_ref export: %s -> %s (%d bones, %d tris, %d textures, anims %s)%s" % (

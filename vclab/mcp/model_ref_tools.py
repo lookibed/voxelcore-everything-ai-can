@@ -25,54 +25,58 @@ def _unix(p):
 
 
 def _table(rep):
-    lines = ["| anim | frames | IoU min | px only one side, max | colour err mean | colour bad px max | worst |",
+    lines = ["| anim@view | frames | IoU min | px only one side, max | colour err mean | colour bad px max | failed |",
              "|---|---|---|---|---|---|---|"]
-    for an, s in (rep.get("summary") or {}).items():
-        lines.append("| %s | %d | %.4f | %d | %.2f | %.1f%% | %s |" % (
-            an, s["frames"], s["iou_min"], s["only_px_max"], s["color_mean"], 100 * s["color_bad_share_max"],
-            (rep.get("worst") or {}).get(an, s["iou_worst_frame"])))
+    for k, s in (rep.get("summary") or {}).items():
+        lines.append("| %s | %d | %.4f | %d | %.2f | %.1f%% | %d |" % (
+            k, s["frames"], s["iou_min"], s["only_px_max"], s["color_mean"], 100 * s["color_bad_share_max"],
+            s.get("fail_frames", 0)))
     return "\n".join(lines)
 
 
-def _result(out, text, error=False):
-    """the run's summary as MCP content: text + the worst frame's diff panel (blender | engine | map)"""
+def _result(out, text):
+    """the run as MCP content: the verdict, the table, failed frames, the baseline, the worst frame's panel"""
+    import base64
     sp = os.path.join(out, "summary.json")
-    content = []
-    if os.path.isfile(sp):
-        rep = json.load(open(sp, encoding="utf-8"))
-        worst = None
-        for an, nm in (rep.get("worst") or {}).items():
-            r = rep["frames_detail"][nm]
-            if worst is None or r["iou"] < worst[1]["iou"]:
-                worst = (nm, r)
-        exp = rep.get("export") or {}
-        msg = ["model_ref: %s" % out, "", _table(rep), "",
-               "report: %s" % MR.win(os.path.join(out, "report.html")),
-               "sheets: %s" % ", ".join(MR.win(p) for p in (rep.get("sheets") or {}).values()),
-               "engine: %s, flags %s" % ((rep.get("engine") or {}).get("hello", {}).get("version"),
-                                         json.dumps((rep.get("engine") or {}).get("hello", {}).get("flags"))),
-               "panel = Blender | VoxelCore | map (red: only Blender, cyan: only engine, yellow: colour > 24/255)"]
-        if exp:
-            msg.insert(1, "export: %s (%d bones, %d tris, textures %s)%s" % (
-                MR.win(os.path.join(out, "export")), len(exp.get("bones", [])), exp.get("tris", 0),
-                [t["file"] for t in exp.get("textures", [])],
-                "".join("\n  warning: " + w for w in exp.get("warnings") or [])))
-        content.append({"type": "text", "text": text + "\n".join(msg)})
-        if worst:
-            pp = os.path.join(out, "diff", worst[0] + ".png")
-            if os.path.isfile(pp):
-                import base64
-                content.append({"type": "text", "text": "worst frame %s: IoU %.4f, only B %d / E %d, colour %.2f" % (
-                    worst[0], worst[1]["iou"], worst[1]["only_blender"], worst[1]["only_engine"],
-                    worst[1]["color_mean"])})
-                content.append({"type": "image", "data": base64.b64encode(open(pp, "rb").read()).decode("ascii"),
-                                "mimeType": "image/png"})
-    else:
-        content.append({"type": "text", "text": text})
-    res = {"content": content}
-    if error:
-        res["isError"] = True
-    return res
+    if not os.path.isfile(sp):
+        return {"content": [{"type": "text", "text": text}]}
+    rep = json.load(open(sp, encoding="utf-8"))
+    exp = rep.get("export") or {}
+    hello = (rep.get("engine") or {}).get("hello") or {}
+    msg = [rep.get("verdict_line", ""), "", _table(rep)]
+    if rep.get("fails"):
+        msg += ["", "failed frames (worst first):"] + ["- " + f for f in rep["fails"][:10]]
+        if len(rep["fails"]) > 10:
+            msg.append("- ... %d more in report.html" % (len(rep["fails"]) - 10))
+    if rep.get("baseline"):
+        msg += ["", "vs previous run %s:" % rep["baseline"]["from"]] + [
+            "- %s: IoU min %.4f -> %.4f, colour %.2f -> %.2f, failed %d -> %d%s" % (
+                d["key"], d["iou_min"][0], d["iou_min"][1], d["color_mean"][0], d["color_mean"][1], d["fails"][0],
+                d["fails"][1], " WORSE" if d["worse"] else "") for d in rep["baseline"]["delta"]]
+    if exp:
+        msg += ["", "export: %s (%d bones, %d tris, textures %s)%s" % (
+            MR.win(os.path.join(out, "export")), len(exp.get("bones", [])), exp.get("tris", 0),
+            [t["file"] for t in exp.get("textures", [])],
+            "".join("\n  warning: " + w for w in exp.get("warnings") or []))]
+    th = rep.get("thresholds") or {}
+    msg += ["report: %s" % MR.win(os.path.join(out, "report.html")),
+            "views %s; thresholds IoU >= %s, bad colour <= %s, colour mean <= %s; engine %s, flags %s" % (
+                ", ".join(rep.get("views", [])), th.get("min_iou"), th.get("max_bad_color"), th.get("max_color_mean"),
+                hello.get("version"), json.dumps(hello.get("flags"))),
+            "panel = Blender | VoxelCore | map (red: only Blender, cyan: only engine, yellow: colour > 24/255)"]
+    content = [{"type": "text", "text": text + "\n".join(msg)}]
+    det = rep.get("frames_detail") or {}
+    if det:
+        nm = min(det, key=lambda n: (det[n]["iou"], -det[n]["color_bad_share"]))
+        pp = os.path.join(out, "diff", nm + ".png")
+        if os.path.isfile(pp):
+            r = det[nm]
+            content.append({"type": "text", "text": "worst frame %s: IoU %.4f, only B %d / E %d, colour %.2f%s" % (
+                nm, r["iou"], r["only_blender"], r["only_engine"], r["color_mean"],
+                (", bones " + ", ".join("%s %d%%" % (b, 100 * w) for b, w in r["bones"])) if r.get("bones") else "")})
+            content.append({"type": "image", "data": base64.b64encode(open(pp, "rb").read()).decode("ascii"),
+                            "mimeType": "image/png"})
+    return {"content": content}
 
 
 def _progress(out):
@@ -108,7 +112,7 @@ def register(TOOLS, text, journal=None):
             out = _unix(a.get("out")) or MR.default_out(name)
             MR.check_win_path(out, "out")
             os.makedirs(out, exist_ok=True)
-            for f in ("summary.json", "progress.log", "run.log"):
+            for f in ("progress.log", "run.log"):            # summary.json stays: the baseline of this run
                 try:
                     os.remove(os.path.join(out, f))
                 except OSError:
@@ -116,9 +120,13 @@ def register(TOOLS, text, journal=None):
             cmd = [sys.executable, "-m", "vclab.model_ref.model_ref", "--blend", blend, "--out", out]
             for sp in a.get("anims") or []:
                 cmd += ["--anim", sp]
+            if a.get("views"):
+                a = dict(a, views=",".join(a["views"]) if isinstance(a["views"], list) else a["views"])
             for k, flag in (("name", "--name"), ("rest_frame", "--rest-frame"), ("rest", "--rest"),
                             ("scale", "--scale"), ("every", "--every"), ("ssao", "--ssao"), ("shading", "--shading"),
-                            ("root_y", "--root-y"), ("daemon", "--daemon")):
+                            ("root_y", "--root-y"), ("daemon", "--daemon"), ("views", "--views"),
+                            ("min_iou", "--min-iou"), ("max_bad_color", "--max-bad-color"),
+                            ("max_color_mean", "--max-color-mean"), ("baseline", "--baseline")):
                 if a.get(k) is not None:
                     cmd += [flag, str(a[k])]
             if a.get("cam"):
@@ -145,7 +153,7 @@ def register(TOOLS, text, journal=None):
             except OSError:
                 pass
             return text("model_ref failed (%s):\n%s\n\n%s" % (out, "\n".join(prog[-8:]), tail), error=True)
-        if not last.startswith("done"):
+        if not last.startswith("done") or not os.path.isfile(os.path.join(out, "summary.json")):
             return text("model_ref still running (%s); last: %s\npoll: vc_model_ref {\"status\": \"%s\"}" % (
                 out, "\n".join(prog[-4:]) or "(queued in heavy?)", out))
         return _result(out, "")
@@ -169,20 +177,28 @@ def register(TOOLS, text, journal=None):
             "required": ["blend"]},
     })
     TOOLS["vc_model_ref"] = (t_ref, {
-        "description": "Покадровое попиксельное сравнение модели: рендер Blender против VoxelCore. Экспорт .blend "
-                       "(как vc_model_export), затем аренда F2F vc/vctest_window на своём демоне (по умолчанию "
-                       "25802; окно hidden, 854x480, часы virtual — флаги проверяются), только слой сущностей, "
-                       "fullbright, без SSAO; Blender повторяет затенение граней движка. Метрики на кадр: IoU "
-                       "силуэтов, пиксели только с одной стороны, ошибка цвета; report.html, sheet_<anim>.png, "
-                       "diff/. Идёт через heavy в фоне; ждёт wait_s (600) и возвращает таблицу и худший кадр "
-                       "картинкой. Не дождался — status=<out> для опроса. Смотри худший кадр глазами.",
+        "description": "Покадровое попиксельное сравнение модели: рендер Blender против VoxelCore, с вердиктом. "
+                       "Экспорт .blend (как vc_model_export), затем аренда F2F vc/vctest_window на своём демоне "
+                       "(по умолчанию 25802; hidden, 854x480, virtual — флаги проверяются), только слой сущностей, "
+                       "fullbright, без SSAO; Blender повторяет затенение граней движка. Камеры — по габаритам модели "
+                       "за все кадры, ракурсы views (front34, back34 по умолчанию; ещё front back left right top). "
+                       "Кадр проваливается при IoU < min_iou (0.999), плохом цвете > max_bad_color (1%) или средней "
+                       "ошибке цвета > max_color_mean (3/255); у провала — кости, где расхождение. Сравнение с прошлым "
+                       "прогоном в том же out (или baseline) — WORSE. Идёт через heavy в фоне; ждёт wait_s (600), "
+                       "возвращает вердикт, таблицу, провалы и худший кадр картинкой; не дождался — status=<out>. "
+                       "Смотри худший кадр глазами.",
         "inputSchema": {"type": "object", "properties": {
             "blend": {"type": "string"}, "anims": {"type": "array", "items": {"type": "string"}},
             "out": {"type": "string"}, "name": {"type": "string"},
             "status": {"type": "string", "description": "каталог уже запущенного прогона: опрос/результат"},
             "every": {"type": "integer", "default": 1}, "ssao": {"type": "integer", "default": 0},
+            "views": {"type": "array", "items": {"type": "string",
+                                                 "enum": ["front34", "back34", "front", "back", "left", "right", "top"]}},
+            "min_iou": {"type": "number", "default": 0.999}, "max_bad_color": {"type": "number", "default": 0.01},
+            "max_color_mean": {"type": "number", "default": 3.0},
+            "baseline": {"type": "string", "description": "summary.json прошлого прогона (по умолчанию — в out)"},
             "shading": {"type": "string", "enum": ["vc", "flat"]},
-            "cam": {"type": "object", "description": "{pos:[x,y,z], target:[x,y,z], fov} — оси VC от сущности"},
+            "cam": {"type": "object", "description": "одна своя камера вместо views: {pos, target, fov}, оси VC"},
             "rest_frame": {"type": "integer"}, "rest": {"type": "string", "enum": ["identity", "frame"]},
             "root_y": {"type": "number"}, "scale": {"type": "number"},
             "daemon": {"type": "integer", "description": "демон lab для аренды (свой изолированный, не игровой)"},

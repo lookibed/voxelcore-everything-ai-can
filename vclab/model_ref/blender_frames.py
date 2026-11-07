@@ -4,7 +4,8 @@ Default "vc" shading: as the engine draws a model with fullbright light — texe
 (Workbench FLAT). Transparent film (alpha = the silhouette), no anti-aliasing (the engine frame has none).
 
   blender -b <file.blend> --python blender_frames.py -- <job.json>
-job = {"out": dir, "w": 854, "h": 480, "cam": {"pos": [x,y,z], "target": [x,y,z], "fov": deg},   # VoxelCore axes,
+job = {"out": dir, "w": 854, "h": 480, "cam": {"pos": [x,y,z], "target": [x,y,z], "fov": deg},   # VoxelCore axes
+                                           # (a frame may carry its own "cam"),
        "root_y": -0.5,                     # relative to the entity: VC y of the Blender z = 0 plane
        "frames": [{"name": "walk_000", "frame": 0, "subframe": 0.0, "action": null}, ...]}   # action: put on first
 VoxelCore (x, y, z) -> Blender (x, -z, y - root_y)."""
@@ -51,11 +52,17 @@ def b(v):
 
 cam = bpy.data.objects.new("model_ref_cam", bpy.data.cameras.new("model_ref_cam"))
 scene.collection.objects.link(cam)
-cam.location = b(job["cam"]["pos"])
-cam.rotation_euler = (b(job["cam"]["target"]) - cam.location).to_track_quat("-Z", "Y").to_euler()
 cam.data.sensor_fit = "VERTICAL"
-cam.data.angle_y = math.radians(job["cam"]["fov"])
-cam.data.clip_start, cam.data.clip_end = 0.05, 500
+cam.data.clip_start, cam.data.clip_end = 0.05, 2000
+
+
+def set_cam(c):
+    cam.location = b(c["pos"])
+    cam.rotation_euler = (b(c["target"]) - cam.location).to_track_quat("-Z", "Y").to_euler()
+    cam.data.angle_y = math.radians(c["fov"])
+
+
+set_cam(job["cam"])
 scene.camera = cam
 r = scene.render
 SUN = Vector((0.411934, 0.863868, -0.279161))         # ModelBatch::SUN_VECTOR (VoxelCore 0.32)
@@ -182,6 +189,7 @@ def use_action(name):                     # as blender_export.use_action
 
 cur_action = None
 for fr in job["frames"]:
+    set_cam(fr.get("cam") or job["cam"])
     if fr.get("action") and fr["action"] != cur_action:
         use_action(fr["action"])
         cur_action = fr["action"]
