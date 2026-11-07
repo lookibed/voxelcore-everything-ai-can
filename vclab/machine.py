@@ -22,6 +22,7 @@ KEYS = {
     "wsl_mount": (False, "префикс дисков Windows в WSL (по умолчанию /mnt)"),
     "powershell": (False, "powershell.exe (MCP voxelcore: запасные снимки окна)"),
     "cargo": (False, "cargo (проекты с Rust-службами; ядру не нужен)"),
+    "blender": (False, "blender.exe (Windows) — vclab/model_ref: экспорт .blend в VCM/VCA и попиксельное сравнение"),
 }
 
 

@@ -133,6 +133,10 @@ bin/lab --daemon P daemon stop                     # в конце — свой 
 - Документация движка офлайн, точно по версии: `vc_docs_search` (doc/ru|en, C++-привязки Lua
   `src/logic/scripting/lua/libs`, Lua движка `res/`), `vc_docs_read`, `vc_docs_list`. Файлы — `engines/docs/<версия>/`
   (в git), другая версия — `python3 bin/fetch_engine_docs.py v0.32.7`. Не ходить за API в GitHub и не угадывать.
+- Модели из Blender: `vc_model_export` (любой .blend → VCM/PNG/VCA, иерархия объектов или Armature) и `vc_model_ref`
+  (экспорт + покадровое попиксельное сравнение Blender против движка в F2F, худший кадр — картинкой). Качество модели
+  и анимации судить по кадрам этого сравнения, не по числам поз. `vclab/model_ref/README.md`; Blender — ключ
+  `blender` в machine.toml.
 - Мост общий для главной сессии и субагентов: субагент передаёт `owner=<имя>, as_agent=true` в каждом вызове.
 - После правки `vclab/mcp/*.py` или `mcp_tools.py` — переподключить (`/mcp`); до этого — из консоли:
   `python3 bin/run_tool.py <инструмент> '<json>'` (попадает в тот же журнал).

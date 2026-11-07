@@ -671,6 +671,9 @@ from vclab.mcp import journal  # noqa: E402
 # engine docs (offline, per version): vc_docs_search / vc_docs_read / vc_docs_list
 from vclab.mcp import engine_docs as _engine_docs  # noqa: E402
 _engine_docs.register(TOOLS, text)
+# models: Blender -> VCM/VCA export and the frame-by-frame pixel compare (vclab/model_ref)
+from vclab.mcp import model_ref_tools as _model_ref  # noqa: E402
+_model_ref.register(TOOLS, text, journal)
 
 call_tool = journal.register(TOOLS, sys.modules[__name__], text)
 
