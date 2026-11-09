@@ -445,6 +445,37 @@ def use_action(name):
     return int(round(fr[0])), int(round(fr[1]))
 
 
+def fade_of(spec):
+    """09.11: the crossfade INTO this animation, seconds (VCA `@configure ... fade <s>`; a game client may use it when
+    switching to it; its own overrides win). Sources, first found:
+    the job's anim {"fade": s}; the action's custom property `fade` (s) or `fade_frames`; the blend-in of an NLA strip
+    playing the action (frames); the scene's custom property `fade_<anim>` or `fade` (s). None — not set."""
+    if spec.get("fade") is not None:
+        return float(spec["fade"])
+    act = bpy.data.actions.get(spec["action"]) if spec.get("action") else None
+    if act is None:
+        for o in scene.objects:
+            ad = o.animation_data
+            if ad and ad.action:
+                act = ad.action
+                break
+    if act is not None and spec.get("action"):
+        if act.get("fade") is not None:
+            return float(act["fade"])
+        if act.get("fade_frames") is not None:
+            return float(act["fade_frames"]) / FPS
+        for o in scene.objects:
+            ad = o.animation_data
+            for tr in (ad.nla_tracks if ad else ()):
+                for st in tr.strips:
+                    if st.action == act and st.blend_in > 0:
+                        return st.blend_in / FPS
+    for key in ("fade_" + str(spec["name"]), "fade"):
+        if scene.get(key) is not None:
+            return float(scene[key])
+    return None
+
+
 def safe(n):
     return re.sub(r"[^\w.-]+", "_", n) or "anim"
 
@@ -567,8 +598,10 @@ for spec in anim_specs():
             if sub == 0.0 or (sub == 0.5 and job.get("poses")):
                 samples.append(rec)
     dur = (end - start) / FPS
-    lines = ["@configure fps %s duration %s%s" % (fmt(FPS), fmt(dur),
-                                                  "" if ORDER == "XYZ" else " rotation-order " + ORDER), ""]
+    fade = fade_of(spec)
+    lines = ["@configure fps %s duration %s%s%s" % (fmt(FPS), fmt(dur),
+                                                    "" if ORDER == "XYZ" else " rotation-order " + ORDER,
+                                                    "" if fade is None else " fade " + fmt(round(fade, 4))), ""]
     stats = {"curve": 0, "bezier": 0, "bezier_half": 0, "linear": 0,
              "err": {"move": 0.0, "rotate": 0.0, "scale": 0.0}}
     for n in bones:
@@ -620,7 +653,8 @@ for spec in anim_specs():
     with open(os.path.join(OUT, fn), "w", newline="\n") as fo:
         fo.write("\n".join(lines).rstrip() + "\n")
     stats["err"] = {k: round(v, 5) for k, v in stats["err"].items()}
-    anims_out[name] = {"file": fn, "start": start, "end": end, "fps": FPS, "duration": dur, "keys": end - start + 1,
+    anims_out[name] = {"file": fn, "start": start, "end": end, "fps": FPS, "duration": dur, "fade": fade,
+                       "keys": end - start + 1,
                        "action": spec.get("action"), "channels": {"curve": stats["curve"], "baked_bezier":
                        stats["bezier"], "baked_bezier_half": stats["bezier_half"], "baked_linear": stats["linear"]}, "err_between_frames": stats["err"]}
     poses[name] = {"duration": dur, "samples": samples}

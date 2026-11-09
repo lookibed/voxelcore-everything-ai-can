@@ -288,7 +288,7 @@ def layer_basis(layer):
 
 
 def blend_states(layers):
-    """states test, reference "slerp": the engine's crossfade (Olife client) on Blender's own local transforms —
+    """states test, reference "slerp": the engine-side crossfade of a game client on Blender's own local transforms —
     rotation slerp, location / scale lerp, weight w of the second layer — then the animation off and the result set"""
     a = layer_basis(layers[0])
     res = a

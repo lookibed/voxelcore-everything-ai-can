@@ -17,13 +17,14 @@ scenarios_dir = "{project_dir}\\vctests"
 vctest = { headless = "vctest", window = "vctest_window" }
 
 [kinds.dev]
-description = "F2F build --f2f <port> --f2f-clock realtime, --dir <work_root>\\vc_dev (vc_start), packs from {repo_root}\\packs (--param packs=a,b), --res of the engine"
+description = "F2F build --f2f <port> --f2f-clock realtime, window hidden, --dir <work_root>\\vc_dev (vc_start), packs from {repo_root}\\packs (--param packs=a,b), --res of the engine"
 exe = "{param.engine_exe}"
 copy_exe = true
 ports = ["f2f"]
 f2f = "f2f"
 clock = "realtime"
-window = "normal"          # видимое окно без фокуса: vc_screenshot (PrintWindow) работает, ввод ОС — нет
+window = "hidden"          # окно СКРЫТО (02.11: normal показывал окно на рабочем столе пользователя). Видимое — только
+                           # по просьбе пользователя: --param window=normal. vc_screenshot снимает F2F shot (буфер кадра).
 cwd = "{param.dir}"
 args = ["--f2f", "{port.f2f}", "--res", "{param.res}", "--dir", "{param.dir}", "{param.extra}"]
 params = { engine_exe = "{engine.builds.f2f}", dir = "{work_root}\\vc_dev", res = "{engine.res}", packs = [], extra = [] }
@@ -52,6 +53,56 @@ clock = "virtual"
 cwd = "{dir}"
 args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}", "{param.extra}"]
 params = { extra = [] }
+logs = { latest = "{dir}\\latest.log" }
+default_log = "latest"
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# ---------------------------------------------------------------- проверка чужого/скачанного проекта (user:project)
+# Каталог проекта (project.toml, start.lua, content\) копируется в <каталог аренды>\project — движок подхватывает его как
+# user:project, как у пользователя в <установка>\project. Оригинал и установку пользователя не трогаем.
+#   lab_lease project=vc kind=user_project params={"src": "D:\\...\\ocult-fab"} start=true
+# Окно hidden, кадр 854x480, часы virtual (кадры — только по F2F step); --param clock=realtime — если нужно «живое» время.
+# Курсор F2F стартует в (0,0): RTS-камеры с прокруткой от края поедут — первым input поставьте мышь в центр кадра.
+[kinds.user_project]
+description = "foreign/downloaded VoxelCore project (user:project): --param src=<Windows dir with project.toml>, copied into the lease dir; F2F, hidden, 854x480, clock virtual, muted"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "virtual"
+window = "hidden"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}", "{param.extra}"]
+params = { src = "", extra = [] }
+prepare = [
+  { action = "copytree", src = "{param.src}", dst = "project", robocopy = false },
+  { action = "write", path = "settings.toml", text = "[audio]\nvolume-master = 0\n" }
+]
+logs = { latest = "{dir}\\latest.log" }
+default_log = "latest"
+ready = [ { f2f = "hello", timeout = 90 } ]
+stop = [ { f2f = "quit", wait_exit = 8 } ]
+
+# Папка пользователя целиком (как <установка>: project\, worlds\, config\…) — когда проект поставляется вместе с мирами
+# (user:worlds). --param src=<Windows dir> копируется ПОВЕРХ каталога аренды; settings.toml аренды (звук 0) пишется после.
+[kinds.user_dir]
+description = "foreign project shipped as a user dir (project\\ + worlds\\ …): --param src=<Windows dir>, copied into the lease dir; F2F, hidden, 854x480, clock virtual, muted"
+exe = "{engine.builds.f2f}"
+copy_exe = true
+ports = ["f2f"]
+f2f = "f2f"
+size = "854x480"
+clock = "virtual"
+window = "hidden"
+cwd = "{dir}"
+args = ["--f2f", "{port.f2f}", "--f2f-size", "{size}", "--res", "{engine.res}", "--dir", "{dir}", "{param.extra}"]
+params = { src = "", extra = [] }
+prepare = [
+  { action = "copytree", src = "{param.src}", dst = ".", fresh = false, robocopy = false },
+  { action = "write", path = "settings.toml", text = "[audio]\nvolume-master = 0\n" }
+]
 logs = { latest = "{dir}\\latest.log" }
 default_log = "latest"
 ready = [ { f2f = "hello", timeout = 90 } ]

@@ -3,7 +3,7 @@
 
 Этап 3а лаборатории (docs/RULES.md «Принуждение»): vc_start больше не запускает стоковый VoxelCore.exe —
 это аренда `vc.dev` демона lab (тестовая сборка VoxelCoreF2F.exe, `--f2f <порт> --f2f-clock realtime`, ввод ОС
-изолирован, окно без фокуса; `lab ps` её видит). Стоковый exe — только play=true + reason (= `lab play vc
+изолирован, окно hidden; `lab ps` её видит). Стоковый exe — только play=true + reason (= `lab play vc
 --final-check`, главная сессия). vc_keys/vc_click (ввод ОС) такие экземпляры не видят: ввод — vc_input (F2F input).
 
 Инструменты: vc_start, vc_stop, vc_status, vc_screenshot, vc_input, vc_keys, vc_click, vc_log, vc_wait_log,
@@ -510,7 +510,7 @@ TOOLS = {
     "vc_start": (tool_vc_start, {
         "description": "Запустить движок для разработки пака: аренда демона lab (vc.dev) — тестовая сборка "
                        "VoxelCoreF2F.exe с --f2f <порт> --f2f-clock realtime (время идёт само, ввод ОС изолирован, окно "
-                       "без фокуса), --res/--dir как раньше (по умолчанию VC_ROOT: latest.log, export там же). "
+                       "hidden — проверь hello.flags.window в ответе), --res/--dir как раньше (по умолчанию VC_ROOT: latest.log, export там же). "
                        "script — сценарий автозапуска через project_client.lua (user:<путь>.lua, "
                        "'none' — меню). wait_for — regex в latest.log. Ввод — vc_input. play=true + reason — стоковый "
                        "VoxelCore.exe как разовая финальная проверка главной сессии (lab play --final-check); "

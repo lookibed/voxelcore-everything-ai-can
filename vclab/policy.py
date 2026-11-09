@@ -96,6 +96,74 @@ def is_stock(path, sha=None):
     return False
 
 
+# ------------------------------------------------------------------------------------------------ звук 0 (09.11)
+SILENT = ("volume-master", "volume-regular", "volume-ui", "volume-ambient", "volume-music")
+
+
+def silence_settings(engine_dir):
+    """Звук 0 у тестового движка (правило пользователя: «звук 0»; 09.11 «протечка звука из лаборатории на винде»):
+    <--dir>\\settings.toml -> один раздел [audio], ВСЕ каналы 0 (бэкенд остаётся: тесты звуков видят события).
+    Только master мало: в 0.32.7 master — усиление слушателя OpenAL, его ставит лишь экран мира (LevelScreen ->
+    audio::set_listener); в меню слушатель остаётся 1.0, и звуки меню/статуса играли на динамиках во весь канал ui.
+    Повторные [audio] (вид дописывал свой раздел к файлу, где он уже был: TOML с дублем таблицы) сливаются в первый,
+    повторные ключи выбрасываются. -> {"path", "changed", "had"} (had — прежние значения каналов)."""
+    path = os.path.join(engine_dir, "settings.toml")
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        text = ""
+    pre, sections = [], []                       # [(name, header line, [lines])]
+    for line in text.splitlines():
+        st = line.strip()
+        if st.startswith("[") and st.endswith("]") and not st.startswith("[["):
+            sections.append((st[1:-1].strip(), line, []))
+        elif sections:
+            sections[-1][2].append(line)
+        else:
+            pre.append(line)
+    audio, keys, had, out_sections = None, set(), {}, []
+    for name, header, lines in sections:
+        if name != "audio":
+            out_sections.append((header, lines))
+            continue
+        if audio is None:
+            audio = []
+            out_sections.append((header, audio))
+        for line in lines:
+            k = line.split("=", 1)[0].strip() if "=" in line and not line.lstrip().startswith("#") else None
+            if k in SILENT:
+                had[k] = line.split("=", 1)[1].strip()
+                continue
+            if k:
+                if k in keys:
+                    continue
+                keys.add(k)
+            audio.append(line)
+    if audio is None:
+        audio = []
+        out_sections.append(("[audio]", audio))
+    while audio and not audio[-1].strip():
+        audio.pop()
+    audio.extend("%s = 0" % k for k in SILENT)
+    audio.append("")
+    out = "\n".join(pre + [x for h, ls in out_sections for x in [h] + ls]).rstrip("\n") + "\n"
+    changed = out != text
+    if changed:
+        os.makedirs(engine_dir, exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(out)
+    return {"path": path, "changed": changed, "had": had}
+
+
+def engine_dir_of(argv, cwd):
+    """--dir движка (до `--`) или cwd процесса"""
+    eng = argv[:argv.index("--")] if "--" in argv else argv
+    if "--dir" in eng and eng.index("--dir") + 1 < len(eng):
+        return eng[eng.index("--dir") + 1]
+    return cwd
+
+
 # ------------------------------------------------------------------------------------------------ headless (этап 4)
 def check_headless(spec, argv):
     """Требования вида role=headless до запуска -> список нарушений (пусто — можно)."""

@@ -941,6 +941,11 @@ class Lab:
                 engine_args(["--f2f-window", window])
             plan.update(clock=clock, window=window if caps.get("--f2f-window") else None,
                         caps={k: v for k, v in caps.items() if v})
+            # 09.11: звук 0 гарантирует ядро, а не settings.toml каждого вида (тестовый клиент проекта звучал на динамиках)
+            try:
+                plan["audio"] = policy.silence_settings(policy.engine_dir_of(argv, l.dir))
+            except OSError as exc:
+                raise LabError("policy", "%s: cannot silence the engine (settings.toml): %s" % (l.name, exc))
             # этап 4a: hello.version сборки должен быть версией движка аренды ([engines.<id>].f2f_version:
             # "0.31-f2f", "0.32-f2f"); другая версия — engine-mismatch (дерево убито, как при isolation-failed)
             try:

@@ -64,7 +64,7 @@ local function handler(cmd, a)
         end
         return {anim = a.anim, t = a.t}
     elseif op == "blend" then
-        -- a crossfade of two animation states, as the Olife client does it (mobview 08.11): the first layer's pose,
+        -- a crossfade of two animation states, as a game client crossfades states: the first layer's pose,
         -- the second layer's pose, per bone rotation slerp + translation lerp with weight w (already eased)
         local rig = S.ent.skeleton
         S.ent.transform:set_pos(E)

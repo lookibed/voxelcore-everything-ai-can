@@ -1,7 +1,7 @@
 """vc_start/vc_stop/vc_input через демон лаборатории (этап 3а): MCP `voxelcore` больше не запускает VoxelCore.exe сам.
 
 - vc_start: аренда `vc.dev` (projects/vc/project.toml) = тестовая сборка VoxelCoreF2F.exe с
-  `--f2f <порт> --f2f-clock realtime --f2f-window normal`, те же --res/--dir, что у прежнего vc_start (по умолчанию
+  `--f2f <порт> --f2f-clock realtime --f2f-window hidden` (с 02.11; было normal), те же --res/--dir, что у прежнего vc_start (по умолчанию
   VC_ROOT): latest.log, autorun_app_script.txt, export\\ — на прежних местах. Демон проверяет hello.flags.input ==
   "isolated" (иначе убивает экземпляр). `lab ps` видит аренду (владелец LAB_OWNER сервера MCP или claude).
 - play=true (+ reason): стоковый VoxelCore.exe — только как `lab play vc --final-check` главной сессии (claude);
