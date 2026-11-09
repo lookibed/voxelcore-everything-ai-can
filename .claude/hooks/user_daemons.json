@@ -1,0 +1,1 @@
+{"ports": [25700, 25801], "note": "daemons the user uses (shared + the play stack); restart/stop/upgrade only with the user's yes"}
