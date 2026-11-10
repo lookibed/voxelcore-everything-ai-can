@@ -134,9 +134,13 @@ bin/lab --daemon P daemon stop                     # в конце — свой 
   `vc_status`, `vc_screenshot` (F2F `shot`), `vc_input` (ввод через F2F), `vc_log`, `vc_wait_log`, `vc_pixels`,
   `vc_shader_cells`, `journal_report`, `journal_set`, `scenario_save/run/list` + инструменты проектов (`mcp_tools.py`).
   `vc_keys`/`vc_click` отключены (ввод ОС).
-- Документация движка офлайн, точно по версии: `vc_docs_search` (doc/ru|en, C++-привязки Lua
-  `src/logic/scripting/lua/libs`, Lua движка `res/`), `vc_docs_read`, `vc_docs_list`. Файлы — `engines/docs/<версия>/`
-  (в git), другая версия — `python3 bin/fetch_engine_docs.py v0.32.7`. Не ходить за API в GitHub и не угадывать.
+- Документация и исходники движка офлайн, точно по версии (по умолчанию — версия лаборатории из `engines/registry.toml`;
+  есть `main` — снимок upstream): `vc_docs_search` (scope docs | api — привязки Lua | lua — `res/` | src — весь C++ |
+  all; `path` — подкаталог), `vc_docs_read`, `vc_docs_list {versions:true}`, `vc_docs_symbol` (где определено и где
+  используется), `vc_docs_diff` (что изменилось между версиями). Файлы: `engines/docs/<версия>/` (в git: документация и
+  привязки) и `engines/src/<версия>/` (полное дерево, только на диске; ставит bootstrap). Обновить или добавить версию —
+  `python3 bin/fetch_engine_docs.py v0.32.8 | main | --all`. Не ходить за исходниками в GitHub, не клонировать во
+  временные каталоги и не читать чужие checkout'ы другой версии (скилл `engine-source`).
 - Модели из Blender: `vc_model_export` (любой .blend → VCM/PNG/VCA, иерархия объектов или Armature) и `vc_model_ref`
   (экспорт + покадровое попиксельное сравнение Blender против движка в F2F, худший кадр — картинкой). Качество модели
   и анимации судить по кадрам этого сравнения, не по числам поз. `vclab/model_ref/README.md`; Blender — ключ
@@ -159,7 +163,9 @@ bin/lab call <проект>.<возможность> '{json}'  |  lab <прое�
 
 ## 5. Сценарии
 Формат, шаги ядра и плагина, таймлайн, тесты движка — `docs/PROJECTS.md` §4 «Сценарии (справочник)». Повторяемый путь —
-сценарий (`lab run`), а не ручные вызовы.
+сценарий (`lab run`), а не ручные вызовы. Несколько сценариев — одной командой `lab run <проект> a b c`: с одинаковой
+подготовкой идут в одной сессии, с разной — набором сессий подряд (одно задание, сводка `suite: N/M`, у каждой сессии
+свой прогон и отчёт).
 
 ## 6. lab play
 Игра пользователя на стоковом движке — только `lab play <проект> --user` из его терминала; главная сессия — разово

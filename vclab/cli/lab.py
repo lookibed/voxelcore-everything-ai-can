@@ -399,10 +399,22 @@ def main(argv):
             print(json.dumps(r, ensure_ascii=False, indent=1))
             return 1
         jid = r["job"]["id"]
-        print("job %s -> %s" % (jid, r["job"]["dir"]), flush=True)
+        print("job %s -> %s" % (jid, r["job"].get("dir") or "suite: one session per preparation"), flush=True)
         j = follow(c, jid, detach)
         if detach:
             return 0
+        if (j.get("result") or {}).get("sessions") is not None or j.get("kind") in ("suite", "bg"):
+            # 10.11: scenarios with different preparation -> a suite of sessions (vclab/scenario Jobs.suite)
+            ses = (j.get("result") or {}).get("sessions") or []
+            for s_ in ses:
+                rr = c.get("/runs/%s" % s_["run"]).get("run") or {} if s_.get("run") else {}
+                for res in (rr.get("scenario") or {}).get("results") or []:
+                    print("--- %s: %s" % (res["scenario"], "ok" if res.get("ok") else "FAILED (%s)" % res.get("error")))
+                if not rr:
+                    print("--- %s: %s" % (" ".join(s_["scenarios"]), s_.get("error") or s_.get("verdict")))
+            nok = sum(1 for s_ in ses if s_.get("verdict") == "ok")
+            print("suite: %d/%d sessions ok; verdict %s" % (nok, len(ses), j.get("verdict") or j.get("state")))
+            return 0 if j.get("verdict") == "ok" else 1
         rr = c.get("/runs/%s" % jid).get("run") or {}
         sc = rr.get("scenario") or {}
         for res in sc.get("results") or []:

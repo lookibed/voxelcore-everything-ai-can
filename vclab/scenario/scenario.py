@@ -688,9 +688,28 @@ class ScenarioService:
             del job["progress"][:100]
         job["updated"] = time.time()
 
+    @staticmethod
+    def groups(scns):
+        """10.11 (user: «тесты по очереди руками — странно, должен быть один запуск»): scenarios of one `lab run` ->
+        sessions in order: consecutive scenarios with the same preparation (base/setup, frame size, kind) share one;
+        a timeline or a vctest scenario runs in a session of its own."""
+        out = []
+        for s in scns:
+            g = out[-1] if out else None
+            alone = s.kind in ("timeline", "vctest")
+            if g and not alone and g[0].kind not in ("timeline", "vctest") and g[0].kind == s.kind and \
+                    g[0].prefix == s.prefix and g[0].setup == s.setup and g[0].size == s.size:
+                g.append(s)
+            else:
+                out.append([s])
+        return out
+
     def start(self, project, names, impl, owner, opts=None, wait=False):
         opts = dict(opts or {})
         proj, scns = self.load(project, names)
+        groups = self.groups(scns)
+        if len(groups) > 1:
+            return self.suite(project, proj, groups, impl, owner, opts, wait)
         self.check(proj, scns, impl, opts)
         if opts.get("size") and opts["size"] != scns[0].size:
             raise ScenarioError("--size %s differs from the scenario size %s (F2F.md 8)" % (opts["size"], scns[0].size))
@@ -710,6 +729,49 @@ class ScenarioService:
         if wait:
             th.join()
         return self.public(job)
+
+    def suite(self, project, proj, groups, impl, owner, opts, wait):
+        """several sessions one after another (see groups): a job of its own; every session is an ordinary run (its
+        own report). The suite goes on after a failed session; cancel stops it after the current one."""
+        for g in groups:
+            self.check(proj, g, impl, opts)
+        names = [s.name for g in groups for s in g]
+        title = "suite_%s_%d" % (names[0], len(names))
+
+        def go(job):
+            job["kind"], job["scenarios"], job["sessions"] = "suite", names, []
+            results = []
+            for i, g in enumerate(groups):
+                if job.get("cancel"):
+                    self.progress(job, "suite cancelled before %s" % g[0].name)
+                    break
+                gn = [s.name for s in g]
+                self.progress(job, "=== suite %d/%d: %s" % (i + 1, len(groups), " ".join(gn)))
+                try:
+                    sub = self.start(project, gn, impl, owner, opts, wait=True)
+                except Exception as exc:
+                    sub = {"id": None, "verdict": "error", "error": "%s: %s" % (type(exc).__name__, exc)}
+                ses = {"run": sub.get("id"), "dir": sub.get("dir"), "scenarios": gn, "verdict": sub.get("verdict"),
+                       "error": sub.get("error")}
+                job["sessions"].append(ses)
+                for line in (sub.get("progress") or [])[-3:]:
+                    self.progress(job, "    " + line)
+                self.progress(job, "--- %s: %s" % (" ".join(gn), sub.get("verdict")))
+                results.append(ses)
+            ok = bool(results) and all(r["verdict"] == "ok" for r in results) and len(results) == len(groups)
+            job["verdict"] = "ok" if ok else "failed"
+            self.progress(job, "=== suite: %d/%d sessions ok" % (sum(1 for r in results if r["verdict"] == "ok"),
+                                                                 len(groups)))
+            return {"ok": ok, "sessions": results}
+
+        j = self.bg(title, owner, go)
+        if wait:
+            with self.lock:
+                th = self.jobs[j["id"]].get("thread")
+            if th:
+                th.join()
+            return self.get(j["id"])
+        return j
 
     def bg(self, title, owner, fn):
         """Фоновое задание (golden regen и т.п.): fn(job) -> результат; прогресс и состояние — как у прогона."""

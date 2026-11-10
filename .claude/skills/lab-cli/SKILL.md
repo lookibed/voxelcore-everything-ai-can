@@ -15,16 +15,18 @@ actually cost time.
 - A daemon the user plays on (a project's live stack) — read-only for you; restart/stop/`play-down|up` only after the
   user's explicit "yes" (the `.claude/hooks/guard.py` hook asks).
 - Identity: `LAB_OWNER=<owner> bin/lab --daemon P …`. Leases belong to an owner; `stdin`, `op`, `call` on leases of owner
-  X **silently do nothing or are refused** without `LAB_OWNER=X`. There is no `LAB_PORT` variable — the port is
-  `--daemon P` before the command. From WSL into Windows Python add `WSLENV=LAB_OWNER` when a tool spawns Windows Python.
+  X **silently do nothing or are refused** without `LAB_OWNER=X`. The daemon: `--daemon P` before the command (or
+  `LAB_PORT=P`); without either the shared daemon is used. From WSL into Windows Python add `WSLENV=LAB_OWNER` when a tool spawns Windows Python.
 - MCP `lab_*` tools talk to the daemon configured for the session; plugin features with `mcp=True` appear as
   `lab_<project>_<feature>` after `/mcp` reconnect.
 
 ## 2. Running things
 - Every scenario/test batch/build: `heavy --label <what> -- timeout 900 bin/lab --daemon P run <project> <scenario>`.
   Timing runs: `heavy --exclusive` (see the box's CLAUDE.md).
-- Many scenarios: a loop in ONE background command, print one verdict line per scenario; wait for the notification
-  (or a Monitor on the output), never `sleep` polling.
+- Many scenarios: ONE command, `heavy --label X -- bin/lab --daemon P run <project> a b c ... [--detach]`. Scenarios
+  with the same preparation share a session; different preparations become a suite of sessions run one after another
+  by the daemon (one job, one summary `suite: N/M sessions ok`, every session its own run/report). Long batches:
+  `--detach` and follow `lab jobs` / `lab job <id>`; no shell loops over scenarios, no `sleep` polling.
 - A plugin/step edit (`projects/<p>/*.py`, `project.toml`) is loaded at daemon start: restart **your** daemon (no
   leases on it) before the run, otherwise the new step "is unknown" or the old code runs.
 - Plugin features directly: `bin/lab --daemon P call <project>.<feature> '{json}'`; a project's own CLI:
@@ -44,6 +46,7 @@ actually cost time.
 
 ## Traps that happened
 - `bin/lab stdin` without `LAB_OWNER` → no output, looked like "the world ignores the command".
+- "Daemon not running" for your own isolated port after a reboot: `lab daemon start --isolated --port P`.
 - New scenario step not found → the daemon still had the old plugin loaded.
 - A test batch started bare (without `heavy`) competed with another agent's build.
 - "Verified" from console tail while the report said FAIL on a later step.
