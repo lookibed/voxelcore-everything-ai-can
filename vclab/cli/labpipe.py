@@ -44,7 +44,7 @@ def main():
             c = client(req.get("owner"))
             if not started and not c.alive():
                 from vclab.cli import labctl as labctl
-                r = labctl.start()
+                r = labctl.autostart(c.port, req.get("owner"))
                 if not r.get("ok"):
                     raise RuntimeError("labd did not start: %s" % r)
             started = True

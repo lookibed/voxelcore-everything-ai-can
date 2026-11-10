@@ -52,9 +52,7 @@ class _Client:
         except (ConnectionError, OSError):
             self.c.close()
             from vclab.cli import labctl as labctl
-            if self.c.port != labctl.shared_port():
-                raise RuntimeError("labd :%d is not running (the bridge starts only the shared daemon)" % self.c.port)
-            r = labctl.start()
+            r = labctl.autostart(self.c.port, os.environ.get("LAB_OWNER"))
             if not r.get("ok"):
                 raise RuntimeError("labd is not running and did not start: %s" % r)
             return fn(*a, **kw)

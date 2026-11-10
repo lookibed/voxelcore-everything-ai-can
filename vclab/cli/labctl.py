@@ -71,6 +71,21 @@ def start(port=None, wait=20.0, extra=(), owner=None):
     return {"ok": False, "error": "labd did not answer in %.0f s (wmi pid %d); see <data>\\labd.log" % (wait, pid)}
 
 
+def autostart(port, owner=None):
+    """10.11: start the daemon a client is configured for (LAB_PORT) the right way: the shared port -> the shared
+    daemon; a port of the isolated range -> an ISOLATED daemon with its own data (<work>/lab/isolated/<P>: e.g. the
+    play stack's world) and starter = owner. Before, the voxelcore MCP pipe started a shared-style daemon (data
+    work/lab) on an isolated port after a reboot — the play stack then came up without its world."""
+    port = int(port)
+    if port == shared_port():
+        return start()
+    from vclab.daemon.admin import ISOLATED_PORTS
+    a, b = ISOLATED_PORTS
+    if a <= port <= b:
+        return start_isolated(port, owner=owner or os.environ.get("LAB_OWNER") or "claude")
+    return {"ok": False, "error": "labd :%d is not running and the port is neither the shared one nor isolated" % port}
+
+
 LIVE_STATES = ("leased", "starting", "ready")
 
 
