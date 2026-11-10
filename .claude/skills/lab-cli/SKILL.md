@@ -13,7 +13,7 @@ actually cost time.
 - Your own isolated daemon (`bin/lab daemon start --isolated` → port P) — for tests and core edits; you may restart it
   when **it has no leases** (`bin/lab --daemon P ps`).
 - A daemon the user plays on (a project's live stack) — read-only for you; restart/stop/`play-down|up` only after the
-  user's explicit "yes" (the `.claude/hooks/guard.py` hook asks).
+  user's explicit "yes" (the `.claude/hooks/guard.py` hook never asks the user: it reminds YOU of the rule in context).
 - Identity: `LAB_OWNER=<owner> bin/lab --daemon P …`. Leases belong to an owner; `stdin`, `op`, `call` on leases of owner
   X **silently do nothing or are refused** without `LAB_OWNER=X`. The daemon: `--daemon P` before the command (or
   `LAB_PORT=P`); without either the shared daemon is used. From WSL into Windows Python add `WSLENV=LAB_OWNER` when a tool spawns Windows Python.
