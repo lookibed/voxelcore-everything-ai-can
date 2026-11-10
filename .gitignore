@@ -38,3 +38,6 @@ __pycache__/
 # описания паков и проектов — локальные
 /catalog/
 /docs/PACKS.md
+
+# полные исходники движка для MCP vc_docs_* (bin/fetch_engine_docs.py) — только на диске
+/engines/src/

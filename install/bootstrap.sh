@@ -83,5 +83,17 @@ elif [ -n "$GH" ] && [ -n "$TAG" ] && [ -n "$F2F" ]; then
   say "f2f downloaded: $F2F (sha ${GOT%"${GOT#????????????}"})"
 fi
 
+# 2b. Исходники движка для MCP vc_docs_* (engines/src/<версия> — полное дерево, не в git; engines/docs — в git):
+#     версии реестра без legacy + снимок upstream main. Уже скачанные не трогаем (обновить: bin/fetch_engine_docs.py --all).
+if [ -n "$GH" ]; then
+  for V in $(cd "$ROOT" && python3 -c 'import importlib.util as u; s=u.spec_from_file_location("f","bin/fetch_engine_docs.py"); m=u.module_from_spec(s); s.loader.exec_module(m); print(" ".join(m.registry_versions()+["main"]))' 2>/dev/null); do
+    D="$ROOT/engines/src/${V#v}"
+    if [ -f "$D/ORIGIN.md" ]; then say "engine sources $V ok"
+    else (cd "$ROOT" && python3 bin/fetch_engine_docs.py "$V" | sed 's/^/[bootstrap.sh] /') || say "fetch_engine_docs $V failed (MCP docs: docs only)"; fi
+  done
+else
+  say "no gh: engine sources for MCP vc_docs_* not fetched (python3 bin/fetch_engine_docs.py --all later)"
+fi
+
 # 3. Windows-сторона (сток, проверки, doctor)
 run_ps
